@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col">
-    <p class="text-xl">{{ $d(date, "d") }}</p>
-    <p :class="{ 'order-first': month_first }">{{ $d(date, "m") }}</p>
+    <p class="text-[1.2em]">{{ $d(date, "d") }}</p>
+    <p
+      class="text-[1em] uppercase"
+      :class="{ 'order-first': month_first, '-mb-[0.5em]': month_first, '-mt-[0.5em]': !month_first }"
+    >{{ $d(date, "m") }}</p>
   </div>
 </template>
 
