@@ -21,8 +21,8 @@
       <div class="maxed flex flex-col sm:flex-row gap-16">
         <Venues></Venues>
         <div class="">
-          <ParagraphTitle :title="$t('teams_application')"></ParagraphTitle>
-          <ParagraphTitle :title="$t('officials_application')"></ParagraphTitle>
+          <ParagraphTitle :title="t('teams_application')"></ParagraphTitle>
+          <ParagraphTitle :title="t('officials_application')"></ParagraphTitle>
         </div>
       </div>
     </section>
@@ -30,10 +30,11 @@
 </template>
 
 <script setup>
-const img = useImage()
+const img = useImage();
+const { t } = useI18n();
 
 const backgroundStyles = computed(() => {
-  const imgUrl = img('background@2x.png')
+  const imgUrl = img('background@2x.png');
   return { backgroundImage: `url('${imgUrl}')` }
 })
 </script>
