@@ -11,6 +11,7 @@
         :key="index"
         :venue="venue"
         @mouseover="selectVenue(index)"
+        @touchstart="selectVenue(index)"
       ></Venue>
     </div>
   </div>
