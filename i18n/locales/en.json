@@ -7,7 +7,20 @@
   "seconds": "sec",
   "date_month_first": "true",
   "teams_application": "Teams Application",
+  "teams_application_text": {
+    "line1": "Please fill out the formal application for your team to be considered for the event.",
+    "date1": "Application Deadline: {date}",
+    "date2": "Team Notification: {date}"
+  },
   "officials_application": "Officials Application",
+  "officials_application_text": {
+    "line1": "We look forward to building strong crews of experienced, collaborative officials. Thank you for your interest in contributing to our events.",
+    "line2": "4 officiating crews (4 CHRs, 4 CHNSOs).",
+    "date1": "Tournament Head Officials will be announced {date}.",
+    "date2": "Crew Head Applications will close {date}.",
+    "date3": "General Officiating Application will close {date}."
+  },
+  "timelines": "Timelines:",
   "venues": "Venues",
   "see_map": "See on Maps",
   "contact": "Contact",
