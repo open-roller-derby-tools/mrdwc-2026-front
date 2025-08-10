@@ -14,18 +14,6 @@ export default defineNuxtConfig({
       title: "Men's Roller Derby World Cup 2026",
     },
   },
-  fonts: {
-    defaults: {
-      weights: ["400 700"], // Regular, Bold
-    },
-    families: [
-      {
-        name: "Big Shoulders",
-        provider: "fontsource",
-        weights: ["400 500 600 700 900"], // Regular, Medium, Semibold, Bold, Black
-      },
-    ],
-  },
   image: {
     format: ["webp"],
   },

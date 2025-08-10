@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <p>{{ $d(startDate, "ddmy") }}</p>
-    <hr />
-    <p>{{ timeRemaining.days }} days</p>
-    <p>{{ timeRemaining.hours }} hours</p>
-    <p>{{ timeRemaining.minutes }} minutes</p>
-    <p>{{ timeRemaining.seconds }} seconds</p>
+  <div class="countdown w-full sm:w-md">
+    <h3 class="text-yellow uppercase font-shoulders font-semibold">{{ t("time_to_derby") }}</h3>
+    <div class="bg-white text-red-text rounded-2xl rounded-tl-none font-shoulders p-[0.4em]">
+      <div class="flex justify-around">
+        <div
+          v-for="(value, key) in timeRemaining"
+          class="flex flex-col items-center"
+        >
+          <span class="font-black text-[1.5em] -mt-[0.2em]">{{ value }}</span>
+          <span class="uppercase text-[0.5em] -mt-[0.8em]">{{ t(key) }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -13,8 +19,9 @@
 import { differenceInSeconds } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 
+const { t } = useI18n();
+
 const startDate = new TZDate(2026, 3, 30, 0, 0, 0, "Europe/Paris");
-// const endDate = new TZDate(2026, 4, 3, 0, 0, 0, "Europe/Paris");
 
 const MINUTE = 60;
 const HOUR = MINUTE * 60;
@@ -56,4 +63,8 @@ onUnmounted(() => {
 });
 </script>
 
-<style></style>
+<style scoped>
+div.countdown {
+  font-size: min(9vw, 36px);
+}
+</style>
