@@ -1,5 +1,8 @@
 <template>
-  <div class="w-full bg-[url(background@2x.png)] bg-contain md:bg-size-[768px] bg-no-repeat">
+  <div
+    :style="backgroundStyles"
+    class="w-full bg-contain md:bg-size-[768px] bg-no-repeat"
+  >
     <Header class="maxed"></Header>
     <section
       id="title-section"
@@ -26,6 +29,13 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const img = useImage()
+
+const backgroundStyles = computed(() => {
+  const imgUrl = img('background@2x.png')
+  return { backgroundImage: `url('${imgUrl}')` }
+})
+</script>
 
 <style scoped></style>
