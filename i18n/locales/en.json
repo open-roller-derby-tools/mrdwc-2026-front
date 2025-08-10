@@ -7,5 +7,11 @@
   "seconds": "sec",
   "date_month_first": "true",
   "teams_application": "Teams Application",
-  "officials_application": "Officials Application"
+  "officials_application": "Officials Application",
+  "venues": "Venues",
+  "see_map": "See on Maps",
+  "contact": "Contact",
+  "privacy_policy": "Privacy Policy",
+  "terms_of_use": "Terms of Use",
+  "copyright": "© 2025 Tech on Wheels Team. All rights reserved."
 }

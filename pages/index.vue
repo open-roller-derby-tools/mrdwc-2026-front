@@ -19,13 +19,17 @@
     </section>
     <section class="bg-blue-dark py-8">
       <div class="maxed flex flex-col sm:flex-row gap-16">
-        <Venues></Venues>
+        <div>
+          <Venues></Venues>
+          <OfficialLogos></OfficialLogos>
+        </div>
         <div class="">
           <ParagraphTitle :title="t('teams_application')"></ParagraphTitle>
           <ParagraphTitle :title="t('officials_application')"></ParagraphTitle>
         </div>
       </div>
     </section>
+    <Footer></Footer>
   </div>
 </template>
 

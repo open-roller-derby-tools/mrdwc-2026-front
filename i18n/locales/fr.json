@@ -7,5 +7,11 @@
   "seconds": "sec",
   "date_month_first": "false",
   "teams_application": "Candidature Équipes",
-  "officials_application": "Candidature Officiel·les"
+  "officials_application": "Candidature Officiel·les",
+  "venues": "Lieux",
+  "see_map": "Voir sur Maps",
+  "contact": "Contact",
+  "privacy_policy": "Politique de confidentialité",
+  "terms_of_use": "Conditions d'utilisation",
+  "copyright": "© 2025 Tech on Wheels Team. Tous droits réservés."
 }
