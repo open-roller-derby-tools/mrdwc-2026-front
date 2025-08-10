@@ -5,5 +5,7 @@
   "hours": "hours",
   "minutes": "min",
   "seconds": "sec",
-  "date_month_first": "true"
+  "date_month_first": "true",
+  "teams_application": "Teams Application",
+  "officials_application": "Officials Application"
 }

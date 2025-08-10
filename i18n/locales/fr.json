@@ -5,5 +5,7 @@
   "hours": "heures",
   "minutes": "min",
   "seconds": "sec",
-  "date_month_first": "false"
+  "date_month_first": "false",
+  "teams_application": "Candidature Équipes",
+  "officials_application": "Candidature Officiel·les"
 }
