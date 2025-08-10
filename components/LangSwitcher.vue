@@ -1,17 +1,18 @@
 <template>
   <div class="relative">
-    <div
-      ref="target"
-      class="select"
-      :class="getDynamicClasses"
-      @click="isOpen = !isOpen"
-    >
-      <span>{{ locale }}</span>
-      <IconSelectArrow
-        :open="isOpen"
-        class="w-3"
-      ></IconSelectArrow>
-    </div>
+    <OnClickOutside @trigger="isOpen = false">
+      <div
+        class="select"
+        :class="getDynamicClasses"
+        @click="isOpen = !isOpen"
+      >
+        <span>{{ locale }}</span>
+        <IconSelectArrow
+          :open="isOpen"
+          class="w-3"
+        ></IconSelectArrow>
+      </div>
+    </OnClickOutside>
     <div
       class="dropdown"
       :class="getDropdownDynamicClasses"
@@ -31,15 +32,11 @@
 
 <script lang="ts" setup>
 import IconSelectArrow from './icons/IconSelectArrow.vue';
+import { OnClickOutside } from '@vueuse/components';
 
 const { locales, locale, setLocale } = useI18n();
 
 const isOpen = ref<boolean>(false);
-
-const target = useTemplateRef<HTMLElement>('target')
-onClickOutside(target, () => {
-  isOpen.value = false
-})
 
 const getDynamicClasses = computed(() => {
   return isOpen.value ? 'rounded-b-none' : 'rounded-b-2xl';

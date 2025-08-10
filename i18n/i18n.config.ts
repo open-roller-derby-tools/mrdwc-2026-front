@@ -1,4 +1,10 @@
 const datetimeFormats = {
+  d: {
+    day: "numeric",
+  },
+  m: {
+    month: "long",
+  },
   dm: {
     month: "long",
     day: "numeric",

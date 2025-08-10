@@ -4,5 +4,6 @@
   "days": "days",
   "hours": "hours",
   "minutes": "min",
-  "seconds": "sec"
+  "seconds": "sec",
+  "date_month_first": "true"
 }

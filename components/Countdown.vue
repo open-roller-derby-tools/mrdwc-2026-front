@@ -20,7 +20,6 @@ import { differenceInSeconds } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 
 const startDate = new TZDate(2026, 3, 30, 0, 0, 0, "Europe/Paris");
-// const endDate = new TZDate(2026, 4, 3, 0, 0, 0, "Europe/Paris");
 
 const MINUTE = 60;
 const HOUR = MINUTE * 60;
