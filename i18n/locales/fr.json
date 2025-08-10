@@ -1,3 +1,8 @@
 {
-  "test": "hello world (cup)"
+  "test": "hello world (cup)",
+  "time_to_derby": "Time to derby",
+  "days": "jours",
+  "hours": "heures",
+  "minutes": "min",
+  "seconds": "sec"
 }

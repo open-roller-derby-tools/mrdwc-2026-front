@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <p>{{ $d(startDate, "ddmy") }}</p>
-    <hr />
-    <p>{{ timeRemaining.days }} days</p>
-    <p>{{ timeRemaining.hours }} hours</p>
-    <p>{{ timeRemaining.minutes }} minutes</p>
-    <p>{{ timeRemaining.seconds }} seconds</p>
+  <div class="w-full sm:max-w-md">
+    <h3 class="text-yellow uppercase font-shoulders font-semibold text-4xl">{{ $t("time_to_derby") }}</h3>
+    <div class="bg-white text-red-text rounded-2xl rounded-tl-none font-shoulders p-4 mt-1">
+      <div class="flex justify-around">
+        <div
+          v-for="(value, key) in timeRemaining"
+          class="flex flex-col items-center"
+        >
+          <span class="font-black text-[13dvw] sm:text-6xl -mt-[2dvw] sm:-mt-0">{{ value }}</span>
+          <span class="uppercase text-[5dvw] sm:text-2xl -mt-[4dvw] sm:-mt-0">{{ $t(key) }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div class="w-full">
     <Header></Header>
     <!-- <p class="font-cabin">{{ $t("test") }}</p> -->
-    <!-- <Countdown></Countdown> -->
+    <Countdown></Countdown>
   </div>
 </template>
 

@@ -19,7 +19,7 @@
       <div
         v-for="l in locales"
         :key="l.code"
-        class="w-full text-center"
+        class="w-full text-center py-1 first:pt-0 last:pb-2"
         :class="getDynamicItemClasses(l.code == locale)"
         @click.prevent.stop="setLocale(l.code)"
       >
