@@ -1,0 +1,26 @@
+<template>
+  <div class="py-4 flex items-center justify-end">
+    <NuxtLink
+      to="https://www.instagram.com/mensrollerderbyassociation/"
+      target="_blank"
+      class="mr-1"
+    >
+      <IconFacebook class="w-8 h-8"></IconFacebook>
+    </NuxtLink>
+    <NuxtLink
+      to="https://www.facebook.com/profile.php?id=61576540781725"
+      target="_blank"
+      class="mr-6"
+    >
+      <IconInstagram class="w-8 h-8"></IconInstagram>
+    </NuxtLink>
+    <LangSwitcher></LangSwitcher>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import IconFacebook from './icons/IconFacebook.vue';
+import IconInstagram from './icons/IconInstagram.vue';
+</script>
+
+<style></style>
