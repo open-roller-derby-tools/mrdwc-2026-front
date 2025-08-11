@@ -16,9 +16,10 @@
     </nav>
     <NuxtImg
       src="/mrdwc_logo@2x.png"
+      :alt="t('image_alts.image_logo')"
       class="block sm:hidden w-64 self-center -mb-4"
     ></NuxtImg>
-    <p class="text-sm sm:order-first">{{ t("copyright") }}</p>
+    <p class="text-sm self-center sm:self-auto sm:order-first">{{ t("copyright") }}</p>
   </footer>
 </template>
 

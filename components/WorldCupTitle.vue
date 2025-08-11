@@ -11,13 +11,18 @@
         :date="endDate"
       ></DatesDate>
     </div>
-    <NuxtImg src="/mrdwc_title@2x.png"></NuxtImg>
+    <NuxtImg
+      src="/mrdwc_title@2x.png"
+      :alt="t('image_alts.title_logo')"
+    ></NuxtImg>
     <p class="font-medium text-end text-[2.1em] -mt-[0.7em]">2026</p>
   </div>
 </template>
 
 <script lang="ts" setup>
 import IconArrow from "./icons/IconArrow.vue";
+
+const { t } = useI18n();
 
 const startDate = new Date(2026, 3, 30, 0, 0, 0);
 const endDate = new Date(2026, 4, 3, 0, 0, 0);

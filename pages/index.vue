@@ -12,6 +12,7 @@
       <div class="w-full flex flex-row items-end justify-end my-8 sm:mt-0">
         <NuxtImg
           src="/mrdwc_logo@2x.png"
+          :alt="t('image_alts.image_logo')"
           class="relative z-10 hidden sm:block sm:w-56 -ml-5 -mr-10 -mb-8"
         ></NuxtImg>
         <Countdown class=""></Countdown>
@@ -35,6 +36,7 @@
 
 <script setup>
 const img = useImage();
+const { t } = useI18n();
 
 const backgroundStyles = computed(() => {
   const imgUrl = img("background@2x.png");

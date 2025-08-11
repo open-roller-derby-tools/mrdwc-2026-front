@@ -3,4 +3,5 @@ export interface VenueData {
   address: string;
   map_link: string;
   image: string;
+  image_alt: string;
 }

@@ -29,5 +29,14 @@
   "contact": "Contact",
   "privacy_policy": "Privacy Policy",
   "terms_of_use": "Terms of Use",
-  "copyright": "© 2025 Tech on Wheels Team. All rights reserved."
+  "copyright": "© 2025 Tech on Wheels Team. All rights reserved.",
+  "image_alts": {
+    "title_logo": "Men's Roller Derby World Cup | Orléans, France",
+    "image_logo": "Bust of a person with blue skin and rainbow hair, in the middle of a roller derby track",
+    "ffrs_logo": "FFRS logo",
+    "mrda_logo": "MRDA logo",
+    "orleans_logo": "Orléans Métropole logo",
+    "primary_venue": "Photo of the primary venue",
+    "secondary_venue": "Photo of the secondary venue"
+  }
 }

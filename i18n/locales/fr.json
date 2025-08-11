@@ -29,5 +29,14 @@
   "contact": "Contact",
   "privacy_policy": "Politique de confidentialité",
   "terms_of_use": "Conditions d'utilisation",
-  "copyright": "© 2025 Tech on Wheels Team. Tous droits réservés."
+  "copyright": "© 2025 Tech on Wheels Team. Tous droits réservés.",
+  "image_alts": {
+    "title_logo": "Coupe du Monde de Roller Derby M+ | Orléans, France",
+    "image_logo": "Buste d'une personne à la peau bleue et aux cheveux arc-en-ciel, au milieu d'une piste de roller derby",
+    "ffrs_logo": "Logo de la FFRS",
+    "mrda_logo": "Logo de la MRDA",
+    "orleans_logo": "Logo d'Orléans Métropole",
+    "primary_venue": "Photo du lieu principal",
+    "secondary_venue": "Photo du lieu secondaire"
+  }
 }
