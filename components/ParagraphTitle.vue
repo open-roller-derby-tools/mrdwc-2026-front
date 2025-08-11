@@ -8,11 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import IconArrow from './icons/IconArrow.vue';
+import IconArrow from "./icons/IconArrow.vue";
 
 const props = defineProps<{
-  title: string
-}>()
+  title: string;
+}>();
 </script>
 
 <style></style>

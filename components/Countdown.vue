@@ -1,6 +1,8 @@
 <template>
   <div class="countdown w-full sm:w-md">
-    <h3 class="text-yellow uppercase font-shoulders font-semibold">{{ t("time_to_derby") }}</h3>
+    <h3 class="text-yellow uppercase font-shoulders font-semibold">
+      {{ t("time_to_derby") }}
+    </h3>
     <div class="bg-white text-red-text rounded-2xl rounded-tl-none font-shoulders p-[0.4em]">
       <div class="flex justify-around">
         <div

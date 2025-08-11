@@ -1,5 +1,4 @@
 {
-  "test": "hello world (cup)",
   "time_to_derby": "Time to derby",
   "days": "jours",
   "hours": "heures",
@@ -10,7 +9,8 @@
   "teams_application_text": {
     "line1": "Veuillez remplir le formulaire officiel pour que votre équipe soit prise en considération pour l'événement.",
     "date1": "Date limite : {date}",
-    "date2": "Notification d'équipe : {date}"
+    "date2": "Notification d'équipe : {date}",
+    "form1": "Candidature Équipe"
   },
   "officials_application": "Candidature Officiel·les",
   "officials_application_text": {
@@ -18,9 +18,12 @@
     "line2": "4 crews d'officiel·les (4 CHRs, 4 CHNSOs).",
     "date1": "Les Tournament Head Officials seront annoncé·es le {date}.",
     "date2": "Les candidatures pour les Crew Heads fermeront le {date}.",
-    "date3": "Les candidatures pour les officiel·les fermeront le {date}."
+    "date3": "Les candidatures pour les officiel·les fermeront le {date}.",
+    "form1": "Candidature Head Officiel·le",
+    "form2": "Candidature Officiel·le"
   },
   "timelines": "Échéances :",
+  "forms": "Formulaires :",
   "venues": "Lieux",
   "see_map": "Voir sur Maps",
   "contact": "Contact",

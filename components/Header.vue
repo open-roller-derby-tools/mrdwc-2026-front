@@ -1,5 +1,5 @@
 <template>
-  <div class="py-4 flex items-center justify-end">
+  <header class="py-4 flex items-center justify-end">
     <NuxtLink
       to="https://www.instagram.com/mensrollerderbyassociation/"
       target="_blank"
@@ -15,12 +15,12 @@
       <IconInstagram class="w-8 h-8"></IconInstagram>
     </NuxtLink>
     <LangSwitcher></LangSwitcher>
-  </div>
+  </header>
 </template>
 
 <script lang="ts" setup>
-import IconFacebook from './icons/IconFacebook.vue';
-import IconInstagram from './icons/IconInstagram.vue';
+import IconFacebook from "./icons/IconFacebook.vue";
+import IconInstagram from "./icons/IconInstagram.vue";
 </script>
 
 <style></style>

@@ -31,22 +31,22 @@
 </template>
 
 <script lang="ts" setup>
-import IconSelectArrow from './icons/IconSelectArrow.vue';
-import { OnClickOutside } from '@vueuse/components';
+import IconSelectArrow from "./icons/IconSelectArrow.vue";
+import { OnClickOutside } from "@vueuse/components";
 
 const { locales, locale, setLocale } = useI18n();
 
 const isOpen = ref<boolean>(false);
 
 const getDynamicClasses = computed(() => {
-  return isOpen.value ? 'rounded-b-none' : 'rounded-b-2xl';
-})
+  return isOpen.value ? "rounded-b-none" : "rounded-b-2xl";
+});
 const getDropdownDynamicClasses = computed(() => {
-  return isOpen.value ? 'flex' : 'hidden';
-})
+  return isOpen.value ? "flex" : "hidden";
+});
 const getDynamicItemClasses = (isCurrent: boolean) => {
-  return { 'opacity-50': isCurrent, 'cursor-pointer': !isCurrent }
-}
+  return { "opacity-50": isCurrent, "cursor-pointer": !isCurrent };
+};
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <div class="grid grid-cols-6 gap-2 items-center my-4">
+  <div class="grid grid-cols-6 gap-2 items-center mt-4">
     <NuxtImg
       src="ffrs_logo@2x.png"
       class="col-span-3"
@@ -15,8 +15,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <style></style>

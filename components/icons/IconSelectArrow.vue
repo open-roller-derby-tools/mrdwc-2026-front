@@ -15,12 +15,12 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  open: boolean
-}>()
+  open: boolean;
+}>();
 
 const dynamicClasses = computed(() => {
-  return { 'rotate-180': props.open }
-})
+  return { "rotate-180": props.open };
+});
 </script>
 
 <style></style>

@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import IconArrow from './icons/IconArrow.vue';
+import IconArrow from "./icons/IconArrow.vue";
 
 const startDate = new Date(2026, 3, 30, 0, 0, 0);
 const endDate = new Date(2026, 4, 3, 0, 0, 0);

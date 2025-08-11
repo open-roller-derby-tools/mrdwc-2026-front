@@ -1,5 +1,4 @@
 {
-  "test": "hello world (cup)",
   "time_to_derby": "Time to derby",
   "days": "days",
   "hours": "hours",
@@ -10,7 +9,8 @@
   "teams_application_text": {
     "line1": "Please fill out the formal application for your team to be considered for the event.",
     "date1": "Application Deadline: {date}",
-    "date2": "Team Notification: {date}"
+    "date2": "Team Notification: {date}",
+    "form1": "Team Application"
   },
   "officials_application": "Officials Application",
   "officials_application_text": {
@@ -18,9 +18,12 @@
     "line2": "4 officiating crews (4 CHRs, 4 CHNSOs).",
     "date1": "Tournament Head Officials will be announced {date}.",
     "date2": "Crew Head Applications will close {date}.",
-    "date3": "General Officiating Application will close {date}."
+    "date3": "General Officiating Application will close {date}.",
+    "form1": "Officiating Leadership Application",
+    "form2": "Officiating Application"
   },
   "timelines": "Timelines:",
+  "forms": "Forms:",
   "venues": "Venues",
   "see_map": "See on Maps",
   "contact": "Contact",
