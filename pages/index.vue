@@ -38,6 +38,10 @@
 const img = useImage();
 const { t } = useI18n();
 
+useHead({
+  title: t("site_title"),
+});
+
 const backgroundStyles = computed(() => {
   const imgUrl = img("background@2x.png");
   return { backgroundImage: `url('${imgUrl}')` };
