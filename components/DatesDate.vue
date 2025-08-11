@@ -17,13 +17,15 @@
 <script lang="ts" setup>
 const { t, d } = useI18n();
 
-const props = defineProps<{
+defineProps<{
   date: Date;
 }>();
 
-const month_first = computed(() => {
-  return t("date_month_first", "true") == "true";
-});
+const month_first = ref<boolean>(true);
+
+onMounted(() => {
+  month_first.value = t("date_month_first", "true") == "true";
+})
 </script>
 
 <style></style>

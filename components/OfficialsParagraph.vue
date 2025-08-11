@@ -5,7 +5,7 @@
       <p class="mb-6">{{ t("officials_application_text.line1") }}</p>
       <p class="">{{ t("officials_application_text.line2") }}</p>
       <p v-html="t('officials_application_text.date1', {
-        date: getFormattedDate(officialsDate1),
+        date: formattedDate1,
       })
         "></p>
       <h3 class="text-yellow font-bold uppercase text-xl mt-6 mb-2">
@@ -14,12 +14,12 @@
       <p
         class="mb-2"
         v-html="t('officials_application_text.date2', {
-          date: getFormattedDate(officialsDate2),
+          date: formattedDate2,
         })
           "
       ></p>
       <p v-html="t('officials_application_text.date3', {
-        date: getFormattedDate(officialsDate3),
+        date: formattedDate3,
       })
         "></p>
       <h3 class="text-yellow font-bold uppercase text-xl mt-6 mb-2">
@@ -50,13 +50,15 @@ import IconExternalLink from './icons/IconExternalLink.vue';
 
 const { t, d } = useI18n();
 
-const officialsDate1 = new Date(2025, 7, 25, 0, 0, 0);
-const officialsDate2 = new Date(2025, 8, 12, 0, 0, 0);
-const officialsDate3 = new Date(2025, 9, 31, 0, 0, 0);
-
-const getFormattedDate = (date: Date) => {
-  return `<strong>${d(date, "dmy")}</strong>`;
-};
+const formattedDate1 = computed(() => {
+  return `<strong>${d(new Date(2025, 7, 25, 0, 0, 0), "dmy")}</strong>`;
+})
+const formattedDate2 = computed(() => {
+  return `<strong>${d(new Date(2025, 8, 12, 0, 0, 0), "dmy")}</strong>`;
+})
+const formattedDate3 = computed(() => {
+  return `<strong>${d(new Date(2025, 9, 31, 0, 0, 0), "dmy")}</strong>`;
+})
 </script>
 
 <style></style>
