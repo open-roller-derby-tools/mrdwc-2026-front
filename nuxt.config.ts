@@ -51,6 +51,7 @@ export default defineNuxtConfig({
     format: ["webp"],
   },
   i18n: {
+    // detectBrowserLanguage: false,
     defaultLocale: "en",
     locales: [
       { code: "en", name: "English", file: "en.json" },

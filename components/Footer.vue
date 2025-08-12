@@ -3,7 +3,8 @@
     <nav class="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center justify-end">
       <FooterLink
         :label="t('contact')"
-        to="#"
+        to="mailto:contact@mrdwc.org"
+        target="_blank"
       ></FooterLink>
       <FooterLink
         :label="t('privacy_policy')"
