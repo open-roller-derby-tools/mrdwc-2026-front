@@ -5,14 +5,14 @@
       target="_blank"
       class="mr-1"
     >
-      <IconFacebook class="w-8 h-8"></IconFacebook>
+      <IconInstagram class="w-8 h-8"></IconInstagram>
     </NuxtLink>
     <NuxtLink
       to="https://www.facebook.com/profile.php?id=61576540781725"
       target="_blank"
       class="mr-6"
     >
-      <IconInstagram class="w-8 h-8"></IconInstagram>
+      <IconFacebook class="w-8 h-8"></IconFacebook>
     </NuxtLink>
     <LangSwitcher></LangSwitcher>
   </header>
