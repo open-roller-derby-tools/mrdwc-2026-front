@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/image", "@nuxt/fonts", "@nuxtjs/i18n"],
   devtools: { enabled: false },
   vite: { plugins: [tailwindcss()] },
-  css: ["~/assets/css/main.css"],
+  css: ["~~/app/assets/css/main.css"],
   app: {
     head: {
       viewport:
@@ -51,7 +51,6 @@ export default defineNuxtConfig({
     format: ["webp"],
   },
   i18n: {
-    // detectBrowserLanguage: false,
     defaultLocale: "en",
     locales: [
       { code: "en", name: "English", file: "en.json" },

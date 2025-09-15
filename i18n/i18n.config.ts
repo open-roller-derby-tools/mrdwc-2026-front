@@ -30,7 +30,7 @@ const datetimeFormats = {
   },
 };
 
-export default defineI18nConfig(() => {
+export default function i18nConfig() {
   return {
     fallbackLocale: "en",
     numberFormats: {
@@ -52,4 +52,4 @@ export default defineI18nConfig(() => {
       fr: datetimeFormats,
     },
   };
-});
+}
