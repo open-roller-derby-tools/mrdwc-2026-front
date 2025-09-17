@@ -9,13 +9,21 @@ export interface VenueData {
 export interface Team {
   id: number;
   name: string;
+  members: number[] | TeamMember[];
 }
 
 export interface TeamMember {
   id: number;
-  team_id: number;
+  team: number | Team;
   name: string;
   number: string;
   role: string;
+  translations: TeamMemberTranslation[];
+}
+
+export interface TeamMemberTranslation {
+  id: number;
+  languages_code: string;
   pronouns: string;
+  team_member_id: number;
 }
