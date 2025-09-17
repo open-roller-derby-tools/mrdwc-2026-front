@@ -6,6 +6,11 @@ export interface VenueData {
   image_alt: string;
 }
 
+export interface Schema {
+  teams: Team[];
+  team_members: TeamMember[];
+}
+
 export interface Team {
   id: number;
   name: string;

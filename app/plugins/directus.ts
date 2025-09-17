@@ -17,12 +17,8 @@ import {
   readItems,
   type DirectusClient,
 } from "@directus/sdk";
-import type { Team, TeamMember } from "~~/types/custom";
 
-interface Schema {
-  teams: Team[];
-  team_members: TeamMember[];
-}
+import type { Schema } from "~~/types/custom";
 
 const directus: DirectusClient<Schema> = createDirectus<Schema>(
   "https://ordwc.infinitespace.click"

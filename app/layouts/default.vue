@@ -1,67 +1,63 @@
 <template>
   <div class="">
-    <div v-for="team in teams">{{ team.name }}</div>
-    <div v-for="team_member in team_members">{{ team_member.name }} - {{ team_member.team.name }} - {{ team_member.translations[0]?.pronouns }}</div>
+    <div v-for="team in teams">
+      <span class="font-bold text-xl">{{ team.name }}</span>
+      <ul class="ml-4">
+        <li v-for="team_member in team.members">{{ team_member.number }} - {{ team_member.name }} ({{ team_member.translations[0]?.pronouns }})</li>
+      </ul>
+    </div>
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { Team, TeamMember } from "~~/types/custom";
+import type { Query, QueryFields } from "@directus/sdk";
+import type { Schema, Team, TeamMember } from "~~/types/custom";
 
 const { $directus, $readItems } = useNuxtApp();
 const { locale } = useI18n();
 
-const { data: teams } = await useAsyncData('teams', () => {
-  return $directus.request(
-    $readItems('teams', {
-      fields: ["*", { members: ["*"] }],
-    })
-  )
-})
+const query_fields_teams: QueryFields<Schema, Team> = [
+  "name",
+  {
+    members: [
+      "name",
+      "number",
+      {
+        translations: ["languages_code", "pronouns"]
+      }
+    ],
+  }
+]
 
-const { data: team_members } = await useAsyncData('team_members', () => {
-  return $directus.request(
-    $readItems('team_members', {
+const { data: teams } = await useAsyncData(
+  "teams",
+  () => {
+    return $directus.request($readItems("teams", {
+      limit: 99,
+      offset: 0,
+      fields: query_fields_teams,
       deep: {
-        translations: {
-          _filter: {
-            _and: [
-              {
-                languages_code: { _eq: locale.value },
-              },
-            ],
+        members: {
+          translations: {
+            _filter: {
+              _and: [
+                {
+                  languages_code: { _eq: locale.value },
+                },
+              ],
+            },
           },
         },
-      },
-      fields: ["name", { translations: ["pronouns"], team: ["id", "name"] }],
-    })
-  )
-}, {
-  watch: [locale]
-})
-console.log(teams.value);
-console.log(team_members.value);
-
-
-/* const allTeams: Team[] = await $directus.request($readItems('teams'));
-console.log(allTeams);
-
-const allTeamMembers: TeamMember[] = await $directus.request($readItems('team_members', {
-  deep: {
-    translations: {
-      _filter: {
-        _and: [
-          {
-            languages_code: { _eq: "fr-FR" },
-          },
-        ],
-      },
-    },
+      }
+    }))
   },
-  fields: ["*", { translations: ["*"] }],
-}));
-console.log(allTeamMembers); */
+  {
+    watch: [locale]
+  }
+)
+// console.log(teams.value);
+
 
 </script>
 
