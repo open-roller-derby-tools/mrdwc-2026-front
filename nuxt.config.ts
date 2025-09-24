@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   modules: ["@nuxt/image", "@nuxt/fonts", "@nuxtjs/i18n", "@pinia/nuxt"],
   devtools: { enabled: false },
   vite: { plugins: [tailwindcss()] },
+  runtimeConfig: {
+    public: {
+      apiBase: "",
+    },
+  },
   css: ["~~/app/assets/css/main.css"],
   app: {
     head: {

@@ -7,9 +7,9 @@ import {
   type DirectusClient,
 } from "@directus/sdk";
 
-import type { Schema } from "~~/types/custom";
+import type { ISchema } from "~~/types/custom";
 
-const directus: DirectusClient<Schema> = createDirectus<Schema>(
+const directus: DirectusClient<ISchema> = createDirectus<ISchema>(
   "https://ordwc.infinitespace.click"
 ).with(rest());
 

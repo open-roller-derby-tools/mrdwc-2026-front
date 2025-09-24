@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { VenueData } from "~~/types/custom";
+import type { IVenue } from "~~/types/custom";
 import IconArrow from "./icons/IconArrow.vue";
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  venue: VenueData;
+  venue: IVenue;
 }>();
 </script>

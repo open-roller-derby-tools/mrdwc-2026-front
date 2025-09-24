@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { VenueData } from "~~/types/custom";
+import type { IVenue } from "~~/types/custom";
 
 const { t } = useI18n();
 
-const venues: VenueData[] = [
+const venues: IVenue[] = [
   {
     name: "Palais des Sports",
     address: "14 rue Eugène Vignat 45000 Orléans",
