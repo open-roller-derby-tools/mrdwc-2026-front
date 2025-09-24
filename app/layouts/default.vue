@@ -1,6 +1,9 @@
 <template>
   <div class="">
-    <div v-for="team in teams">
+    <h1>Pending: {{ teamsStore.pending }}</h1>
+    <h1>{{ teamsStore.name }}</h1>
+    <p>{{ teamsStore.description }}</p>
+    <div v-for="team in teamsStore.teams">
       <span class="font-bold text-xl">{{ team.name }}</span>
       <ul class="ml-4">
         <li v-for="team_member in team.members">{{ team_member.number }} - {{ team_member.name }} ({{ team_member.translations[0]?.pronouns }})</li>
@@ -11,54 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { Query, QueryFields } from "@directus/sdk";
-import type { Schema, Team, TeamMember } from "~~/types/custom";
+import { useTeamsStore } from '~/stores/teams';
 
-const { $directus, $readItems } = useNuxtApp();
-const { locale } = useI18n();
+const teamsStore = useTeamsStore()
 
-const query_fields_teams: QueryFields<Schema, Team> = [
-  "name",
-  {
-    members: [
-      "name",
-      "number",
-      {
-        translations: ["languages_code", "pronouns"]
-      }
-    ],
-  }
-]
-
-const { data: teams } = await useAsyncData(
-  "teams",
-  () => {
-    return $directus.request($readItems("teams", {
-      limit: 99,
-      offset: 0,
-      fields: query_fields_teams,
-      deep: {
-        members: {
-          translations: {
-            _filter: {
-              _and: [
-                {
-                  languages_code: { _eq: locale.value },
-                },
-              ],
-            },
-          },
-        },
-      }
-    }))
-  },
-  {
-    watch: [locale]
-  }
-)
-// console.log(teams.value);
-
-
+await callOnce(teamsStore.fetch)
 </script>
 
 <style></style>
