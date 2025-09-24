@@ -8,43 +8,24 @@
  */
 
 import { defineStore } from "pinia";
-import type { Schema, Team, TeamMember } from "~~/types/custom";
+import type { Team } from "~~/types/custom";
 
 export const useTeamsStore = defineStore("teams", () => {
-  // const { $directus, $readItems } = useNuxtApp();
   // const { locale } = useI18n();
 
-  const name = ref<string>("");
-  const description = ref<string>("");
-  const teams = ref<Team[]>();
   const pending = ref<boolean>(true);
+  const teams = ref<Team[]>();
 
   async function fetch() {
+    // TODO: Write a method for building fetch URLs from a list of requested fields
     const { data } = await $fetch(
       "https://ordwc.infinitespace.click/items/teams?fields=name,members.name,members.number,members.translations.pronouns,members.translations.languages_code"
     );
-
-    /* const data = await $directus.request(
-      $readItems("teams", {
-        limit: 99,
-        offset: 0,
-        fields: [
-          "name",
-          {
-            members: [
-              "name",
-              "number",
-              {
-                translations: ["languages_code", "pronouns"],
-              },
-            ],
-          },
-        ],
-      })
-    ); */
     teams.value = data;
     pending.value = false;
   }
 
-  return { fetch, pending, name, description, teams };
+  // TODO: Getter function using locale to filter translations
+
+  return { fetch, pending, teams };
 });

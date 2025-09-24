@@ -1,9 +1,10 @@
 <template>
   <div class="">
-    <h1>Pending: {{ teamsStore.pending }}</h1>
-    <h1>{{ teamsStore.name }}</h1>
-    <p>{{ teamsStore.description }}</p>
-    <div v-for="team in teamsStore.teams">
+    <h1 v-if="teamsStore.pending">Loading...</h1>
+    <div
+      v-else
+      v-for="team in teamsStore.teams"
+    >
       <span class="font-bold text-xl">{{ team.name }}</span>
       <ul class="ml-4">
         <li v-for="team_member in team.members">{{ team_member.number }} - {{ team_member.name }} ({{ team_member.translations[0]?.pronouns }})</li>

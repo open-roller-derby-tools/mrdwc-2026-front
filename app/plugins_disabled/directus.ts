@@ -1,15 +1,4 @@
-/* import { createDirectus, rest, readItem, readItems } from "@directus/sdk";
-
-const directus = createDirectus("https://ordwc.infinitespace.click").with(
-  rest()
-);
-
-export default defineNuxtPlugin((nuxtApp) => {
-  return {
-    provide: { directus, readItem, readItems },
-  };
-}); */
-
+// NOTE: Disabled because using standard $fetch is easier after all
 import {
   createDirectus,
   rest,
