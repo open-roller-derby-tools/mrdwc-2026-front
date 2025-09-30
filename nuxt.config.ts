@@ -1,5 +1,37 @@
 import tailwindcss from "@tailwindcss/vite";
 
+const datetimeFormats = {
+  d: {
+    day: "numeric",
+  },
+  m: {
+    month: "long",
+  },
+  dm: {
+    month: "long",
+    day: "numeric",
+  },
+  dmy: {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+  ddmy: {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  },
+  dmyhm: {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+  },
+};
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
@@ -56,10 +88,13 @@ export default defineNuxtConfig({
     format: ["webp"],
   },
   i18n: {
-    defaultLocale: "fr-FR",
     locales: [
       { code: "en-US", name: "English", file: "en.json" },
       { code: "fr-FR", name: "Français", file: "fr.json" },
     ],
+    defaultLocale: "fr-FR",
+    detectBrowserLanguage: {
+      fallbackLocale: "fr-FR",
+    },
   },
 });

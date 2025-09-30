@@ -6,7 +6,7 @@
         :class="getDynamicClasses"
         @click="isOpen = !isOpen"
       >
-        <span>{{ locale }}</span>
+        <span>{{ getShortCode(locale) }}</span>
         <IconSelectArrow
           :open="isOpen"
           class="w-3"
@@ -24,7 +24,7 @@
         :class="getDynamicItemClasses(l.code == locale)"
         @click.prevent.stop="setLocale(l.code)"
       >
-        {{ l.code }}
+        {{ getShortCode(l.code) }}
       </div>
     </div>
   </div>
@@ -41,12 +41,16 @@ const isOpen = ref<boolean>(false);
 const getDynamicClasses = computed(() => {
   return isOpen.value ? "rounded-b-none" : "rounded-b-2xl";
 });
+
 const getDropdownDynamicClasses = computed(() => {
   return isOpen.value ? "flex" : "hidden";
 });
+
 const getDynamicItemClasses = (isCurrent: boolean) => {
   return { "opacity-50": isCurrent, "cursor-pointer": !isCurrent };
 };
+
+const getShortCode = (code: string) => code.slice(0, 2);
 </script>
 
 <style scoped>
