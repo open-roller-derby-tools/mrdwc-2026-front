@@ -1,7 +1,10 @@
-export interface ISchema {
-  teams: ITeam[];
-  team_members: ITeamMember[];
+// Global
+
+export interface ITranslation {
+  languages_code: string;
 }
+
+// Venues
 
 export interface IVenue {
   name: string;
@@ -10,6 +13,8 @@ export interface IVenue {
   image: string;
   image_alt: string;
 }
+
+// Teams & Team Members
 
 export interface ITeam {
   id: number;
@@ -41,13 +46,50 @@ export interface ILocalizedTeamMember {
   pronouns: string;
 }
 
-export interface ITeamMemberTranslation {
-  id: number;
-  languages_code: string;
+export interface ITeamMemberTranslation extends ITranslation {
   pronouns: string;
   team_member_id: number;
 }
 
 export interface ITeamsRequestData {
   data: ITeam[];
+}
+
+// Menus
+
+export interface IMenuHeader {
+  id: number;
+  translations: IMenuHeaderTranslation[];
+}
+
+export interface IMenuHeaderTranslation extends ITranslation {
+  pages: IMenuHeaderTranslationPage[];
+}
+
+export interface IMenuHeaderTranslationPage {
+  item: IPage;
+}
+
+export interface IMenuHeaderRequestData {
+  data: IMenuHeader;
+}
+
+// Pages
+
+export interface IPage {
+  id: number;
+  slug: string;
+  // TODO: blocks
+  translations: IPageTranslation[];
+}
+
+export interface IPageTranslation extends ITranslation {
+  title: string;
+  menu_title: string;
+}
+
+export interface ILocalizedPage {
+  slug: string;
+  title: string;
+  menu_title: string;
 }

@@ -18,6 +18,7 @@ export default <URL>(item: string, fields: object) => {
   const url = new URL(`${config.public.apiBase}/items/${item}/`);
   const fields_string = getString(fields, "");
   url.searchParams.append("fields", fields_string);
+  // console.log(url.href);
   return url;
 };
 

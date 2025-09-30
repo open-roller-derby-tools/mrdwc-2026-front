@@ -3,7 +3,7 @@
     :style="backgroundStyles"
     class="w-full bg-contain md:bg-size-[768px] bg-no-repeat"
   >
-    <Header class="maxed"></Header>
+    <!-- <Header class="maxed"></Header> -->
     <section
       id="title-section"
       class="maxed flex flex-col justify-end py-8"

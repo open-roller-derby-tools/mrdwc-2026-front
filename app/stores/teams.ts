@@ -23,7 +23,7 @@ export const useTeamsStore = defineStore("teams", () => {
   const teams = ref<ITeam[]>();
 
   /**
-   * Fetch teams data from the API.
+   * Fetch data from the API.
    */
   async function fetch() {
     pending.value = true;

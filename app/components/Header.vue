@@ -14,7 +14,6 @@
     >
       <IconFacebook class="w-8 h-8"></IconFacebook>
     </NuxtLink>
-    <LangSwitcher></LangSwitcher>
   </header>
 </template>
 
