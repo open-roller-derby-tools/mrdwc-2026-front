@@ -7,8 +7,13 @@
 
 <script lang="ts" setup>
 import { useMenusStore } from '~/stores/menus';
-const menuStore = useMenusStore()
-await callOnce(menuStore.fetchMenuHeader)
+import { usePagesStore } from '~/stores/pages';
+
+const menusStore = useMenusStore()
+const pagesStore = usePagesStore()
+
+await callOnce(menusStore.fetchMenuHeader)
+await callOnce(pagesStore.fetch)
 </script>
 
 <style></style>

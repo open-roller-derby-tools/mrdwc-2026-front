@@ -1,9 +1,18 @@
+/**
+ https://pinia.vuejs.org/core-concepts/#Setup-Stores
+ 
+ In Setup Stores:
+ - ref()s become state properties
+ - computed()s become getters
+ - function()s become actions
+ */
+
 import { defineStore } from "pinia";
 import type {
   ILocalizedPage,
   IMenuHeader,
   IMenuHeaderRequestData,
-  IMenuHeaderTranslationPage,
+  IMenuHeaderPageWrapper,
 } from "~~/types/custom";
 
 export const useMenusStore = defineStore("menus", () => {
@@ -55,7 +64,7 @@ export const useMenusStore = defineStore("menus", () => {
     if (!menuTranslation) return [];
 
     // Map the data to an array of ILocalizedPages for use in the components
-    return menuTranslation.pages.map((value: IMenuHeaderTranslationPage) => {
+    return menuTranslation.pages.map((value: IMenuHeaderPageWrapper) => {
       const pageTranslation = value.item.translations.find(
         (translation) => translation.languages_code === locale.value
       );
@@ -66,6 +75,7 @@ export const useMenusStore = defineStore("menus", () => {
           pageTranslation?.menu_title ||
           pageTranslation?.title ||
           value.item.slug,
+        blocks: null,
       };
     });
   });

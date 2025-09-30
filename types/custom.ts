@@ -63,10 +63,10 @@ export interface IMenuHeader {
 }
 
 export interface IMenuHeaderTranslation extends ITranslation {
-  pages: IMenuHeaderTranslationPage[];
+  pages: IMenuHeaderPageWrapper[];
 }
 
-export interface IMenuHeaderTranslationPage {
+export interface IMenuHeaderPageWrapper {
   item: IPage;
 }
 
@@ -74,12 +74,39 @@ export interface IMenuHeaderRequestData {
   data: IMenuHeader;
 }
 
+// Blocks
+
+export interface IBlockRichText {
+  name: string;
+  translations: IBlockRichTextTranslation[];
+}
+
+export interface IBlockRichTextTranslation extends ITranslation {
+  title: string;
+  content: string;
+}
+
+export interface ILocalizedBlockRichText {
+  name: string;
+  title: string;
+  content: string;
+}
+
+export interface IBlockCustom {
+  name: string;
+}
+
+export interface IPageBlockWrapper {
+  order: number;
+  collection: string;
+  item: IBlockRichText | IBlockCustom;
+}
+
 // Pages
 
 export interface IPage {
-  id: number;
   slug: string;
-  // TODO: blocks
+  blocks: IPageBlockWrapper[];
   translations: IPageTranslation[];
 }
 
@@ -92,4 +119,9 @@ export interface ILocalizedPage {
   slug: string;
   title: string;
   menu_title: string;
+  blocks: (ILocalizedBlockRichText | IBlockCustom)[] | null;
+}
+
+export interface IPagesRequestData {
+  data: IPage[];
 }
