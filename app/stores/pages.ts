@@ -9,8 +9,8 @@
 
 import { defineStore } from "pinia";
 import type {
-  IBlockCustom,
   IBlockRichText,
+  ILocalizedBlockCustom,
   ILocalizedBlockRichText,
   ILocalizedPage,
   IPage,
@@ -87,7 +87,7 @@ export const usePagesStore = defineStore("pages", () => {
       );
 
       // Localize page blocks
-      const blocks: (ILocalizedBlockRichText | IBlockCustom)[] = [];
+      const blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] = [];
       page.blocks.forEach((block) => {
         switch (block.collection) {
           // RichText block
@@ -98,6 +98,7 @@ export const usePagesStore = defineStore("pages", () => {
               (translation) => translation.languages_code === locale.value
             );
             blocks.push({
+              collection: block.collection,
               name: block.item.name,
               title: blockTranslation?.title || "",
               content: blockTranslation?.content || "",
@@ -106,6 +107,7 @@ export const usePagesStore = defineStore("pages", () => {
           // Custom block
           case "blocks_custom":
             blocks.push({
+              collection: block.collection,
               name: block.item.name,
             });
             break;

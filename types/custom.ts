@@ -1,10 +1,10 @@
-// Global
+// GLOBAL
 
 export interface ITranslation {
   languages_code: string;
 }
 
-// Venues
+// VENUES
 
 export interface IVenue {
   name: string;
@@ -14,7 +14,7 @@ export interface IVenue {
   image_alt: string;
 }
 
-// Teams & Team Members
+// TEAMS & TEAM MEMBERS
 
 export interface ITeam {
   id: number;
@@ -55,7 +55,7 @@ export interface ITeamsRequestData {
   data: ITeam[];
 }
 
-// Menus
+// MENUS
 
 export interface IMenuHeader {
   id: number;
@@ -74,8 +74,13 @@ export interface IMenuHeaderRequestData {
   data: IMenuHeader;
 }
 
-// Blocks
+// BLOCKS
 
+export interface ILocalizedBlock {
+  collection: string;
+}
+
+// Rich Text
 export interface IBlockRichText {
   name: string;
   translations: IBlockRichTextTranslation[];
@@ -86,23 +91,29 @@ export interface IBlockRichTextTranslation extends ITranslation {
   content: string;
 }
 
-export interface ILocalizedBlockRichText {
+export interface ILocalizedBlockRichText extends ILocalizedBlock {
   name: string;
   title: string;
   content: string;
 }
 
+// Custom
 export interface IBlockCustom {
   name: string;
 }
 
+export interface ILocalizedBlockCustom extends ILocalizedBlock {
+  name: string;
+}
+
+// Page Block Wrapper
 export interface IPageBlockWrapper {
   order: number;
   collection: string;
   item: IBlockRichText | IBlockCustom;
 }
 
-// Pages
+// PAGES
 
 export interface IPage {
   slug: string;
@@ -119,7 +130,7 @@ export interface ILocalizedPage {
   slug: string;
   title: string;
   menu_title: string;
-  blocks: (ILocalizedBlockRichText | IBlockCustom)[] | null;
+  blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
 }
 
 export interface IPagesRequestData {

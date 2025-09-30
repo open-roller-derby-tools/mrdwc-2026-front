@@ -14,16 +14,12 @@
   --color-red-text: #d33231;
 }
 
-@custom-variant red (&:where(.theme-red, .theme-red *));
-
 @layer base {
   body {
     @apply bg-blue text-white font-cabin;
-
-    /* TODO Red theme*/
-    @variant red {
-      @apply bg-white text-black;
-    }
+  }
+  h1 {
+    @apply text-white font-shoulders font-bold text-2xl mb-2;
   }
 }
 

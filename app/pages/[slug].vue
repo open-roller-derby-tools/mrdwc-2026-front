@@ -1,8 +1,12 @@
 <template>
   <div class="px-4 py-24">
-    <p>SLUG: {{ route.params.slug }}</p>
-    <div v-if="pagesStore.isReady">
-      <p>TITLE: {{ page?.title }}</p>
+    <div v-if="pagesStore.isReady && page">
+      <component
+        v-for="block, i in page.blocks"
+        :key="`block_${i}`"
+        :is="getBlockComponent(block.collection)"
+        :data="block"
+      ></component>
     </div>
   </div>
 </template>
