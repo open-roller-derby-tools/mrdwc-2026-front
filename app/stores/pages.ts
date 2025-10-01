@@ -34,12 +34,10 @@ export const usePagesStore = defineStore("pages", () => {
           order: true,
           collection: true,
           item: {
-            name: true,
-            classes: true,
+            "*": true,
             translations: {
               languages_code: true,
-              title: true,
-              content: true,
+              "*": true,
             },
           },
         },

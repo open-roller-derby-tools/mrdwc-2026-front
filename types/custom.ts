@@ -57,21 +57,56 @@ export interface ITeamsRequestData {
 
 // MENUS
 
-export interface IMenuHeader {
+export interface IMenu {
   id: number;
-  translations: IMenuHeaderTranslation[];
+  translations: IMenuTranslation[];
 }
 
-export interface IMenuHeaderTranslation extends ITranslation {
-  pages: IMenuHeaderPageWrapper[];
+export interface IMenuTranslation extends ITranslation {
+  pages: IMenuItemWrapper[];
 }
 
-export interface IMenuHeaderPageWrapper {
-  item: IPage;
+export interface IMenuItemWrapper {
+  order: number;
+  collection: string;
+  item: IPage | ICustomLink;
 }
 
-export interface IMenuHeaderRequestData {
-  data: IMenuHeader;
+export interface IMenuRequestData {
+  data: IMenu;
+}
+
+export interface ILocalizedMenuItem {
+  collection: string;
+}
+
+// Pages
+
+export interface ILocalizedPageMenuItem extends ILocalizedMenuItem {
+  slug: string;
+  classes: string;
+  title: string;
+  menu_title: string;
+}
+
+// Custom Links
+
+export interface ICustomLink {
+  classes: string;
+  target: string;
+  translations: ICustomLinkTranslation[];
+}
+
+export interface ICustomLinkTranslation extends ITranslation {
+  label: string;
+  url: string;
+}
+
+export interface ILocalizedCustomLinkMenuItem extends ILocalizedMenuItem {
+  classes: string;
+  target: string;
+  label: string;
+  url: string;
 }
 
 // BLOCKS
@@ -131,7 +166,6 @@ export interface IPageTranslation extends ITranslation {
   menu_title: string;
 }
 
-// A useable
 export interface ILocalizedPage {
   slug: string;
   classes: string;

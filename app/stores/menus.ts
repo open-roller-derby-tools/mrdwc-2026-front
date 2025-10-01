@@ -9,16 +9,21 @@
 
 import { defineStore } from "pinia";
 import type {
-  ILocalizedPage,
-  IMenuHeader,
-  IMenuHeaderRequestData,
-  IMenuHeaderPageWrapper,
+  IMenu,
+  IMenuRequestData,
+  IMenuItemWrapper,
+  IPage,
+  IPageTranslation,
+  ICustomLink,
+  ICustomLinkTranslation,
+  ILocalizedCustomLinkMenuItem,
+  ILocalizedPageMenuItem,
 } from "~~/types/custom";
 
 export const useMenusStore = defineStore("menus", () => {
   const { locale } = useI18n();
   const isMenuHeaderReady = ref<boolean>(false);
-  const menuHeader = ref<IMenuHeader | null>(null);
+  const menuHeader = ref<IMenu | null>(null);
 
   /**
    * Fetch data from the API.
@@ -26,23 +31,22 @@ export const useMenusStore = defineStore("menus", () => {
   async function fetchMenuHeader() {
     try {
       const fields = {
-        id: true,
         translations: {
           languages_code: true,
           pages: {
+            order: true,
+            collection: true,
             item: {
-              slug: true,
-              classes: true,
+              "*": true,
               translations: {
                 languages_code: true,
-                title: true,
-                menu_title: true,
+                "*": true,
               },
             },
           },
         },
       };
-      const { data } = await $fetch<IMenuHeaderRequestData>(
+      const { data } = await $fetch<IMenuRequestData>(
         buildRESTURL("menu_header", fields).href
       );
       menuHeader.value = data;
@@ -56,31 +60,60 @@ export const useMenusStore = defineStore("menus", () => {
     }
   }
 
-  const localizedMenuHeader = computed((): ILocalizedPage[] => {
-    if (!menuHeader.value || !isMenuHeaderReady.value) return [];
+  const localizedMenuHeader = computed(
+    (): (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[] => {
+      if (!menuHeader.value || !isMenuHeaderReady.value) return [];
 
-    const menuTranslation = menuHeader.value?.translations.find(
-      (translation) => translation.languages_code === locale.value
-    );
-    if (!menuTranslation) return [];
-
-    // Map the data to an array of ILocalizedPages (without blocks) for use in the components
-    return menuTranslation.pages.map((value: IMenuHeaderPageWrapper) => {
-      const pageTranslation = value.item.translations.find(
+      const menuTranslation = menuHeader.value?.translations.find(
         (translation) => translation.languages_code === locale.value
       );
-      return {
-        slug: value.item.slug,
-        classes: value.item.classes,
-        title: pageTranslation?.title || value.item.slug,
-        menu_title:
-          pageTranslation?.menu_title ||
-          pageTranslation?.title ||
-          value.item.slug,
-        blocks: null,
-      };
-    });
-  });
+      if (!menuTranslation) return [];
+
+      // Map the data to an array of ILocalizedPages (without blocks) for use in the components
+      return menuTranslation.pages.reduce<
+        (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[]
+      >((result, value: IMenuItemWrapper) => {
+        const itemTranslation = value.item.translations.find(
+          (translation) => translation.languages_code === locale.value
+        );
+
+        if (!itemTranslation) return result;
+
+        let typedItem: IPage | ICustomLink;
+        let typedItemTranslation: IPageTranslation | ICustomLinkTranslation;
+        switch (value.collection) {
+          // Page
+          case "pages":
+            typedItem = value.item as IPage;
+            typedItemTranslation = itemTranslation as IPageTranslation;
+            result.push({
+              collection: value.collection,
+              slug: typedItem.slug,
+              classes: typedItem.classes,
+              title: typedItemTranslation.title || typedItem.slug,
+              menu_title:
+                typedItemTranslation.menu_title ||
+                typedItemTranslation.title ||
+                typedItem.slug,
+            });
+            break;
+          // Custom Link
+          case "custom_links":
+            typedItem = value.item as ICustomLink;
+            typedItemTranslation = itemTranslation as ICustomLinkTranslation;
+            result.push({
+              collection: value.collection,
+              classes: typedItem.classes,
+              target: typedItem.target,
+              label: typedItemTranslation.label,
+              url: typedItemTranslation.url,
+            });
+            break;
+        }
+        return result;
+      }, []);
+    }
+  );
 
   // Expose the required properties, getters and actions
   return {
