@@ -63,7 +63,7 @@ export interface IMenu {
 }
 
 export interface IMenuTranslation extends ITranslation {
-  pages: IMenuItemWrapper[];
+  items: IMenuItemWrapper[];
 }
 
 export interface IMenuItemWrapper {

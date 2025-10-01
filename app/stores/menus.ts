@@ -33,7 +33,7 @@ export const useMenusStore = defineStore("menus", () => {
       const fields = {
         translations: {
           languages_code: true,
-          pages: {
+          items: {
             order: true,
             collection: true,
             item: {
@@ -70,7 +70,7 @@ export const useMenusStore = defineStore("menus", () => {
       if (!menuTranslation) return [];
 
       // Map the data to an array of ILocalizedPages (without blocks) for use in the components
-      return menuTranslation.pages.reduce<
+      return menuTranslation.items.reduce<
         (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[]
       >((result, value: IMenuItemWrapper) => {
         const itemTranslation = value.item.translations.find(
