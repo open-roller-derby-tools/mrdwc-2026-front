@@ -1,5 +1,8 @@
 <template>
-  <div class="my-8">
+  <div
+    class="my-8"
+    :class="data.classes"
+  >
     <h1>{{ data.title }}</h1>
     <div v-html="data.content"></div>
   </div>

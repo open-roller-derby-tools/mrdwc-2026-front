@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="data.classes">
     Custom Block: {{ data?.name }}
   </div>
 </template>
