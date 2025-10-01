@@ -10,7 +10,6 @@
 import { defineStore } from "pinia";
 import type {
   IMenu,
-  IMenuRequestData,
   IMenuItemWrapper,
   IPage,
   IPageTranslation,
@@ -18,19 +17,23 @@ import type {
   ICustomLinkTranslation,
   ILocalizedCustomLinkMenuItem,
   ILocalizedPageMenuItem,
+  IMenusRequestData,
+  ILocalizedMenu,
 } from "~~/types/custom";
 
 export const useMenusStore = defineStore("menus", () => {
   const { locale } = useI18n();
-  const isMenuHeaderReady = ref<boolean>(false);
-  const menuHeader = ref<IMenu | null>(null);
+  const isReady = ref<boolean>(false);
+  const menus = ref<IMenu[] | null>(null);
 
   /**
    * Fetch data from the API.
    */
-  async function fetchMenuHeader() {
+  async function fetch() {
     try {
       const fields = {
+        name: true,
+        classes: true,
         translations: {
           languages_code: true,
           items: {
@@ -46,31 +49,48 @@ export const useMenusStore = defineStore("menus", () => {
           },
         },
       };
-      const { data } = await $fetch<IMenuRequestData>(
-        buildRESTURL("menu_header", fields).href
+      const { data } = await $fetch<IMenusRequestData>(
+        buildRESTURL("menus", fields).href
       );
-      menuHeader.value = data;
-      isMenuHeaderReady.value = true;
+      menus.value = data;
+      isReady.value = true;
       return data;
     } catch (error) {
-      console.error("Error fetching menu header:", error);
-      isMenuHeaderReady.value = false;
-      menuHeader.value = null;
+      console.error("Error fetching menus:", error);
+      isReady.value = false;
+      menus.value = null;
       throw error;
     }
   }
 
-  const localizedMenuHeader = computed(
-    (): (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[] => {
-      if (!menuHeader.value || !isMenuHeaderReady.value) return [];
+  /**
+   * Check if a menu exists for the requested name
+   */
+  const hasMenuWithName = computed(() => {
+    return (name: string): boolean => {
+      // Find menu from name
+      const menu = menus.value?.find((menu) => menu.name === name);
+      return menu != undefined;
+    };
+  });
 
-      const menuTranslation = menuHeader.value?.translations.find(
+  /**
+   * Get the fully localized menu for the requested name.
+   */
+  const getMenuWithName = computed(() => {
+    return (name: string): ILocalizedMenu | null => {
+      // Find menu from name
+      const menu = menus.value?.find((menu) => menu.name === name);
+      if (!menu) return null;
+
+      // Get menu translation for current locale
+      const menuTranslation = menu.translations.find(
         (translation) => translation.languages_code === locale.value
       );
-      if (!menuTranslation) return [];
+      if (!menuTranslation) return null;
 
-      // Map the data to an array of ILocalizedPages (without blocks) for use in the components
-      return menuTranslation.items.reduce<
+      // Get localized menu items
+      const localizedItems = menuTranslation.items.reduce<
         (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[]
       >((result, value: IMenuItemWrapper) => {
         const itemTranslation = value.item.translations.find(
@@ -95,7 +115,7 @@ export const useMenusStore = defineStore("menus", () => {
                 typedItemTranslation.menu_title ||
                 typedItemTranslation.title ||
                 typedItem.slug,
-            });
+            } as ILocalizedPageMenuItem);
             break;
           // Custom Link
           case "custom_links":
@@ -107,19 +127,27 @@ export const useMenusStore = defineStore("menus", () => {
               target: typedItem.target,
               label: typedItemTranslation.label,
               url: typedItemTranslation.url,
-            });
+            } as ILocalizedCustomLinkMenuItem);
             break;
         }
         return result;
       }, []);
-    }
-  );
+
+      // Return the final ILocalizedMenu object
+      return {
+        name: menu.name,
+        classes: menu.classes,
+        items: localizedItems,
+      };
+    };
+  });
 
   // Expose the required properties, getters and actions
   return {
-    fetchMenuHeader,
-    isMenuHeaderReady,
-    menuHeader, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
-    localizedMenuHeader,
+    fetch,
+    isReady,
+    menus, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
+    hasMenuWithName,
+    getMenuWithName,
   };
 });

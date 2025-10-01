@@ -14,7 +14,7 @@ import { usePagesStore } from '~/stores/pages';
 const menusStore = useMenusStore()
 const pagesStore = usePagesStore()
 
-await callOnce(menusStore.fetchMenuHeader)
+await callOnce(menusStore.fetch)
 await callOnce(pagesStore.fetch)
 </script>
 

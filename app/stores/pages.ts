@@ -54,7 +54,7 @@ export const usePagesStore = defineStore("pages", () => {
       isReady.value = true;
       return data;
     } catch (error) {
-      console.error("Error fetching menu header:", error);
+      console.error("Error fetching pages:", error);
       isReady.value = false;
       pages.value = null;
       throw error;
@@ -75,7 +75,7 @@ export const usePagesStore = defineStore("pages", () => {
   /**
    * Get the fully localized page for the requested slug.
    */
-  const getPageBySlug = computed(() => {
+  const getPageWithSlug = computed(() => {
     return (slug: string): ILocalizedPage | null => {
       // Find page from slug
       const page = pages.value?.find((page) => page.slug === slug);
@@ -134,6 +134,6 @@ export const usePagesStore = defineStore("pages", () => {
     isReady,
     pages, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
     hasPageWithSlug,
-    getPageBySlug,
+    getPageWithSlug,
   };
 });

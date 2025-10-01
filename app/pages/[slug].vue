@@ -20,7 +20,7 @@ import type { ILocalizedPage } from '~~/types/custom'
 const { t } = useI18n();
 const route = useRoute()
 const pagesStore = usePagesStore()
-const { hasPageWithSlug, getPageBySlug } = storeToRefs(pagesStore)
+const { hasPageWithSlug, getPageWithSlug } = storeToRefs(pagesStore)
 
 // Throw 404 error if page slug was not found
 if (!hasPageWithSlug.value(route.params.slug as string)) {
@@ -31,7 +31,7 @@ if (!hasPageWithSlug.value(route.params.slug as string)) {
 }
 
 // Fetch page data from store
-const page = computed((): ILocalizedPage | null => getPageBySlug.value(route.params.slug as string))
+const page = computed((): ILocalizedPage | null => getPageWithSlug.value(route.params.slug as string))
 
 // Define page head properties
 useHead({

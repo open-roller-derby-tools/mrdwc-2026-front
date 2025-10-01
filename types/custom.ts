@@ -58,7 +58,8 @@ export interface ITeamsRequestData {
 // MENUS
 
 export interface IMenu {
-  id: number;
+  name: string;
+  classes: string;
   translations: IMenuTranslation[];
 }
 
@@ -72,12 +73,18 @@ export interface IMenuItemWrapper {
   item: IPage | ICustomLink;
 }
 
-export interface IMenuRequestData {
-  data: IMenu;
-}
-
 export interface ILocalizedMenuItem {
   collection: string;
+}
+
+export interface ILocalizedMenu {
+  name: string;
+  classes: string;
+  items: (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[] | null;
+}
+
+export interface IMenusRequestData {
+  data: IMenu[];
 }
 
 // Pages
