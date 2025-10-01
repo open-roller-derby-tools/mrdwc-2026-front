@@ -7,6 +7,7 @@
       <li
         v-for="page in menusStore.localizedMenuHeader"
         :key="page.slug"
+        :class="page.classes"
       >
         <NuxtLinkLocale :to="`/${page.slug}`">{{ page.menu_title }}</NuxtLinkLocale>
       </li>

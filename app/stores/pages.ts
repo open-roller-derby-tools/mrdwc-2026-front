@@ -29,11 +29,13 @@ export const usePagesStore = defineStore("pages", () => {
     try {
       const fields = {
         slug: true,
+        classes: true,
         blocks: {
           order: true,
           collection: true,
           item: {
             name: true,
+            classes: true,
             translations: {
               languages_code: true,
               title: true,
@@ -100,6 +102,7 @@ export const usePagesStore = defineStore("pages", () => {
             blocks.push({
               collection: block.collection,
               name: block.item.name,
+              classes: block.item.classes,
               title: blockTranslation?.title || "",
               content: blockTranslation?.content || "",
             });
@@ -109,6 +112,7 @@ export const usePagesStore = defineStore("pages", () => {
             blocks.push({
               collection: block.collection,
               name: block.item.name,
+              classes: block.item.classes,
             });
             break;
         }
@@ -117,6 +121,7 @@ export const usePagesStore = defineStore("pages", () => {
       // Return the final ILocalizedPage object
       return {
         slug: page.slug,
+        classes: page.classes,
         title: pageTranslation?.title || page.slug,
         menu_title:
           pageTranslation?.menu_title || pageTranslation?.title || page.slug,

@@ -6,6 +6,8 @@
 </template>
 
 <script lang="ts" setup>
+import MenuHeader from '~/components/navigation/MenuHeader.vue';
+
 import { useMenusStore } from '~/stores/menus';
 import { usePagesStore } from '~/stores/pages';
 

@@ -32,6 +32,7 @@ export const useMenusStore = defineStore("menus", () => {
           pages: {
             item: {
               slug: true,
+              classes: true,
               translations: {
                 languages_code: true,
                 title: true,
@@ -63,13 +64,14 @@ export const useMenusStore = defineStore("menus", () => {
     );
     if (!menuTranslation) return [];
 
-    // Map the data to an array of ILocalizedPages for use in the components
+    // Map the data to an array of ILocalizedPages (without blocks) for use in the components
     return menuTranslation.pages.map((value: IMenuHeaderPageWrapper) => {
       const pageTranslation = value.item.translations.find(
         (translation) => translation.languages_code === locale.value
       );
       return {
         slug: value.item.slug,
+        classes: value.item.classes,
         title: pageTranslation?.title || value.item.slug,
         menu_title:
           pageTranslation?.menu_title ||
