@@ -4,57 +4,6 @@ export interface ITranslation {
   languages_code: string;
 }
 
-// VENUES
-
-export interface IVenue {
-  name: string;
-  address: string;
-  map_link: string;
-  image: string;
-  image_alt: string;
-}
-
-// TEAMS & TEAM MEMBERS
-
-export interface ITeam {
-  id: number;
-  name: string;
-  members: number[] | ITeamMember[];
-}
-
-export interface ILocalizedTeam {
-  id: number;
-  name: string;
-  members: number[] | ILocalizedTeamMember[];
-}
-
-export interface ITeamMember {
-  id: number;
-  team: number | ITeam;
-  name: string;
-  number: string;
-  role: string;
-  translations: ITeamMemberTranslation[];
-}
-
-export interface ILocalizedTeamMember {
-  id: number;
-  team: number | ITeam;
-  name: string;
-  number: string;
-  role: string;
-  pronouns: string;
-}
-
-export interface ITeamMemberTranslation extends ITranslation {
-  pronouns: string;
-  team_member_id: number;
-}
-
-export interface ITeamsRequestData {
-  data: ITeam[];
-}
-
 // MENUS
 
 export interface IMenu {
@@ -183,4 +132,57 @@ export interface ILocalizedPage {
 
 export interface IPagesRequestData {
   data: IPage[];
+}
+
+// UNUSED DEFINITIONS (FOR NOW)
+
+// VENUES
+
+export interface IVenue {
+  name: string;
+  address: string;
+  map_link: string;
+  image: string;
+  image_alt: string;
+}
+
+// TEAMS & TEAM MEMBERS
+
+export interface ITeam {
+  id: number;
+  name: string;
+  members: number[] | ITeamMember[];
+}
+
+export interface ILocalizedTeam {
+  id: number;
+  name: string;
+  members: number[] | ILocalizedTeamMember[];
+}
+
+export interface ITeamMember {
+  id: number;
+  team: number | ITeam;
+  name: string;
+  number: string;
+  role: string;
+  translations: ITeamMemberTranslation[];
+}
+
+export interface ILocalizedTeamMember {
+  id: number;
+  team: number | ITeam;
+  name: string;
+  number: string;
+  role: string;
+  pronouns: string;
+}
+
+export interface ITeamMemberTranslation extends ITranslation {
+  pronouns: string;
+  team_member_id: number;
+}
+
+export interface ITeamsRequestData {
+  data: ITeam[];
 }
