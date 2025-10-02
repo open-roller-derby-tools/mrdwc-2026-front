@@ -21,12 +21,6 @@
 
 <script lang="ts" setup>
 const { t } = useI18n();
-const img = useImage();
-
-const backgroundStyles = computed(() => {
-  const imgUrl = img("background@2x.png");
-  return { backgroundImage: `url('${imgUrl}')` };
-});
 </script>
 
 <style></style>
