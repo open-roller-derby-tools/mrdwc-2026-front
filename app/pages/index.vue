@@ -8,19 +8,14 @@
         :data="block"
       ></component>
     </div>
-    <!-- <main class="bg-blue-dark py-16">
-      <div class="maxed flex flex-col sm:flex-row gap-16">
-        <div class="w-full sm:w-2/5">
-          <Venues></Venues>
-          <OfficialLogos></OfficialLogos>
-        </div>
-        <div class="w-full sm:w-3/5 text-lg">
-          <TeamsParagraph></TeamsParagraph>
-          <OfficialsParagraph></OfficialsParagraph>
-        </div>
-      </div>
-    </main>
-    <Footer></Footer> -->
+    <!-- <iframe
+      id="haWidget"
+      class="max-prose mx-auto my-6"
+      allowtransparency="true"
+      src="https://www.helloasso.com/associations/open-roller-derby-association/evenements/men-s-roller-derby-world-cup-2026-coupe-du-monde-masculine-roller-derby-2026/widget"
+      style="width: 100%; border: none;"
+      onload="window.addEventListener( 'message', function(e) { const dataHeight = e.data.height; const haWidgetElement = document.getElementById('haWidget'); haWidgetElement.height = dataHeight + 'px'; } )"
+    ></iframe> -->
   </div>
 </template>
 

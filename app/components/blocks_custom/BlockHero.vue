@@ -3,7 +3,7 @@
     <NuxtImg
       src="/background@2x.png"
       :alt="t('image_alts.image_logo')"
-      class="absolute inset-0 w-full md:w-3/4 lg:w-2/3 xl:w-1/2"
+      class="object-contain object-left-top absolute top-0 left-0 w-full h-180"
     ></NuxtImg>
     <div class="maxed flex flex-col justify-end py-8">
       <WorldCupTitle class="z-10"></WorldCupTitle>

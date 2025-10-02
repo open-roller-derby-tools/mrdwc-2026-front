@@ -100,18 +100,21 @@ export const usePagesStore = defineStore("pages", () => {
             blocks.push({
               collection: block.collection,
               name: block.item.name,
+              background: (block.item as IBlockRichText).background,
+              background_style: (block.item as IBlockRichText).background_style,
               classes: block.item.classes,
               title: blockTranslation?.title || "",
               content: blockTranslation?.content || "",
-            });
+            } as ILocalizedBlockRichText);
             break;
+
           // Custom block
           case "blocks_custom":
             blocks.push({
               collection: block.collection,
               name: block.item.name,
               classes: block.item.classes,
-            });
+            } as ILocalizedBlockCustom);
             break;
         }
       });

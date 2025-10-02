@@ -74,6 +74,8 @@ export interface ILocalizedBlock {
 // Rich Text
 export interface IBlockRichText {
   name: string;
+  background: string;
+  background_style: string;
   classes: string;
   translations: IBlockRichTextTranslation[];
 }
@@ -85,6 +87,8 @@ export interface IBlockRichTextTranslation extends ITranslation {
 
 export interface ILocalizedBlockRichText extends ILocalizedBlock {
   name: string;
+  background: string;
+  background_style: string;
   classes: string;
   title: string;
   content: string;
