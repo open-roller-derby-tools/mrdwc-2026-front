@@ -1,7 +1,8 @@
 <template>
-  <div :class="data.classes">
-    Custom Block: {{ data?.name }}
-  </div>
+  <component
+    :class="data.classes"
+    :is="getBlockComponent(data.name)"
+  ></component>
 </template>
 
 <script lang="ts" setup>

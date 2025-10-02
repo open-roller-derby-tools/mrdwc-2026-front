@@ -1,24 +1,14 @@
 <template>
-  <div
-    :style="backgroundStyles"
-    class="w-full bg-contain md:bg-size-[768px] bg-no-repeat"
-  >
-    <!-- <Header class="maxed"></Header> -->
-    <section
-      id="title-section"
-      class="maxed flex flex-col justify-end py-8"
-    >
-      <WorldCupTitle></WorldCupTitle>
-      <div class="w-full flex flex-row items-end justify-end my-8 sm:mt-0">
-        <NuxtImg
-          src="/mrdwc_logo@2x.png"
-          :alt="t('image_alts.image_logo')"
-          class="relative z-10 hidden sm:block sm:w-56 -ml-5 -mr-10 -mb-8"
-        ></NuxtImg>
-        <Countdown class=""></Countdown>
-      </div>
-    </section>
-    <main class="bg-blue-dark py-16">
+  <div class="">
+    <div v-if="pagesStore.isReady && page">
+      <component
+        v-for="block, i in page.blocks"
+        :key="`block_${i}`"
+        :is="getBlockComponent(block.collection)"
+        :data="block"
+      ></component>
+    </div>
+    <!-- <main class="bg-blue-dark py-16">
       <div class="maxed flex flex-col sm:flex-row gap-16">
         <div class="w-full sm:w-2/5">
           <Venues></Venues>
@@ -30,20 +20,25 @@
         </div>
       </div>
     </main>
-    <Footer></Footer>
+    <Footer></Footer> -->
   </div>
 </template>
 
-<script setup>
-const img = useImage();
+<script setup lang="ts">
+import type { ILocalizedPage } from '~~/types/custom';
+
 const { t } = useI18n();
+const pagesStore = usePagesStore()
+const { getPageWithSlug } = storeToRefs(pagesStore)
 
+// Fetch page data from store
+const page = computed((): ILocalizedPage | null => getPageWithSlug.value(""))
+
+// Define page head properties
 useHead({
-  title: t("site_title"),
-});
-
-const backgroundStyles = computed(() => {
-  const imgUrl = img("background@2x.png");
-  return { backgroundImage: `url('${imgUrl}')` };
+  title: `${page.value?.title} - ${t("site_title")}`,
+  bodyAttrs: {
+    class: `home ${page.value?.classes}`,
+  },
 });
 </script>

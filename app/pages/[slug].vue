@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="px-4 py-24"
-    :class="page?.classes"
-  >
+  <div class="px-4 py-24">
     <div v-if="pagesStore.isReady && page">
       <component
         v-for="block, i in page.blocks"
@@ -37,7 +34,7 @@ const page = computed((): ILocalizedPage | null => getPageWithSlug.value(route.p
 useHead({
   title: `${page.value?.title} - ${t("site_title")}`,
   bodyAttrs: {
-    class: page.value?.classes,
+    class: `${page.value?.slug} ${page.value?.classes}`,
   },
 })
 

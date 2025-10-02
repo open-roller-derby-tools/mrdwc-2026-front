@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4 items-center justify-between p-4 fixed top-0 left-0 w-full">
+  <div class="flex gap-4 items-center justify-between p-4 fixed top-0 left-0 z-100 w-full">
     <ul
       v-if="menusStore.isReady && hasMenuWithName(MENU_NAME)"
       class="flex gap-4 items-center"

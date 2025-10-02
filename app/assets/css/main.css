@@ -25,7 +25,7 @@
 
 @layer utilities {
   .maxed {
-    @apply max-w-6xl mx-auto px-4 sm:px-12;
+    @apply max-w-5xl mx-auto px-4 sm:px-12;
   }
 }
 

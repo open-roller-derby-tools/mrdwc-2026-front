@@ -1,6 +1,6 @@
 <template>
   <div
-    class="my-8"
+    class="relative maxed my-8"
     :class="data.classes"
   >
     <h1>{{ data.title }}</h1>
