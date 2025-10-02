@@ -22,7 +22,7 @@ import type {
 } from "~~/types/custom";
 
 export const useMenusStore = defineStore("menus", () => {
-  const { locale } = useI18n();
+  const { locale, fallbackLocale } = useI18n();
   const isReady = ref<boolean>(false);
   const menus = ref<IMenu[] | null>(null);
 
@@ -84,19 +84,30 @@ export const useMenusStore = defineStore("menus", () => {
       if (!menu) return null;
 
       // Get menu translation for current locale
-      const menuTranslation = menu.translations.find(
+      let menuTranslation = menu.translations.find(
         (translation) => translation.languages_code === locale.value
       );
+      // If not found, try fallback locale
+      if (!menuTranslation) {
+        menuTranslation = menu.translations.find(
+          (translation) => translation.languages_code === fallbackLocale.value
+        );
+      }
       if (!menuTranslation) return null;
 
       // Get localized menu items
       const localizedItems = menuTranslation.items.reduce<
         (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[]
       >((result, value: IMenuItemWrapper) => {
-        const itemTranslation = value.item.translations.find(
+        let itemTranslation = value.item.translations.find(
           (translation) => translation.languages_code === locale.value
         );
-
+        // If not found, try fallback locale
+        if (!itemTranslation) {
+          itemTranslation = value.item.translations.find(
+            (translation) => translation.languages_code === fallbackLocale.value
+          );
+        }
         if (!itemTranslation) return result;
 
         let typedItem: IPage | ICustomLink;

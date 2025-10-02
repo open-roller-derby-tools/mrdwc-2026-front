@@ -138,6 +138,26 @@ export interface IPagesRequestData {
   data: IPage[];
 }
 
+// SPONSORS
+
+export interface ISponsor {
+  translations: ISponsorTranslation[];
+}
+
+export interface ISponsorTranslation extends ITranslation {
+  name: string;
+  logo: string;
+}
+
+export interface ILocalizedSponsor {
+  name: string;
+  logo: string;
+}
+
+export interface ISponsorsRequestData {
+  data: ISponsor[];
+}
+
 // UNUSED DEFINITIONS (FOR NOW)
 
 // VENUES

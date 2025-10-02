@@ -93,8 +93,5 @@ export default defineNuxtConfig({
       { code: "fr-FR", name: "Français", file: "fr.json" },
     ],
     defaultLocale: "fr-FR",
-    detectBrowserLanguage: {
-      fallbackLocale: "fr-FR",
-    },
   },
 });

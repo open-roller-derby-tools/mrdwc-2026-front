@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { ILocalizedPage } from '~~/types/custom';
 
 const { t } = useI18n();

@@ -17,7 +17,7 @@ import type {
 } from "~~/types/custom";
 
 export const useTeamsStore = defineStore("teams", () => {
-  const { locale } = useI18n();
+  const { locale, fallbackLocale } = useI18n();
 
   const pending = ref<boolean>(true);
   const teams = ref<ITeam[]>();
@@ -73,9 +73,14 @@ export const useTeamsStore = defineStore("teams", () => {
             role: member.role,
             pronouns: "",
           };
-          const trans = member.translations.find((translation) => {
+          let trans = member.translations.find((translation) => {
             return translation.languages_code === locale.value;
           });
+          if (!trans) {
+            trans = member.translations.find((translation) => {
+              return translation.languages_code === fallbackLocale.value;
+            });
+          }
           l_member.pronouns = trans?.pronouns ?? "";
           (l_team.members as ILocalizedTeamMember[]).push(l_member);
         }

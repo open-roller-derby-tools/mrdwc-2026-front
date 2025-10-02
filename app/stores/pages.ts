@@ -18,7 +18,7 @@ import type {
 } from "~~/types/custom";
 
 export const usePagesStore = defineStore("pages", () => {
-  const { locale } = useI18n();
+  const { locale, fallbackLocale } = useI18n();
   const isReady = ref<boolean>(false);
   const pages = ref<IPage[] | null>(null);
 
@@ -82,9 +82,15 @@ export const usePagesStore = defineStore("pages", () => {
       if (!page) return null;
 
       // Get translation from current locale
-      const pageTranslation = page.translations.find(
+      let pageTranslation = page.translations.find(
         (translation) => translation.languages_code === locale.value
       );
+      // If not found, try fallback locale
+      if (!pageTranslation) {
+        pageTranslation = page.translations.find(
+          (translation) => translation.languages_code === fallbackLocale.value
+        );
+      }
 
       // Localize page blocks
       const blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] = [];
@@ -92,24 +98,39 @@ export const usePagesStore = defineStore("pages", () => {
         switch (block.collection) {
           // RichText block
           case "blocks_richtext":
-            const blockTranslation = (
+            // Get translation from current locale
+            let blockTranslation = (
               block.item as IBlockRichText
             ).translations.find(
               (translation) => translation.languages_code === locale.value
             );
-            blocks.push({
-              collection: block.collection,
-              name: block.item.name,
-              background: (block.item as IBlockRichText).background,
-              background_style: (block.item as IBlockRichText).background_style,
-              classes: block.item.classes,
-              title: blockTranslation?.title || "",
-              content: blockTranslation?.content || "",
-            } as ILocalizedBlockRichText);
+            // If not found, try fallback locale
+            if (!blockTranslation) {
+              blockTranslation = (
+                block.item as IBlockRichText
+              ).translations.find(
+                (translation) =>
+                  translation.languages_code === fallbackLocale.value
+              );
+            }
+            // If found, add block to list
+            if (blockTranslation) {
+              blocks.push({
+                collection: block.collection,
+                name: block.item.name,
+                background: (block.item as IBlockRichText).background,
+                background_style: (block.item as IBlockRichText)
+                  .background_style,
+                classes: block.item.classes,
+                title: blockTranslation?.title || "",
+                content: blockTranslation?.content || "",
+              } as ILocalizedBlockRichText);
+            }
             break;
 
           // Custom block
           case "blocks_custom":
+            // Add block to list
             blocks.push({
               collection: block.collection,
               name: block.item.name,

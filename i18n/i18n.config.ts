@@ -32,6 +32,7 @@ const datetimeFormats = {
 
 export default function i18nConfig() {
   return {
+    fallbackLocale: "fr-FR",
     numberFormats: {
       "en-US": {
         currency: {
