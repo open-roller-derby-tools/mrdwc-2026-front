@@ -28,10 +28,15 @@ const wrapperClasses = computed(() => {
   if (props.data.background_style == "wide") {
     classes.push("py-8")
     switch (props.data.background) {
+      case "white":
+        classes.push("bg-white text-blue-text")
+        break
       case "yellow":
         classes.push("bg-yellow text-blue-text")
+        break
       case "light_blue":
         classes.push("bg-blue-text")
+        break
     }
   }
   return classes.join(" ");
@@ -43,10 +48,15 @@ const elementClasses = computed(() => {
   if (props.data.background_style == "card") {
     classes.push("px-6 py-4 rounded-2xl")
     switch (props.data.background) {
+      case "white":
+        classes.push("bg-white text-blue-text")
+        break
       case "yellow":
         classes.push("bg-yellow text-blue-text")
+        break
       case "light_blue":
         classes.push("bg-blue-text")
+        break
     }
   }
   return classes.join(" ");
