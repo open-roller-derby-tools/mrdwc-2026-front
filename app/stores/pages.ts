@@ -31,7 +31,7 @@ export const usePagesStore = defineStore("pages", () => {
         slug: true,
         classes: true,
         blocks: {
-          order: true,
+          sort: true,
           collection: true,
           item: {
             "*": true,

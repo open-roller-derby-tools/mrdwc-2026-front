@@ -37,7 +37,7 @@ export const useMenusStore = defineStore("menus", () => {
         translations: {
           languages_code: true,
           items: {
-            order: true,
+            sort: true,
             collection: true,
             item: {
               "*": true,

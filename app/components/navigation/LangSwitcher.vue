@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import IconSelectArrow from "./icons/IconSelectArrow.vue";
+import IconSelectArrow from "../icons/IconSelectArrow.vue";
 import { OnClickOutside } from "@vueuse/components";
 
 const { locales, locale, setLocale } = useI18n();

@@ -26,6 +26,7 @@
 
 <script lang="ts" setup>
 import type { ILocalizedCustomLinkMenuItem, ILocalizedMenu, ILocalizedPageMenuItem } from '~~/types/custom';
+import LangSwitcher from './LangSwitcher.vue';
 
 const MENU_NAME = "header";
 const menusStore = useMenusStore()

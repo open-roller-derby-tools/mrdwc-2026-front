@@ -17,7 +17,7 @@ export interface IMenuTranslation extends ITranslation {
 }
 
 export interface IMenuItemWrapper {
-  order: number;
+  sort: number;
   collection: string;
   item: IPage | ICustomLink;
 }
@@ -107,7 +107,7 @@ export interface ILocalizedBlockCustom extends ILocalizedBlock {
 
 // Page Block Wrapper
 export interface IPageBlockWrapper {
-  order: number;
+  sort: number;
   collection: string;
   item: IBlockRichText | IBlockCustom;
 }
