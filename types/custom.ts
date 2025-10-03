@@ -105,11 +105,24 @@ export interface ILocalizedBlockCustom extends ILocalizedBlock {
   classes: string;
 }
 
+// Two Columns
+export interface IBlockTwoColumns {
+  classes: string;
+  column_a_blocks: IBlockWrapper[];
+  column_b_blocks: IBlockWrapper[];
+}
+
+export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
+  classes: string;
+  column_a_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
+  column_b_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
+}
+
 // Page Block Wrapper
-export interface IPageBlockWrapper {
+export interface IBlockWrapper {
   sort: number;
   collection: string;
-  item: IBlockRichText | IBlockCustom;
+  item: IBlockRichText | IBlockCustom | IBlockTwoColumns;
 }
 
 // PAGES
@@ -117,7 +130,7 @@ export interface IPageBlockWrapper {
 export interface IPage {
   slug: string;
   classes: string;
-  blocks: IPageBlockWrapper[];
+  blocks: IBlockWrapper[];
   translations: IPageTranslation[];
 }
 
@@ -131,7 +144,13 @@ export interface ILocalizedPage {
   classes: string;
   title: string;
   menu_title: string;
-  blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
+  blocks:
+    | (
+        | ILocalizedBlockRichText
+        | ILocalizedBlockCustom
+        | ILocalizedBlockTwoColumns
+      )[]
+    | null;
 }
 
 export interface IPagesRequestData {
