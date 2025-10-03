@@ -14,6 +14,7 @@
 
 <script lang="ts" setup>
 import { useVenuesStore } from "~/stores/venues";
+import Venue from "../partials/Venue.vue";
 
 const { t } = useI18n();
 const venuesStore = useVenuesStore();

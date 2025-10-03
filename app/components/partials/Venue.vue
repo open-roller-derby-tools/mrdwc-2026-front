@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import type { ILocalizedVenue } from "~~/types/custom";
-import IconArrow from "./icons/IconArrow.vue";
+import IconArrow from "../icons/IconArrow.vue";
 
 const { t } = useI18n();
 
