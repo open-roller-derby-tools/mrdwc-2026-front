@@ -52,8 +52,6 @@ export const useSponsorsStore = defineStore("sponsors", () => {
   const localizedSponsors = computed((): ILocalizedSponsor[] => {
     if (!sponsors.value) return [];
 
-    console.log(locale.value, fallbackLocale.value);
-
     return sponsors.value.reduce<ILocalizedSponsor[]>((result, sponsor) => {
       // Get translation from current locale
       let sponsorTranslation = sponsor.translations.find(

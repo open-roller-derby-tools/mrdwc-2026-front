@@ -158,17 +158,23 @@ export interface ISponsorsRequestData {
   data: ISponsor[];
 }
 
-// UNUSED DEFINITIONS (FOR NOW)
-
 // VENUES
 
 export interface IVenue {
   name: string;
+  type: "main" | "secondary";
   address: string;
-  map_link: string;
+  map_url: string;
   image: string;
-  image_alt: string;
 }
+
+export interface ILocalizedVenue extends IVenue {}
+
+export interface IVenuesRequestData {
+  data: IVenue[];
+}
+
+// UNUSED DEFINITIONS (FOR NOW)
 
 // TEAMS & TEAM MEMBERS
 

@@ -5,7 +5,7 @@
       {{ venue.address }}
     </address>
     <NuxtLink
-      :to="venue.map_link"
+      :to="venue.map_url"
       target="_blank"
       class="flex gap-2 items-center mt-1"
     >
@@ -20,12 +20,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { IVenue } from "~~/types/custom";
+import type { ILocalizedVenue } from "~~/types/custom";
 import IconArrow from "./icons/IconArrow.vue";
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  venue: IVenue;
+  venue: ILocalizedVenue;
 }>();
 </script>
