@@ -1,5 +1,5 @@
 <template>
-  <div class="maxed grid grid-cols-2 gap-6">
+  <div class="maxed grid sm:grid-cols-2 gap-6">
     <div>
       <component
         v-for="block, i in data.column_a_blocks"
