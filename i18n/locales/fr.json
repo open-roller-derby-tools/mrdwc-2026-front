@@ -6,6 +6,7 @@
   "minutes": "min",
   "seconds": "sec",
   "date_month_first": "false",
+  "applications": "Candidatures",
   "teams_application": "Candidature Équipes",
   "teams_application_text": {
     "line1": "Veuillez remplir le formulaire officiel pour que votre équipe soit prise en considération pour l'événement.",

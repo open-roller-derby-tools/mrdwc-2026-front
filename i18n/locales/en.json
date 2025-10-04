@@ -6,6 +6,7 @@
   "minutes": "min",
   "seconds": "sec",
   "date_month_first": "true",
+  "applications": "Applications",
   "teams_application": "Teams Application",
   "teams_application_text": {
     "line1": "Please fill out the formal application for your team to be considered for the event.",

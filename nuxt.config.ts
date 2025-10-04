@@ -35,7 +35,13 @@ const datetimeFormats = {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  modules: ["@nuxt/image", "@nuxt/fonts", "@nuxtjs/i18n", "@pinia/nuxt"],
+  modules: [
+    "@nuxt/image",
+    "@nuxt/fonts",
+    "@nuxtjs/i18n",
+    "@pinia/nuxt",
+    "@nuxt/ui",
+  ],
   devtools: { enabled: false },
   vite: { plugins: [tailwindcss()] },
   runtimeConfig: {

@@ -46,8 +46,8 @@ export const useSponsorsStore = defineStore("sponsors", () => {
   }
 
   /**
-   * Return an array of localized teams.
-   * This getter transforms the raw teams data into a structure suitable for localized display.
+   * Return an array of localized sponsors.
+   * This getter transforms the raw sponsors data into a structure suitable for localized display.
    */
   const localizedSponsors = computed((): ILocalizedSponsor[] => {
     if (!sponsors.value) return [];
