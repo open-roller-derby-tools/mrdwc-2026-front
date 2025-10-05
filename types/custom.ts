@@ -199,6 +199,35 @@ export interface IVenuesRequestData {
   data: IVenue[];
 }
 
+// APPLICATIONS
+
+export interface IApplication {
+  status: "upcoming" | "open" | "closed";
+  translations: IApplicationTranslation[];
+}
+
+export interface IApplicationDate {
+  label: string;
+  date: string;
+}
+
+export interface IApplicationTranslation extends ITranslation {
+  name: string;
+  description: string | null;
+  dates: IApplicationDate[] | null;
+}
+
+export interface ILocalizedApplication {
+  status: "upcoming" | "open" | "closed";
+  name: string;
+  description: string;
+  dates: IApplicationDate[] | null;
+}
+
+export interface IApplicationsRequestData {
+  data: IApplication[];
+}
+
 // UNUSED DEFINITIONS (FOR NOW)
 
 // TEAMS & TEAM MEMBERS

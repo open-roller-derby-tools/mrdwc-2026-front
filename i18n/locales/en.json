@@ -6,6 +6,13 @@
   "minutes": "min",
   "seconds": "sec",
   "date_month_first": "true",
+  "applications": {
+    "title": "Applications",
+    "status_upcoming": "Upcoming applications",
+    "status_open": "Open applications",
+    "status_closed": "Closed applications",
+    "date": "{label}: {date}"
+  },
   "teams_application": "Teams Application",
   "teams_application_text": {
     "line1": "Please fill out the formal application for your team to be considered for the event.",
