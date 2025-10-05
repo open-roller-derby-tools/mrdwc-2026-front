@@ -14,22 +14,18 @@
   --color-red-text: #d33231;
 }
 
-@custom-variant red (&:where(.theme-red, .theme-red *));
-
 @layer base {
   body {
-    @apply bg-blue text-white font-cabin;
-
-    /* TODO Red theme*/
-    @variant red {
-      @apply bg-white text-black;
-    }
+    @apply bg-blue text-white font-cabin min-h-screen;
+  }
+  h1 {
+    @apply font-shoulders font-bold text-2xl mb-2;
   }
 }
 
 @layer utilities {
   .maxed {
-    @apply max-w-6xl mx-auto px-4 sm:px-12;
+    @apply max-w-5xl mx-auto px-4 sm:px-12;
   }
 }
 

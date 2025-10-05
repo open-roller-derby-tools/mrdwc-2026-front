@@ -30,17 +30,17 @@ const datetimeFormats = {
   },
 };
 
-export default defineI18nConfig(() => {
+export default function i18nConfig() {
   return {
-    fallbackLocale: "en",
+    fallbackLocale: "fr-FR",
     numberFormats: {
-      en: {
+      "en-US": {
         currency: {
           style: "currency",
           currency: "USD",
         },
       },
-      fr: {
+      "fr-FR": {
         currency: {
           style: "currency",
           currency: "EUR",
@@ -48,8 +48,8 @@ export default defineI18nConfig(() => {
       },
     },
     datetimeFormats: {
-      en: datetimeFormats,
-      fr: datetimeFormats,
+      "en-US": datetimeFormats,
+      "fr-FR": datetimeFormats,
     },
   };
-});
+}

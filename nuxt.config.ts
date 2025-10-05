@@ -1,12 +1,49 @@
 import tailwindcss from "@tailwindcss/vite";
 
+const datetimeFormats = {
+  d: {
+    day: "numeric",
+  },
+  m: {
+    month: "long",
+  },
+  dm: {
+    month: "long",
+    day: "numeric",
+  },
+  dmy: {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  },
+  ddmy: {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  },
+  dmyhm: {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+  },
+};
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  modules: ["@nuxt/image", "@nuxt/fonts", "@nuxtjs/i18n"],
+  modules: ["@nuxt/image", "@nuxt/fonts", "@nuxtjs/i18n", "@pinia/nuxt"],
   devtools: { enabled: false },
   vite: { plugins: [tailwindcss()] },
-  css: ["~/assets/css/main.css"],
+  runtimeConfig: {
+    public: {
+      apiBase: "",
+    },
+  },
+  css: ["~~/app/assets/css/main.css"],
   app: {
     head: {
       viewport:
@@ -51,11 +88,10 @@ export default defineNuxtConfig({
     format: ["webp"],
   },
   i18n: {
-    // detectBrowserLanguage: false,
-    defaultLocale: "en",
     locales: [
-      { code: "en", name: "English", file: "en.json" },
-      { code: "fr", name: "Français", file: "fr.json" },
+      { code: "en-US", name: "English", file: "en.json" },
+      { code: "fr-FR", name: "Français", file: "fr.json" },
     ],
+    defaultLocale: "fr-FR",
   },
 });

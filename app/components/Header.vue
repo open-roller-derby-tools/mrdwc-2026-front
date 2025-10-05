@@ -14,7 +14,6 @@
     >
       <IconFacebook class="w-8 h-8"></IconFacebook>
     </NuxtLink>
-    <LangSwitcher></LangSwitcher>
   </header>
 </template>
 
@@ -22,5 +21,3 @@
 import IconFacebook from "./icons/IconFacebook.vue";
 import IconInstagram from "./icons/IconInstagram.vue";
 </script>
-
-<style></style>
