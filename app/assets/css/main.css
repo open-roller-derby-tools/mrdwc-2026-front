@@ -42,7 +42,7 @@
 }
 
 @layer components {
-  a.sponsoring {
+  a.calltoaction {
     @apply !bg-red-light !text-white;
   }
 }
