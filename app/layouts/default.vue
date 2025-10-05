@@ -1,6 +1,7 @@
 <template>
   <UApp class="min-h-screen flex flex-col">
-    <MenuHeader />
+    <!-- <MenuHeader /> -->
+    <Test></Test>
     <slot />
     <Footer />
   </UApp>
@@ -14,6 +15,7 @@ import { usePagesStore } from '~/stores/pages';
 import { useSponsorsStore } from '~/stores/sponsors';
 import { useVenuesStore } from '~/stores/venues';
 import { useApplicationsStore } from '~/stores/applications';
+import Test from "~/components/navigation/Test.vue";
 
 const menusStore = useMenusStore()
 const pagesStore = usePagesStore()
