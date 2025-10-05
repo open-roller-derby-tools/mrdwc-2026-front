@@ -13,11 +13,19 @@
   --color-yellow: #f3ba49;
 
   --color-red-text: #d33231;
+  --color-red-light: #fd4947;
+
+  --ui-primary: var(--color-white);
+  --ui-secondary: var(--color-blue-text);
+  --ui-success: var(--color-yellow);
+  --ui-info: var(--color-yellow);
+  --ui-warning: var(--color-red-text);
+  --ui-error: var(--color-red-text);
 }
 
 @layer base {
   body {
-    @apply bg-blue text-white font-cabin min-h-screen;
+    @apply bg-blue text-white font-cabin text-lg sm:text-base min-h-screen;
   }
   h1 {
     @apply font-shoulders font-bold text-2xl mb-2;
@@ -26,9 +34,15 @@
 
 @layer utilities {
   .maxed {
-    @apply max-w-5xl mx-auto px-4 sm:px-12;
+    @apply sm:max-w-5xl sm:mx-auto;
+  }
+  .padded {
+    @apply px-6 sm:px-12;
   }
 }
 
 @layer components {
+  a.sponsoring {
+    @apply !bg-red-light !text-white;
+  }
 }

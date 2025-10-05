@@ -1,11 +1,11 @@
 <template>
-  <section class="relative pt-16">
+  <section class="relative pt-18">
     <NuxtImg
       src="/background@2x.png"
       :alt="t('image_alts.image_logo')"
       class="object-contain object-left-top absolute top-0 left-0 w-full h-180"
     ></NuxtImg>
-    <div class="maxed flex flex-col justify-end py-8">
+    <div class="maxed padded flex flex-col justify-end py-8">
       <WorldCupTitle class="z-10"></WorldCupTitle>
       <div class="w-full flex flex-row items-end justify-end my-8 sm:mt-0 z-10">
         <NuxtImg

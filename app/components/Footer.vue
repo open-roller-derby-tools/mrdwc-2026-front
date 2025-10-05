@@ -1,6 +1,6 @@
 <template>
   <footer class="flex flex-col bg-blue-text mt-auto justify-self-end">
-    <div class="maxed flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end">
+    <div class="maxed padded flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end">
       <!-- Logo -->
       <NuxtImg
         src="/mrdwc_logo@2x.png"

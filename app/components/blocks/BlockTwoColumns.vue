@@ -1,7 +1,7 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="maxed grid sm:grid-cols-2 gap-6"
+    class="block-two-columns maxed px-0 sm:px-12 grid sm:grid-cols-2 gap-6"
     :classes="data.classes"
   >
     <div>
@@ -32,4 +32,15 @@ const props = defineProps<{
 
 </script>
 
-<style></style>
+<style>
+@reference "~/assets/css/main.css";
+
+.block-two-columns .block-rich-text {
+  @apply py-0;
+
+  .maxed.padded {
+    @apply sm:px-0;
+
+  }
+}
+</style>

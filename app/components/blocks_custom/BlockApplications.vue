@@ -1,5 +1,5 @@
 <template>
-  <div class="maxed my-8">
+  <div class="maxed padded my-8">
     <h1 class="">{{ t('applications.title') }}</h1>
     <UCarousel
       v-slot="{ item }"

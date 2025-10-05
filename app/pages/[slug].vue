@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-24">
+  <div class="pt-24">
     <div v-if="pagesStore.isReady && page">
       <component
         v-for="block, i in page.blocks"

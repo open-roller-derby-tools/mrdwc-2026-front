@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="px-6 sm:px-0">
     <!-- <NuxtImg class="rounded-t-2xl w-full aspect-video object-cover"></NuxtImg> -->
     <div class="bg-white text-blue-text rounded-b-2xl p-6">
       <p class="font-shoulders font-medium text-4xl">{{ t("venues") }}</p>

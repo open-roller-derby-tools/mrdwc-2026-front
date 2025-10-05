@@ -1,14 +1,15 @@
 <template>
-  <UApp class="min-h-screen flex flex-col">
-    <MenuHeader />
-    <slot />
-    <Footer />
+  <UApp>
+    <div class="min-h-screen flex flex-col">
+      <HeaderNav />
+      <slot />
+      <Footer />
+    </div>
   </UApp>
 </template>
 
 <script lang="ts" setup>
-import MenuHeader from "~/components/navigation/MenuHeader.vue"
-
+import HeaderNav from "~/components/navigation/HeaderNav.vue";
 import { useMenusStore } from '~/stores/menus';
 import { usePagesStore } from '~/stores/pages';
 import { useSponsorsStore } from '~/stores/sponsors';
