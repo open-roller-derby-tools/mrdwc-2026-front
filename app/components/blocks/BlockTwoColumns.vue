@@ -1,5 +1,9 @@
 <template>
-  <div class="maxed grid grid-cols-2 gap-6">
+  <div
+    :id="data.anchor_id"
+    class="maxed grid sm:grid-cols-2 gap-6"
+    :classes="data.classes"
+  >
     <div>
       <component
         v-for="block, i in data.column_a_blocks"
