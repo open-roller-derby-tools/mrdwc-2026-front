@@ -8,7 +8,7 @@
         icon: 'i-lucide-x',
         size: 'xxl',
         class:
-          'absolute text-3xl top-4 right-4 items-center justify-center text-white hover:bg-white/30 rounded-full p-1',
+          'absolute text-2xl top-3 right-4 items-center justify-center text-white hover:bg-blue-text active:bg-blue-text rounded-full p-0',
       }"
       side="right"
     >
