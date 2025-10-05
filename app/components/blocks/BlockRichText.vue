@@ -1,5 +1,6 @@
 <template>
   <div
+    :id="data.anchor_id"
     class="relative my-4"
     :class="wrapperClasses"
   >

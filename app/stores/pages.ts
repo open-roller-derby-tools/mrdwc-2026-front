@@ -164,6 +164,7 @@ export const usePagesStore = defineStore("pages", () => {
               name: (block.item as IBlockRichText).name,
               background: (block.item as IBlockRichText).background,
               background_style: (block.item as IBlockRichText).background_style,
+              anchor_id: block.item.anchor_id,
               classes: block.item.classes,
               title: blockTranslation?.title || "",
               content: blockTranslation?.content || "",
@@ -177,6 +178,7 @@ export const usePagesStore = defineStore("pages", () => {
           localizedBlocks.push({
             collection: block.collection,
             name: (block.item as IBlockCustom).name,
+            anchor_id: block.item.anchor_id,
             classes: block.item.classes,
           } as ILocalizedBlockCustom);
           break;
@@ -186,6 +188,7 @@ export const usePagesStore = defineStore("pages", () => {
           // Add block to list
           localizedBlocks.push({
             collection: block.collection,
+            anchor_id: block.item.anchor_id,
             classes: block.item.classes,
             column_a_blocks: localizeBlocks(
               (block.item as IBlockTwoColumns).column_a_blocks

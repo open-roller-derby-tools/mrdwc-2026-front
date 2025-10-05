@@ -76,6 +76,7 @@ export interface IBlockRichText {
   name: string;
   background: string;
   background_style: string;
+  anchor_id: string;
   classes: string;
   translations: IBlockRichTextTranslation[];
 }
@@ -89,6 +90,7 @@ export interface ILocalizedBlockRichText extends ILocalizedBlock {
   name: string;
   background: string;
   background_style: string;
+  anchor_id: string;
   classes: string;
   title: string;
   content: string;
@@ -97,22 +99,26 @@ export interface ILocalizedBlockRichText extends ILocalizedBlock {
 // Custom
 export interface IBlockCustom {
   name: string;
+  anchor_id: string;
   classes: string;
 }
 
 export interface ILocalizedBlockCustom extends ILocalizedBlock {
   name: string;
+  anchor_id: string;
   classes: string;
 }
 
 // Two Columns
 export interface IBlockTwoColumns {
+  anchor_id: string;
   classes: string;
   column_a_blocks: IBlockWrapper[];
   column_b_blocks: IBlockWrapper[];
 }
 
 export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
+  anchor_id: string;
   classes: string;
   column_a_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
   column_b_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
