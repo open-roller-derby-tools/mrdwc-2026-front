@@ -6,7 +6,13 @@
   "minutes": "min",
   "seconds": "sec",
   "date_month_first": "false",
-  "applications": "Candidatures",
+  "applications": {
+    "title": "Candidatures",
+    "status_upcoming": "Candidatures à venir",
+    "status_open": "Candidatures ouvertes",
+    "status_closed": "Candidatures clôturées",
+    "date": "{label} : {date}"
+  },
   "teams_application": "Candidature Équipes",
   "teams_application_text": {
     "line1": "Veuillez remplir le formulaire officiel pour que votre équipe soit prise en considération pour l'événement.",

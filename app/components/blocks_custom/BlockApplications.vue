@@ -1,9 +1,11 @@
 <template>
   <div class="maxed my-8">
-    <h1 class="">{{ t('applications') }}</h1>
+    <h1 class="">{{ t('applications.title') }}</h1>
     <UCarousel
       v-slot="{ item }"
       arrows
+      :prev="{ variant: 'ghost' }"
+      :next="{ variant: 'ghost' }"
       prev-icon="i-lucide-chevron-left"
       next-icon="i-lucide-chevron-right"
       :items="applicationsStore.localizedApplications"
