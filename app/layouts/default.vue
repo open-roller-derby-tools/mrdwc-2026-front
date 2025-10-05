@@ -1,8 +1,10 @@
 <template>
-  <UApp class="min-h-screen flex flex-col">
-    <HeaderNav />
-    <slot />
-    <Footer />
+  <UApp>
+    <div class="min-h-screen flex flex-col">
+      <HeaderNav />
+      <slot />
+      <Footer />
+    </div>
   </UApp>
 </template>
 
