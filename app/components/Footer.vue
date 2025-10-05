@@ -1,8 +1,6 @@
 <template>
   <footer class="flex flex-col bg-blue-text mt-auto justify-self-end">
-    <div
-      class="maxed flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end"
-    >
+    <div class="maxed flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end">
       <!-- Logo -->
       <NuxtImg
         src="/mrdwc_logo@2x.png"
@@ -15,7 +13,7 @@
         <!-- Colonne 1 -->
         <ul class="flex flex-col gap-4">
           <li
-            v-for="(item, i) in menu?.items.slice(0, 3)"
+            v-for="(item, i) in menuItemsFirstHalf"
             :key="`footer_item_1_${i}`"
           >
             <FooterLink
@@ -35,7 +33,7 @@
         <!-- Colonne 2 -->
         <ul class="flex flex-col gap-4 flex-1">
           <li
-            v-for="(item, i) in menu?.items.slice(3, 6)"
+            v-for="(item, i) in menuItemsSecondHalf"
             :key="`footer_item_2_${i}`"
           >
             <FooterLink
@@ -79,6 +77,22 @@ const menusStore = useMenusStore()
 const menu = computed((): ILocalizedMenu | null =>
   menusStore.getMenuWithName(MENU_NAME)
 )
+
+const menuItemsFirstHalf = computed(() => {
+  if (menu.value?.items?.length) {
+    const half = Math.ceil(menu.value?.items?.length / 2)
+    return menu.value?.items.slice(0, half)
+  }
+  return []
+})
+
+const menuItemsSecondHalf = computed(() => {
+  if (menu.value?.items?.length) {
+    const half = Math.ceil(menu.value?.items?.length / 2)
+    return menu.value?.items.slice(half)
+  }
+  return []
+})
 </script>
 
 <style></style>
