@@ -4,7 +4,6 @@
     <slot />
     <Footer />
   </UApp>
-  </div>
 </template>
 
 <script lang="ts" setup>
