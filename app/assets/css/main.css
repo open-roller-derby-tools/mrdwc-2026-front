@@ -39,7 +39,7 @@
 }
 
 @layer components {
-  .sponsoring {
-    @apply bg-red-light !text-white;
+  a.sponsoring {
+    @apply !bg-red-light !text-white;
   }
 }

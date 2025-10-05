@@ -22,8 +22,9 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import LangSwitcher from './LangSwitcher.vue'
 import type { NavigationMenuItem } from '@nuxt/ui';
 
-const emit = defineEmits(['linkSelected'])
+const localePath = useLocalePath()
 
+const emit = defineEmits(['linkSelected'])
 const emitLinkSelected = (e: Event) => {
   emit('linkSelected')
 }
@@ -47,7 +48,7 @@ const convertedMenuItems = computed(() => {
       case "pages":
         return {
           label: (item as ILocalizedPageMenuItem).menu_title,
-          to: `/${(item as ILocalizedPageMenuItem).slug}`,
+          to: localePath(`/${(item as ILocalizedPageMenuItem).slug}`),
           class: item.classes,
           onSelect: emitLinkSelected,
         } as NavigationMenuItem
