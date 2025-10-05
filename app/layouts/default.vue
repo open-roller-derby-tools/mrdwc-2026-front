@@ -1,21 +1,18 @@
 <template>
   <UApp class="min-h-screen flex flex-col">
-    <!-- <MenuHeader /> -->
-    <Test></Test>
+    <HeaderNav />
     <slot />
     <Footer />
   </UApp>
 </template>
 
 <script lang="ts" setup>
-import MenuHeader from "~/components/navigation/MenuHeader.vue"
-
+import HeaderNav from "~/components/navigation/HeaderNav.vue";
 import { useMenusStore } from '~/stores/menus';
 import { usePagesStore } from '~/stores/pages';
 import { useSponsorsStore } from '~/stores/sponsors';
 import { useVenuesStore } from '~/stores/venues';
 import { useApplicationsStore } from '~/stores/applications';
-import Test from "~/components/navigation/Test.vue";
 
 const menusStore = useMenusStore()
 const pagesStore = usePagesStore()

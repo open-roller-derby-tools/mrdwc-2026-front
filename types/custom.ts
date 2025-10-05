@@ -18,12 +18,12 @@ export interface IMenuTranslation extends ITranslation {
 
 export interface IMenuItemWrapper {
   sort: number;
-  collection: string;
+  collection: "pages" | "custom_links";
   item: IPage | ICustomLink;
 }
 
 export interface ILocalizedMenuItem {
-  collection: string;
+  collection: "pages" | "custom_links";
 }
 
 export interface ILocalizedMenu {

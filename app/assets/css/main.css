@@ -13,6 +13,14 @@
   --color-yellow: #f3ba49;
 
   --color-red-text: #d33231;
+  --color-red-light: #fd4947;
+
+  --ui-primary: var(--color-white);
+  --ui-secondary: var(--color-blue-text);
+  --ui-success: var(--color-yellow);
+  --ui-info: var(--color-yellow);
+  --ui-warning: var(--color-red-text);
+  --ui-error: var(--color-red-text);
 }
 
 @layer base {
@@ -31,4 +39,7 @@
 }
 
 @layer components {
+  .sponsoring {
+    @apply bg-red-light !text-white;
+  }
 }
