@@ -1,10 +1,10 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="relative my-4"
+    class="block-rich-text relative"
     :class="wrapperClasses"
   >
-    <div class="maxed">
+    <div class="maxed padded">
       <div :class="elementClasses">
         <h1 v-if="data.title">{{ data.title }}</h1>
         <div
@@ -27,7 +27,7 @@ const wrapperClasses = computed(() => {
   const classes: string[] = [props.data.classes];
   // Set color and add vertical padding if background_style is "wide"
   if (props.data.background_style == "wide") {
-    classes.push("py-8")
+    classes.push("py-6")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")
@@ -47,7 +47,7 @@ const elementClasses = computed(() => {
   const classes: string[] = [];
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push("px-6 py-4 rounded-2xl")
+    classes.push("my-12 px-6 py-4 rounded-2xl")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")

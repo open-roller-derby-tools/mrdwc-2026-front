@@ -7,12 +7,14 @@
         color: 'primary',
         variant: 'ghost',
       }"
+      side="right"
     >
       <UButton
         color="info"
         variant="solid"
         icon="i-lucide-menu"
-        class="px-3 py-2 fixed top-4 right-4 z-100"
+        size="xxl"
+        class="fixed top-4 right-4 z-100"
       />
       <template #title>
         <LangSwitcher class="" />

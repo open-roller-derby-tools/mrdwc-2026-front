@@ -1,18 +1,20 @@
 <template>
   <div class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6">
-    <UNavigationMenu
-      :items="convertedMenuItems"
-      :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
-      content-orientation="vertical"
-      variant="header"
-    >
-      <template
-        #list-trailing
-        v-if="!smOrSmaller"
+    <div class="maxed px-0 sm:px-6">
+      <UNavigationMenu
+        :items="convertedMenuItems"
+        :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
+        content-orientation="vertical"
+        variant="header"
       >
-        <LangSwitcher class="mr-3" />
-      </template>
-    </UNavigationMenu>
+        <template
+          #list-trailing
+          v-if="!smOrSmaller"
+        >
+          <LangSwitcher class="mr-3" />
+        </template>
+      </UNavigationMenu>
+    </div>
   </div>
 </template>
 

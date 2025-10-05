@@ -34,7 +34,10 @@
 
 @layer utilities {
   .maxed {
-    @apply max-w-5xl mx-auto px-4 sm:px-12;
+    @apply sm:max-w-5xl sm:mx-auto;
+  }
+  .padded {
+    @apply px-6 sm:px-12;
   }
 }
 
