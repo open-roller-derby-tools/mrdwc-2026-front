@@ -24,6 +24,9 @@
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
   body {
     @apply bg-blue text-white font-cabin text-lg sm:text-base min-h-screen;
   }
