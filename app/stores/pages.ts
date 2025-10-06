@@ -72,6 +72,7 @@ export const usePagesStore = defineStore("pages", () => {
         },
         translations: {
           languages_code: true,
+          show_title: true,
           title: true,
           menu_title: true,
         },
@@ -125,6 +126,7 @@ export const usePagesStore = defineStore("pages", () => {
       return {
         slug: page.slug,
         classes: page.classes,
+        show_title: pageTranslation?.show_title || false,
         title: pageTranslation?.title || page.slug,
         menu_title:
           pageTranslation?.menu_title || pageTranslation?.title || page.slug,

@@ -1,6 +1,15 @@
 <template>
   <div class="pt-24">
     <div v-if="pagesStore.isReady && page">
+      <h1
+        v-if="page.show_title"
+        class="maxed padded my-4 flex gap-2 items-center"
+      >
+        <UIcon
+          name="i-lucide-arrow-down-right"
+          class="text-yellow size-16"
+        />{{ page.title }}
+      </h1>
       <component
         v-for="block, i in page.blocks"
         :key="`block_${i}`"
