@@ -34,10 +34,6 @@ const datetimeFormats = {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
-  routeRules: {
-    "/**": { prerender: true }, // pré-rendu statique des pages
-  },
   compatibilityDate: "2025-07-15",
   modules: [
     "@nuxt/image",
