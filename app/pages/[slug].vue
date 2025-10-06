@@ -1,15 +1,17 @@
 <template>
-  <div class="pt-24">
+  <div>
     <div v-if="pagesStore.isReady && page">
-      <h1
-        v-if="page.show_title"
-        class="maxed padded my-4 flex gap-2 items-center"
-      >
-        <UIcon
-          name="i-lucide-arrow-down-right"
-          class="text-yellow size-16"
-        />{{ page.title }}
-      </h1>
+      <PageHeader :image="page.header_image">
+        <h1
+          v-if="page.show_title"
+          class="flex gap-2 items-center mb-2 absolute bottom-2 sm:bottom-0"
+        >
+          <UIcon
+            name="i-lucide-arrow-down-right"
+            class="text-yellow size-12 sm:size-16"
+          />{{ page.title }}
+        </h1>
+      </PageHeader>
       <component
         v-for="block, i in page.blocks"
         :key="`block_${i}`"
@@ -21,6 +23,7 @@
 </template>
 
 <script lang="ts" setup>
+import PageHeader from '~/components/partials/PageHeader.vue';
 import type { ILocalizedPage } from '~~/types/custom'
 
 const { t } = useI18n();

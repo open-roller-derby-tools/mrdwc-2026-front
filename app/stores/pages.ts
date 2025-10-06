@@ -34,6 +34,7 @@ export const usePagesStore = defineStore("pages", () => {
       const fields = {
         slug: true,
         classes: true,
+        header_image: true,
         blocks: {
           sort: true,
           collection: true,
@@ -126,6 +127,7 @@ export const usePagesStore = defineStore("pages", () => {
       return {
         slug: page.slug,
         classes: page.classes,
+        header_image: page.header_image,
         show_title: pageTranslation?.show_title || false,
         title: pageTranslation?.title || page.slug,
         menu_title:

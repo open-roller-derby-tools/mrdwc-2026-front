@@ -31,10 +31,10 @@
     @apply bg-blue text-white font-cabin text-lg sm:text-base min-h-screen;
   }
   h1 {
-    @apply font-shoulders font-bold text-5xl mb-6 uppercase;
+    @apply font-shoulders font-bold text-4xl sm:text-5xl mb-6 uppercase;
   }
   h2 {
-    @apply font-shoulders font-bold text-4xl mb-4 uppercase;
+    @apply font-shoulders font-bold text-3xl sm:text-4xl mb-4 uppercase;
   }
 }
 
