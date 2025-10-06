@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite"
+import tailwindcss from "@tailwindcss/vite";
 
 const datetimeFormats = {
   d: {
@@ -30,7 +30,7 @@ const datetimeFormats = {
     hour: "2-digit",
     minute: "2-digit",
   },
-}
+};
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -115,4 +115,4 @@ export default defineNuxtConfig({
     ],
     defaultLocale: "fr-FR",
   },
-})
+});

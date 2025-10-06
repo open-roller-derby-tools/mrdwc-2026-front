@@ -6,13 +6,13 @@
         :key="`sponsor_${i}`"
       >
         <p v-if="!sponsor.logo">{{ sponsor.name }}</p>
-        <img
+        <NuxtImg
           v-else
           :src="`${config.public.apiBase}/assets/${sponsor.logo}`"
           :alt="sponsor.name"
           :title="sponsor.name"
           class="h-24"
-        >
+        />
       </li>
     </ul>
   </div>
