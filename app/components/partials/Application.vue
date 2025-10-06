@@ -23,7 +23,7 @@
         </i18n-t>
       </li>
     </ul>
-    <template v-if="applicationLink.to">
+    <template v-if="applicationURL">
       <UButton
         v-if="application.status == 'open'"
         color="info"
@@ -33,8 +33,8 @@
         :ui="{
           leadingIcon: 'size-7'
         }"
-        :to="applicationLink.to"
-      >{{ applicationLink.label }}</UButton>
+        :to="applicationURL"
+      >{{ t('applications.apply') }}</UButton>
       <UButton
         v-else
         icon="i-lucide-arrow-down-right"
@@ -43,8 +43,8 @@
         :ui="{
           leadingIcon: 'text-blue-light size-7 transition-transform duration-200 group-hover:-rotate-90'
         }"
-        :to="applicationLink.to"
-      >{{ applicationLink.label }}</UButton>
+        :to="applicationURL"
+      >{{ t('applications.read_more') }}</UButton>
     </template>
   </div>
 </template>
@@ -62,17 +62,12 @@ const props = defineProps<{
   application: ILocalizedApplication;
 }>();
 
-const applicationLink = computed(() => {
+const applicationURL = computed(() => {
   let url = `/${optionsStore.options?.applications_page.slug}` || ""
   if (url != "" && props.application.anchor_id) {
     url += `#${props.application.anchor_id}`
   }
-  const label = props.application.status === "open" ? t('applications.apply') : t('applications.read_more')
-
-  return {
-    to: localePath(url),
-    label: label,
-  }
+  return localePath(url)
 })
 </script>
 
