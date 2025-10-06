@@ -11,7 +11,9 @@
     "status_upcoming": "Candidatures à venir",
     "status_open": "Candidatures ouvertes",
     "status_closed": "Candidatures clôturées",
-    "date": "{label} : {date}"
+    "date": "{label} : {date}",
+    "read_more": "En savoir +",
+    "apply": "Postuler"
   },
   "teams_application": "Candidature Équipes",
   "teams_application_text": {

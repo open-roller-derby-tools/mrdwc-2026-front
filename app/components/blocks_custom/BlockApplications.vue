@@ -19,7 +19,6 @@
 <script lang="ts" setup>
 import { useApplicationsStore } from "~/stores/applications"
 import Application from "../partials/Application.vue"
-import type { colorPicker } from "#build/ui"
 
 const { t } = useI18n()
 const applicationsStore = useApplicationsStore()

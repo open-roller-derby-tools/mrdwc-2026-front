@@ -26,6 +26,7 @@ export const useApplicationsStore = defineStore("applications", () => {
     try {
       const fields = {
         status: true,
+        anchor_id: true,
         translations: {
           languages_code: true,
           name: true,
@@ -70,6 +71,7 @@ export const useApplicationsStore = defineStore("applications", () => {
         if (applicationTranslation) {
           result.push({
             status: application.status,
+            anchor_id: application.anchor_id,
             name: applicationTranslation.name,
             description: applicationTranslation.description,
             dates: applicationTranslation.dates,

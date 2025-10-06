@@ -205,6 +205,7 @@ export interface IVenuesRequestData {
 
 export interface IApplication {
   status: "upcoming" | "open" | "closed";
+  anchor_id: string;
   translations: IApplicationTranslation[];
 }
 
@@ -221,6 +222,7 @@ export interface IApplicationTranslation extends ITranslation {
 
 export interface ILocalizedApplication {
   status: "upcoming" | "open" | "closed";
+  anchor_id: string;
   name: string;
   description: string;
   dates: IApplicationDate[] | null;
@@ -228,6 +230,18 @@ export interface ILocalizedApplication {
 
 export interface IApplicationsRequestData {
   data: IApplication[];
+}
+
+// OPTIONS
+
+export interface IOptions {
+  applications_page: {
+    slug: string;
+  };
+}
+
+export interface IOptionsRequestData {
+  data: IOptions;
 }
 
 // UNUSED DEFINITIONS (FOR NOW)
