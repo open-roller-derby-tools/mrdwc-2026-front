@@ -4,8 +4,8 @@
     <UCarousel
       v-slot="{ item }"
       arrows
-      :prev="{ variant: 'ghost', color: 'white', size: 'xxl' }"
-      :next="{ variant: 'ghost', color: 'white', size: 'xxl' }"
+      :prev="{ variant: 'ghost', color: 'primary', size: 'xxl' }"
+      :next="{ variant: 'ghost', color: 'primary', size: 'xxl' }"
       prev-icon="i-lucide-chevron-left"
       next-icon="i-lucide-chevron-right"
       :items="applicationsStore.localizedApplications"

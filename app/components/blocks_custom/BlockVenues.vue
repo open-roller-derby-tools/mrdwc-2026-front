@@ -3,6 +3,7 @@
     <!-- Carousel images -->
     <UCarousel
       v-if="venuesWithImages.length"
+      v-slot="{ item }"
       :items="venuesWithImages"
       dots
       :ui="{
@@ -10,16 +11,13 @@
       }"
       class="w-full border-white border-1 overflow-hidden rounded-t-2xl relative"
     >
-      <template #default="{ item }">
-        <div class="relative w-full h-50">
-          <NuxtImg
-            v-if="item.image"
-            :src="`${config.public.apiBase}/assets/${item.image}`"
-            :alt="item.name"
-            class="w-full h-full object-cover"
-          />
-        </div>
-      </template>
+      <div class="relative w-full h-50">
+        <NuxtImg
+          :src="`${config.public.apiBase}/assets/${item.image}`"
+          :alt="item.name"
+          class="w-full h-full object-cover"
+        />
+      </div>
     </UCarousel>
 
     <!-- Bloc texte des venues -->
