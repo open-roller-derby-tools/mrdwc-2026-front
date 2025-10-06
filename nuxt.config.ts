@@ -42,20 +42,25 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/ui",
   ],
+  css: ["~~/app/assets/css/main.css"],
   devtools: { enabled: false },
-  vite: { plugins: [tailwindcss()] },
+
   runtimeConfig: {
     public: {
       apiBase: "",
     },
   },
-  css: ["~~/app/assets/css/main.css"],
   app: {
     head: {
       viewport:
         "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes",
       title: "Men's Roller Derby World Cup 2026",
       link: [
+        {
+          rel: "preload",
+          as: "style",
+          href: "/_nuxt/assets/css/main.css",
+        },
         {
           rel: "apple-touch-icon",
           sizes: "180x180",
@@ -86,9 +91,19 @@ export default defineNuxtConfig({
       {
         name: "Big Shoulders",
         provider: "fontsource",
-        weights: ["400 500 600 700 900"], // Regular, Medium, Semibold, Bold, Black
+        weights: ["400 500 600 700 900"],
+      },
+      {
+        name: "Cabin",
+        provider: "fontsource",
+        weights: ["400 500 600 700"],
       },
     ],
+  },
+  vite: {
+    css: {
+      preprocessorOptions: {},
+    },
   },
   image: {
     format: ["webp"],

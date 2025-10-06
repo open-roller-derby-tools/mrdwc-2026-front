@@ -9,12 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-import HeaderNav from "~/components/navigation/HeaderNav.vue";
-import { useMenusStore } from '~/stores/menus';
-import { usePagesStore } from '~/stores/pages';
-import { useSponsorsStore } from '~/stores/sponsors';
-import { useVenuesStore } from '~/stores/venues';
-import { useApplicationsStore } from '~/stores/applications';
+import HeaderNav from "~/components/navigation/HeaderNav.vue"
+import { useMenusStore } from "~/stores/menus"
+import { usePagesStore } from "~/stores/pages"
+import { useSponsorsStore } from "~/stores/sponsors"
+import { useVenuesStore } from "~/stores/venues"
+import { useApplicationsStore } from "~/stores/applications"
 
 const menusStore = useMenusStore()
 const pagesStore = usePagesStore()

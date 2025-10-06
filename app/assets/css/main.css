@@ -28,7 +28,10 @@
     @apply bg-blue text-white font-cabin text-lg sm:text-base min-h-screen;
   }
   h1 {
-    @apply font-shoulders font-bold text-2xl mb-2;
+    @apply font-shoulders font-bold text-5xl mb-6 uppercase;
+  }
+  h2 {
+    @apply font-shoulders font-bold text-4xl mb-4 uppercase;
   }
 }
 
@@ -42,7 +45,7 @@
 }
 
 @layer components {
-  a.sponsoring {
+  a.calltoaction {
     @apply !bg-red-light !text-white;
   }
 }

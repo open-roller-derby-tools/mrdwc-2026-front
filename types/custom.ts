@@ -190,10 +190,12 @@ export interface IVenue {
   type: "main" | "secondary";
   address: string;
   map_url: string;
-  image: string;
+  image: string | null;
 }
 
-export interface ILocalizedVenue extends IVenue {}
+export interface ILocalizedVenue extends IVenue {
+  imageUrl?: string;
+}
 
 export interface IVenuesRequestData {
   data: IVenue[];

@@ -8,19 +8,15 @@
  */
 
 import { defineStore } from "pinia";
-import type {
-  ILocalizedVenue,
-  IVenue,
-  IVenuesRequestData,
-} from "~~/types/custom";
+import type { ILocalizedVenue, IVenuesRequestData } from "~~/types/custom";
 
+/**
+ * Fetch data from the API.
+ */
 export const useVenuesStore = defineStore("venues", () => {
-  const isReady = ref<boolean>(false);
-  const venues = ref<IVenue[] | null>(null);
+  const isReady = ref(false);
+  const venues = ref<ILocalizedVenue[]>([]);
 
-  /**
-   * Fetch data from the API.
-   */
   async function fetch() {
     try {
       const fields = {
@@ -39,7 +35,7 @@ export const useVenuesStore = defineStore("venues", () => {
     } catch (error) {
       console.error("Error fetching venues:", error);
       isReady.value = false;
-      venues.value = null;
+      venues.value = [];
       throw error;
     }
   }
@@ -56,10 +52,6 @@ export const useVenuesStore = defineStore("venues", () => {
   });
 
   // Expose the required properties, getters and actions
-  return {
-    fetch,
-    isReady,
-    venues, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
-    localizedVenues,
-  };
+
+  return { fetch, isReady, venues, localizedVenues };
 });

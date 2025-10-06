@@ -1,11 +1,11 @@
 <template>
   <div class="maxed padded my-8">
-    <h1 class="">{{ t('applications.title') }}</h1>
+    <h2 class="">{{ t("applications.title") }}</h2>
     <UCarousel
       v-slot="{ item }"
       arrows
-      :prev="{ variant: 'ghost' }"
-      :next="{ variant: 'ghost' }"
+      :prev="{ variant: 'ghost', color: 'primary', size: 'xxl' }"
+      :next="{ variant: 'ghost', color: 'primary', size: 'xxl' }"
       prev-icon="i-lucide-chevron-left"
       next-icon="i-lucide-chevron-right"
       :items="applicationsStore.localizedApplications"
@@ -17,11 +17,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useApplicationsStore } from "~/stores/applications";
-import Application from "../partials/Application.vue";
+import { useApplicationsStore } from "~/stores/applications"
+import Application from "../partials/Application.vue"
+import type { colorPicker } from "#build/ui"
 
-const { t } = useI18n();
-const applicationsStore = useApplicationsStore();
+const { t } = useI18n()
+const applicationsStore = useApplicationsStore()
 </script>
 
 <style></style>

@@ -1,12 +1,12 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="block-two-columns maxed px-0 sm:px-12 grid sm:grid-cols-2 gap-6"
+    class="block-two-columns maxed px-0 py-0 sm:py-12 sm:px-12 grid sm:grid-cols-2 gap-6"
     :classes="data.classes"
   >
     <div>
       <component
-        v-for="block, i in data.column_a_blocks"
+        v-for="(block, i) in data.column_a_blocks"
         :key="`block_a_${i}`"
         :is="getBlockComponent(block.collection)"
         :data="block"
@@ -14,7 +14,7 @@
     </div>
     <div>
       <component
-        v-for="block, i in data.column_b_blocks"
+        v-for="(block, i) in data.column_b_blocks"
         :key="`block_b_${i}`"
         :is="getBlockComponent(block.collection)"
         :data="block"
@@ -24,12 +24,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { ILocalizedBlockTwoColumns } from '~~/types/custom';
+import type { ILocalizedBlockTwoColumns } from "~~/types/custom"
 
 const props = defineProps<{
   data: ILocalizedBlockTwoColumns
 }>()
-
 </script>
 
 <style>
@@ -40,7 +39,6 @@ const props = defineProps<{
 
   .maxed.padded {
     @apply sm:px-0;
-
   }
 }
 </style>
