@@ -1,13 +1,16 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="block-rich-text relative"
+    class="block-rich-text relative scroll-mt-24"
     :class="wrapperClasses"
   >
     <div class="maxed padded">
       <div :class="elementClasses">
         <h2 v-if="data.title">{{ data.title }}</h2>
-        <div v-if="data.content" v-html="data.content"></div>
+        <div
+          v-if="data.content"
+          v-html="data.content"
+        ></div>
       </div>
     </div>
   </div>

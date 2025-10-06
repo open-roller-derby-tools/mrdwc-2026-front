@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import Application from "../partials/Application.vue"
 import { useApplicationsStore } from "~/stores/applications"
 import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
+import Application from "../partials/Application.vue"
 
 const { t } = useI18n()
 const applicationsStore = useApplicationsStore()
