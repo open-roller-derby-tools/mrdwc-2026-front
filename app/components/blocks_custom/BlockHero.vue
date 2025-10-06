@@ -1,9 +1,13 @@
 <template>
-  <section class="relative pt-18">
+  <section class="relative overflow-hidden pt-18 bg-blue-text">
     <NuxtImg
       src="/background@2x.png"
       :alt="t('image_alts.image_logo')"
+      format="webp"
+      placeholder="blur"
       class="object-contain object-left-top absolute top-0 left-0 w-full h-180"
+      preload
+      priority
     ></NuxtImg>
     <div class="maxed padded flex flex-col justify-end py-8">
       <WorldCupTitle class="z-10"></WorldCupTitle>
@@ -20,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-const { t } = useI18n();
+const { t } = useI18n()
 </script>
 
 <style></style>

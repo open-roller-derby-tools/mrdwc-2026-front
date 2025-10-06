@@ -1,6 +1,15 @@
 <template>
+  <!-- Placeholder pendant le chargement -->
   <div
-    class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6 sm:bg-gradient-to-b from-[#121356] to-transparent"
+    v-if="!menuReady"
+    class="h-16 sm:h-20 bg-[#121356] animate-pulse transition-opacity duration-300"
+  ></div>
+
+  <!-- Menu -->
+  <div
+    v-else
+    class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6 sm:bg-gradient-to-b from-[#121356] to-transparent transition-opacity duration-500 opacity-0"
+    :class="{ 'opacity-100': menuReady }"
   >
     <div class="maxed px-0 sm:px-6">
       <UNavigationMenu
@@ -18,39 +27,37 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref, watch, onMounted } from "vue"
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
+import type { NavigationMenuItem } from "@nuxt/ui"
+import LangSwitcher from "./LangSwitcher.vue"
 import type {
   ILocalizedCustomLinkMenuItem,
   ILocalizedMenu,
   ILocalizedPageMenuItem,
 } from "~~/types/custom"
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
-import LangSwitcher from "./LangSwitcher.vue"
-import type { NavigationMenuItem } from "@nuxt/ui"
 
 const localePath = useLocalePath()
-
 const emit = defineEmits(["linkSelected"])
-const emitLinkSelected = (e: Event) => {
-  emit("linkSelected")
-}
+const emitLinkSelected = (e: Event) => emit("linkSelected")
 
+// Responsive
 const breakpoints = useBreakpoints(breakpointsTailwind, {
   ssrWidth: breakpointsTailwind.sm,
 })
-
 const smOrSmaller = breakpoints.smallerOrEqual("sm")
 
+// Menu data
 const MENU_NAME = "header"
 const menusStore = useMenusStore()
 const { getMenuWithName } = storeToRefs(menusStore)
 
-// Fetch menu data from store
 const menu = computed((): ILocalizedMenu | null =>
   getMenuWithName.value(MENU_NAME)
 )
 
-const convertedMenuItems = computed(() => {
-  return (
+const convertedMenuItems = computed<NavigationMenuItem[]>(
+  () =>
     menu.value?.items?.map((item) => {
       switch (item.collection) {
         case "pages":
@@ -59,7 +66,7 @@ const convertedMenuItems = computed(() => {
             to: localePath(`/${(item as ILocalizedPageMenuItem).slug}`),
             class: item.classes,
             onSelect: emitLinkSelected,
-          } as NavigationMenuItem
+          }
         case "custom_links":
           return {
             label: (item as ILocalizedCustomLinkMenuItem).label,
@@ -67,11 +74,39 @@ const convertedMenuItems = computed(() => {
             class: item.classes,
             target: (item as ILocalizedCustomLinkMenuItem).target,
             onSelect: emitLinkSelected,
-          } as NavigationMenuItem
+          }
       }
     }) || []
-  )
+)
+
+// Contrôle d'affichage
+const menuReady = ref(false)
+
+watch(
+  () => convertedMenuItems.value,
+  async (items) => {
+    if (items.length > 0 && process.client) {
+      await nextTick()
+      requestAnimationFrame(() => {
+        menuReady.value = true
+      })
+    }
+  },
+  { immediate: true }
+)
+
+// Fallback si les données sont lentes
+onMounted(() => {
+  if (process.client) {
+    setTimeout(() => {
+      if (!menuReady.value) menuReady.value = true
+    }, 3000)
+  }
 })
 </script>
 
-<style></style>
+<style scoped>
+div[role="navigation"] {
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+</style>

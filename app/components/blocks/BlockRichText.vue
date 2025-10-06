@@ -6,25 +6,22 @@
   >
     <div class="maxed padded">
       <div :class="elementClasses">
-        <h1 v-if="data.title">{{ data.title }}</h1>
-        <div
-          v-if="data.content"
-          v-html="data.content"
-        ></div>
+        <h2 v-if="data.title">{{ data.title }}</h2>
+        <div v-if="data.content" v-html="data.content"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { ILocalizedBlockRichText } from '~~/types/custom';
+import type { ILocalizedBlockRichText } from "~~/types/custom"
 
 const props = defineProps<{
   data: ILocalizedBlockRichText
 }>()
 
 const wrapperClasses = computed(() => {
-  const classes: string[] = [props.data.classes];
+  const classes: string[] = [props.data.classes]
   // Set color and add vertical padding if background_style is "wide"
   if (props.data.background_style == "wide") {
     classes.push("py-6")
@@ -40,11 +37,11 @@ const wrapperClasses = computed(() => {
         break
     }
   }
-  return classes.join(" ");
+  return classes.join(" ")
 })
 
 const elementClasses = computed(() => {
-  const classes: string[] = [];
+  const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
     classes.push("my-12 px-6 py-4 rounded-2xl")
@@ -60,7 +57,7 @@ const elementClasses = computed(() => {
         break
     }
   }
-  return classes.join(" ");
+  return classes.join(" ")
 })
 </script>
 
