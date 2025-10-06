@@ -9,6 +9,7 @@
         :key="`date_${i}`"
       >
         <i18n-t
+          scope="global"
           keypath="applications.date"
           tag="span"
         >
