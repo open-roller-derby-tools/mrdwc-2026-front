@@ -141,6 +141,7 @@ export interface IPage {
 }
 
 export interface IPageTranslation extends ITranslation {
+  show_title: boolean;
   title: string;
   menu_title: string;
 }
@@ -148,6 +149,7 @@ export interface IPageTranslation extends ITranslation {
 export interface ILocalizedPage {
   slug: string;
   classes: string;
+  show_title: boolean;
   title: string;
   menu_title: string;
   blocks:
