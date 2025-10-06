@@ -11,10 +11,12 @@ import { defineStore } from "pinia";
 import type {
   IBlockCustom,
   IBlockRichText,
+  IBlockTabs,
   IBlockTwoColumns,
   IBlockWrapper,
   ILocalizedBlockCustom,
   ILocalizedBlockRichText,
+  ILocalizedBlockTabs,
   ILocalizedBlockTwoColumns,
   ILocalizedPage,
   IPage,
@@ -67,6 +69,14 @@ export const usePagesStore = defineStore("pages", () => {
                   languages_code: true,
                   "*": true,
                 },
+              },
+            },
+            // Only valid if collection == blocks_tabs
+            tabs: {
+              sort: true,
+              collection: true,
+              item: {
+                slug: true, // Only get the page slug, the rest will already be fetched by the main request
               },
             },
           },
@@ -142,6 +152,7 @@ export const usePagesStore = defineStore("pages", () => {
       | ILocalizedBlockRichText
       | ILocalizedBlockCustom
       | ILocalizedBlockTwoColumns
+      | ILocalizedBlockTabs
     )[] = [];
 
     blocks.forEach((block) => {
@@ -201,6 +212,17 @@ export const usePagesStore = defineStore("pages", () => {
               (block.item as IBlockTwoColumns).column_b_blocks
             ),
           } as ILocalizedBlockTwoColumns);
+          break;
+
+        // Tabs block
+        case "blocks_tabs":
+          // Add block to list
+          localizedBlocks.push({
+            collection: block.collection,
+            anchor_id: block.item.anchor_id,
+            classes: block.item.classes,
+            tabs: (block.item as IBlockTabs).tabs.map((tab) => tab.item.slug),
+          } as ILocalizedBlockTabs);
           break;
       }
     });
