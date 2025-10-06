@@ -83,11 +83,22 @@ export const useApplicationsStore = defineStore("applications", () => {
     );
   });
 
+  const getApplicationsWithStatus = computed(() => {
+    return (
+      statuses: ("upcoming" | "open" | "closed")[]
+    ): ILocalizedApplication[] => {
+      return localizedApplications.value.filter((application) =>
+        statuses.includes(application.status)
+      );
+    };
+  });
+
   // Expose the required properties, getters and actions
   return {
     fetch,
     isReady,
     applications, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
     localizedApplications,
+    getApplicationsWithStatus,
   };
 });

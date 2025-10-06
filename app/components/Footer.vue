@@ -76,8 +76,9 @@ const { t } = useI18n()
 const MENU_NAME = "footer"
 
 const menusStore = useMenusStore()
+const { getMenuWithName } = storeToRefs(menusStore)
 const menu = computed((): ILocalizedMenu | null =>
-  menusStore.getMenuWithName(MENU_NAME)
+  getMenuWithName.value(MENU_NAME)
 )
 
 const menuItemsFirstHalf = computed(() => {
