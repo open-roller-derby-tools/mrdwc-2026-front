@@ -5,5 +5,4 @@ export default {
     "./pages/**/*.vue",
     "./app.vue",
   ],
-  mode: "jit", // JIT = génération instantanée du CSS utile
-}
+};

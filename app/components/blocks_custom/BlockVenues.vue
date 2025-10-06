@@ -13,8 +13,8 @@
       <template #default="{ item }">
         <div class="relative w-full h-50">
           <NuxtImg
-            v-if="item.imageUrl"
-            :src="item.imageUrl"
+            v-if="item.image"
+            :src="`${config.public.apiBase}/assets/${item.image}`"
             :alt="item.name"
             class="w-full h-full object-cover"
           />
@@ -39,31 +39,26 @@ import { computed, onMounted } from "vue"
 import { useVenuesStore } from "~/stores/venues"
 import Venue from "../partials/Venue.vue"
 
+const config = useRuntimeConfig();
 const venuesStore = useVenuesStore()
 const { t } = useI18n()
 
 // Filtrer venues qui ont une image pour le carousel
 const venuesWithImages = computed(() =>
-  venuesStore.localizedVenues.filter((venue) => venue.imageUrl)
+  venuesStore.localizedVenues.filter((venue) => venue.image)
 )
 
 // UI responsive du carousel
 const carouselUI = {
   item: "basis-1/2 sm:basis-1/3 md:basis-1/4 self-stretch p-2",
 }
-
-// Fetch venues si pas encore prêt
-onMounted(async () => {
-  if (!venuesStore.isReady) await venuesStore.fetch()
-  console.log("Venues loaded:", venuesStore.localizedVenues)
-  console.log("Venues with images:", venuesWithImages.value)
-})
 </script>
 
 <style scoped>
 .UCarousel .u-carousel-item img {
   transition: transform 0.3s ease;
 }
+
 .UCarousel .u-carousel-item img:hover {
   transform: scale(1.05);
 }

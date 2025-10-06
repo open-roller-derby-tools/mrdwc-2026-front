@@ -4,7 +4,6 @@
       src="/background@2x.png"
       :alt="t('image_alts.image_logo')"
       format="webp"
-      placeholder="blur"
       class="object-contain object-left-top absolute top-0 left-0 w-full h-180"
       preload
       priority
