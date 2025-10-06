@@ -7,40 +7,42 @@
  - function()s become actions
  */
 
-import { defineStore } from "pinia";
+import { defineStore } from "pinia"
 import type {
   ILocalizedVenue,
   IVenue,
   IVenuesRequestData,
-} from "~~/types/custom";
+} from "~~/types/custom"
 
+/**
+ * Fetch data from the API.
+ */
 export const useVenuesStore = defineStore("venues", () => {
-  const isReady = ref<boolean>(false);
-  const venues = ref<IVenue[] | null>(null);
+  const config = useRuntimeConfig()
+  const isReady = ref(false)
+  const venues = ref<ILocalizedVenue[]>([])
 
-  /**
-   * Fetch data from the API.
-   */
   async function fetch() {
     try {
-      const fields = {
-        name: true,
-        type: true,
-        address: true,
-        map_url: true,
-        image: true,
-      };
+      const fields = "name,type,address,map_url,image.id,image.filename_disk"
       const { data } = await $fetch<IVenuesRequestData>(
-        buildRESTURL("venues", fields).href
-      );
-      venues.value = data;
-      isReady.value = true;
-      return data;
+        `${config.public.apiBase}/items/venues?fields=${fields}`
+      )
+
+      venues.value = data.map((venue) => ({
+        ...venue,
+        imageUrl: venue.image
+          ? `${config.public.apiBase}/assets/${venue.image.filename_disk}`
+          : undefined,
+      }))
+
+      isReady.value = true
+      return venues.value
     } catch (error) {
-      console.error("Error fetching venues:", error);
-      isReady.value = false;
-      venues.value = null;
-      throw error;
+      console.error("Error fetching venues:", error)
+      isReady.value = false
+      venues.value = []
+      throw error
     }
   }
 
@@ -48,18 +50,9 @@ export const useVenuesStore = defineStore("venues", () => {
    * Return an array of localized venues.
    * This getter does nothing but recasting the values from IVenue to ILocalizedVenue, since there is no translation
    */
-  const localizedVenues = computed((): ILocalizedVenue[] => {
-    if (!venues.value) return [];
-    return venues.value.map<ILocalizedVenue>(
-      (venue) => venue as ILocalizedVenue
-    );
-  });
+  const localizedVenues = computed(() => venues.value)
 
   // Expose the required properties, getters and actions
-  return {
-    fetch,
-    isReady,
-    venues, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
-    localizedVenues,
-  };
-});
+
+  return { fetch, isReady, venues, localizedVenues }
+})
