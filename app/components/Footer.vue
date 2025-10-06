@@ -1,5 +1,6 @@
 <template>
   <footer class="flex flex-col bg-blue-text mt-auto justify-self-end">
+    <BlockSponsors></BlockSponsors>
     <div class="maxed padded flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end">
       <!-- Logo -->
       <NuxtImg
@@ -69,6 +70,7 @@ import type {
 } from "~~/types/custom"
 
 import Socials from "@/components/Socials.vue"
+import BlockSponsors from "./blocks_custom/BlockSponsors.vue"
 
 const { t } = useI18n()
 const MENU_NAME = "footer"

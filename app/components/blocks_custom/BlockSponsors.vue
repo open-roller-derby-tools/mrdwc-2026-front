@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul>
+    <ul class="flex gap-6 justify-center bg-red-text p-6">
       <li
         v-for="sponsor, i in sponsorsStore.localizedSponsors"
         :key="`sponsor_${i}`"
@@ -11,6 +11,7 @@
           :src="`${config.public.apiBase}/assets/${sponsor.logo}`"
           :alt="sponsor.name"
           :title="sponsor.name"
+          class="h-24"
         >
       </li>
     </ul>
