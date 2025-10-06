@@ -136,6 +136,7 @@ export interface IBlockWrapper {
 export interface IPage {
   slug: string;
   classes: string;
+  header_image: string;
   blocks: IBlockWrapper[];
   translations: IPageTranslation[];
 }
@@ -149,6 +150,7 @@ export interface IPageTranslation extends ITranslation {
 export interface ILocalizedPage {
   slug: string;
   classes: string;
+  header_image: string;
   show_title: boolean;
   title: string;
   menu_title: string;

@@ -1,5 +1,5 @@
 <template>
-  <div class="maxed padded mb-8">
+  <div class="maxed padded my-8">
     <iframe
       id="haWidget"
       allowtransparency="true"
