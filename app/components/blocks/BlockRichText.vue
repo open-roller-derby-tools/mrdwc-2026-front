@@ -6,7 +6,11 @@
   >
     <div class="maxed padded">
       <div :class="elementClasses">
-        <h2 v-if="data.title">{{ data.title }}</h2>
+        <h2
+          v-if="data.title"
+          v-html="formattedTitle"
+          class="flex gap-8 items-center"
+        ></h2>
         <div
           v-if="data.content"
           v-html="data.content"
@@ -62,6 +66,19 @@ const elementClasses = computed(() => {
   }
   return classes.join(" ")
 })
+
+const formattedTitle = computed(() => {
+  if (!props.data.title) return ""
+
+  const regex = /\[([^\]]+)\]/g
+  return props.data.title.replace(regex, '<span class="title-badge">$1</span>')
+})
 </script>
 
-<style></style>
+<style>
+@reference "~/assets/css/main.css";
+
+.title-badge {
+  @apply text-blue-text text-base bg-yellow px-3 py-1 rounded-full font-cabin normal-case;
+}
+</style>
