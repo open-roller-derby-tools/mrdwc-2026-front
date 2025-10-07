@@ -124,11 +124,33 @@ export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
   column_b_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null;
 }
 
+// Tabs
+export interface IBlockTabs {
+  anchor_id: string;
+  classes: string;
+  tabs: IPageWrapper[];
+}
+
+export interface ILocalizedBlockTabs extends ILocalizedBlock {
+  anchor_id: string;
+  classes: string;
+  tabs: string[]; // Each tab will have a slug reference to the related page, no need for more
+}
+
 // Page Block Wrapper
 export interface IBlockWrapper {
   sort: number;
   collection: string;
-  item: IBlockRichText | IBlockCustom | IBlockTwoColumns;
+  item: IBlockRichText | IBlockCustom | IBlockTwoColumns | IBlockTabs;
+}
+
+// Page Wrapper
+export interface IPageWrapper {
+  sort: number | null;
+  collection: "pages";
+  item: {
+    slug: string;
+  };
 }
 
 // PAGES
@@ -159,6 +181,7 @@ export interface ILocalizedPage {
         | ILocalizedBlockRichText
         | ILocalizedBlockCustom
         | ILocalizedBlockTwoColumns
+        | ILocalizedBlockTabs
       )[]
     | null;
 }
