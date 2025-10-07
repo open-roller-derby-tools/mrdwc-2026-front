@@ -13,23 +13,36 @@ export interface IMenu {
 }
 
 export interface IMenuTranslation extends ITranslation {
+  display_name: string;
   items: IMenuItemWrapper[];
 }
 
 export interface IMenuItemWrapper {
   sort: number;
-  collection: "pages" | "custom_links";
-  item: IPage | ICustomLink;
+  collection: "pages" | "custom_links" | "menus";
+  item: IPage | ICustomLink | IMenu;
 }
 
 export interface ILocalizedMenuItem {
-  collection: "pages" | "custom_links";
+  collection: "pages" | "custom_links" | "menus";
+}
+
+export interface ILocalizedMenuMenuItem extends ILocalizedMenuItem {
+  name: string;
+  display_name: string;
 }
 
 export interface ILocalizedMenu {
   name: string;
   classes: string;
-  items: (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[] | null;
+  display_name: string;
+  items:
+    | (
+        | ILocalizedPageMenuItem
+        | ILocalizedCustomLinkMenuItem
+        | ILocalizedMenuMenuItem
+      )[]
+    | null;
 }
 
 export interface IMenusRequestData {

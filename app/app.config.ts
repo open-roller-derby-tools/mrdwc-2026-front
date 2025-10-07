@@ -14,6 +14,9 @@ export default defineAppConfig({
             root: " bg-blue-text/70 rounded-full border-1 border-white/20 backdrop-blur-sm shadow-lg",
             item: "min-w-0 py-0 group",
             link: "font-shoulders text-xl text-toned text-white px-4 py-3 group-first:pl-6",
+            childLink: "font-shoulders text-xl text-toned text-white",
+            viewport:
+              "bg-blue-text/70 rounded-xl border-1 border-white/20 backdrop-blur-sm shadow-lg",
           },
         },
         {
@@ -22,6 +25,7 @@ export default defineAppConfig({
           active: true,
           class: {
             link: "bg-white/30 text-white group-first:rounded-l-full",
+            childLink: "before:bg-white/30",
           },
         },
         {
@@ -29,6 +33,7 @@ export default defineAppConfig({
           variant: "header",
           class: {
             link: "font-shoulders text-white text-2xl px-4 py-3",
+            childList: "border-0",
           },
         },
         {
@@ -63,4 +68,4 @@ export default defineAppConfig({
       },
     },
   },
-})
+});
