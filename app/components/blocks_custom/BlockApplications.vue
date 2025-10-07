@@ -28,6 +28,8 @@ import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
 import { computed, ref, onMounted, onBeforeUnmount } from "vue"
 import Application from "../partials/Application.vue"
 
+import { useWindowSize } from "@vueuse/core"
+
 const { t } = useI18n()
 const applicationsStore = useApplicationsStore()
 const { getApplicationsWithStatus } = storeToRefs(applicationsStore)
@@ -43,7 +45,8 @@ const breakpoints = useBreakpoints(breakpointsTailwind, {
 const smOrSmaller = breakpoints.smallerOrEqual("sm")
 
 // --- Largeur de fenêtre (pour évaluer le nombre d’items visibles)
-const windowWidth = ref(window.innerWidth)
+
+const { width: windowWidth } = useWindowSize()
 const handleResize = () => (windowWidth.value = window.innerWidth)
 onMounted(() => window.addEventListener("resize", handleResize))
 onBeforeUnmount(() => window.removeEventListener("resize", handleResize))
