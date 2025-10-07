@@ -33,6 +33,7 @@ const props = defineProps<{
   data: ILocalizedBlockTabs
 }>()
 
+const localePath = useLocalePath()
 const route = useRoute()
 const activeSlug = ref<string | undefined>(undefined)
 
@@ -53,7 +54,7 @@ const activePage = computed((): ILocalizedPage | null => {
 
 const activateTab = (slug: string) => {
   activeSlug.value = slug
-  navigateTo(`${route.path}#${slug}`)
+  navigateTo(localePath(`${route.path}#${slug}`))
 }
 </script>
 
