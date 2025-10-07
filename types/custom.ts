@@ -13,23 +13,36 @@ export interface IMenu {
 }
 
 export interface IMenuTranslation extends ITranslation {
-  items: IMenuItemWrapper[]
+  display_name: string;
+  items: IMenuItemWrapper[];
 }
 
 export interface IMenuItemWrapper {
-  sort: number
-  collection: "pages" | "custom_links"
-  item: IPage | ICustomLink
+  sort: number;
+  collection: "pages" | "custom_links" | "menus";
+  item: IPage | ICustomLink | IMenu;
 }
 
 export interface ILocalizedMenuItem {
-  collection: "pages" | "custom_links"
+  collection: "pages" | "custom_links" | "menus";
+}
+
+export interface ILocalizedMenuMenuItem extends ILocalizedMenuItem {
+  name: string;
+  display_name: string;
 }
 
 export interface ILocalizedMenu {
-  name: string
-  classes: string
-  items: (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[] | null
+  name: string;
+  classes: string;
+  display_name: string;
+  items:
+    | (
+        | ILocalizedPageMenuItem
+        | ILocalizedCustomLinkMenuItem
+        | ILocalizedMenuMenuItem
+      )[]
+    | null;
 }
 
 export interface IMenusRequestData {
@@ -126,11 +139,33 @@ export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
   column_b_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null
 }
 
+// Tabs
+export interface IBlockTabs {
+  anchor_id: string;
+  classes: string;
+  tabs: IPageWrapper[];
+}
+
+export interface ILocalizedBlockTabs extends ILocalizedBlock {
+  anchor_id: string;
+  classes: string;
+  tabs: string[]; // Each tab will have a slug reference to the related page, no need for more
+}
+
 // Page Block Wrapper
 export interface IBlockWrapper {
-  sort: number
-  collection: string
-  item: IBlockRichText | IBlockCustom | IBlockTwoColumns
+  sort: number;
+  collection: string;
+  item: IBlockRichText | IBlockCustom | IBlockTwoColumns | IBlockTabs;
+}
+
+// Page Wrapper
+export interface IPageWrapper {
+  sort: number | null;
+  collection: "pages";
+  item: {
+    slug: string;
+  };
 }
 
 // PAGES
@@ -161,6 +196,7 @@ export interface ILocalizedPage {
         | ILocalizedBlockRichText
         | ILocalizedBlockCustom
         | ILocalizedBlockTwoColumns
+        | ILocalizedBlockTabs
       )[]
     | null
 }
