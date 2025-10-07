@@ -47,12 +47,12 @@ const getShortCode = (code: string) => code.slice(0, 2)
 @reference "~/assets/css/main.css";
 
 .select {
-  @apply relative bg-yellow text-blue-dark w-[62px] h-[32px] rounded-t-2xl px-3 py-1 select-none flex items-center justify-between gap-2;
-  @apply font-shoulders font-bold uppercase;
+  @apply relative bg-yellow  text-blue-dark w-[62px] h-[32px] rounded-t-2xl px-3 py-1 select-none flex items-center justify-between gap-2;
+  @apply font-shoulders font-bold uppercase text-base;
 }
 
 .dropdown {
   @apply absolute left-0 bottom-0 z-110 translate-y-full w-full rounded-b-2xl overflow-hidden bg-yellow text-blue-dark select-none flex-col;
-  @apply font-shoulders font-bold uppercase;
+  @apply font-shoulders font-bold uppercase text-base;
 }
 </style>

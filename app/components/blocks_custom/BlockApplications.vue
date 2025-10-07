@@ -10,7 +10,11 @@
       prev-icon="i-lucide-chevron-left"
       next-icon="i-lucide-chevron-right"
       :items="activeApplications"
-      :ui="{ item: 'basis-full md:basis-1/2 lg:basis-1/3 self-stretch', dots: 'relative bottom-0 mt-4' }"
+      :ui="{
+        item: 'basis-full md:basis-1/2 lg:basis-1/3 self-stretch',
+        dots: 'relative bottom-0 mt-4',
+        dot: 'bg-white/70 border-1 border-white data-[state=active]:bg-red-light',
+      }"
     >
       <Application :application="item"></Application>
     </UCarousel>
@@ -25,7 +29,8 @@ import Application from "../partials/Application.vue"
 const { t } = useI18n()
 const applicationsStore = useApplicationsStore()
 const { getApplicationsWithStatus } = storeToRefs(applicationsStore)
-const activeApplications = computed(() => getApplicationsWithStatus.value(["open", "upcoming"])
+const activeApplications = computed(() =>
+  getApplicationsWithStatus.value(["open", "upcoming"])
 )
 
 // Responsive

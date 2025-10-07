@@ -4,10 +4,15 @@
     <UCarousel
       v-if="venuesWithImages.length"
       v-slot="{ item }"
+      loop
+      autoplay
+      :autoplay-interval="1000"
       :items="venuesWithImages"
       dots
       :ui="{
         item: 'w-full self-stretch p-0 rounded-none',
+        dots: 'absolute bottom-2  ',
+        dot: 'bg-white/70 border-1 border-white data-[state=active]:bg-red-light',
       }"
       class="w-full border-white border-1 overflow-hidden rounded-t-2xl relative"
     >
@@ -37,7 +42,7 @@ import { computed, onMounted } from "vue"
 import { useVenuesStore } from "~/stores/venues"
 import Venue from "../partials/Venue.vue"
 
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
 const venuesStore = useVenuesStore()
 const { t } = useI18n()
 
@@ -45,27 +50,6 @@ const { t } = useI18n()
 const venuesWithImages = computed(() =>
   venuesStore.localizedVenues.filter((venue) => venue.image)
 )
-
-// UI responsive du carousel
-const carouselUI = {
-  item: "basis-1/2 sm:basis-1/3 md:basis-1/4 self-stretch p-2",
-}
 </script>
 
-<style scoped>
-.UCarousel .u-carousel-item img {
-  transition: transform 0.3s ease;
-}
-
-.UCarousel .u-carousel-item img:hover {
-  transform: scale(1.05);
-}
-
-.UCarousel .u-carousel-dots {
-  position: absolute !important;
-  bottom: 1rem !important;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-</style>
+<style scoped></style>

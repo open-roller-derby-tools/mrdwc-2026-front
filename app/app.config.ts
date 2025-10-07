@@ -11,9 +11,9 @@ export default defineAppConfig({
           orientation: "horizontal",
           variant: "header",
           class: {
-            root: " bg-blue-text/70 rounded-full border-1 border-white/20 backdrop-blur-sm shadow-lg",
+            root: " bg-blue-text/70 rounded-full border-1 border-white/20 backdrop-blur-sm shadow-lg overflow-hidden",
             item: "min-w-0 py-0 group",
-            link: "font-shoulders text-xl text-toned text-white px-4 py-3 group-first:pl-6",
+            link: "font-shoulders text-xl text-toned text-white px-4 py-3 group-first:pl-6 transition-colors duration-300 ease-out hover:bg-white/10",
           },
         },
         {
@@ -28,7 +28,7 @@ export default defineAppConfig({
           orientation: "vertical",
           variant: "header",
           class: {
-            link: "font-shoulders text-white text-2xl px-4 py-3",
+            link: "font-shoulders text-white text-2xl px-4 py-3 transition-colors duration-300 ease-out hover:bg-white/10",
           },
         },
         {

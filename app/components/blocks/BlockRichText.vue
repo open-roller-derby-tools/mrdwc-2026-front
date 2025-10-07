@@ -11,10 +11,7 @@
           v-html="formattedTitle"
           class="flex gap-8 items-center"
         ></h2>
-        <div
-          v-if="data.content"
-          v-html="data.content"
-        ></div>
+        <div v-if="data.content" v-html="data.content"></div>
       </div>
     </div>
   </div>
