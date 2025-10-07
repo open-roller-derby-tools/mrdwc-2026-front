@@ -28,7 +28,7 @@
     @apply scroll-smooth;
   }
   body {
-    @apply bg-blue text-white font-cabin text-lg sm:text-base min-h-screen;
+    @apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
   }
   h1 {
     @apply font-shoulders font-bold text-4xl sm:text-[64px] mb-6 uppercase;
@@ -40,7 +40,7 @@
     @apply font-shoulders text-3xl sm:text-[40px] mb-4 uppercase;
   }
   .block-rich-text p {
-    @apply mb-4;
+    @apply mb-4 text-xl;
   }
   em {
     @apply text-yellow;
