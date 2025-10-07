@@ -27,18 +27,20 @@
         color="info"
         trailing-icon="i-lucide-arrow-right"
         size="xl"
-        class="rounded-lg font-shoulders uppercase text-2xl text-secondary px-4 justify-between !gap-1"
+        class="rounded-lg font-shoulders uppercase text-2xl text-secondary px-4 justify-between group hover:bg-yellow"
         :ui="{
-          leadingIcon: 'size-7',
+          trailingIcon:
+            'size-[32px] transition-transform duration-200 group-hover:translate-x-1',
         }"
         :to="applicationURL"
-        >{{ t("applications.apply") }}</UButton
       >
+        {{ t("applications.apply") }}
+      </UButton>
       <UButton
         v-else
         icon="i-lucide-arrow-down-right"
         size="xl"
-        class="font-shoulders uppercase text-2xl text-secondary px-0 group"
+        class="font-shoulders uppercase text-2xl text-secondary px-0 group gap-1"
         :ui="{
           leadingIcon:
             'text-blue-light size-[32px] transition-transform duration-200 group-hover:-rotate-90',
