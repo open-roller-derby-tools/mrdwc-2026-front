@@ -7,7 +7,7 @@
  - function()s become actions
  */
 
-import { defineStore } from "pinia";
+import { defineStore } from "pinia"
 import type {
   IBlockCustom,
   IBlockRichText,
@@ -19,12 +19,12 @@ import type {
   ILocalizedPage,
   IPage,
   IPagesRequestData,
-} from "~~/types/custom";
+} from "~~/types/custom"
 
 export const usePagesStore = defineStore("pages", () => {
-  const { locale, fallbackLocale } = useI18n();
-  const isReady = ref<boolean>(false);
-  const pages = ref<IPage[] | null>(null);
+  const { locale, fallbackLocale } = useI18n()
+  const isReady = ref<boolean>(false)
+  const pages = ref<IPage[] | null>(null)
 
   /**
    * Fetch data from the API.
@@ -77,18 +77,18 @@ export const usePagesStore = defineStore("pages", () => {
           title: true,
           menu_title: true,
         },
-      };
+      }
       const { data } = await $fetch<IPagesRequestData>(
         buildRESTURL("pages", fields).href
-      );
-      pages.value = data;
-      isReady.value = true;
-      return data;
+      )
+      pages.value = data
+      isReady.value = true
+      return data
     } catch (error) {
-      console.error("Error fetching pages:", error);
-      isReady.value = false;
-      pages.value = null;
-      throw error;
+      console.error("Error fetching pages:", error)
+      isReady.value = false
+      pages.value = null
+      throw error
     }
   }
 
@@ -98,10 +98,10 @@ export const usePagesStore = defineStore("pages", () => {
   const hasPageWithSlug = computed(() => {
     return (slug: string): boolean => {
       // Find page from slug
-      const page = pages.value?.find((page) => page.slug === slug);
-      return page != undefined;
-    };
-  });
+      const page = pages.value?.find((page) => page.slug === slug)
+      return page != undefined
+    }
+  })
 
   /**
    * Get the fully localized page for the requested slug.
@@ -109,18 +109,18 @@ export const usePagesStore = defineStore("pages", () => {
   const getPageWithSlug = computed(() => {
     return (slug: string): ILocalizedPage | null => {
       // Find page from slug
-      const page = pages.value?.find((page) => page.slug === slug);
-      if (!page) return null;
+      const page = pages.value?.find((page) => page.slug === slug)
+      if (!page) return null
 
       // Get translation from current locale
       let pageTranslation = page.translations.find(
         (translation) => translation.languages_code === locale.value
-      );
+      )
       // If not found, try fallback locale
       if (!pageTranslation) {
         pageTranslation = page.translations.find(
           (translation) => translation.languages_code === fallbackLocale.value
-        );
+        )
       }
 
       // Return the final ILocalizedPage object
@@ -133,16 +133,16 @@ export const usePagesStore = defineStore("pages", () => {
         menu_title:
           pageTranslation?.menu_title || pageTranslation?.title || page.slug,
         blocks: localizeBlocks(page.blocks),
-      };
-    };
-  });
+      }
+    }
+  })
 
   const localizeBlocks = (blocks: IBlockWrapper[]) => {
     const localizedBlocks: (
       | ILocalizedBlockRichText
       | ILocalizedBlockCustom
       | ILocalizedBlockTwoColumns
-    )[] = [];
+    )[] = []
 
     blocks.forEach((block) => {
       switch (block.collection) {
@@ -153,13 +153,13 @@ export const usePagesStore = defineStore("pages", () => {
             block.item as IBlockRichText
           ).translations.find(
             (translation) => translation.languages_code === locale.value
-          );
+          )
           // If not found, try fallback locale
           if (!blockTranslation) {
             blockTranslation = (block.item as IBlockRichText).translations.find(
               (translation) =>
                 translation.languages_code === fallbackLocale.value
-            );
+            )
           }
           // If found, add block to list
           if (blockTranslation) {
@@ -172,9 +172,9 @@ export const usePagesStore = defineStore("pages", () => {
               classes: block.item.classes,
               title: blockTranslation?.title || "",
               content: blockTranslation?.content || "",
-            } as ILocalizedBlockRichText);
+            } as ILocalizedBlockRichText)
           }
-          break;
+          break
 
         // Custom block
         case "blocks_custom":
@@ -184,28 +184,30 @@ export const usePagesStore = defineStore("pages", () => {
             name: (block.item as IBlockCustom).name,
             anchor_id: block.item.anchor_id,
             classes: block.item.classes,
-          } as ILocalizedBlockCustom);
-          break;
+          } as ILocalizedBlockCustom)
+          break
 
         // Two-columns block
         case "blocks_two_columns":
+          const blockTwoColumns = block.item as IBlockTwoColumns
           // Add block to list
           localizedBlocks.push({
             collection: block.collection,
-            anchor_id: block.item.anchor_id,
-            classes: block.item.classes,
+            anchor_id: blockTwoColumns.anchor_id,
+            classes: blockTwoColumns.classes,
+            reverse_mobile: blockTwoColumns.reverse_mobile || false,
             column_a_blocks: localizeBlocks(
               (block.item as IBlockTwoColumns).column_a_blocks
             ),
             column_b_blocks: localizeBlocks(
               (block.item as IBlockTwoColumns).column_b_blocks
             ),
-          } as ILocalizedBlockTwoColumns);
-          break;
+          } as ILocalizedBlockTwoColumns)
+          break
       }
-    });
-    return localizedBlocks;
-  };
+    })
+    return localizedBlocks
+  }
 
   // Expose the required properties, getters and actions
   return {
@@ -214,5 +216,5 @@ export const usePagesStore = defineStore("pages", () => {
     pages, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
     hasPageWithSlug,
     getPageWithSlug,
-  };
-});
+  }
+})

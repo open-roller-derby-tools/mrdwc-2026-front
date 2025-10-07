@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 sm:px-0">
+  <div class="px-6 sm:px-0 py-6">
     <!-- Carousel images -->
     <UCarousel
       v-if="venuesWithImages.length"
@@ -27,7 +27,9 @@
 
     <!-- Bloc texte des venues -->
     <div class="bg-white text-blue-text rounded-b-2xl p-6">
-      <p class="font-shoulders font-medium text-4xl mb-6">{{ t("venues") }}</p>
+      <p class="font-shoulders font-medium text-4xl md:text-5xl mb-6">
+        {{ t("venues") }}
+      </p>
       <Venue
         v-for="(venue, i) in venuesStore.localizedVenues"
         :key="`venue_${i}`"

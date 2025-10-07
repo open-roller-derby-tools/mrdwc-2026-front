@@ -48,7 +48,7 @@ const elementClasses = computed(() => {
   const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push("my-12 px-6 py-4 rounded-2xl")
+    classes.push("my-6 px-6 py-4 rounded-2xl")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")
