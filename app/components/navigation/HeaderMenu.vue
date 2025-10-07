@@ -18,7 +18,10 @@
         content-orientation="vertical"
         variant="header"
       >
-        <template #list-trailing v-if="!smOrSmaller">
+        <template
+          #list-trailing
+          v-if="!smOrSmaller"
+        >
           <LangSwitcher class="mr-3" />
         </template>
       </UNavigationMenu>
@@ -34,6 +37,7 @@ import LangSwitcher from "./LangSwitcher.vue"
 import type {
   ILocalizedCustomLinkMenuItem,
   ILocalizedMenu,
+  ILocalizedMenuMenuItem,
   ILocalizedPageMenuItem,
 } from "~~/types/custom"
 
@@ -48,7 +52,8 @@ const breakpoints = useBreakpoints(breakpointsTailwind, {
 const smOrSmaller = breakpoints.smallerOrEqual("sm")
 
 // Menu data
-const MENU_NAME = "header"
+// const MENU_NAME = "header"
+const MENU_NAME = "test_menu"
 const menusStore = useMenusStore()
 const { getMenuWithName } = storeToRefs(menusStore)
 
@@ -57,27 +62,48 @@ const menu = computed((): ILocalizedMenu | null =>
 )
 
 const convertedMenuItems = computed<NavigationMenuItem[]>(
-  () =>
-    menu.value?.items?.map((item) => {
-      switch (item.collection) {
-        case "pages":
-          return {
-            label: (item as ILocalizedPageMenuItem).menu_title,
-            to: localePath(`/${(item as ILocalizedPageMenuItem).slug}`),
-            class: item.classes,
-            onSelect: emitLinkSelected,
-          }
-        case "custom_links":
-          return {
-            label: (item as ILocalizedCustomLinkMenuItem).label,
-            to: (item as ILocalizedCustomLinkMenuItem).url,
-            class: item.classes,
-            target: (item as ILocalizedCustomLinkMenuItem).target,
-            onSelect: emitLinkSelected,
-          }
-      }
-    }) || []
+  () => {
+    if (!menu.value || !menu.value.items) return []
+    return convertMenuItems(menu.value.items)
+  }
 )
+
+const convertMenuItems = (items: (
+  | ILocalizedPageMenuItem
+  | ILocalizedCustomLinkMenuItem
+  | ILocalizedMenuMenuItem
+)[]): NavigationMenuItem[] => {
+  return items.map((item) => {
+    switch (item.collection) {
+      case "pages":
+        return {
+          label: (item as ILocalizedPageMenuItem).menu_title,
+          to: localePath(`/${(item as ILocalizedPageMenuItem).slug}`),
+          class: (item as ILocalizedPageMenuItem).classes,
+          onSelect: emitLinkSelected,
+        }
+      case "custom_links":
+        return {
+          label: (item as ILocalizedCustomLinkMenuItem).label,
+          to: (item as ILocalizedCustomLinkMenuItem).url,
+          class: (item as ILocalizedPageMenuItem).classes,
+          target: (item as ILocalizedCustomLinkMenuItem).target,
+          onSelect: emitLinkSelected,
+        }
+      case "menus":
+        let submenu = getMenuWithName.value((item as ILocalizedMenuMenuItem).name)
+        if (!submenu || !submenu.items)
+          return {
+            label: (item as ILocalizedMenuMenuItem).display_name,
+          }
+        return {
+          label: (item as ILocalizedMenuMenuItem).display_name,
+          children: convertMenuItems(submenu.items),
+          onSelect: emitLinkSelected,
+        }
+    }
+  })
+}
 
 // Contrôle d'affichage
 const menuReady = ref(false)

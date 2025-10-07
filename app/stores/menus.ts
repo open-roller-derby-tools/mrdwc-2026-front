@@ -165,9 +165,6 @@ export const useMenusStore = defineStore("menus", () => {
           break;
         // Menu
         case "menus":
-          console.log("Localizing menu item...", value.item);
-          console.log("Item translation:", itemTranslation);
-
           typedItem = value.item as IMenu;
           typedItemTranslation = itemTranslation as IMenuTranslation;
           result.push({

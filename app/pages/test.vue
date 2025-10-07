@@ -20,7 +20,6 @@
 <script lang="ts" setup>
 import type { ILocalizedCustomLinkMenuItem, ILocalizedMenu, ILocalizedMenuMenuItem, ILocalizedPageMenuItem } from '~~/types/custom'
 
-
 // Menu data
 const MENU_NAME = "test_menu"
 const menusStore = useMenusStore()
@@ -29,8 +28,6 @@ const { getMenuWithName } = storeToRefs(menusStore)
 const menu = computed((): ILocalizedMenu | null =>
   getMenuWithName.value(MENU_NAME)
 )
-console.log(menu.value);
-
 </script>
 
 <style></style>
