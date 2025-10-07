@@ -126,13 +126,13 @@ export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
 
 // Tabs
 export interface IBlockTabs {
-  anchor_id: string | null;
-  classes: string | null;
+  anchor_id: string;
+  classes: string;
   tabs: IPageWrapper[];
 }
 
 export interface ILocalizedBlockTabs extends ILocalizedBlock {
-  anchor_id: string | null;
+  anchor_id: string;
   classes: string;
   tabs: string[]; // Each tab will have a slug reference to the related page, no need for more
 }
