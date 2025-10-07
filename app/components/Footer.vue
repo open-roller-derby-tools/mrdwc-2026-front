@@ -1,7 +1,9 @@
 <template>
   <footer class="flex flex-col bg-blue-text mt-auto justify-self-end">
     <BlockSponsors></BlockSponsors>
-    <div class="maxed padded flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end">
+    <div
+      class="maxed padded flex flex-col sm:flex-row w-full p-4 gap-8 items-center justify-end"
+    >
       <!-- Logo -->
       <NuxtImg
         src="/mrdwc_logo@2x.png"
@@ -10,7 +12,7 @@
       />
 
       <!-- Liens en colonnes -->
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full">
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 w-auto sm:w-full">
         <!-- Colonne 1 -->
         <ul class="flex flex-col gap-4">
           <li

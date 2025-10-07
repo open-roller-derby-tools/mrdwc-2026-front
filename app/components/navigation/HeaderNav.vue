@@ -1,5 +1,13 @@
 <template>
-  <div class="relative">
+  <div
+    class="w-full h-[100px] z-90 absolute p-3 before:content-[''] before:fixed before:t-0 before:h-[100px] before:inset-0 before:bg-gradient-to-b before:from-[#121356] before:to-transparent before:transition-opacity before:duration-500"
+  >
+    <!-- Logo -->
+    <NuxtImg
+      src="/mrdwc_logo@2x.png"
+      :alt="t('image_alts.image_logo')"
+      class="w-[120px] z-100 relative self-center sm:self-auto block sm:hidden"
+    />
     <USlideover
       v-if="smOrSmaller"
       v-model:open="open"
@@ -35,6 +43,8 @@ import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
 import LangSwitcher from "./LangSwitcher.vue"
 import HeaderMenu from "./HeaderMenu.vue"
 import type { IconsIconExternalLink } from "#components"
+
+const { t } = useI18n()
 
 const breakpoints = useBreakpoints(breakpointsTailwind, {
   ssrWidth: breakpointsTailwind.xl,

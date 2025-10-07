@@ -1,8 +1,11 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="block-two-columns maxed px-0 py-0 sm:py-12 sm:px-12 grid sm:grid-cols-2 gap-6"
-    :classes="data.classes"
+    :class="[
+      'block-two-columns flex md:flex-row maxed px-0 py-6 sm:pt-12 sm:px-12 gap-6 items-center',
+      data.classes,
+      data.reverse_mobile ? 'flex-col-reverse' : 'flex-col',
+    ]"
   >
     <div>
       <component
