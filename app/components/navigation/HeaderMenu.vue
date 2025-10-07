@@ -52,8 +52,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind, {
 const smOrSmaller = breakpoints.smallerOrEqual("sm")
 
 // Menu data
-// const MENU_NAME = "header"
-const MENU_NAME = "test_menu"
+const MENU_NAME = "header"
 const menusStore = useMenusStore()
 const { getMenuWithName } = storeToRefs(menusStore)
 
@@ -92,7 +91,7 @@ const convertMenuItems = (items: (
         }
       case "menus":
         let submenu = getMenuWithName.value((item as ILocalizedMenuMenuItem).name)
-        if (!submenu || !submenu.items)
+        if (!submenu || !submenu.items || (item as ILocalizedMenuMenuItem).name == MENU_NAME)
           return {
             label: (item as ILocalizedMenuMenuItem).display_name,
           }
