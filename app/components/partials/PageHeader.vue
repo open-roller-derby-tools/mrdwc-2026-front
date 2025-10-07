@@ -4,8 +4,12 @@
     :class="wrapperClasses"
     :style="backgroundStyles"
   >
-    <div class="bg-linear-to-b from-blue to-blue-text absolute inset-0 mix-blend-color"></div>
-    <div class="bg-linear-to-b from-blue-text/0 to-blue-text from-10% to-90% absolute inset-0"></div>
+    <div
+      class="bg-linear-to-b from-blue to-blue-text absolute inset-0 mix-blend-color"
+    ></div>
+    <div
+      class="bg-linear-to-b from-blue-text/0 to-blue-text from-10% to-90% absolute inset-0"
+    ></div>
     <div class="maxed padded">
       <slot></slot>
     </div>
@@ -13,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
 const img = useImage()
 
 const props = defineProps<{

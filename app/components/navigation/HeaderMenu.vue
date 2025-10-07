@@ -18,10 +18,7 @@
         content-orientation="vertical"
         variant="header"
       >
-        <template
-          #list-trailing
-          v-if="!smOrSmaller"
-        >
+        <template #list-trailing v-if="!smOrSmaller">
           <LangSwitcher class="mr-3" />
         </template>
       </UNavigationMenu>
@@ -60,18 +57,18 @@ const menu = computed((): ILocalizedMenu | null =>
   getMenuWithName.value(MENU_NAME)
 )
 
-const convertedMenuItems = computed<NavigationMenuItem[]>(
-  () => {
-    if (!menu.value || !menu.value.items) return []
-    return convertMenuItems(menu.value.items)
-  }
-)
+const convertedMenuItems = computed<NavigationMenuItem[]>(() => {
+  if (!menu.value || !menu.value.items) return []
+  return convertMenuItems(menu.value.items)
+})
 
-const convertMenuItems = (items: (
-  | ILocalizedPageMenuItem
-  | ILocalizedCustomLinkMenuItem
-  | ILocalizedMenuMenuItem
-)[]): NavigationMenuItem[] => {
+const convertMenuItems = (
+  items: (
+    | ILocalizedPageMenuItem
+    | ILocalizedCustomLinkMenuItem
+    | ILocalizedMenuMenuItem
+  )[]
+): NavigationMenuItem[] => {
   return items.map((item) => {
     switch (item.collection) {
       case "pages":
@@ -90,8 +87,14 @@ const convertMenuItems = (items: (
           onSelect: emitLinkSelected,
         }
       case "menus":
-        let submenu = getMenuWithName.value((item as ILocalizedMenuMenuItem).name)
-        if (!submenu || !submenu.items || (item as ILocalizedMenuMenuItem).name == MENU_NAME)
+        let submenu = getMenuWithName.value(
+          (item as ILocalizedMenuMenuItem).name
+        )
+        if (
+          !submenu ||
+          !submenu.items ||
+          (item as ILocalizedMenuMenuItem).name == MENU_NAME
+        )
           return {
             label: (item as ILocalizedMenuMenuItem).display_name,
           }

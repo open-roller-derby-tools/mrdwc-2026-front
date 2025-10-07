@@ -153,7 +153,7 @@ export const usePagesStore = defineStore("pages", () => {
       | ILocalizedBlockCustom
       | ILocalizedBlockTwoColumns
       | ILocalizedBlockTabs
-    )[] = [];
+    )[] = []
 
     blocks.forEach((block) => {
       switch (block.collection) {
@@ -206,6 +206,8 @@ export const usePagesStore = defineStore("pages", () => {
             collection: block.collection,
             anchor_id: blockTwoColumns.anchor_id,
             classes: blockTwoColumns.classes,
+            title: blockTwoColumns.title,
+            subtitle: blockTwoColumns.subtitle,
             reverse_mobile: blockTwoColumns.reverse_mobile || false,
             column_a_blocks: localizeBlocks(
               (block.item as IBlockTwoColumns).column_a_blocks
@@ -213,8 +215,8 @@ export const usePagesStore = defineStore("pages", () => {
             column_b_blocks: localizeBlocks(
               (block.item as IBlockTwoColumns).column_b_blocks
             ),
-          } as ILocalizedBlockTwoColumns);
-          break;
+          } as ILocalizedBlockTwoColumns)
+          break
 
         // Tabs block
         case "blocks_tabs":
@@ -224,8 +226,8 @@ export const usePagesStore = defineStore("pages", () => {
             anchor_id: block.item.anchor_id,
             classes: block.item.classes,
             tabs: (block.item as IBlockTabs).tabs.map((tab) => tab.item.slug),
-          } as ILocalizedBlockTabs);
-          break;
+          } as ILocalizedBlockTabs)
+          break
       }
     })
     return localizedBlocks

@@ -2,26 +2,43 @@
   <div
     :id="data.anchor_id"
     :class="[
-      'block-two-columns flex md:flex-row maxed px-0 py-6 sm:pt-12 sm:px-12 gap-6 items-center',
+      'block-two-columns flex flex-col maxed px-0 py-6 sm:pt-12 sm:px-12',
       data.classes,
-      data.reverse_mobile ? 'flex-col-reverse' : 'flex-col',
     ]"
   >
-    <div>
-      <component
-        v-for="(block, i) in data.column_a_blocks"
-        :key="`block_a_${i}`"
-        :is="getBlockComponent(block.collection)"
-        :data="block"
-      ></component>
+    <!-- TITRES -->
+    <div class="px-6 sm:px-0 w-full text-left mb-6">
+      <h2 v-if="data.title" class="font-bold mb-2">
+        {{ data.title }}
+      </h2>
+      <h3 v-if="data.subtitle" class="font-light text-gray-600">
+        {{ data.subtitle }}
+      </h3>
     </div>
-    <div>
-      <component
-        v-for="(block, i) in data.column_b_blocks"
-        :key="`block_b_${i}`"
-        :is="getBlockComponent(block.collection)"
-        :data="block"
-      ></component>
+
+    <!-- CONTENU DEUX COLONNES -->
+    <div
+      :class="[
+        'flex flex-col md:flex-row gap-6 items-start',
+        data.reverse_mobile ? 'flex-col-reverse md:flex-row-reverse' : '',
+      ]"
+    >
+      <div class="flex-1 w-full sm:w-auto">
+        <component
+          v-for="(block, i) in data.column_a_blocks"
+          :key="`block_a_${i}`"
+          :is="getBlockComponent(block.collection)"
+          :data="block"
+        />
+      </div>
+      <div class="flex-1 w-full sm:w-auto">
+        <component
+          v-for="(block, i) in data.column_b_blocks"
+          :key="`block_b_${i}`"
+          :is="getBlockComponent(block.collection)"
+          :data="block"
+        />
+      </div>
     </div>
   </div>
 </template>
