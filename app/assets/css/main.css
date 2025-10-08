@@ -31,13 +31,13 @@
     @apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
   }
   h1 {
-    @apply font-shoulders font-bold text-4xl sm:text-[64px] mb-6 uppercase;
+    @apply font-shoulders font-bold text-4xl sm:text-[56px] mb-6 uppercase;
   }
   h2 {
-    @apply font-shoulders font-bold text-3xl sm:text-[48px] mb-4 uppercase;
+    @apply font-shoulders font-bold text-3xl sm:text-[42px] mb-4 uppercase;
   }
   h3 {
-    @apply font-shoulders text-3xl sm:text-[40px] mb-4 uppercase;
+    @apply font-shoulders text-3xl sm:text-[38px] mb-4 uppercase;
   }
 
   .block-rich-text p {
@@ -53,7 +53,7 @@
     @apply sm:max-w-5xl sm:mx-auto;
   }
   .padded {
-    @apply px-6 sm:px-12;
+    @apply p-6 sm:px-12;
   }
 }
 

@@ -28,7 +28,7 @@ const wrapperClasses = computed(() => {
   const classes: string[] = [props.data.classes]
   // Set color and add vertical padding if background_style is "wide"
   if (props.data.background_style == "wide") {
-    classes.push("py-6")
+    classes.push("py-10")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")
@@ -48,7 +48,7 @@ const elementClasses = computed(() => {
   const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push("my-12 px-6 py-4 rounded-2xl")
+    classes.push(" px-6 py-4 rounded-2xl")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")

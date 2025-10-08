@@ -8,14 +8,14 @@
       <!-- TITRES -->
       <div
         v-if="data.title || data.subtitle"
-        class="px-6 sm:px-0 w-full text-left mb-6"
+        class="px-0 w-full text-left mb-6 sm:mb-10"
       >
         <h2
           v-if="data.title"
           v-html="formattedTitle"
-          class="flex gap-8 items-center font-bold mb-2"
+          class="flex gap-8 items-center font-bold"
         ></h2>
-        <h3 v-if="data.subtitle" class="font-light text-gray-600">
+        <h3 v-if="data.subtitle" class="font-light text-white mt-4">
           {{ data.subtitle }}
         </h3>
       </div>
@@ -56,7 +56,7 @@ const props = defineProps<{
 }>()
 
 const wrapperClasses = computed(() => {
-  const classes: string[] = [props.data.classes, "py-6"]
+  const classes: string[] = [props.data.classes, "py-0 sm:py-10"]
   switch (props.data.background) {
     case "white":
       classes.push("bg-white text-blue-text")
@@ -86,7 +86,7 @@ const formattedTitle = computed(() => {
   @apply py-0;
 
   .maxed.padded {
-    @apply sm:px-0;
+    @apply p-0;
   }
 }
 </style>

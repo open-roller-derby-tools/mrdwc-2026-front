@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative w-full bg-center bg-cover"
+    class="relative w-full bg-center bg-cover sm:mb-6"
     :class="wrapperClasses"
     :style="backgroundStyles"
   >
@@ -30,7 +30,7 @@ const backgroundStyles = computed(() => {
 })
 
 const wrapperClasses = computed(() => {
-  return props.image ? "h-48 sm:h-96" : "h-40 sm:h-64"
+  return props.image ? "h-48 sm:h-96" : "h-50 sm:h-64"
 })
 </script>
 

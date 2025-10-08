@@ -11,12 +11,12 @@
             class="text-yellow size-12 sm:size-16"
           />{{ page.title }}
         </h1>
-        <!-- Logo 
+        <!-- Logo -->
         <NuxtImg
           src="/mrdwc_logo@2x.png"
           :alt="t('image_alts.image_logo')"
-          class="absolute r-0 w-64 self-center sm:self-auto hidden md:block"
-        />-->
+          class="absolute -bottom-17 right-3 w-52 self-center sm:self-auto hidden md:block"
+        />
       </PageHeader>
       <component
         v-for="(block, i) in page.blocks"
