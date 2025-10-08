@@ -158,16 +158,16 @@ export const usePagesStore = defineStore("pages", () => {
     blocks.forEach((block) => {
       switch (block.collection) {
         // RichText block
-        case "blocks_richtext":
+        case "blocks_richtext": {
           // Get translation from current locale
-          let blockTranslation = (
-            block.item as IBlockRichText
-          ).translations.find(
+          const translations = (block.item as IBlockRichText).translations || []
+
+          let blockTranslation = translations.find(
             (translation) => translation.languages_code === locale.value
           )
-          // If not found, try fallback locale
+
           if (!blockTranslation) {
-            blockTranslation = (block.item as IBlockRichText).translations.find(
+            blockTranslation = translations.find(
               (translation) =>
                 translation.languages_code === fallbackLocale.value
             )
@@ -186,9 +186,10 @@ export const usePagesStore = defineStore("pages", () => {
             } as ILocalizedBlockRichText)
           }
           break
+        }
 
         // Custom block
-        case "blocks_custom":
+        case "blocks_custom": {
           // Add block to list
           localizedBlocks.push({
             collection: block.collection,
@@ -197,29 +198,35 @@ export const usePagesStore = defineStore("pages", () => {
             classes: block.item.classes,
           } as ILocalizedBlockCustom)
           break
+        }
 
         // Two-columns block
-        case "blocks_two_columns":
+        case "blocks_two_columns": {
           const blockTwoColumns = block.item as IBlockTwoColumns
-          // Add block to list
+
+          const translations = blockTwoColumns.translations || []
+          console.log("blocks_two_columns", blockTwoColumns)
+          const blockTranslation =
+            translations.find((t) => t.languages_code === locale.value) ||
+            translations.find((t) => t.languages_code === fallbackLocale.value)
+          console.log("blockTwoColumns", blockTwoColumns)
           localizedBlocks.push({
             collection: block.collection,
             anchor_id: blockTwoColumns.anchor_id,
             classes: blockTwoColumns.classes,
-            title: blockTwoColumns.title,
-            subtitle: blockTwoColumns.subtitle,
+            title: blockTranslation?.title || "",
+            subtitle: blockTranslation?.subtitle || "",
+            background: blockTwoColumns.background,
             reverse_mobile: blockTwoColumns.reverse_mobile || false,
-            column_a_blocks: localizeBlocks(
-              (block.item as IBlockTwoColumns).column_a_blocks
-            ),
-            column_b_blocks: localizeBlocks(
-              (block.item as IBlockTwoColumns).column_b_blocks
-            ),
+            column_a_blocks: localizeBlocks(blockTwoColumns.column_a_blocks),
+            column_b_blocks: localizeBlocks(blockTwoColumns.column_b_blocks),
           } as ILocalizedBlockTwoColumns)
+
           break
+        }
 
         // Tabs block
-        case "blocks_tabs":
+        case "blocks_tabs": {
           // Add block to list
           localizedBlocks.push({
             collection: block.collection,
@@ -228,6 +235,7 @@ export const usePagesStore = defineStore("pages", () => {
             tabs: (block.item as IBlockTabs).tabs.map((tab) => tab.item.slug),
           } as ILocalizedBlockTabs)
           break
+        }
       }
     })
     return localizedBlocks

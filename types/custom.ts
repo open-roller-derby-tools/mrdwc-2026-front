@@ -126,11 +126,16 @@ export interface ILocalizedBlockCustom extends ILocalizedBlock {
 export interface IBlockTwoColumns {
   anchor_id: string
   classes: string
-  title: string
-  subtitle: string
+  background: string
   reverse_mobile: boolean
   column_a_blocks: IBlockWrapper[]
   column_b_blocks: IBlockWrapper[]
+  translations: IBlockTwoColumnsTranslation[]
+}
+
+export interface IBlockTwoColumnsTranslation extends ITranslation {
+  title: string
+  subtitle: string
 }
 
 export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
@@ -138,6 +143,7 @@ export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
   classes: string
   title: string
   subtitle: string
+  background: string
   reverse_mobile: boolean
   column_a_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null
   column_b_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null

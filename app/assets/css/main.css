@@ -41,7 +41,7 @@
   }
 
   .block-rich-text p {
-    @apply mb-4 text-lg sm:text-xl;
+    @apply mb-4 last:mb-0 text-base sm:text-lg;
   }
   em {
     @apply text-yellow;

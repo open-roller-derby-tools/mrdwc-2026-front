@@ -48,7 +48,7 @@ const elementClasses = computed(() => {
   const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push("my-6 px-6 py-4 rounded-2xl")
+    classes.push("my-12 px-6 py-4 rounded-2xl")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")
@@ -77,5 +77,35 @@ const formattedTitle = computed(() => {
 
 .title-badge {
   @apply text-blue-text text-base bg-yellow px-3 py-1 rounded-full font-cabin normal-case;
+}
+
+.block-rich-text a.rich-link--button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-shoulders);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 24px;
+  color: var(--color-secondary);
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.block-rich-text a.rich-link--button::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-blue-light);
+  -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
+  -webkit-mask-size: contain;
+  mask: url("/arrow-down-right.svg") no-repeat center;
+  mask-size: contain;
+  transition: transform 0.2s;
+}
+
+.block-rich-text a.rich-link--button:hover::before {
+  transform: rotate(-90deg);
 }
 </style>
