@@ -13,10 +13,11 @@ export default defineAppConfig({
           class: {
             root: " bg-blue-text/70 rounded-full border-1 border-white/20 backdrop-blur-sm shadow-lg",
             item: "min-w-0 py-0 group",
-            link: "font-shoulders text-xl text-toned text-white px-4 py-3 group-first:pl-6 group-first:rounded-l-full transition-colors duration-300 ease-out hover:bg-white/10",
-            childLink: "font-shoulders text-xl text-toned text-white",
+            link: "relative font-shoulders text-xl text-toned text-white px-4 py-3 group-first:pl-6 group-first:rounded-l-full transition-colors duration-300 ease-out hover:bg-white/10",
+            childLink:
+              "font-shoulders text-xl text-toned text-white hover:bg-white/40 rounded-md hover:text-white",
             viewport:
-              "bg-blue-text/70 rounded-xl border-1 border-white/20 backdrop-blur-sm shadow-lg",
+              "top-2 bg-blue-text/70 border-white/20 backdrop-blur-sm shadow-lg",
           },
         },
         {
@@ -68,4 +69,4 @@ export default defineAppConfig({
       },
     },
   },
-});
+})

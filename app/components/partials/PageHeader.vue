@@ -10,7 +10,7 @@
     <div
       class="bg-linear-to-b from-blue-text/0 to-blue-text from-10% to-90% absolute inset-0"
     ></div>
-    <div class="maxed padded">
+    <div class="maxed relative h-full px-0 sm:px-3">
       <slot></slot>
     </div>
   </div>

@@ -4,7 +4,7 @@
       <PageHeader :image="page.header_image">
         <h1
           v-if="page.show_title"
-          class="flex gap-2 items-center mb-2 absolute bottom-2 sm:bottom-0"
+          class="flex gap-2 items-center mb-2 absolute bottom-2 left-4 sm:left-8 md:left-8 sm:bottom-0 ]"
         >
           <UIcon
             name="i-lucide-arrow-down-right"
@@ -15,7 +15,7 @@
         <NuxtImg
           src="/mrdwc_logo@2x.png"
           :alt="t('image_alts.image_logo')"
-          class="absolute -bottom-17 right-3 w-52 self-center sm:self-auto hidden md:block"
+          class="absolute -bottom-17 right-8 md:right-6 lg:right-2 w-52 self-center sm:self-auto hidden md:block"
         />
       </PageHeader>
       <component
