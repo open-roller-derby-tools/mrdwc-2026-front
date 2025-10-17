@@ -11,7 +11,10 @@
           v-html="formattedTitle"
           class="flex gap-8 items-center"
         ></h2>
-        <div v-if="data.content" v-html="data.content"></div>
+        <div
+          v-if="data.content"
+          v-html="data.content"
+        ></div>
       </div>
     </div>
   </div>
@@ -80,22 +83,31 @@ const formattedTitle = computed(() => {
 }
 
 /* Lien avec flèche */
-.block-rich-text a.rich-arrow--link {
-  @apply inline-flex items-center gap-1.5 font-shoulders font-medium uppercase text-[24px] text-secondary p-0 transition-transform duration-200;
-}
+.block-rich-text {
+  a.rich-arrow--link {
+    @apply inline-flex items-center gap-1 font-shoulders p-0 transition-colors duration-200;
 
-.block-rich-text a.rich-arrow--link::before {
-  content: "";
-  @apply inline-block w-8 h-8 bg-blue-light;
-  -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
-  -webkit-mask-size: contain;
-  mask: url("/arrow-down-right.svg") no-repeat center;
-  mask-size: contain;
-  transition: transform 0.2s;
-}
+    &::before {
+      @apply content-[""] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
+    }
 
-.block-rich-text a.rich-arrow--link:hover::before {
-  transform: rotate(-90deg);
+    &:hover {
+      @apply text-yellow;
+
+      &::before {
+        @apply -rotate-90;
+      }
+    }
+  }
+
+  &.bg-yellow,
+  &.bg-white {
+    a.rich-arrow--link {
+      &:hover {
+        @apply text-blue-dark;
+      }
+    }
+  }
 }
 
 /* Bouton jaune */

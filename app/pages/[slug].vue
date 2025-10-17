@@ -15,7 +15,7 @@
         <NuxtImg
           src="/mrdwc_logo@2x.png"
           :alt="t('image_alts.image_logo')"
-          class="absolute -bottom-17 right-8 md:right-6 lg:right-2 w-52 self-center sm:self-auto hidden md:block"
+          class="absolute -bottom-17 z-10 right-8 md:right-6 lg:right-2 w-52 self-center sm:self-auto hidden md:block"
         />
       </PageHeader>
       <component
