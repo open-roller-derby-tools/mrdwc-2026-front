@@ -2,7 +2,7 @@
   <div :id="data.anchor_id" :class="[data.classes, 'relative']">
     <!-- Fond bleu desktop -->
     <div
-      class="absolute hidden sm:block inset-x-0 top-[46px] h-[46px] bg-blue-text"
+      class="absolute hidden sm:block inset-x-0 top-[22px] h-[22px] bg-blue-text"
     ></div>
 
     <!-- VERSION MOBILE -->

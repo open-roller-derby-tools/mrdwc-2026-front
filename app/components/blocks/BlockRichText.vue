@@ -82,6 +82,7 @@ const formattedTitle = computed(() => {
   @apply text-blue-text text-base bg-yellow px-3 py-1 rounded-full font-cabin normal-case;
 }
 
+/* Lien avec flèche */
 .block-rich-text a.rich-arrow--link {
   @apply inline-flex items-center gap-1 font-shoulders p-0 transition-transform duration-200;
 
@@ -94,41 +95,24 @@ const formattedTitle = computed(() => {
   }
 }
 
-/* Yellow button */
+/* Bouton jaune */
 a.rich-yellow--button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-
-  font-family: var(--font-shoulders);
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-secondary);
-
-  background-color: var(--color-info);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
+  @apply inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline;
 }
 
 a.rich-yellow--button:hover {
-  background-color: var(--color-yellow);
+  @apply bg-yellow;
 }
 
+/* Icône flèche du bouton */
 a.rich-yellow--button::after {
   content: "";
-  display: inline-block;
-  width: 32px;
-  height: 32px;
+  @apply inline-block w-8 h-8;
   background-color: currentColor;
   -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
   -webkit-mask-size: contain;
   mask: url("/arrow-down-right.svg") no-repeat center;
   mask-size: contain;
-
   transform: translateX(0) rotate(-45deg);
   transition: transform 0.2s ease;
 }
