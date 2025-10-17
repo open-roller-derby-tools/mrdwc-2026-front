@@ -84,16 +84,22 @@ const formattedTitle = computed(() => {
 
 /* Lien avec flèche */
 .block-rich-text {
+  a {
+    @apply transition-colors duration-200 underline underline-offset-2;
+
+    &:hover {
+      @apply text-yellow;
+    }
+  }
+
   a.rich-arrow--link {
-    @apply inline-flex items-center gap-1 font-shoulders p-0 transition-colors duration-200;
+    @apply inline-flex items-center gap-1 font-shoulders p-0 no-underline;
 
     &::before {
       @apply content-[""] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
     }
 
     &:hover {
-      @apply text-yellow;
-
       &::before {
         @apply -rotate-90;
       }
@@ -102,6 +108,8 @@ const formattedTitle = computed(() => {
 
   &.bg-yellow,
   &.bg-white {
+
+    a,
     a.rich-arrow--link {
       &:hover {
         @apply text-blue-dark;
