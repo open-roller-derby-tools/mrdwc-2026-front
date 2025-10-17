@@ -11,7 +11,10 @@
           v-html="formattedTitle"
           class="flex gap-8 items-center"
         ></h2>
-        <div v-if="data.content" v-html="data.content"></div>
+        <div
+          v-if="data.content"
+          v-html="data.content"
+        ></div>
       </div>
     </div>
   </div>
@@ -80,33 +83,15 @@ const formattedTitle = computed(() => {
 }
 
 .block-rich-text a.rich-arrow--link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-family: var(--font-shoulders);
-  font-weight: 500;
-  text-transform: uppercase;
-  font-size: 24px;
-  color: var(--color-secondary);
-  padding: 0;
-  transition: transform 0.2s;
-}
+  @apply inline-flex items-center gap-1 font-shoulders p-0 transition-transform duration-200;
 
-.block-rich-text a.rich-arrow--link::before {
-  content: "";
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  background-color: var(--color-blue-light);
-  -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
-  -webkit-mask-size: contain;
-  mask: url("/arrow-down-right.svg") no-repeat center;
-  mask-size: contain;
-  transition: transform 0.2s;
-}
+  &::before {
+    @apply content-[""] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
+  }
 
-.block-rich-text a.rich-arrow--link:hover::before {
-  transform: rotate(-90deg);
+  &:hover::before {
+    @apply -rotate-90;
+  }
 }
 
 /* Yellow button */
