@@ -22,7 +22,7 @@
           #list-trailing
           v-if="!smOrSmaller"
         >
-          <LangSwitcher class="mr-3" />
+          <LangSwitcher class="sm:mr-3" />
         </template>
       </UNavigationMenu>
     </div>
