@@ -13,36 +13,36 @@ export interface IMenu {
 }
 
 export interface IMenuTranslation extends ITranslation {
-  display_name: string;
-  items: IMenuItemWrapper[];
+  display_name: string
+  items: IMenuItemWrapper[]
 }
 
 export interface IMenuItemWrapper {
-  sort: number;
-  collection: "pages" | "custom_links" | "menus";
-  item: IPage | ICustomLink | IMenu;
+  sort: number
+  collection: "pages" | "custom_links" | "menus"
+  item: IPage | ICustomLink | IMenu
 }
 
 export interface ILocalizedMenuItem {
-  collection: "pages" | "custom_links" | "menus";
+  collection: "pages" | "custom_links" | "menus"
 }
 
 export interface ILocalizedMenuMenuItem extends ILocalizedMenuItem {
-  name: string;
-  display_name: string;
+  name: string
+  display_name: string
 }
 
 export interface ILocalizedMenu {
-  name: string;
-  classes: string;
-  display_name: string;
+  name: string
+  classes: string
+  display_name: string
   items:
     | (
         | ILocalizedPageMenuItem
         | ILocalizedCustomLinkMenuItem
         | ILocalizedMenuMenuItem
       )[]
-    | null;
+    | null
 }
 
 export interface IMenusRequestData {
@@ -126,14 +126,24 @@ export interface ILocalizedBlockCustom extends ILocalizedBlock {
 export interface IBlockTwoColumns {
   anchor_id: string
   classes: string
+  background: string
   reverse_mobile: boolean
   column_a_blocks: IBlockWrapper[]
   column_b_blocks: IBlockWrapper[]
+  translations: IBlockTwoColumnsTranslation[]
+}
+
+export interface IBlockTwoColumnsTranslation extends ITranslation {
+  title: string
+  subtitle: string
 }
 
 export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
   anchor_id: string
   classes: string
+  title: string
+  subtitle: string
+  background: string
   reverse_mobile: boolean
   column_a_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null
   column_b_blocks: (ILocalizedBlockRichText | ILocalizedBlockCustom)[] | null
@@ -141,31 +151,31 @@ export interface ILocalizedBlockTwoColumns extends ILocalizedBlock {
 
 // Tabs
 export interface IBlockTabs {
-  anchor_id: string;
-  classes: string;
-  tabs: IPageWrapper[];
+  anchor_id: string
+  classes: string
+  tabs: IPageWrapper[]
 }
 
 export interface ILocalizedBlockTabs extends ILocalizedBlock {
-  anchor_id: string;
-  classes: string;
-  tabs: string[]; // Each tab will have a slug reference to the related page, no need for more
+  anchor_id: string
+  classes: string
+  tabs: string[] // Each tab will have a slug reference to the related page, no need for more
 }
 
 // Page Block Wrapper
 export interface IBlockWrapper {
-  sort: number;
-  collection: string;
-  item: IBlockRichText | IBlockCustom | IBlockTwoColumns | IBlockTabs;
+  sort: number
+  collection: string
+  item: IBlockRichText | IBlockCustom | IBlockTwoColumns | IBlockTabs
 }
 
 // Page Wrapper
 export interface IPageWrapper {
-  sort: number | null;
-  collection: "pages";
+  sort: number | null
+  collection: "pages"
   item: {
-    slug: string;
-  };
+    slug: string
+  }
 }
 
 // PAGES
