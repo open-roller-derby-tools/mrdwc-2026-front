@@ -79,7 +79,7 @@ const formattedTitle = computed(() => {
   @apply text-blue-text text-base bg-yellow px-3 py-1 rounded-full font-cabin normal-case;
 }
 
-.block-rich-text a.rich-link--button {
+.block-rich-text a.rich-arrow--link {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -92,7 +92,7 @@ const formattedTitle = computed(() => {
   transition: transform 0.2s;
 }
 
-.block-rich-text a.rich-link--button::before {
+.block-rich-text a.rich-arrow--link::before {
   content: "";
   display: inline-block;
   width: 32px;
@@ -105,7 +105,50 @@ const formattedTitle = computed(() => {
   transition: transform 0.2s;
 }
 
-.block-rich-text a.rich-link--button:hover::before {
+.block-rich-text a.rich-arrow--link:hover::before {
   transform: rotate(-90deg);
+}
+
+/* Yellow button */
+a.rich-yellow--button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+
+  font-family: var(--font-shoulders);
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+
+  background-color: var(--color-info);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+a.rich-yellow--button:hover {
+  background-color: var(--color-yellow);
+}
+
+a.rich-yellow--button::after {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-color: currentColor;
+  -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
+  -webkit-mask-size: contain;
+  mask: url("/arrow-down-right.svg") no-repeat center;
+  mask-size: contain;
+
+  transform: translateX(0) rotate(-45deg);
+  transition: transform 0.2s ease;
+}
+
+a.rich-yellow--button:hover::after {
+  transform: translateX(4px) rotate(-45deg);
 }
 </style>
