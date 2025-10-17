@@ -17,7 +17,7 @@ export default defineAppConfig({
             childLink:
               "font-shoulders text-xl text-toned text-white hover:bg-white/40 rounded-md hover:text-white",
             viewport:
-              "top-2 bg-blue-text/70 border-white/20 backdrop-blur-sm shadow-lg",
+              "top-2 bg-blue-text/90 rounded-xl border-1 border-white/20 shadow-lg",
           },
         },
         {

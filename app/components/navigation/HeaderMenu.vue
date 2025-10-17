@@ -18,8 +18,11 @@
         content-orientation="vertical"
         variant="header"
       >
-        <template #list-trailing v-if="!smOrSmaller">
-          <LangSwitcher class="mr-3" />
+        <template
+          #list-trailing
+          v-if="!smOrSmaller"
+        >
+          <LangSwitcher class="sm:mr-3" />
         </template>
       </UNavigationMenu>
     </div>

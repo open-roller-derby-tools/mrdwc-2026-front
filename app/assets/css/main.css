@@ -2,8 +2,8 @@
 @import "@nuxt/ui";
 
 @theme {
-  --font-cabin: "Cabin", "sans-serif";
-  --font-shoulders: "Big Shoulders", "sans-serif";
+	--font-cabin: "Cabin", "sans-serif";
+	--font-shoulders: "Big Shoulders", "sans-serif";
 
   --color-blue-light: #40a8f5;
   --color-blue-text: #2a2c8f;
@@ -11,17 +11,17 @@
   --color-blue-dark: #121356;
   --color-blue-inactive: #4e51c3;
 
-  --color-yellow: #f3ba49;
+	--color-yellow: #f3ba49;
 
-  --color-red-text: #d33231;
-  --color-red-light: #fd4947;
+	--color-red-text: #d33231;
+	--color-red-light: #fd4947;
 
-  --ui-primary: var(--color-white);
-  --ui-secondary: var(--color-blue-text);
-  --ui-success: var(--color-yellow);
-  --ui-info: var(--color-yellow);
-  --ui-warning: var(--color-red-text);
-  --ui-error: var(--color-red-text);
+	--ui-primary: var(--color-white);
+	--ui-secondary: var(--color-blue-text);
+	--ui-success: var(--color-yellow);
+	--ui-info: var(--color-yellow);
+	--ui-warning: var(--color-red-text);
+	--ui-error: var(--color-red-text);
 }
 
 @layer base {
@@ -38,9 +38,8 @@
     @apply font-shoulders font-bold text-3xl sm:text-[42px] mb-4 uppercase;
   }
   h3 {
-    @apply font-shoulders text-3xl sm:text-[38px] mb-4 uppercase;
+    @apply font-shoulders text-2xl sm:text-[38px] mb-4 uppercase;
   }
-
   .block-rich-text p {
     @apply mb-4 last:mb-0 text-base sm:text-lg;
   }
@@ -59,7 +58,10 @@
 }
 
 @layer components {
-  a.calltoaction {
-    @apply !bg-red-light !text-white;
-  }
+	a.calltoaction {
+		@apply !bg-red-light !text-white;
+	}
+	h2[id^="reka-dialog-title"] {
+		@apply !mb-0;
+	}
 }
