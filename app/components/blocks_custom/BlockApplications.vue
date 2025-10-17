@@ -1,5 +1,5 @@
 <template>
-  <div class="maxed padded my-8">
+  <div class="maxed padded my-6 sm:my-10">
     <h2>{{ t("applications.title") }}</h2>
 
     <UCarousel
