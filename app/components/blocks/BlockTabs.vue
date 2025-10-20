@@ -10,6 +10,7 @@
       <div v-for="(slug, i) in data.tabs" :key="slug" class="mt-0.5 first:mt-0">
         <button
           @click="toggleTab(slug)"
+          :data-slug="slug"
           :class="[
             'flex items-center justify-between w-full px-6 py-3 text-blue-text font-shoulders font-semibold text-xl transition-colors duration-200',
             openSlug === slug
@@ -28,7 +29,7 @@
         <!-- Contenu mobile -->
         <transition name="slide">
           <div v-if="openSlug === slug" class="overflow-hidden">
-            <Tab :page="getPageWithSlug(slug)" class="" />
+            <Tab :page="getPageWithSlug(slug)" />
           </div>
         </transition>
       </div>
@@ -43,13 +44,13 @@
           v-for="(slug, i) in data.tabs"
           :key="slug"
           @click="activateTab(slug)"
+          :data-slug="slug"
           class="transition-colors duration-100 font-shoulders font-semibold text-xl px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
           :class="[
             activeSlug === slug
               ? 'bg-yellow text-blue-text'
               : 'bg-blue-inactive text-blue-text hover:bg-yellow transition-all duration-200',
           ]"
-          :data-slug="slug"
         >
           {{ getPageWithSlug(slug)?.menu_title || slug }}
           <UIcon
@@ -67,6 +68,7 @@
 </template>
 
 <script lang="ts" setup>
+import { nextTick } from "vue"
 import type { ILocalizedBlockTabs, ILocalizedPage } from "~~/types/custom"
 import Tab from "../partials/Tab.vue"
 
@@ -76,43 +78,91 @@ const props = defineProps<{
 
 const localePath = useLocalePath()
 const route = useRoute()
-const activeSlug = ref<string | undefined>(undefined)
+const router = useRouter()
+
+const activeSlug = ref<string | null>(null)
 const openSlug = ref<string | null>(null)
 
 const pagesStore = usePagesStore()
 const { getPageWithSlug } = pagesStore
 
-onMounted(() => {
-  const initialSlug =
-    props.data.tabs.find((slug) => slug === route.hash.slice(1)) ??
-    props.data.tabs[0]
+const setActiveFromHash = () => {
+  const slugFromHash = route.hash.slice(1)
+  const validSlug = props.data.tabs.find((slug) => slug === slugFromHash)
+  const newSlug = validSlug ?? props.data.tabs[0] ?? null
 
-  activeSlug.value = initialSlug
-  openSlug.value = initialSlug // synchronise mobile <-> desktop
+  activeSlug.value = newSlug
+  openSlug.value = newSlug
+}
+
+onMounted(() => {
+  setActiveFromHash()
 })
+
+watch(
+  () => route.hash,
+  () => {
+    setActiveFromHash()
+  }
+)
 
 const activePage = computed((): ILocalizedPage | null => {
-  if (activeSlug.value) return getPageWithSlug(activeSlug.value)
-  return null
+  return activeSlug.value ? getPageWithSlug(activeSlug.value) : null
 })
 
-/** Active un onglet desktop et ouvre le toggle mobile correspondant */
 const activateTab = (slug: string) => {
   activeSlug.value = slug
   openSlug.value = slug
-  navigateTo(localePath(`${route.path}#${slug}`))
+  router.replace({ hash: `#${slug}` })
 }
 
-/** Ouvre/ferme le toggle mobile, et synchronise avec desktop */
-const toggleTab = (slug: string) => {
-  openSlug.value = openSlug.value === slug ? null : slug
-  if (openSlug.value) activeSlug.value = openSlug.value
-}
+/**
+ * toggleTab : ouvre/ferme le toggle mobile.
+ * Si on ouvre, on attend le rendu + transition puis on scroll vers le bouton.
+ */
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-// (optionnel) garde la cohérence si activeSlug change ailleurs
-watch(activeSlug, (newSlug) => {
-  openSlug.value = newSlug
-})
+const toggleTab = async (slug: string) => {
+  const wasOpen = openSlug.value === slug
+  openSlug.value = wasOpen ? null : slug
+
+  if (!wasOpen && openSlug.value) {
+    // synchro URL / active
+    activeSlug.value = openSlug.value
+    router.replace({ hash: `#${openSlug.value}` })
+
+    // attendre le rendu du DOM et la transition d'ouverture
+    await nextTick()
+    // la transition CSS est 300ms dans ton style ; on attend un peu plus
+    await sleep(360)
+
+    // DEBUG : afficher l'état
+    console.debug("toggleTab: opened", {
+      slug,
+      openSlug: openSlug.value,
+      activeSlug: activeSlug.value,
+    })
+
+    // cibler le bouton (data-slug)
+    const buttonEl = document.querySelector(
+      `button[data-slug="${slug}"]`
+    ) as HTMLElement | null
+    if (!buttonEl) {
+      console.debug("toggleTab: bouton introuvable", slug)
+      return
+    }
+
+    // calculer la position (gérer header fixe)
+    const headerOffset = 80 // ajuste en fonction de ta hauteur de header fixe
+    const top =
+      buttonEl.getBoundingClientRect().top + window.scrollY - headerOffset
+
+    // debug info
+    console.debug("toggleTab: scrolling to", { top, headerOffset })
+
+    window.scrollTo({ top, behavior: "smooth" })
+  }
+}
 </script>
 
 <style scoped>
