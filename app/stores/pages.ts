@@ -187,6 +187,8 @@ export const usePagesStore = defineStore("pages", () => {
 								.background,
 							background_style: (block.item as IBlockRichText)
 								.background_style,
+							background_section: (block.item as IBlockRichText)
+								.background_section,
 							anchor_id: block.item.anchor_id,
 							classes: block.item.classes,
 							title: blockTranslation?.title || "",

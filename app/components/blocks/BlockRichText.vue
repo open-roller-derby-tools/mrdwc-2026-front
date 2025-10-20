@@ -44,6 +44,12 @@ const wrapperClasses = computed(() => {
         break
     }
   }
+  if (
+    props.data.background_style === "card" &&
+    props.data.background_section === "light_blue"
+  ) {
+    classes.push("bg-blue-text")
+  }
   return classes.join(" ")
 })
 
@@ -51,7 +57,7 @@ const elementClasses = computed(() => {
   const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push(" px-6 py-4 rounded-2xl")
+    classes.push(" px-6 py-4 my-6 rounded-2xl")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")
@@ -82,10 +88,37 @@ const formattedTitle = computed(() => {
   @apply text-blue-text text-base bg-yellow px-3 py-1 rounded-full font-cabin normal-case;
 }
 
-/* Lien avec flèche */
 .block-rich-text {
-  a {
-    @apply transition-colors duration-200 underline underline-offset-2;
+  h4 {
+    @apply text-yellow;
+  }
+
+  ul {
+    @apply mb-4;
+  }
+
+  p {
+    @apply mb-4 last:mb-0 text-base sm:text-lg;
+  }
+
+  em {
+    @apply text-yellow;
+  }
+
+  li {
+    @apply list-disc list-inside text-lg;
+  }
+
+  a:not(.rich-yellow--button) {
+    @apply relative inline-block transition-all duration-200;
+
+    &::after {
+      @apply content-[''] absolute left-0 bottom-0 h-0.5 bg-yellow w-1/3 transition-all duration-300 ease-in-out;
+    }
+
+    &:hover::after {
+      @apply w-full;
+    }
 
     &:hover {
       @apply text-yellow;
@@ -93,10 +126,10 @@ const formattedTitle = computed(() => {
   }
 
   a.rich-arrow--link {
-    @apply inline-flex items-center gap-1 font-shoulders p-0 no-underline;
+    @apply inline-flex text-white items-center gap-1 font-shoulders p-0 transition-colors duration-200 uppercase text-2xl -ml-2 after:hidden;
 
     &::before {
-      @apply content-[""] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
+      @apply content-[''] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
     }
 
     &:hover {
@@ -106,13 +139,26 @@ const formattedTitle = computed(() => {
     }
   }
 
-  &.bg-yellow,
-  &.bg-white {
+  .bg-yellow {
+    h4 {
+      @apply text-blue-dark;
+    }
 
-    a,
+    a.rich-arrow--link:hover {
+      @apply text-blue-dark;
+    }
+  }
+
+  .bg-white {
+    h4 {
+      @apply text-red-light;
+    }
+
     a.rich-arrow--link {
+      @apply text-blue-text;
+
       &:hover {
-        @apply text-blue-dark;
+        @apply text-red-light;
       }
     }
   }
@@ -120,17 +166,16 @@ const formattedTitle = computed(() => {
 
 /* Bouton jaune */
 a.rich-yellow--button {
-  @apply inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline;
+  @apply relative z-10 overflow-hidden inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline after:hidden hover:text-blue-text;
 }
 
 a.rich-yellow--button:hover {
-  @apply bg-yellow;
+  @apply bg-yellow w-auto;
 }
 
-/* Icône flèche du bouton */
 a.rich-yellow--button::after {
   content: "";
-  @apply inline-block w-8 h-8;
+  @apply inline-block w-8 h-8 relative;
   background-color: currentColor;
   -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
   -webkit-mask-size: contain;

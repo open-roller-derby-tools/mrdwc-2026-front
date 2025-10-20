@@ -1,13 +1,18 @@
 <template>
-  <div :id="data.anchor_id" :class="[data.classes, 'relative']">
+  <div
+    :id="data.anchor_id"
+    :class="[data.classes, 'relative']"
+  >
     <!-- Fond bleu desktop -->
-    <div
-      class="absolute hidden sm:block inset-x-0 top-[22px] h-[22px] bg-blue-text"
-    ></div>
+    <div class="absolute hidden sm:block inset-x-0 top-[22px] h-[22px] bg-blue-text"></div>
 
     <!-- VERSION MOBILE -->
     <div class="sm:hidden relative z-10 maxed mb-6">
-      <div v-for="(slug, i) in data.tabs" :key="slug" class="mt-0.5 first:mt-0">
+      <div
+        v-for="(slug, i) in data.tabs"
+        :key="slug"
+        class="mt-0.5 first:mt-0"
+      >
         <button
           @click="toggleTab(slug)"
           :class="[
@@ -27,8 +32,14 @@
 
         <!-- Contenu mobile -->
         <transition name="slide">
-          <div v-if="openSlug === slug" class="overflow-hidden">
-            <Tab :page="getPageWithSlug(slug)" class="" />
+          <div
+            v-if="openSlug === slug"
+            class="overflow-hidden"
+          >
+            <Tab
+              :page="getPageWithSlug(slug)"
+              class=""
+            />
           </div>
         </transition>
       </div>
@@ -36,9 +47,7 @@
 
     <!-- VERSION DESKTOP -->
     <div class="hidden sm:block relative z-10">
-      <ul
-        class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center"
-      >
+      <ul class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center">
         <li
           v-for="(slug, i) in data.tabs"
           :key="slug"
@@ -61,7 +70,11 @@
       </ul>
 
       <!-- Contenu desktop -->
-      <Tab v-if="activePage" :page="activePage" class="relative z-10" />
+      <Tab
+        v-if="activePage"
+        :page="activePage"
+        class="relative z-10"
+      />
     </div>
   </div>
 </template>
@@ -77,30 +90,42 @@ const props = defineProps<{
 const localePath = useLocalePath()
 const route = useRoute()
 const activeSlug = ref<string | undefined>(undefined)
-const openSlug = ref<string | null>(null)
-
-onMounted(() => {
-  activeSlug.value =
-    props.data.tabs.find((slug) => slug === route.hash.slice(1)) ??
-    props.data.tabs[0]
-})
+const openSlug = ref<string | undefined>(undefined)
 
 const pagesStore = usePagesStore()
-const { getPageWithSlug } = pagesStore // pas .value !
+const { getPageWithSlug } = pagesStore
+
+onMounted(() => {
+  const initialSlug =
+    props.data.tabs.find((slug) => slug === route.hash.slice(1)) ??
+    props.data.tabs[0]
+
+  activeSlug.value = initialSlug
+  openSlug.value = initialSlug // synchronise mobile <-> desktop
+})
 
 const activePage = computed((): ILocalizedPage | null => {
   if (activeSlug.value) return getPageWithSlug(activeSlug.value)
   return null
 })
 
+/** Active un onglet desktop et ouvre le toggle mobile correspondant */
 const activateTab = (slug: string) => {
   activeSlug.value = slug
+  openSlug.value = slug
   navigateTo(localePath(`${route.path}#${slug}`))
 }
 
+/** Ouvre/ferme le toggle mobile, et synchronise avec desktop */
 const toggleTab = (slug: string) => {
-  openSlug.value = openSlug.value === slug ? null : slug
+  openSlug.value = openSlug.value === slug ? undefined : slug
+  if (openSlug.value) activeSlug.value = openSlug.value
 }
+
+// (optionnel) garde la cohérence si activeSlug change ailleurs
+watch(activeSlug, (newSlug) => {
+  openSlug.value = newSlug
+})
 </script>
 
 <style scoped>
@@ -110,6 +135,7 @@ const toggleTab = (slug: string) => {
   max-height: 500px;
   opacity: 1;
 }
+
 .slide-enter-from,
 .slide-leave-to {
   max-height: 0;

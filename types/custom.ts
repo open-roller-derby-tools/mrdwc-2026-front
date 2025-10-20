@@ -89,6 +89,7 @@ export interface IBlockRichText {
   name: string
   background: string
   background_style: string
+  background_section: string
   anchor_id: string
   classes: string
   translations: IBlockRichTextTranslation[]
@@ -103,6 +104,7 @@ export interface ILocalizedBlockRichText extends ILocalizedBlock {
   name: string
   background: string
   background_style: string
+  background_section: string
   anchor_id: string
   classes: string
   title: string
