@@ -1,7 +1,7 @@
 <template>
-  <div :class="page.classes">
+  <div :class="page?.classes">
     <component
-      v-for="block, i in page.blocks"
+      v-for="block, i in page?.blocks"
       :key="`block_${i}`"
       :is="getBlockComponent(block.collection)"
       :data="block"
@@ -13,7 +13,7 @@
 import type { ILocalizedPage } from '~~/types/custom';
 
 const props = defineProps<{
-  page: ILocalizedPage
+  page: ILocalizedPage | null
 }>()
 
 </script>
