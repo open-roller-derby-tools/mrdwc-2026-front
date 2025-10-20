@@ -79,28 +79,40 @@ const route = useRoute()
 const activeSlug = ref<string | undefined>(undefined)
 const openSlug = ref<string | null>(null)
 
+const pagesStore = usePagesStore()
+const { getPageWithSlug } = pagesStore
+
 onMounted(() => {
-  activeSlug.value =
+  const initialSlug =
     props.data.tabs.find((slug) => slug === route.hash.slice(1)) ??
     props.data.tabs[0]
-})
 
-const pagesStore = usePagesStore()
-const { getPageWithSlug } = pagesStore // pas .value !
+  activeSlug.value = initialSlug
+  openSlug.value = initialSlug // synchronise mobile <-> desktop
+})
 
 const activePage = computed((): ILocalizedPage | null => {
   if (activeSlug.value) return getPageWithSlug(activeSlug.value)
   return null
 })
 
+/** Active un onglet desktop et ouvre le toggle mobile correspondant */
 const activateTab = (slug: string) => {
   activeSlug.value = slug
+  openSlug.value = slug
   navigateTo(localePath(`${route.path}#${slug}`))
 }
 
+/** Ouvre/ferme le toggle mobile, et synchronise avec desktop */
 const toggleTab = (slug: string) => {
   openSlug.value = openSlug.value === slug ? null : slug
+  if (openSlug.value) activeSlug.value = openSlug.value
 }
+
+// (optionnel) garde la cohérence si activeSlug change ailleurs
+watch(activeSlug, (newSlug) => {
+  openSlug.value = newSlug
+})
 </script>
 
 <style scoped>

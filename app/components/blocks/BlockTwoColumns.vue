@@ -23,7 +23,7 @@
       <!-- CONTENU DEUX COLONNES -->
       <div
         :class="[
-          'flex flex-col md:flex-row gap-6 items-center',
+          'flex flex-col md:flex-row gap-6 items-start',
           data.reverse_mobile ? 'flex-col-reverse' : '',
         ]"
       >
@@ -83,10 +83,14 @@ const formattedTitle = computed(() => {
 @reference "~/assets/css/main.css";
 
 .block-two-columns .block-rich-text {
-  @apply py-0;
+  @apply pt-0 last:pb-0;
 
   .maxed.padded {
     @apply p-0;
+  }
+
+  .bg-white {
+    @apply m-0;
   }
 }
 </style>

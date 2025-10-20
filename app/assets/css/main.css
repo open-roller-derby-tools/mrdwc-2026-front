@@ -2,69 +2,63 @@
 @import "@nuxt/ui";
 
 @theme {
-	--font-cabin: "Cabin", "sans-serif";
-	--font-shoulders: "Big Shoulders", "sans-serif";
+  --font-cabin: "Cabin", "sans-serif";
+  --font-shoulders: "Big Shoulders", "sans-serif";
 
-	--color-blue-light: #40a8f5;
-	--color-blue-text: #2a2c8f;
-	--color-blue: #1e2068;
-	--color-blue-dark: #121356;
-	--color-blue-inactive: #4e51c3;
+  --color-blue-light: #40a8f5;
+  --color-blue-text: #2a2c8f;
+  --color-blue: #1e2068;
+  --color-blue-dark: #121356;
+  --color-blue-inactive: #4e51c3;
 
-	--color-yellow: #f3ba49;
+  --color-yellow: #f3ba49;
 
-	--color-red-text: #d33231;
-	--color-red-light: #fd4947;
+  --color-red-text: #d33231;
+  --color-red-light: #fd4947;
 
-	--ui-primary: var(--color-white);
-	--ui-secondary: var(--color-blue-text);
-	--ui-success: var(--color-yellow);
-	--ui-info: var(--color-yellow);
-	--ui-warning: var(--color-red-text);
-	--ui-error: var(--color-red-text);
+  --ui-primary: var(--color-white);
+  --ui-secondary: var(--color-blue-text);
+  --ui-success: var(--color-yellow);
+  --ui-info: var(--color-yellow);
+  --ui-warning: var(--color-red-text);
+  --ui-error: var(--color-red-text);
 }
 
 @layer base {
-	html {
-		@apply scroll-smooth;
-	}
-	body {
-		@apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
-	}
-	h1 {
-		@apply font-shoulders font-bold text-4xl sm:text-[56px] mb-6 uppercase;
-	}
-	h2 {
-		@apply font-shoulders font-bold text-3xl sm:text-[42px] mb-4 uppercase;
-	}
-	h3 {
-		@apply font-shoulders text-2xl sm:text-[38px] mb-4 uppercase;
-	}
-	h4 {
-		@apply font-shoulders text-xl sm:text-[32px] mb-2;
-	}
-	.block-rich-text p {
-		@apply mb-4 last:mb-0 text-base sm:text-lg;
-	}
-	em {
-		@apply text-yellow;
-	}
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
+  }
+  h1 {
+    @apply font-shoulders font-bold text-4xl sm:text-[56px] mb-6 uppercase;
+  }
+  h2 {
+    @apply font-shoulders font-bold text-3xl sm:text-[42px] mb-4 uppercase;
+  }
+  h3 {
+    @apply font-shoulders text-2xl sm:text-[38px] mb-4 uppercase;
+  }
+  h4 {
+    @apply font-shoulders text-xl sm:text-[32px] mb-2;
+  }
 }
 
 @layer utilities {
-	.maxed {
-		@apply sm:max-w-5xl sm:mx-auto;
-	}
-	.padded {
-		@apply px-6 sm:px-12;
-	}
+  .maxed {
+    @apply sm:max-w-5xl sm:mx-auto;
+  }
+  .padded {
+    @apply px-6 sm:px-12;
+  }
 }
 
 @layer components {
-	a.calltoaction {
-		@apply !bg-red-light !text-white;
-	}
-	h2[id^="reka-dialog-title"] {
-		@apply !mb-0;
-	}
+  a.calltoaction {
+    @apply !bg-red-light !text-white;
+  }
+  h2[id^="reka-dialog-title"] {
+    @apply !mb-0;
+  }
 }
