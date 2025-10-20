@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="h-full bg-white text-blue-text rounded-2xl p-6 select-none flex flex-col gap-4"
-  >
+  <div class="h-full bg-white text-blue-text rounded-2xl p-6 select-none flex flex-col gap-4">
     <div>
       <h3 class="text-red-text uppercase font-shoulders text-2xl">
         {{ application.name }}
@@ -10,13 +8,21 @@
         {{ t(`applications.status_${application.status}`) }}
       </p>
     </div>
-    <div v-if="application.description" v-html="application.description"></div>
+    <div
+      v-if="application.description"
+      v-html="application.description"
+    ></div>
     <ul class="grow">
-      <li v-for="(date, i) in application.dates" :key="`date_${i}`">
-        <i18n-t scope="global" keypath="applications.date" tag="span">
-          <template v-slot:label
-            ><strong>{{ date.label }}</strong></template
-          >
+      <li
+        v-for="(date, i) in application.dates"
+        :key="`date_${i}`"
+      >
+        <i18n-t
+          scope="global"
+          keypath="applications.date"
+          tag="span"
+        >
+          <template v-slot:label><strong>{{ date.label }}</strong></template>
           <template v-slot:date>{{ date.date }}</template>
         </i18n-t>
       </li>
@@ -46,8 +52,7 @@
             'text-blue-light size-[32px] transition-transform duration-200 group-hover:-rotate-90',
         }"
         :to="applicationURL"
-        >{{ t("applications.read_more") }}</UButton
-      >
+      >{{ t("applications.read_more") }}</UButton>
     </template>
   </div>
 </template>
@@ -55,7 +60,6 @@
 <script lang="ts" setup>
 import type { ILocalizedApplication } from "~~/types/custom"
 import { useOptionsStore } from "~/stores/options"
-import { NuxtLinkLocale } from "#components"
 
 const { t } = useI18n()
 const localePath = useLocalePath()

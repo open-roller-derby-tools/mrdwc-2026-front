@@ -54,11 +54,6 @@
 
       <Socials />
     </div>
-
-    <!-- Bas du footer -->
-    <div class="flex justify-center w-full bg-blue p-4">
-      <p class="text-sm text-center">{{ t("copyright") }}</p>
-    </div>
   </footer>
 </template>
 
