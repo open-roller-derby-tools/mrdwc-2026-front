@@ -1,7 +1,7 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="block-two-columns relative scroll-mt-24"
+    class="block-two-columns relative scroll-mt-24 py-4 sm:py-0"
     :class="wrapperClasses"
   >
     <div class="maxed padded">

@@ -44,11 +44,15 @@ const wrapperClasses = computed(() => {
         break
     }
   }
+  if (props.data.background_style === "card") {
+    classes.push("mb-6 last:mb-0")
+  }
+
   if (
     props.data.background_style === "card" &&
     props.data.background_section === "light_blue"
   ) {
-    classes.push("bg-blue-text")
+    classes.push("bg-blue-text py-6")
   }
   return classes.join(" ")
 })
@@ -57,7 +61,7 @@ const elementClasses = computed(() => {
   const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push(" px-6 py-4 my-6 rounded-2xl")
+    classes.push(" px-6 py-6 rounded-2xl")
     switch (props.data.background) {
       case "white":
         classes.push("bg-white text-blue-text")
@@ -106,7 +110,11 @@ const formattedTitle = computed(() => {
   }
 
   li {
-    @apply list-disc list-inside text-lg;
+    @apply relative pl-3 before:content-['•'] before:absolute before:left-0 text-base sm:text-lg;
+  }
+
+  hr {
+    @apply my-4 sm:my-10;
   }
 
   a:not(.rich-yellow--button) {
@@ -137,6 +145,12 @@ const formattedTitle = computed(() => {
         @apply -rotate-90;
       }
     }
+    &.lowcase-link {
+      @apply font-cabin lowercase text-base sm:text-lg;
+      &::before {
+        @apply w-6 h-6;
+      }
+    }
   }
 
   .bg-yellow {
@@ -152,6 +166,16 @@ const formattedTitle = computed(() => {
   .bg-white {
     h4 {
       @apply text-red-light;
+    }
+
+    a:not(.rich-yellow--button) {
+      &::after {
+        @apply bg-red-light;
+      }
+
+      &:hover {
+        @apply text-red-light;
+      }
     }
 
     a.rich-arrow--link {
