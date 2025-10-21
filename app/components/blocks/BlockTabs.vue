@@ -141,9 +141,7 @@ const toggleTab = async (slug: string) => {
     activeSlug.value = openSlug.value
     router.replace({ hash: `#${openSlug.value}` })
 
-    // attendre le rendu du DOM et la transition d'ouverture
     await nextTick()
-    // la transition CSS est 300ms dans ton style ; on attend un peu plus
     await sleep(360)
 
     // DEBUG : afficher l'état
@@ -153,7 +151,6 @@ const toggleTab = async (slug: string) => {
       activeSlug: activeSlug.value,
     })
 
-    // cibler le bouton (data-slug)
     const buttonEl = document.querySelector(
       `button[data-slug="${slug}"]`
     ) as HTMLElement | null
@@ -163,7 +160,7 @@ const toggleTab = async (slug: string) => {
     }
 
     // calculer la position (gérer header fixe)
-    const headerOffset = 80 // ajuste en fonction de ta hauteur de header fixe
+    const headerOffset = 80
     const top =
       buttonEl.getBoundingClientRect().top + window.scrollY - headerOffset
 
