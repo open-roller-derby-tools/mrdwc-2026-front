@@ -16,7 +16,6 @@
         <button
           @click="toggleTab(slug)"
           :data-slug="slug"
-          :data-slug="slug"
           :class="[
             'flex items-center justify-between w-full px-6 py-3 text-blue-text font-shoulders font-semibold text-xl transition-colors duration-200',
             openSlug === slug
@@ -52,7 +51,6 @@
           :key="slug"
           @click="activateTab(slug)"
           :data-slug="slug"
-          :data-slug="slug"
           class="transition-colors duration-100 font-shoulders font-semibold text-xl px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
           :class="[
             activeSlug === slug
@@ -81,7 +79,6 @@
 
 <script lang="ts" setup>
 import { nextTick } from "vue"
-import { nextTick } from "vue"
 import type { ILocalizedBlockTabs, ILocalizedPage } from "~~/types/custom"
 import Tab from "../partials/Tab.vue"
 
@@ -89,27 +86,11 @@ const props = defineProps<{
   data: ILocalizedBlockTabs
 }>()
 
-const localePath = useLocalePath()
 const route = useRoute()
 const router = useRouter()
 
 const activeSlug = ref<string | null>(null)
-const router = useRouter()
-
-const activeSlug = ref<string | null>(null)
 const openSlug = ref<string | null>(null)
-
-const pagesStore = usePagesStore()
-const { getPageWithSlug } = pagesStore
-
-const setActiveFromHash = () => {
-  const slugFromHash = route.hash.slice(1)
-  const validSlug = props.data.tabs.find((slug) => slug === slugFromHash)
-  const newSlug = validSlug ?? props.data.tabs[0] ?? null
-
-  activeSlug.value = newSlug
-  openSlug.value = newSlug
-}
 
 const pagesStore = usePagesStore()
 const { getPageWithSlug } = pagesStore
@@ -133,25 +114,13 @@ watch(
     setActiveFromHash()
   }
 )
-setActiveFromHash()
-})
-
-watch(
-  () => route.hash,
-  () => {
-    setActiveFromHash()
-  }
-)
 
 const activePage = computed((): ILocalizedPage | null => {
-  return activeSlug.value ? getPageWithSlug(activeSlug.value) : null
   return activeSlug.value ? getPageWithSlug(activeSlug.value) : null
 })
 
 const activateTab = (slug: string) => {
   activeSlug.value = slug
-  openSlug.value = slug
-  router.replace({ hash: `#${slug}` })
   openSlug.value = slug
   router.replace({ hash: `#${slug}` })
 }
