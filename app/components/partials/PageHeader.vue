@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative w-full bg-center bg-cover sm:mb-6"
+    class="relative w-full bg-center bg-cover mb-6 sm:mb-14"
     :class="wrapperClasses"
     :style="backgroundStyles"
   >

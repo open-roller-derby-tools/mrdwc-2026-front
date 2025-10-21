@@ -114,6 +114,17 @@ const formattedTitle = computed(() => {
     @apply my-4 sm:my-10;
   }
 
+  img.rich-img--full {
+    @apply w-full sm:w-1/2;
+    &.img-center {
+      @apply block mx-auto;
+    }
+  }
+
+  .full-iframe {
+    @apply w-full block border-0 h-[300px] sm:h-[600px];
+  }
+
   a:not(.rich-yellow--button) {
     @apply relative inline-block transition-all duration-200;
 
