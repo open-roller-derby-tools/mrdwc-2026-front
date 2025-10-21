@@ -1,5 +1,5 @@
 <template>
-  <div class="px-6 sm:px-0 py-6">
+  <div class="px-6 sm:px-0">
     <!-- Carousel images -->
     <UCarousel
       v-if="venuesWithImages.length"

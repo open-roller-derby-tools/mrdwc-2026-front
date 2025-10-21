@@ -1,7 +1,7 @@
 <template>
   <div
     :id="data.anchor_id"
-    class="block-two-columns relative scroll-mt-24"
+    class="block-two-columns relative scroll-mt-24 py-4 sm:py-0"
     :class="wrapperClasses"
   >
     <div class="maxed padded">
@@ -23,7 +23,7 @@
       <!-- CONTENU DEUX COLONNES -->
       <div
         :class="[
-          'flex flex-col md:flex-row gap-6 items-center',
+          'flex flex-col md:flex-row gap-6 items-start',
           data.reverse_mobile ? 'flex-col-reverse' : '',
         ]"
       >
@@ -83,10 +83,21 @@ const formattedTitle = computed(() => {
 @reference "~/assets/css/main.css";
 
 .block-two-columns .block-rich-text {
-  @apply py-0;
+  @apply pt-0 last:pb-0;
+
+  img {
+    @apply border-4 border-white border-double rounded-2xl;
+  }
 
   .maxed.padded {
     @apply p-0;
+  }
+
+  .bg-white {
+    @apply m-0;
+    img {
+      @apply rounded-none;
+    }
   }
 }
 </style>

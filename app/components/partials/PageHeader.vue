@@ -1,15 +1,11 @@
 <template>
   <div
-    class="relative w-full bg-center bg-cover sm:mb-6"
+    class="relative w-full bg-center bg-cover mb-6 sm:mb-14"
     :class="wrapperClasses"
     :style="backgroundStyles"
   >
-    <div
-      class="bg-linear-to-b from-blue to-blue-text absolute inset-0 mix-blend-color"
-    ></div>
-    <div
-      class="bg-linear-to-b from-blue-text/0 to-blue-text from-10% to-90% absolute inset-0"
-    ></div>
+    <div class="bg-linear-to-b from-blue to-blue-text absolute inset-0 mix-blend-color"></div>
+    <div class="bg-linear-to-b from-blue-text/0 to-blue-text from-10% to-90% absolute inset-0"></div>
     <div class="maxed relative h-full px-0 sm:px-3">
       <slot></slot>
     </div>
@@ -25,6 +21,8 @@ const props = defineProps<{
 }>()
 
 const backgroundStyles = computed(() => {
+  if (!props.image)
+    return '';
   const imgUrl = img(`${config.public.apiBase}/assets/${props.image}`)
   return { backgroundImage: `url('${imgUrl}')` }
 })
