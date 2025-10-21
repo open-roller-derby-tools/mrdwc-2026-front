@@ -144,18 +144,10 @@ const toggleTab = async (slug: string) => {
     await nextTick()
     await sleep(360)
 
-    // DEBUG : afficher l'état
-    console.debug("toggleTab: opened", {
-      slug,
-      openSlug: openSlug.value,
-      activeSlug: activeSlug.value,
-    })
-
     const buttonEl = document.querySelector(
       `button[data-slug="${slug}"]`
     ) as HTMLElement | null
     if (!buttonEl) {
-      console.debug("toggleTab: bouton introuvable", slug)
       return
     }
 
@@ -163,9 +155,6 @@ const toggleTab = async (slug: string) => {
     const headerOffset = 80
     const top =
       buttonEl.getBoundingClientRect().top + window.scrollY - headerOffset
-
-    // debug info
-    console.debug("toggleTab: scrolling to", { top, headerOffset })
 
     window.scrollTo({ top, behavior: "smooth" })
   }
