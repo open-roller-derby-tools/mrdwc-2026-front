@@ -85,12 +85,19 @@ const formattedTitle = computed(() => {
 .block-two-columns .block-rich-text {
   @apply pt-0 last:pb-0;
 
+  img {
+    @apply border-4 border-white border-double rounded-2xl;
+  }
+
   .maxed.padded {
     @apply p-0;
   }
 
   .bg-white {
     @apply m-0;
+    img {
+      @apply rounded-none;
+    }
   }
 }
 </style>

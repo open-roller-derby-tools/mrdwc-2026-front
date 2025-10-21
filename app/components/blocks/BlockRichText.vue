@@ -157,7 +157,7 @@ const formattedTitle = computed(() => {
       }
     }
     &.lowcase-link {
-      @apply font-cabin lowercase text-base sm:text-lg;
+      @apply font-cabin normal-case text-base sm:text-lg;
       &::before {
         @apply w-6 h-6;
       }
@@ -172,11 +172,19 @@ const formattedTitle = computed(() => {
     a.rich-arrow--link:hover {
       @apply text-blue-dark;
     }
+
+    em {
+      @apply text-blue-dark;
+    }
   }
 
   .bg-white {
     h4 {
       @apply text-red-light;
+    }
+
+    em {
+      @apply text-red-text;
     }
 
     a:not(.rich-yellow--button) {
