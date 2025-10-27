@@ -17,11 +17,11 @@
 	--color-red-light: #fd4947;
 
 	--ui-primary: var(--color-white);
-	--ui-secondary: var(#2a2c8f);
-	--ui-success: var(#f3ba49);
-	--ui-info: var(#f3ba49);
-	--ui-warning: var(#d33231);
-	--ui-error: var(#d33231);
+	--ui-secondary: #2a2c8f;
+	--ui-success: #f3ba49;
+	--ui-info: #f3ba49;
+	--ui-warning: #d33231;
+	--ui-error: #d33231;
 }
 
 @layer base {
