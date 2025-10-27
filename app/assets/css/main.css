@@ -15,27 +15,20 @@
 
 	--color-red-text: #d33231;
 	--color-red-light: #fd4947;
+}
 
+:root,
+.light,
+.dark {
 	--ui-primary: var(--color-white);
-	--ui-secondary: #2a2c8f;
-	--ui-success: #f3ba49;
-	--ui-info: #f3ba49;
-	--ui-warning: #d33231;
-	--ui-error: #d33231;
+	--ui-secondary: var(--color-blue-text);
+	--ui-success: var(--color-yellow);
+	--ui-info: var(--color-yellow);
+	--ui-warning: var(--color-red-text);
+	--ui-error: var(--color-red-text);
 }
 
 @layer base {
-	/* :root,
-	.light,
-	.dark {
-		--ui-primary: var(--color-white);
-		--ui-secondary: var(--color-blue-text);
-		--ui-success: var(--color-yellow);
-		--ui-info: var(--color-yellow);
-		--ui-warning: var(--color-red-text);
-		--ui-error: var(--color-red-text);
-	} */
-
 	html {
 		@apply scroll-smooth;
 	}
