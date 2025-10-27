@@ -47,17 +47,6 @@ const wrapperClasses = computed(() => {
   if (props.data.background_style === "card") {
     classes.push("mb-6 last:mb-0")
   }
-
-  if (
-    props.data.background_style === "card" &&
-    props.data.background_section === "light_blue"
-  ) {
-    classes.push("bg-blue-text py-6")
-  }
-  if (props.data.background_style === "card") {
-    classes.push("mb-6 last:mb-0")
-  }
-
   if (
     props.data.background_style === "card" &&
     props.data.background_section === "light_blue"
@@ -71,7 +60,6 @@ const elementClasses = computed(() => {
   const classes: string[] = []
   // Set color and add padding if background_style is "card"
   if (props.data.background_style == "card") {
-    classes.push(" px-6 py-6 rounded-2xl")
     classes.push(" px-6 py-6 rounded-2xl")
     switch (props.data.background) {
       case "white":
