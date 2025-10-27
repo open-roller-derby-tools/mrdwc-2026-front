@@ -10,7 +10,7 @@
       />
 
       <!-- Liens en colonnes -->
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 w-auto sm:w-full">
+      <nav class="flex flex-col sm:flex-row gap-4 sm:gap-8 w-auto sm:w-full">
         <!-- Colonne 1 -->
         <ul class="flex flex-col gap-4 list-none pl-0">
           <li
@@ -50,7 +50,7 @@
             />
           </li>
         </ul>
-      </div>
+      </nav>
 
       <Socials />
     </div>

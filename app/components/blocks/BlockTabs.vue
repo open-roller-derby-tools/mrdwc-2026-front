@@ -44,7 +44,7 @@
     </div>
 
     <!-- VERSION DESKTOP -->
-    <div class="hidden sm:block relative z-10">
+    <nav class="hidden sm:block relative z-10">
       <ul class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center">
         <li
           v-for="(slug, i) in data.tabs"
@@ -73,7 +73,7 @@
         :page="activePage"
         class="relative z-10"
       />
-    </div>
+    </nav>
   </div>
 </template>
 
