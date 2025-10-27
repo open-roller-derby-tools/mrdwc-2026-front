@@ -43,8 +43,10 @@ export default defineNuxtConfig({
 		"@nuxt/ui",
 	],
 	css: ["~~/app/assets/css/main.css"],
+	ui: {
+		colorMode: false,
+	},
 	devtools: { enabled: false },
-
 	runtimeConfig: {
 		public: {
 			apiBase: "",

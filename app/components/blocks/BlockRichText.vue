@@ -110,6 +110,10 @@ const formattedTitle = computed(() => {
 
   ul {
     @apply mb-4;
+
+    li {
+      @apply text-base sm:text-lg;
+    }
   }
 
   p {
@@ -118,62 +122,6 @@ const formattedTitle = computed(() => {
 
   em {
     @apply text-yellow;
-  }
-
-  li {
-    @apply relative pl-3 before:content-['•'] before:absolute before:left-0 text-base sm:text-lg;
-  }
-
-  hr {
-    @apply my-4 sm:my-10;
-  }
-
-  img.rich-img--full {
-    @apply w-full sm:w-1/2;
-
-    &.img-center {
-      @apply block mx-auto;
-    }
-  }
-
-  .full-iframe {
-    @apply w-full block border-0 h-[300px] sm:h-[600px];
-  }
-
-  a:not(.rich-yellow--button) {
-    @apply relative inline-block transition-all duration-200;
-
-    &::after {
-      @apply content-[''] absolute left-0 bottom-0 h-0.5 bg-yellow w-1/3 transition-all duration-300 ease-in-out;
-    }
-
-    &:hover::after {
-      @apply w-full;
-    }
-
-    &:hover {
-      @apply text-yellow;
-    }
-  }
-
-  h4 {
-    @apply text-yellow;
-  }
-
-  ul {
-    @apply mb-4;
-  }
-
-  p {
-    @apply mb-4 last:mb-0 text-base sm:text-lg;
-  }
-
-  em {
-    @apply text-yellow;
-  }
-
-  li {
-    @apply relative pl-3 before:content-['•'] before:absolute before:left-0 text-base sm:text-lg;
   }
 
   hr {
@@ -210,10 +158,8 @@ const formattedTitle = computed(() => {
 
   a.rich-arrow--link {
     @apply inline-flex text-white items-center gap-1 font-shoulders p-0 transition-colors duration-200 uppercase text-2xl -ml-2 after:hidden;
-    @apply inline-flex text-white items-center gap-1 font-shoulders p-0 transition-colors duration-200 uppercase text-2xl -ml-2 after:hidden;
 
     &::before {
-      @apply content-[''] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
       @apply content-[''] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
     }
 
@@ -272,79 +218,14 @@ const formattedTitle = computed(() => {
         @apply w-6 h-6;
       }
     }
-  }
-
-  .bg-yellow {
-    h4 {
-      @apply text-blue-dark;
-    }
-
-    a.rich-arrow--link:hover {
-      @apply text-blue-dark;
-    }
-
-    em {
-      @apply text-blue-dark;
-    }
-  }
-
-  .bg-white {
-    h4 {
-      @apply text-red-light;
-    }
-
-    em {
-      @apply text-red-text;
-    }
-
-    a:not(.rich-yellow--button) {
-      &::after {
-        @apply bg-red-light;
-      }
-
-      &:hover {
-        @apply text-red-light;
-      }
-    }
 
     a.rich-arrow--link {
       @apply text-blue-text;
 
-      @apply text-blue-text;
-
       &:hover {
-        @apply text-red-light;
         @apply text-red-light;
       }
     }
   }
-}
-
-/* Bouton jaune */
-a.rich-yellow--button {
-  @apply relative z-10 overflow-hidden inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline after:hidden hover:text-blue-text;
-  @apply relative z-10 overflow-hidden inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline after:hidden hover:text-blue-text;
-}
-
-a.rich-yellow--button:hover {
-  @apply bg-yellow w-auto;
-  @apply bg-yellow w-auto;
-}
-
-a.rich-yellow--button::after {
-  content: "";
-  @apply inline-block w-8 h-8 relative;
-  @apply inline-block w-8 h-8 relative;
-  background-color: currentColor;
-  -webkit-mask: url("/arrow-down-right.svg") no-repeat center;
-  -webkit-mask-size: contain;
-  mask: url("/arrow-down-right.svg") no-repeat center;
-  mask-size: contain;
-  transform: translateX(0) rotate(-45deg);
-  transition: transform 0.2s ease;
-}
-
-a.rich-yellow--button:hover::after {
-  transform: translateX(4px) rotate(-45deg);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <nav>
     <ul class="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10 justify-center bg-red-text p-6">
       <li
         v-for="(sponsor, i) in sponsorsStore.localizedSponsors"
@@ -21,7 +21,7 @@
         </a>
       </li>
     </ul>
-  </div>
+  </nav>
 </template>
 
 <script lang="ts" setup>

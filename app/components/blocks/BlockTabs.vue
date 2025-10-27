@@ -45,27 +45,29 @@
 
     <!-- VERSION DESKTOP -->
     <div class="hidden sm:block relative z-10">
-      <ul class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center">
-        <li
-          v-for="(slug, i) in data.tabs"
-          :key="slug"
-          @click="activateTab(slug)"
-          :data-slug="slug"
-          class="transition-colors duration-100 font-shoulders font-semibold text-xl px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
-          :class="[
-            activeSlug === slug
-              ? 'bg-yellow text-blue-text'
-              : 'bg-blue-inactive text-blue-text hover:bg-yellow transition-all duration-200',
-          ]"
-        >
-          {{ getPageWithSlug(slug)?.menu_title || slug }}
-          <UIcon
-            name="i-lucide-arrow-right"
-            class="size-7 transition-transform duration-200 ease-out"
-            :class="{ 'rotate-90': activeSlug === slug }"
-          />
-        </li>
-      </ul>
+      <nav>
+        <ul class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center">
+          <li
+            v-for="(slug, i) in data.tabs"
+            :key="slug"
+            @click="activateTab(slug)"
+            :data-slug="slug"
+            class="transition-colors duration-100 font-shoulders font-semibold text-xl px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
+            :class="[
+              activeSlug === slug
+                ? 'bg-yellow text-blue-text'
+                : 'bg-blue-inactive text-blue-text hover:bg-yellow transition-all duration-200',
+            ]"
+          >
+            {{ getPageWithSlug(slug)?.menu_title || slug }}
+            <UIcon
+              name="i-lucide-arrow-right"
+              class="size-7 transition-transform duration-200 ease-out"
+              :class="{ 'rotate-90': activeSlug === slug }"
+            />
+          </li>
+        </ul>
+      </nav>
 
       <!-- Contenu desktop -->
       <Tab

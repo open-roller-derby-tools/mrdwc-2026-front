@@ -15,7 +15,11 @@
 
 	--color-red-text: #d33231;
 	--color-red-light: #fd4947;
+}
 
+:root,
+.light,
+.dark {
 	--ui-primary: var(--color-white);
 	--ui-secondary: var(--color-blue-text);
 	--ui-success: var(--color-yellow);
@@ -50,11 +54,15 @@
 		@apply text-yellow;
 	}
 	ul {
-		@apply list-disc pl-4;
+		li {
+			@apply relative pl-3 before:content-['•'] before:absolute before:left-0;
+		}
 	}
 	nav {
 		ul {
-			@apply list-none pl-0;
+			li {
+				@apply pl-0 before:content-none;
+			}
 		}
 	}
 }
@@ -66,13 +74,27 @@
 	.padded {
 		@apply px-6 sm:px-12;
 	}
-}
+	a.rich-yellow--button {
+		@apply relative z-10 overflow-hidden inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline;
 
-@layer components {
+		&:after {
+			@apply content-[''] inline-block w-8 h-8 relative bg-current translate-x-0 -rotate-45 transition-transform duration-200 ease-out mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain;
+		}
+		&:hover {
+			@apply text-blue-text bg-yellow w-auto;
+
+			&:after {
+				@apply translate-x-1;
+			}
+		}
+	}
 	a.calltoaction {
 		@apply !bg-red-light !text-white;
 	}
 	h2[id^="reka-dialog-title"] {
 		@apply !mb-0;
 	}
+}
+
+@layer components {
 }
