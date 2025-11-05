@@ -1,7 +1,7 @@
 <template>
   <header class="py-4 flex items-center justify-end">
     <NuxtLink
-      to="https://www.instagram.com/mensrollerderbyassociation/"
+      to="https://www.instagram.com/mrdwc"
       target="_blank"
       class="mr-1"
     >

@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex flex-col w-full sm:w-sm items-center justify-center p-4 border-2 border-dotted rounded-2xl gap-2"
-  >
+  <div class="flex flex-col w-full sm:w-sm items-center justify-center p-4 border-2 border-dotted rounded-2xl gap-2">
     <h3 class="text-2xl uppercase font-shoulders font-semibold">
       {{ t("socials") }}
     </h3>
@@ -14,7 +12,7 @@
         <IconFacebook class="w-15 h-15" />
       </NuxtLink>
       <NuxtLink
-        to="https://www.instagram.com/mensrollerderbyassociation/"
+        to="https://www.instagram.com/mrdwc"
         target="_blank"
         class="hover:text-yellow duration-200 transition-all"
       >
