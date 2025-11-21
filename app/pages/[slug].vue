@@ -65,7 +65,7 @@ useSeoMeta({
   description: t("site_description"),
   ogDescription: t("site_description"),
   ogImage:
-    "https://backend.mrdwc.org/assets/044fe466-3c17-4022-8222-12e1a2fbe020.jpg",
+    "https://backend.mrdwc.org/assets/044fe466-3c17-4022-8222-12e1a2fbe020",
 })
 </script>
 
