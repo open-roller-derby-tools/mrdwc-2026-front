@@ -64,8 +64,8 @@ useSeoMeta({
   ogTitle: `${page.value?.title} - ${t("site_title")}`,
   description: t("site_description"),
   ogDescription: t("site_description"),
-  ogImage:
-    "https://backend.mrdwc.org/assets/044fe466-3c17-4022-8222-12e1a2fbe020",
+  ogImage: "https://backend.mrdwc.org/assets/044fe466-3c17-4022-8222-12e1a2fbe020",
+  twitterCard: "summary_large_image",
 })
 </script>
 
