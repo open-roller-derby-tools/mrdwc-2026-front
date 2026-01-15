@@ -17,6 +17,7 @@ import type { ILocalizedPage } from '~~/types/custom';
 const { t } = useI18n();
 const pagesStore = usePagesStore()
 const { getPageWithSlug } = storeToRefs(pagesStore)
+const config = useRuntimeConfig();
 
 // Fetch page data from store
 const page = computed((): ILocalizedPage | null => getPageWithSlug.value(""))
@@ -35,8 +36,7 @@ useSeoMeta({
   ogTitle: `${page.value?.title} - ${t("site_title")}`,
   description: t("site_description"),
   ogDescription: t("site_description"),
-  ogImage:
-    "https://backend.mrdwc.org/assets/044fe466-3c17-4022-8222-12e1a2fbe020",
+  ogImage: `${config.public.apiBase}/assets/044fe466-3c17-4022-8222-12e1a2fbe020`,
   twitterCard: "summary_large_image",
 })
 </script>
