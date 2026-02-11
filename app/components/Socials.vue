@@ -11,13 +11,13 @@
       >
         <IconFacebook class="w-15 h-15" />
       </NuxtLink>
-      <!-- <NuxtLink
-        to="https://www.instagram.com/mrdwc"
+      <NuxtLink
+        to="https://www.instagram.com/mensrollerderbyworldcup/"
         target="_blank"
         class="hover:text-yellow duration-200 transition-all"
       >
         <IconInstagram class="w-15 h-15" />
-      </NuxtLink> -->
+      </NuxtLink>
     </div>
   </div>
 </template>
