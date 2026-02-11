@@ -30,8 +30,12 @@ export const usePagesStore = defineStore("pages", () => {
 
 	/**
 	 * Fetch data from the API.
+	 * Skips the network request when data was already loaded
 	 */
 	async function fetch() {
+		if (isReady.value && pages.value != null) {
+			return pages.value;
+		}
 		try {
 			const fields = {
 				slug: true,

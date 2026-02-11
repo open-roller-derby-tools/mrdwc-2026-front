@@ -19,32 +19,41 @@ import type {
 export const useTeamsStore = defineStore("teams", () => {
   const { locale, fallbackLocale } = useI18n();
 
-  const pending = ref<boolean>(true);
+  const isReady = ref<boolean>(false);
   const teams = ref<ITeam[]>();
 
   /**
    * Fetch data from the API.
+   * Skips the network request when data was already loaded (e.g. from a previous call during the same server run).
    */
   async function fetch() {
-    pending.value = true;
-
-    const fields = {
-      name: true,
-      members: {
+    if (isReady.value && teams.value != null) {
+      return teams.value;
+    }
+    try {
+      const fields = {
         name: true,
-        number: true,
-        translations: {
-          languages_code: true,
-          pronouns: true,
+        members: {
+          name: true,
+          number: true,
+          translations: {
+            languages_code: true,
+            pronouns: true,
+          },
         },
-      },
-    };
-    const { data } = await $fetch<ITeamsRequestData>(
-      buildRESTURL("teams", fields).href
-    );
+      };
+      const { data } = await $fetch<ITeamsRequestData>(
+        buildRESTURL("teams", fields).href
+      );
 
-    teams.value = data;
-    pending.value = false;
+      teams.value = data;
+      isReady.value = true;
+      return data;
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+      isReady.value = false;
+      throw error;
+    }
   }
 
   /**
@@ -95,5 +104,5 @@ export const useTeamsStore = defineStore("teams", () => {
   /**
    * Expose the required properties, getters and actions
    */
-  return { fetch, pending, teams, localizedTeams };
+  return { fetch, isReady, teams, localizedTeams };
 });

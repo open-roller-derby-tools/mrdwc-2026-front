@@ -21,8 +21,12 @@ export const useApplicationsStore = defineStore("applications", () => {
 
   /**
    * Fetch data from the API.
+   * Skips the network request when data was already loaded
    */
   async function fetch() {
+    if (isReady.value && applications.value != null) {
+      return applications.value;
+    }
     try {
       const fields = {
         status: true,

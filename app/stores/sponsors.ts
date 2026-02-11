@@ -21,8 +21,12 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 
 	/**
 	 * Fetch data from the API.
+	 * Skips the network request when data was already loaded
 	 */
 	async function fetch() {
+		if (isReady.value && sponsors.value != null) {
+			return sponsors.value;
+		}
 		try {
 			const fields = {
 				translations: {
