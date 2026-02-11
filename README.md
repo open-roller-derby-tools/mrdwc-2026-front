@@ -80,4 +80,4 @@ See [`docs/`](docs/) for architecture and component documentation.
 
 ## Deployment
 
-The site is deployed to **Netlify**. Configuration is in `netlify.toml`.
+The site is deployed to a self-hosted server.
