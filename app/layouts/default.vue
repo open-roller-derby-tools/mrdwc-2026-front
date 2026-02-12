@@ -16,6 +16,7 @@ import { useSponsorsStore } from "~/stores/sponsors"
 import { useVenuesStore } from "~/stores/venues"
 import { useApplicationsStore } from "~/stores/applications"
 import { useOptionsStore } from "~/stores/options"
+import { useTeamsStore } from "~/stores/teams"
 
 const menusStore = useMenusStore()
 const pagesStore = usePagesStore()
@@ -23,6 +24,7 @@ const sponsorsStore = useSponsorsStore()
 const venuesStore = useVenuesStore()
 const applicationsStore = useApplicationsStore()
 const optionsStore = useOptionsStore()
+const teamsStore = useTeamsStore()
 
 // Only fetch from API on the server (SSR or when running `nuxt generate`).
 // On the client, data comes from the static payload (when serving the static output).
@@ -33,6 +35,7 @@ if (!import.meta.client) {
   await callOnce(venuesStore.fetch)
   await callOnce(applicationsStore.fetch)
   await callOnce(optionsStore.fetch)
+  await callOnce(teamsStore.fetch)
 
   // Prerender every [slug] page (default locale + en-US).
   // Without this, only crawler-discovered routes are generated.
