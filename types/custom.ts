@@ -307,13 +307,15 @@ export interface IOptionsRequestData {
 export interface ITeam {
 	id: number;
 	name: string;
-	members: number[] | ITeamMember[];
+	logo: string;
+	// members: number[] | ITeamMember[];
 }
 
 export interface ILocalizedTeam {
 	id: number;
 	name: string;
-	members: number[] | ILocalizedTeamMember[];
+	logo: string;
+	// members: number[] | ILocalizedTeamMember[];
 }
 
 export interface ITeamMember {

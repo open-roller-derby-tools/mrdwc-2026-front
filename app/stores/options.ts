@@ -17,8 +17,12 @@ export const useOptionsStore = defineStore("options", () => {
 
   /**
    * Fetch data from the API.
+   * Skips the network request when data was already loaded
    */
   async function fetch() {
+    if (isReady.value && options.value != null) {
+      return options.value;
+    }
     try {
       const fields = {
         applications_page: {

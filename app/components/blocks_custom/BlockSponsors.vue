@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <ul class="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10 justify-center bg-red-text p-6">
+    <ul class="flex flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10 justify-center bg-red-text p-6 list-none">
       <li
         v-for="(sponsor, i) in sponsorsStore.localizedSponsors"
         :key="`sponsor_${i}`"

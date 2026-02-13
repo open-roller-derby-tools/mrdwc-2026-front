@@ -16,6 +16,7 @@ import { useSponsorsStore } from "~/stores/sponsors"
 import { useVenuesStore } from "~/stores/venues"
 import { useApplicationsStore } from "~/stores/applications"
 import { useOptionsStore } from "~/stores/options"
+import { useTeamsStore } from "~/stores/teams"
 
 const menusStore = useMenusStore()
 const pagesStore = usePagesStore()
@@ -23,13 +24,28 @@ const sponsorsStore = useSponsorsStore()
 const venuesStore = useVenuesStore()
 const applicationsStore = useApplicationsStore()
 const optionsStore = useOptionsStore()
+const teamsStore = useTeamsStore()
 
-await callOnce(menusStore.fetch)
-await callOnce(pagesStore.fetch)
-await callOnce(sponsorsStore.fetch)
-await callOnce(venuesStore.fetch)
-await callOnce(applicationsStore.fetch)
-await callOnce(optionsStore.fetch)
+// Only fetch from API on the server (SSR or when running `nuxt generate`).
+// On the client, data comes from the static payload (when serving the static output).
+if (!import.meta.client) {
+  await callOnce(menusStore.fetch)
+  await callOnce(pagesStore.fetch)
+  await callOnce(sponsorsStore.fetch)
+  await callOnce(venuesStore.fetch)
+  await callOnce(applicationsStore.fetch)
+  await callOnce(optionsStore.fetch)
+  await callOnce(teamsStore.fetch)
+
+  // Prerender every [slug] page (default locale + en-US).
+  // Without this, only crawler-discovered routes are generated.
+  if (import.meta.prerender && pagesStore.pages?.length) {
+    const slugs = pagesStore.pages.filter((p) => p.slug).map((p) => p.slug)
+    const locales = ["en-US"] // default locale (fr-FR) has no prefix
+    const routes = slugs.flatMap((slug) => [`/${slug}`, ...locales.map((locale) => `/${locale}/${slug}`)])
+    prerenderRoutes(routes)
+  }
+}
 </script>
 
 <style></style>

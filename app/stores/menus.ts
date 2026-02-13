@@ -30,8 +30,12 @@ export const useMenusStore = defineStore("menus", () => {
 
   /**
    * Fetch data from the API.
+   * Skips the network request when data was already loaded
    */
   async function fetch() {
+    if (isReady.value && menus.value != null) {
+      return menus.value;
+    }
     try {
       const fields = {
         name: true,

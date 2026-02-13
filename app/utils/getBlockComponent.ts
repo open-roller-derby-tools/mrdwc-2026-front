@@ -8,6 +8,7 @@ import BlockHero from "~/components/blocks_custom/BlockHero.vue";
 import BlockVenues from "~/components/blocks_custom/BlockVenues.vue";
 import BlockApplications from "~/components/blocks_custom/BlockApplications.vue";
 import BlockTickets from "~/components/blocks_custom/BlockTickets.vue";
+import BlockTeams from "~/components/blocks_custom/BlockTeams.vue";
 
 const components = new Map<string, Component>([
   // Blocks
@@ -20,6 +21,7 @@ const components = new Map<string, Component>([
   ["BlockVenues", BlockVenues],
   ["BlockApplications", BlockApplications],
   ["BlockTickets", BlockTickets],
+  ["BlockTeams", BlockTeams],
 ]);
 
 export default (collection: string) => components.get(collection);

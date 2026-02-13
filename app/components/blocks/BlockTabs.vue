@@ -46,7 +46,7 @@
     <!-- VERSION DESKTOP -->
     <div class="hidden sm:block relative z-10">
       <nav>
-        <ul class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center">
+        <ul class="maxed padded py-0 mt-6 flex flex-col sm:flex-row gap-0.5 items-center list-none">
           <li
             v-for="(slug, i) in data.tabs"
             :key="slug"

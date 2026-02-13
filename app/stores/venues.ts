@@ -18,6 +18,9 @@ export const useVenuesStore = defineStore("venues", () => {
   const venues = ref<ILocalizedVenue[]>([]);
 
   async function fetch() {
+    if (isReady.value && venues.value != null) {
+      return venues.value;
+    }
     try {
       const fields = {
         name: true,
