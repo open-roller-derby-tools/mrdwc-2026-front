@@ -3,6 +3,9 @@
 # ---- Builder ----
 FROM node:22-bullseye-slim AS builder
 
+# Enable pnpm via Corepack (bundled with Node)
+RUN corepack enable && corepack prepare pnpm@10.16.1 --activate
+
 WORKDIR /build
 
 COPY package.json pnpm-lock.yaml* package-lock.json* ./
