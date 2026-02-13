@@ -21,7 +21,7 @@ The official website for the **Men's Roller Derby World Cup 2026** — a bilingu
 Create a `.env` file in the project root:
 
 ```env
-NUXT_PUBLIC_API_BASE=https://backend.mrdwc.org
+NUXT_PUBLIC_API_BASE=https://worldcup-dashboard.mrda.org
 ```
 
 This is the URL of the Directus CMS instance that serves all content and assets.
@@ -52,7 +52,7 @@ pnpm build
 pnpm preview
 
 # Or run the built server manually (set NUXT_PUBLIC_API_BASE if not using .env)
-NUXT_PUBLIC_API_BASE=https://backend.mrdwc.org node .output/server/index.mjs
+NUXT_PUBLIC_API_BASE=https://worldcup-dashboard.mrda.org node .output/server/index.mjs
 
 # Static site generation
 pnpm generate
@@ -80,6 +80,29 @@ types/                 # TypeScript type definitions
 ```
 
 See [`docs/`](docs/) for architecture and component documentation.
+
+## Cloudron
+
+The app can be packaged and deployed on [Cloudron](https://cloudron.io). Required files:
+
+- **CloudronManifest.json** — App metadata and port (HTTP 3000)
+- **Dockerfile.cloudron** — Multi-stage build (Node 22, pnpm, Nitro output)
+- **cloudron/start.sh** — Entrypoint
+
+After installation on Cloudron, set **NUXT_PUBLIC_API_BASE** in the app’s **Environment** to your Directus URL (e.g. `https://worldcup-dashboard.mrda.org`).
+
+```bash
+# Build image (from project root)
+docker build -f Dockerfile.cloudron -t your-registry/mrdwc-2026-front:2.0.0 .
+docker push your-registry/mrdwc-2026-front:2.0.0
+
+# Install or update on Cloudron (using Cloudron CLI)
+cloudron install --image your-registry/mrdwc-2026-front:2.0.0
+# or
+cloudron update --image your-registry/mrdwc-2026-front:2.0.0
+```
+
+Or use `cloudron build` to build and push in one step; then configure **NUXT_PUBLIC_API_BASE** in the dashboard.
 
 ## Deployment
 

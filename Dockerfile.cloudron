@@ -1,0 +1,27 @@
+# Cloudron package for MRDWC 2026 frontend
+
+# ---- Builder ----
+FROM node:22-bullseye-slim AS builder
+
+WORKDIR /build
+
+COPY package.json pnpm-lock.yaml* package-lock.json* ./
+RUN pnpm install --frozen-lockfile
+
+COPY . .
+RUN pnpm build
+
+# ---- Runner ----
+FROM node:22-bullseye-slim
+
+WORKDIR /app/code
+
+COPY --from=builder /build/.output ./.output
+
+COPY cloudron/start.sh /app/code/start.sh
+RUN chmod +x /app/code/start.sh
+
+ENV PORT=3000
+EXPOSE 3000
+
+CMD ["/app/code/start.sh"]
