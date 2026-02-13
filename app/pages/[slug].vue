@@ -36,7 +36,8 @@ const { t } = useI18n()
 const route = useRoute()
 const pagesStore = usePagesStore()
 const { hasPageWithSlug, getPageWithSlug } = storeToRefs(pagesStore)
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
+const head = useLocaleHead()
 
 // Throw 404 error if page slug was not found
 if (!hasPageWithSlug.value(route.params.slug as string)) {
@@ -54,6 +55,7 @@ const page = computed((): ILocalizedPage | null =>
 // Define page head properties
 useHead({
   title: `${page.value?.title} - ${t("site_title")}`,
+  htmlAttrs: {...head.value.htmlAttrs},
   bodyAttrs: {
     class: `${page.value?.slug} ${page.value?.classes}`,
   },

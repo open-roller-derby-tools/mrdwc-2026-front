@@ -17,7 +17,8 @@ import type { ILocalizedPage } from '~~/types/custom';
 const { t } = useI18n();
 const pagesStore = usePagesStore()
 const { getPageWithSlug } = storeToRefs(pagesStore)
-const config = useRuntimeConfig();
+const config = useRuntimeConfig()
+const head = useLocaleHead()
 
 // Fetch page data from store
 const page = computed((): ILocalizedPage | null => getPageWithSlug.value(""))
@@ -25,6 +26,7 @@ const page = computed((): ILocalizedPage | null => getPageWithSlug.value(""))
 // Define page head properties
 useHead({
   title: `${page.value?.title} - ${t("site_title")}`,
+  htmlAttrs: {...head.value.htmlAttrs},
   bodyAttrs: {
     class: `home ${page.value?.classes}`,
   },

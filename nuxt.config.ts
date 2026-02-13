@@ -107,9 +107,10 @@ export default defineNuxtConfig({
 	},
 	i18n: {
 		locales: [
-			{ code: "en-US", name: "English", file: "en.json" },
-			{ code: "fr-FR", name: "Français", file: "fr.json" },
+			{ code: "en-US", language: "en-US", name: "English", file: "en.json" },
+			{ code: "fr-FR", language: "fr-FR", name: "Français", file: "fr.json" },
 		],
 		defaultLocale: "fr-FR",
+		baseUrl: 'https://worldcup.mrda.org/',
 	},
 });
