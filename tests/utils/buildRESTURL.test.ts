@@ -69,4 +69,14 @@ describe("buildRESTURL", () => {
 		const url = buildRESTURL("sponsors", { name: true });
 		expect(url.pathname).toBe("/items/sponsors/");
 	});
+
+	it("throws a clear error when apiBase is not set", async () => {
+		vi.stubGlobal("useRuntimeConfig", () => ({
+			public: { apiBase: "" },
+		}));
+		const { default: buildWithEmptyBase } = await import("~/utils/buildRESTURL");
+		expect(() => buildWithEmptyBase("pages", { slug: true })).toThrow(
+			"NUXT_PUBLIC_API_BASE"
+		);
+	});
 });

@@ -48,8 +48,11 @@ pnpm test:watch
 # Build for production
 pnpm build
 
-# Preview production build locally
+# Preview production build locally (uses .env)
 pnpm preview
+
+# Or run the built server manually (set NUXT_PUBLIC_API_BASE if not using .env)
+NUXT_PUBLIC_API_BASE=https://backend.mrdwc.org node .output/server/index.mjs
 
 # Static site generation
 pnpm generate
