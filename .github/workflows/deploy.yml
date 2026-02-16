@@ -49,3 +49,20 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Set image reference
+        id: image-ref
+        run: |
+          FIRST_TAG=$(echo '${{ steps.meta.outputs.tags }}' | head -n1)
+          echo "image=${{ env.REGISTRY }}/${{ github.repository }}:${FIRST_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        run: npm install -g cloudron@6.0.0
+
+      - name: Deploy
+        run: './.github/workflows/deploy.sh'
+        env:
+          CLOUDRON_TOKEN: "${{ secrets.ZOROBABEL_GITHUB_ACTION }}"
+          CLOUDRON_APP_ID: "${{ secrets.CLOUDRON_APP_ID }}"
+          CLOUDRON_FQDN: "${{ secrets.CLOUDRON_FQDN }}"
+          DOCKER_IMAGE: ${{ steps.image-ref.outputs.image }}
