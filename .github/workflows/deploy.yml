@@ -60,7 +60,7 @@ jobs:
         run: npm install -g cloudron@6.0.0
 
       - name: Deploy
-        run: './.github/workflows/deploy.sh'
+        run: bash ./.github/workflows/deploy.sh
         env:
           CLOUDRON_TOKEN: "${{ secrets.ZOROBABEL_GITHUB_ACTION }}"
           CLOUDRON_APP_ID: "${{ secrets.CLOUDRON_APP_ID }}"
