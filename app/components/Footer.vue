@@ -1,6 +1,7 @@
 <template>
   <footer class="flex flex-col bg-blue-text mt-auto justify-self-end">
-    <div class="maxed flex flex-col sm:flex-row w-full p-4 sm:items-center gap-8 items-start justify-end">
+    <BlockSponsors></BlockSponsors>
+    <div class="maxed padded flex flex-col sm:flex-row w-full p-4 gap-8 items-center justify-end">
       <!-- Logo -->
       <NuxtImg
         src="/mrdwc_logo@2x.png"
@@ -9,9 +10,9 @@
       />
 
       <!-- Liens en colonnes -->
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8 w-full">
+      <nav class="flex flex-col sm:flex-row gap-4 sm:gap-8 w-auto sm:w-full">
         <!-- Colonne 1 -->
-        <ul class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-4 list-none pl-0">
           <li
             v-for="(item, i) in menuItemsFirstHalf"
             :key="`footer_item_1_${i}`"
@@ -31,7 +32,7 @@
         </ul>
 
         <!-- Colonne 2 -->
-        <ul class="flex flex-col gap-4 flex-1">
+        <ul class="flex flex-col gap-4 flex-1 list-none pl-0">
           <li
             v-for="(item, i) in menuItemsSecondHalf"
             :key="`footer_item_2_${i}`"
@@ -49,14 +50,9 @@
             />
           </li>
         </ul>
-      </div>
+      </nav>
 
       <Socials />
-    </div>
-
-    <!-- Bas du footer -->
-    <div class="flex justify-center w-full bg-blue p-4">
-      <p class="text-sm text-center">{{ t("copyright") }}</p>
     </div>
   </footer>
 </template>
@@ -69,13 +65,15 @@ import type {
 } from "~~/types/custom"
 
 import Socials from "@/components/Socials.vue"
+import BlockSponsors from "./blocks_custom/BlockSponsors.vue"
 
 const { t } = useI18n()
 const MENU_NAME = "footer"
 
 const menusStore = useMenusStore()
+const { getMenuWithName } = storeToRefs(menusStore)
 const menu = computed((): ILocalizedMenu | null =>
-  menusStore.getMenuWithName(MENU_NAME)
+  getMenuWithName.value(MENU_NAME)
 )
 
 const menuItemsFirstHalf = computed(() => {

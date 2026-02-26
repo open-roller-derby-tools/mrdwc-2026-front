@@ -1,0 +1,30 @@
+# Dependencies and build output (rebuilt in container)
+node_modules
+.output
+.nuxt
+dist
+
+# Git and IDE
+.git
+.gitignore
+.cursor
+.vscode
+*.md
+!README.md
+
+# Env and secrets (Cloudron sets NUXT_PUBLIC_API_BASE at runtime)
+.env
+.env.*
+!.env.example
+
+# Tests and tooling (not needed for production image)
+tests
+*.test.ts
+*.spec.ts
+vitest.config.ts
+coverage
+
+# Misc
+Dockerfile*
+.dockerignore
+CloudronManifest.json

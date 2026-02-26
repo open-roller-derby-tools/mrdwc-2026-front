@@ -1,32 +1,99 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @theme {
-  --font-cabin: "Cabin", "sans-serif";
-  --font-shoulders: "Big Shoulders", "sans-serif";
+	--font-cabin: "Cabin", "sans-serif";
+	--font-shoulders: "Big Shoulders", "sans-serif";
 
-  --color-blue-light: #40a8f5;
-  --color-blue-text: #2a2c8f;
-  --color-blue: #1e2068;
-  --color-blue-dark: #121356;
+	--color-blue-light: #40a8f5;
+	--color-blue-text: #2a2c8f;
+	--color-blue: #1e2068;
+	--color-blue-dark: #121356;
+	--color-blue-inactive: #7c80ef;
 
-  --color-yellow: #f3ba49;
+	--color-yellow: #f3ba49;
 
-  --color-red-text: #d33231;
+	--color-red-text: #d33231;
+	--color-red-light: #fd4947;
+}
+
+:root,
+.light,
+.dark {
+	--ui-primary: var(--color-white);
+	--ui-secondary: var(--color-blue-text);
+	--ui-success: var(--color-yellow);
+	--ui-info: var(--color-yellow);
+	--ui-warning: var(--color-red-text);
+	--ui-error: var(--color-red-text);
 }
 
 @layer base {
-  body {
-    @apply bg-blue text-white font-cabin min-h-screen;
-  }
-  h1 {
-    @apply font-shoulders font-bold text-2xl mb-2;
-  }
+	html {
+		@apply scroll-smooth;
+	}
+	body {
+		@apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
+	}
+	h1 {
+		@apply font-shoulders font-bold text-4xl sm:text-[56px] mb-6 uppercase;
+	}
+	h2 {
+		@apply font-shoulders font-bold text-3xl sm:text-[42px] mb-4 uppercase;
+	}
+	h3 {
+		@apply font-shoulders text-2xl sm:text-[38px] mb-4 uppercase;
+	}
+	h4 {
+		@apply font-shoulders text-2xl sm:text-[32px] mb-2;
+	}
+	.block-rich-text p {
+		@apply mb-4 last:mb-0;
+	}
+	em {
+		@apply text-yellow;
+	}
+	ul:not(.list-none) {
+		li {
+			@apply relative pl-3 before:content-['•'] before:absolute before:left-0;
+		}
+	}
+	nav {
+		ul {
+			li {
+				@apply pl-0 before:content-none;
+			}
+		}
+	}
 }
 
 @layer utilities {
-  .maxed {
-    @apply max-w-5xl mx-auto px-4 sm:px-12;
-  }
+	.maxed {
+		@apply sm:max-w-5xl sm:mx-auto;
+	}
+	.padded {
+		@apply px-6 sm:px-12;
+	}
+	a.rich-yellow--button {
+		@apply relative z-10 overflow-hidden inline-flex items-center justify-between gap-2 font-shoulders font-semibold uppercase text-[1.5rem] leading-8 text-secondary bg-info rounded-md px-4 py-2 transition-colors duration-200 no-underline;
+
+		&:after {
+			@apply content-[''] inline-block w-8 h-8 relative bg-current translate-x-0 -rotate-45 transition-transform duration-200 ease-out mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain;
+		}
+		&:hover {
+			@apply text-blue-text bg-yellow w-auto;
+
+			&:after {
+				@apply translate-x-1;
+			}
+		}
+	}
+	a.calltoaction {
+		@apply !bg-red-light !text-white;
+	}
+	h2[id^="reka-dialog-title"] {
+		@apply !mb-0;
+	}
 }
 
 @layer components {

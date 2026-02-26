@@ -1,0 +1,18 @@
+{
+  "id": "org.mrda.worldcup.frontend",
+  "title": "MRDA World Cup 2026 Frontend",
+  "author": "Tech MRDWC <tech@mrdwc.org>",
+  "tagline": "Men's Roller Derby World Cup 2026 — Frontend",
+  "description": "Frontend for the Men's Roller Derby World Cup 2026.",
+  "version": "2.0.0",
+  "manifestVersion": 2,
+  "healthCheckPath": "/",
+  "httpPort": 3000,
+  "website": "https://worldcup.mrda.org",
+  "checklist": {
+    "set-api-base": {
+      "message": "Set **NUXT_PUBLIC_API_BASE** in the app's Environment to your Directus CMS URL."
+    }
+  },
+  "postInstallMessage": "Configure the app: open **App → Environment** and set **NUXT_PUBLIC_API_BASE** to your Directus instance URL."
+}

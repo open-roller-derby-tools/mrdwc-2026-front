@@ -1,44 +1,56 @@
 {
-  "site_title": "Men's Roller Derby World Cup 2026 - Orléans, France",
-  "time_to_derby": "Time to derby",
-  "days": "days",
-  "hours": "hours",
-  "minutes": "min",
-  "seconds": "sec",
-  "date_month_first": "true",
-  "teams_application": "Teams Application",
-  "teams_application_text": {
-    "line1": "Please fill out the formal application for your team to be considered for the event.",
-    "date1": "Application Deadline: {date}",
-    "date2": "Team Notification: {date}",
-    "form1": "Team Application"
-  },
-  "officials_application": "Officials Application",
-  "officials_application_text": {
-    "line1": "We look forward to building strong crews of experienced, collaborative officials. Thank you for your interest in contributing to our events.",
-    "line2": "4 officiating crews (4 CHRs, 4 CHNSOs).",
-    "date1": "Tournament Head Officials will be announced {date}.",
-    "date2": "Crew Head Applications will close {date}.",
-    "date3": "General Officiating Application will close {date}.",
-    "form1": "Officiating Leadership Application",
-    "form2": "Officiating Application"
-  },
-  "timelines": "Timelines:",
-  "forms": "Forms:",
-  "venues": "Venues",
-  "see_map": "See on Maps",
-  "contact": "Contact",
-  "privacy_policy": "Privacy Policy",
-  "terms_of_use": "Terms of Use",
-  "copyright": "© 2025 Tech on Wheels Team. All rights reserved.",
-  "socials": "Follow us",
-  "image_alts": {
-    "title_logo": "Men's Roller Derby World Cup | Orléans, France",
-    "image_logo": "Bust of a person with blue skin and rainbow hair, in the middle of a roller derby track",
-    "ffrs_logo": "FFRS logo",
-    "mrda_logo": "MRDA logo",
-    "orleans_logo": "Orléans Métropole logo",
-    "primary_venue": "Photo of the primary venue",
-    "secondary_venue": "Photo of the secondary venue"
-  }
+	"site_title": "Men's Roller Derby World Cup 2026 - Orléans, France",
+	"site_description": "The Men’s Roller Derby World Cup returns from April 30th to May 3rd! Four days of international competition bringing together the best men’s roller derby teams from around the world.",
+	"time_to_derby": "Time to derby",
+	"days": "days",
+	"hours": "hours",
+	"minutes": "min",
+	"seconds": "sec",
+	"date_month_first": "true",
+	"applications": {
+		"title": "Applications",
+		"status_upcoming": "Upcoming applications",
+		"status_open": "Open applications",
+		"status_closed": "Closed applications",
+		"date": "{label}: {date}",
+		"read_more": "Read more",
+		"apply": "Apply"
+	},
+	"teams_application": "Teams Application",
+	"teams_application_text": {
+		"line1": "Please fill out the formal application for your team to be considered for the event.",
+		"date1": "Application Deadline: {date}",
+		"date2": "Team Notification: {date}",
+		"form1": "Team Application"
+	},
+	"officials_application": "Officials Application",
+	"officials_application_text": {
+		"line1": "We look forward to building strong crews of experienced, collaborative officials. Thank you for your interest in contributing to our events.",
+		"line2": "4 officiating crews (4 CHRs, 4 CHNSOs).",
+		"date1": "Tournament Head Officials will be announced {date}.",
+		"date2": "Crew Head Applications will close {date}.",
+		"date3": "General Officiating Application will close {date}.",
+		"form1": "Officiating Leadership Application",
+		"form2": "Officiating Application"
+	},
+	"timelines": "Timelines:",
+	"forms": "Forms:",
+	"venues": "Venues",
+	"see_map": "See on Maps",
+	"venue_primary": "Main venue",
+	"venue_secondary": "Secondary venue",
+	"contact": "Contact",
+	"privacy_policy": "Privacy Policy",
+	"terms_of_use": "Terms of Use",
+	"copyright": "© 2025 Tech on Wheels Team. All rights reserved.",
+	"socials": "Follow us",
+	"image_alts": {
+		"title_logo": "Men's Roller Derby World Cup | Orléans, France",
+		"image_logo": "Bust of a person with blue skin and rainbow hair, in the middle of a roller derby track",
+		"ffrs_logo": "FFRS logo",
+		"mrda_logo": "MRDA logo",
+		"orleans_logo": "Orléans Métropole logo",
+		"primary_venue": "Photo of the primary venue",
+		"secondary_venue": "Photo of the secondary venue"
+	}
 }

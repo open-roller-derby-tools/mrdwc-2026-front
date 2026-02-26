@@ -19,6 +19,8 @@ import type {
   ILocalizedPageMenuItem,
   IMenusRequestData,
   ILocalizedMenu,
+  IMenuTranslation,
+  ILocalizedMenuMenuItem,
 } from "~~/types/custom";
 
 export const useMenusStore = defineStore("menus", () => {
@@ -28,14 +30,19 @@ export const useMenusStore = defineStore("menus", () => {
 
   /**
    * Fetch data from the API.
+   * Skips the network request when data was already loaded
    */
   async function fetch() {
+    if (isReady.value && menus.value != null) {
+      return menus.value;
+    }
     try {
       const fields = {
         name: true,
         classes: true,
         translations: {
           languages_code: true,
+          display_name: true,
           items: {
             sort: true,
             collection: true,
@@ -96,62 +103,84 @@ export const useMenusStore = defineStore("menus", () => {
       if (!menuTranslation) return null;
 
       // Get localized menu items
-      const localizedItems = menuTranslation.items.reduce<
-        (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem)[]
-      >((result, value: IMenuItemWrapper) => {
-        let itemTranslation = value.item.translations.find(
-          (translation) => translation.languages_code === locale.value
-        );
-        // If not found, try fallback locale
-        if (!itemTranslation) {
-          itemTranslation = value.item.translations.find(
-            (translation) => translation.languages_code === fallbackLocale.value
-          );
-        }
-        if (!itemTranslation) return result;
-
-        let typedItem: IPage | ICustomLink;
-        let typedItemTranslation: IPageTranslation | ICustomLinkTranslation;
-        switch (value.collection) {
-          // Page
-          case "pages":
-            typedItem = value.item as IPage;
-            typedItemTranslation = itemTranslation as IPageTranslation;
-            result.push({
-              collection: value.collection,
-              slug: typedItem.slug,
-              classes: typedItem.classes,
-              title: typedItemTranslation.title || typedItem.slug,
-              menu_title:
-                typedItemTranslation.menu_title ||
-                typedItemTranslation.title ||
-                typedItem.slug,
-            } as ILocalizedPageMenuItem);
-            break;
-          // Custom Link
-          case "custom_links":
-            typedItem = value.item as ICustomLink;
-            typedItemTranslation = itemTranslation as ICustomLinkTranslation;
-            result.push({
-              collection: value.collection,
-              classes: typedItem.classes,
-              target: typedItem.target,
-              label: typedItemTranslation.label,
-              url: typedItemTranslation.url,
-            } as ILocalizedCustomLinkMenuItem);
-            break;
-        }
-        return result;
-      }, []);
+      const localizedItems = localizeMenuItems(menuTranslation.items);
 
       // Return the final ILocalizedMenu object
       return {
         name: menu.name,
         classes: menu.classes,
+        display_name: menuTranslation.display_name,
         items: localizedItems,
       };
     };
   });
+
+  const localizeMenuItems = (items: IMenuItemWrapper[]) => {
+    return items.reduce<
+      (
+        | ILocalizedPageMenuItem
+        | ILocalizedCustomLinkMenuItem
+        | ILocalizedMenuMenuItem
+      )[]
+    >((result, value: IMenuItemWrapper) => {
+      let itemTranslation = value.item.translations.find(
+        (translation) => translation.languages_code === locale.value
+      );
+      // If not found, try fallback locale
+      if (!itemTranslation) {
+        itemTranslation = value.item.translations.find(
+          (translation) => translation.languages_code === fallbackLocale.value
+        );
+      }
+      if (!itemTranslation) return result;
+
+      let typedItem: IPage | ICustomLink | IMenu;
+      let typedItemTranslation:
+        | IPageTranslation
+        | ICustomLinkTranslation
+        | IMenuTranslation;
+      switch (value.collection) {
+        // Page
+        case "pages":
+          typedItem = value.item as IPage;
+          typedItemTranslation = itemTranslation as IPageTranslation;
+          result.push({
+            collection: value.collection,
+            slug: typedItem.slug,
+            classes: typedItem.classes,
+            title: typedItemTranslation.title || typedItem.slug,
+            menu_title:
+              typedItemTranslation.menu_title ||
+              typedItemTranslation.title ||
+              typedItem.slug,
+          } as ILocalizedPageMenuItem);
+          break;
+        // Custom Link
+        case "custom_links":
+          typedItem = value.item as ICustomLink;
+          typedItemTranslation = itemTranslation as ICustomLinkTranslation;
+          result.push({
+            collection: value.collection,
+            classes: typedItem.classes,
+            target: typedItem.target,
+            label: typedItemTranslation.label,
+            url: typedItemTranslation.url,
+          } as ILocalizedCustomLinkMenuItem);
+          break;
+        // Menu
+        case "menus":
+          typedItem = value.item as IMenu;
+          typedItemTranslation = itemTranslation as IMenuTranslation;
+          result.push({
+            collection: value.collection,
+            name: typedItem.name,
+            display_name: typedItemTranslation.display_name,
+          } as ILocalizedMenuMenuItem);
+          break;
+      }
+      return result;
+    }, []);
+  };
 
   // Expose the required properties, getters and actions
   return {

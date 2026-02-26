@@ -9,42 +9,54 @@
 
 import { defineStore } from "pinia";
 import type {
-  ILocalizedTeam,
-  ILocalizedTeamMember,
-  ITeam,
-  ITeamMember,
   ITeamsRequestData,
+  ITeam,
+  ILocalizedTeam,
+  // ITeamMember,
+  // ILocalizedTeamMember,
 } from "~~/types/custom";
 
 export const useTeamsStore = defineStore("teams", () => {
   const { locale, fallbackLocale } = useI18n();
 
-  const pending = ref<boolean>(true);
+  const isReady = ref<boolean>(false);
   const teams = ref<ITeam[]>();
 
   /**
    * Fetch data from the API.
+   * Skips the network request when data was already loaded (e.g. from a previous call during the same server run).
    */
   async function fetch() {
-    pending.value = true;
-
-    const fields = {
-      name: true,
-      members: {
+    if (isReady.value && teams.value != null) {
+      return teams.value;
+    }
+    try {
+      const fields = {
         name: true,
-        number: true,
-        translations: {
-          languages_code: true,
-          pronouns: true,
-        },
-      },
-    };
-    const { data } = await $fetch<ITeamsRequestData>(
-      buildRESTURL("teams", fields).href
-    );
+        logo: true,
+        /* members: {
+          name: true,
+          number: true,
+          translations: {
+            languages_code: true,
+            pronouns: true,
+          },
+        }, */
+      };
+      const { data } = await $fetch<ITeamsRequestData>(
+        buildRESTURL("teams", fields).href
+      );
 
-    teams.value = data;
-    pending.value = false;
+      teams.value = [...data].sort((a, b) =>
+        (a.name ?? "").localeCompare(b.name ?? "", undefined, { sensitivity: "base" })
+      );
+      isReady.value = true;
+      return data;
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+      isReady.value = false;
+      throw error;
+    }
   }
 
   /**
@@ -58,10 +70,11 @@ export const useTeamsStore = defineStore("teams", () => {
       let l_team: ILocalizedTeam = {
         id: team.id,
         name: team.name,
-        members: [],
+        logo: team.logo,
+        // members: [],
       };
 
-      team.members.forEach((member: number | ITeamMember) => {
+      /* team.members.forEach((member: number | ITeamMember) => {
         if (typeof member === "number") {
           (l_team.members as number[]).push(member);
         } else {
@@ -84,7 +97,7 @@ export const useTeamsStore = defineStore("teams", () => {
           l_member.pronouns = trans?.pronouns ?? "";
           (l_team.members as ILocalizedTeamMember[]).push(l_member);
         }
-      });
+      });*/
 
       list.push(l_team);
     });
@@ -95,5 +108,5 @@ export const useTeamsStore = defineStore("teams", () => {
   /**
    * Expose the required properties, getters and actions
    */
-  return { fetch, pending, teams, localizedTeams };
+  return { fetch, isReady, teams, localizedTeams };
 });
