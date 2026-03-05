@@ -48,7 +48,7 @@ export default <URL>(item: string, fields: object) => {
   const url = new URL(path);
   const fields_string = getString(fields, "");
   url.searchParams.append("fields", fields_string);
-  console.log(url.href);
+  // console.log(url.href);
   return url;
 };
 

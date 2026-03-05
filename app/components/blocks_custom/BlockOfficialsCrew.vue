@@ -1,5 +1,5 @@
 <template>
-	<div class="rounded-xl bg-white p-8 text-blue-text">
+	<div class="rounded-xl bg-white p-6 sm:p-8 text-blue-text">
 		<h2
 			v-if="crew && crew?.name"
 			class="text-red-text text-center"
