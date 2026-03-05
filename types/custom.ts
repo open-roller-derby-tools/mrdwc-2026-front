@@ -344,3 +344,28 @@ export interface ITeamMemberTranslation extends ITranslation {
 export interface ITeamsRequestData {
 	data: ITeam[];
 }
+
+// OFFICIALS
+
+export interface IOfficial {
+	id: number;
+	name: string;
+	country: string;
+	roles: string[];
+}
+
+export interface ILocalizedOfficial extends IOfficial {}
+
+export interface IOfficialsCrew {
+	id: number;
+	name: string;
+	secret_name: string;
+	members_so: IOfficial[];
+	members_nso: IOfficial[];
+}
+
+export interface ILocalizedOfficialsCrew extends IOfficialsCrew {}
+
+export interface IOfficialsCrewsRequestData {
+	data: IOfficialsCrew[];
+}
