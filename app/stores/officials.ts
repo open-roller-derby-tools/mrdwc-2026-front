@@ -56,9 +56,7 @@ export const useOfficialsStore = defineStore("officials", () => {
         buildRESTURL("officials_crews", fields).href
       );
 
-      officials.value = [...data].sort((a, b) =>
-        (a.name ?? "").localeCompare(b.name ?? "", undefined, { sensitivity: "base" })
-      );
+      officials.value = data;
       isReady.value = true;
       return data;
     } catch (error) {

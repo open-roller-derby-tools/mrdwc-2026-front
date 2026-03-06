@@ -6,6 +6,7 @@
 				class="bg-yellow px-1.5 py-0 rounded-md inline-block"
 			>
 				<Transition
+					v-if="hasMultipleRoles"
 					mode="out-in"
 					enter-active-class="transition-opacity duration-200"
 					leave-active-class="transition-opacity duration-200"
@@ -19,6 +20,10 @@
 						class="font-bold"
 					>{{ formatRole(currentRole) }}</span>
 				</Transition>
+				<span
+					v-else
+					class="font-bold"
+				>{{ formatRole(currentRole) }}</span>
 			</div>
 		</div>
 		<div class="grow text-xl font-medium">{{ official?.name }}</div>
@@ -42,20 +47,55 @@ const currentRole = computed(() => {
 	return roles[currentRoleIndex.value];
 });
 
+const hasMultipleRoles = computed(() => {
+	return (props.official?.roles?.length ?? 0) > 1;
+});
+
 const formatRole = (role: string) => {
 	return role.includes('_') ? role.split('_')[0] : role;
 };
 
-onMounted(() => {
-	const roles = props.official?.roles;
-	if (!roles || roles.length <= 1) return;
+let interval: ReturnType<typeof setInterval> | null = null;
 
-	const interval = setInterval(() => {
+const startRoleInterval = () => {
+	const roles = props.official?.roles;
+	if (!roles || roles.length <= 1) {
+		stopRoleInterval();
+		return;
+	}
+
+	if (interval) return;
+	interval = setInterval(() => {
 		currentRoleIndex.value = (currentRoleIndex.value + 1) % roles.length;
 	}, 2000);
+};
 
-	onUnmounted(() => {
+const stopRoleInterval = () => {
+	if (interval) {
 		clearInterval(interval);
-	});
+		interval = null;
+	}
+};
+
+watch(
+	() => hasMultipleRoles.value,
+	(hasMultiple) => {
+		if (hasMultiple)
+			startRoleInterval();
+		else
+			stopRoleInterval();
+	},
+	{ immediate: true }
+);
+
+watch(
+	() => props.official?.id,
+	() => {
+		currentRoleIndex.value = 0;
+	}
+);
+
+onUnmounted(() => {
+	stopRoleInterval();
 });
 </script>

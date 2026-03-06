@@ -2,7 +2,7 @@
 	<div class="rounded-xl bg-white p-6 sm:p-8 text-blue-text">
 		<h2
 			v-if="crew && displayedName"
-			class="text-red-text select-none"
+			class="text-red-text select-none normal-case"
 			:style="crew?.color ? { color: crew.color } : {}"
 			@click="clickCount++"
 		>
