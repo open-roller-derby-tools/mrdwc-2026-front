@@ -28,4 +28,4 @@ jobs:
           # Destination path in the Cloudron app for deployment
           CLOUDRON_PUSH_DESTINATION: "/app/data"
           # Create a backup before deploying
-          CLOUDRON_CREATE_APP_BACKUP: "true"
+          CLOUDRON_CREATE_APP_BACKUP: "false"
