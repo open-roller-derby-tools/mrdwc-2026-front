@@ -34,6 +34,7 @@ export const useOfficialsStore = defineStore("officials", () => {
         id: true,
         name: true,
         secret_name: true,
+        color: true,
 		members_so: {
 			officials_id: {
 				id: true,
@@ -96,6 +97,7 @@ export const useOfficialsStore = defineStore("officials", () => {
         id: crew.id,
         name: crew.name,
         secret_name: crew.secret_name,
+        color: crew.color,
         members_so,
         members_nso,
       };

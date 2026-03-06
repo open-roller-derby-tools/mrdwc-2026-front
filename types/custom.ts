@@ -360,6 +360,7 @@ export interface IOfficialsCrew {
 	id: number;
 	name: string;
 	secret_name: string;
+	color: string;
 	members_so: IOfficial[];
 	members_nso: IOfficial[];
 }

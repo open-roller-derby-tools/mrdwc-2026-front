@@ -1,10 +1,12 @@
 <template>
 	<div class="rounded-xl bg-white p-6 sm:p-8 text-blue-text">
 		<h2
-			v-if="crew && crew?.name"
-			class="text-red-text text-center"
+			v-if="crew && displayedName"
+			class="text-red-text select-none"
+			:style="crew?.color ? { color: crew.color } : {}"
+			@click="clickCount++"
 		>
-			{{ crew.name }}
+			{{ displayedName }}
 		</h2>
 		<div
 			v-if="crew && (crew.members_so.length || crew.members_nso.length)"
@@ -50,5 +52,14 @@ const props = defineProps<{
 const crew = computed((): ILocalizedOfficialsCrew | undefined => {
 	const index = props.crewIndex ?? 0;
 	return officialsStore.localizedOfficials[index];
+});
+
+const clickCount = ref(0);
+
+const displayedName = computed(() => {
+	if (clickCount.value >= 19 && crew.value?.secret_name) {
+		return crew.value.secret_name;
+	}
+	return crew.value?.name || 'Crew';
 });
 </script>
