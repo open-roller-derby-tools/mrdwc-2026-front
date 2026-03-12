@@ -1,0 +1,24 @@
+name: Deploy to front staging
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: front-staging
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Install Dependencies
+        run: npm install -g cloudron@7.1.1
+      - name: Deploy
+        run: bash .github/workflows/deploy.sh
+        env:
+          CLOUDRON_TOKEN: '${{ secrets.CLOUDRON_TOKEN }}'
+          CLOUDRON_APP_ID: '${{ secrets.CLOUDRON_APP_ID }}'
+          CLOUDRON_FQDN: '${{ secrets.CLOUDRON_FQDN }}'

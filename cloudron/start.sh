@@ -1,5 +1,8 @@
 #!/bin/bash
-set -e
+set -eu
 
-export PORT="${PORT:-3000}"
-exec node /app/code/.output/server/index.mjs
+# Set the Directus API base URL
+export NUXT_PUBLIC_API_BASE="https://worldcup-dashboard.mrda.org"
+
+# Start the Nuxt server
+exec node ./.output/server/index.mjs
