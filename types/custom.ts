@@ -186,6 +186,7 @@ export interface IPage {
 	slug: string;
 	classes: string;
 	header_image: string;
+	is_static: boolean;
 	blocks: IBlockWrapper[];
 	translations: IPageTranslation[];
 }

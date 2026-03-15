@@ -52,6 +52,11 @@ export default defineNuxtConfig({
 			apiBase: "",
 		},
 	},
+	routeRules: {
+		'/:slug': {
+			swr: 60,// Default 1 minute cache for non-static pages
+		},
+	},
 	app: {
 		head: {
 			viewport:

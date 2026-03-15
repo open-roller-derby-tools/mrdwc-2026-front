@@ -40,12 +40,12 @@ if (!import.meta.client) {
   await callOnce(teamsStore.fetch)
   await callOnce(officialsStore.fetch)
 
-  // Prerender every [slug] page (default locale + en-US).
+  // Prerender every [slug] page (default locale + en-US) IF the page is set to static.
   // Without this, only crawler-discovered routes are generated.
   if (import.meta.prerender && pagesStore.pages?.length) {
-    const slugs = pagesStore.pages.filter((p) => p.slug).map((p) => p.slug)
+    const staticSlugs = pagesStore.pages.filter((p) => p.slug && p.is_static).map((p) => p.slug)
     const locales = ["en-US"] // default locale (fr-FR) has no prefix
-    const routes = slugs.flatMap((slug) => [`/${slug}`, ...locales.map((locale) => `/${locale}/${slug}`)])
+    const routes = staticSlugs.flatMap((slug) => [`/${slug}`, ...locales.map((locale) => `/${locale}/${slug}`)])
     prerenderRoutes(routes)
   }
 }
