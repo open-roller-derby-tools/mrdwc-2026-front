@@ -45,6 +45,7 @@ export interface IGame {
     state: GameState;
     video_url: string | null;
     type: GameType;
+    description: string | null;
 }
 
 export interface ILocalizedGame extends IGame { }

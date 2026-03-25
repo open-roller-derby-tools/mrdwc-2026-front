@@ -46,6 +46,7 @@ export const useGamesStore = defineStore("games", () => {
 				state: true,
 				video_url: true,
 				type: true,
+				description: true,
 			};
 
 			// TODO Replace webhook access with regular API fetch when games data is ready to be public
