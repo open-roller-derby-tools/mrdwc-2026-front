@@ -6,7 +6,7 @@
         <div v-else>
             <p>Loading...</p>
         </div>
-        <div class="my-8">
+        <div v-if="gamesStore.isReady && teamsStore.isReady" class="my-8">
             <div class="grid grid-cols-7 select-none cursor-default">
                 <div class="flex flex-col">
                     <BracketGame />
@@ -57,10 +57,10 @@ definePageMeta({
     layout: 'debug',
 })
 
-// onMounted(async () => {
-//     const fetches: Promise<unknown>[] = [];
-//     if (!gamesStore.isReady) fetches.push(gamesStore.fetch());
-//     if (!teamsStore.isReady) fetches.push(teamsStore.fetch());
-//     await Promise.all(fetches);
-// });
+onMounted(async () => {
+    const fetches: Promise<unknown>[] = [];
+    if (!gamesStore.isReady) fetches.push(gamesStore.fetch());
+    if (!teamsStore.isReady) fetches.push(teamsStore.fetch());
+    await Promise.all(fetches);
+});
 </script>

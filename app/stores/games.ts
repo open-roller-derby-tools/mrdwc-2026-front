@@ -15,6 +15,8 @@ type IGamesRequestData = {
 };
 
 export const useGamesStore = defineStore("games", () => {
+	const config = useRuntimeConfig()
+
 	const isReady = ref<boolean>(false);
 	const games = ref<IGame[] | null>(null);
 
@@ -46,9 +48,13 @@ export const useGamesStore = defineStore("games", () => {
 				type: true,
 			};
 
-			const { data } = await $fetch<IGamesRequestData>(
+			// TODO Replace webhook access with regular API fetch when games data is ready to be public
+			// Regular fetch from the API
+			/* const { data } = await $fetch<IGamesRequestData>(
 				buildRESTURL("games", fields).href
-			);
+			);*/
+			// Temporary webhook access
+			const { data } = await $fetch<IGamesRequestData>(`https://worldcup-dashboard.mrda.org/flows/trigger/${config.public.gamesFlowId}`);
 
 			// Sort games by start time.
 			const sortedData = [...data].sort((a, b) => {

@@ -50,6 +50,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			apiBase: "",
+			gamesFlowId: "",
 		},
 	},
 	routeRules: {
