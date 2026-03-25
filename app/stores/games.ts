@@ -121,11 +121,20 @@ export const useGamesStore = defineStore("games", () => {
 	const typeQuarterfinalsGames = computed((): IGame[] => {
 		return games.value?.filter((g) => g.type === GameType.Quarterfinals) ?? [];
 	});
+	const typeLowerTopEightGames = computed((): IGame[] => {
+		return games.value?.filter((g) => g.type === GameType.LowerTopEight) ?? [];
+	});
+	const typeUpperTopEightGames = computed((): IGame[] => {
+		return games.value?.filter((g) => g.type === GameType.UpperTopEight) ?? [];
+	});
 	const typeSemifinalsGames = computed((): IGame[] => {
 		return games.value?.filter((g) => g.type === GameType.Semifinals) ?? [];
 	});
-	const typeFinalGames = computed((): IGame[] => {
-		return games.value?.filter((g) => g.type === GameType.Final) ?? [];
+	const typeLowerFinalGames = computed((): IGame[] => {
+		return games.value?.filter((g) => g.type === GameType.LowerFinal) ?? [];
+	});
+	const typeGrandFinalGames = computed((): IGame[] => {
+		return games.value?.filter((g) => g.type === GameType.GrandFinal) ?? [];
 	});
 
 	return {
@@ -143,8 +152,11 @@ export const useGamesStore = defineStore("games", () => {
 		typeRankingsPlayGames,
 		typeTopEightGames,
 		typeQuarterfinalsGames,
+		typeLowerTopEightGames,
+		typeUpperTopEightGames,
 		typeSemifinalsGames,
-		typeFinalGames,
+		typeLowerFinalGames,
+		typeGrandFinalGames,
 	};
 });
 

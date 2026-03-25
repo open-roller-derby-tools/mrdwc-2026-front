@@ -13,8 +13,11 @@ export enum GameType {
     RankingsPlay = "rankings_play",
     TopEight = "top_eight",
     Quarterfinals = "quarterfinals",
+    LowerTopEight = "lower_top_eight",
+    UpperTopEight = "upper_top_eight",
     Semifinals = "semifinals",
-    Final = "final",
+    LowerFinal = "lower_final",
+    GrandFinal = "grand_final",
 }
 
 export enum GameDuration {
