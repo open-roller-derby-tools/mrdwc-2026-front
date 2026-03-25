@@ -32,8 +32,11 @@ export const useTeamsStore = defineStore("teams", () => {
     }
     try {
       const fields = {
+        id: true,
         name: true,
+        name_letters: true,
         logo: true,
+        flag: true,
         /* members: {
           name: true,
           number: true,
@@ -70,7 +73,9 @@ export const useTeamsStore = defineStore("teams", () => {
       let l_team: ILocalizedTeam = {
         id: team.id,
         name: team.name,
+        name_letters: team.name_letters,
         logo: team.logo,
+        flag: team.flag,
         // members: [],
       };
 
@@ -106,7 +111,15 @@ export const useTeamsStore = defineStore("teams", () => {
   });
 
   /**
+   * Get a team by id from the currently loaded data.
+   * Returns `undefined` if teams haven't been fetched yet.
+   */
+  function getTeamById(id: number): ITeam | undefined {
+    return teams.value?.find((team) => team.id === id);
+  }
+
+  /**
    * Expose the required properties, getters and actions
    */
-  return { fetch, isReady, teams, localizedTeams };
+  return { fetch, isReady, teams, localizedTeams, getTeamById };
 });
