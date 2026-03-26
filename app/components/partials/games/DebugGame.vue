@@ -1,8 +1,8 @@
 <template>
-    <div class="grid grid-cols-3 items-center max-w-96">
-        <span class="text-center">Game {{ game.number }}</span>
-        <span :style="homeSpanStyle" class="text-center">{{ homeTeamName }}</span>
-        <span :style="awaySpanStyle" class="text-center">{{ awayTeamName }}</span>
+    <div class="flex h-8 my-1">
+        <div class="flex items-center justify-center w-8 bg-blue-text text-white">{{ game.number }}</div>
+        <div :style="homeSpanStyle" class="w-48 flex items-center justify-center">{{ homeTeamName }}</div>
+        <div :style="awaySpanStyle" class="w-48 flex items-center justify-center">{{ awayTeamName }}</div>
     </div>
 </template>
 
