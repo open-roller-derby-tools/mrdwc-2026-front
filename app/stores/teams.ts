@@ -62,10 +62,6 @@ export const useTeamsStore = defineStore("teams", () => {
     }
   }
 
-  /**
-   * Return an array of localized teams.
-   * This getter transforms the raw teams data into a structure suitable for localized display.
-   */
   const localizedTeams = computed((): ILocalizedTeam[] => {
     const list: ILocalizedTeam[] = [];
 
@@ -110,16 +106,9 @@ export const useTeamsStore = defineStore("teams", () => {
     return list;
   });
 
-  /**
-   * Get a team by id from the currently loaded data.
-   * Returns `undefined` if teams haven't been fetched yet.
-   */
   function getTeamById(id: number): ITeam | undefined {
     return teams.value?.find((team) => team.id === id);
   }
 
-  /**
-   * Expose the required properties, getters and actions
-   */
   return { fetch, isReady, teams, localizedTeams, getTeamById };
 });

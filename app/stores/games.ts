@@ -20,10 +20,6 @@ export const useGamesStore = defineStore("games", () => {
 	const isReady = ref<boolean>(false);
 	const games = ref<IGame[] | null>(null);
 
-	/**
-	 * Fetch data from the API.
-	 * Skips the network request when data was already loaded (e.g. from a previous call during the same server run).
-	 */
 	async function fetch() {
 		if (isReady.value && games.value != null) {
 			return games.value;
@@ -43,6 +39,8 @@ export const useGamesStore = defineStore("games", () => {
 				away_score: true,
 				home_color: true,
 				away_color: true,
+				home_source: true,
+				away_source: true,
 				state: true,
 				video_url: true,
 				type: true,
@@ -138,6 +136,10 @@ export const useGamesStore = defineStore("games", () => {
 		return games.value?.filter((g) => g.type === GameType.GrandFinal) ?? [];
 	});
 
+	function getGameByNumber(n: number): IGame | undefined {
+		return games.value?.find((game) => game.number === n);
+	}
+
 	return {
 		fetch,
 		isReady,
@@ -158,6 +160,7 @@ export const useGamesStore = defineStore("games", () => {
 		typeSemifinalsGames,
 		typeLowerFinalGames,
 		typeGrandFinalGames,
+		getGameByNumber,
 	};
 });
 

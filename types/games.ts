@@ -42,6 +42,8 @@ export interface IGame {
     away_score: number;
     home_color: string;
     away_color: string;
+    home_source: string | null;
+    away_source: string | null;
     state: GameState;
     video_url: string | null;
     type: GameType;
