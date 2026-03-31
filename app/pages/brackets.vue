@@ -1,16 +1,22 @@
 <template>
     <div class="maxed padded my-32 w-full">
         <div class="flex flex-row gap-2 my-8">
+            <button @click="currentDisplay = 'planning'" :class="buttonClasses">Planning</button>
             <button @click="currentDisplay = 'groups_stage'" :class="buttonClasses">Groups Stage</button>
             <button @click="currentDisplay = 'rankings_play'" :class="buttonClasses">Rankings Play</button>
             <button @click="currentDisplay = 'bracket_play'" :class="buttonClasses">Bracket Play</button>
         </div>
         <div v-if="gamesStore.isReady && teamsStore.isReady">
+            <div v-if="currentDisplay === 'planning'">
+                <div v-for="([date, games]) in Object.entries(gamesStore.gamesGroupedByDate)" :key="date">
+                    <h2 class="text-xl font-bold">{{ date }}</h2>
+                    <DebugGame v-for="game of games" :key="game.id" :game="game" />
+                </div>
+            </div>
             <div v-if="currentDisplay === 'groups_stage'">
                 <DebugGame v-for="game in gamesStore.typeGroupsStageGames" :key="game.id" :game="game" />
             </div>
             <div v-if="currentDisplay === 'rankings_play'">
-                <!-- <DebugGame v-for="game in gamesStore.typeRankingsPlayGames" :key="game.id" :game="game" /> -->
                 <div class="grid grid-cols-7 select-none cursor-default">
                     <div class="flex flex-col">
                         <BracketGame v-if="gameRP1" :game="gameRP1" :level="1" />
@@ -86,7 +92,7 @@ import { useTeamsStore } from '~/stores/teams';
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
 
-const currentDisplay = ref<string>("rankings_play");
+const currentDisplay = ref<string>("planning");
 const buttonClasses = 'bg-yellow text-black font-shoulders font-bold text-sm px-4 py-2 rounded-md cursor-pointer';
 
 declare module 'nuxt/app' {

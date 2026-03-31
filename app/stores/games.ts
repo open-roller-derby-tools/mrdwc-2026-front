@@ -136,9 +136,21 @@ export const useGamesStore = defineStore("games", () => {
 		return games.value?.filter((g) => g.type === GameType.GrandFinal) ?? [];
 	});
 
+	// Game by number
+
 	function getGameByNumber(n: number): IGame | undefined {
 		return games.value?.find((game) => game.number === n);
 	}
+
+	// Games grouped by date
+
+	const gamesGroupedByDate = computed((): Record<string, IGame[]> => {
+		return games.value?.reduce((acc, game) => {
+			const date = game.start_time.split('T')[0] ?? 'unknown';
+			acc[date] = [...(acc[date] || []), game];
+			return acc;
+		}, {} as Record<string, IGame[]>) ?? {};
+	});
 
 	return {
 		fetch,
@@ -161,6 +173,7 @@ export const useGamesStore = defineStore("games", () => {
 		typeLowerFinalGames,
 		typeGrandFinalGames,
 		getGameByNumber,
+		gamesGroupedByDate,
 	};
 });
 
