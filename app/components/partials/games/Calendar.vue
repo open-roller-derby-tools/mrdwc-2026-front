@@ -16,6 +16,7 @@ import { useGamesStore } from '~/stores/games';
 import { GameDuration } from '~~/types/games';
 import CalendarGame from './CalendarGame.vue';
 
+const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 
 const games = computed(() => {
@@ -35,13 +36,21 @@ const events = computed(() => {
             title: `Game ${game.number}`,
             start: game.start_time,
             end: getEndTime(game.start_time, game.duration),
+            game: game,
         };
     });
 });
 
 const calendarOptions = {
+    locale: locale.value,
     plugins: [dayGridPlugin, listPlugin, timeGridPlugin],
-    headerToolbar: { center: 'timeGridWeek, timeGridDay, listDay', end: 'prev,next,today' },
+    headerToolbar: { center: 'timeGridWeek,timeGridDay,listDay', end: 'prev,next,today' },
+    buttonText: {
+        today: t('calendar.today'),
+        week: t('calendar.week'),
+        day: t('calendar.day'),
+        list: t('calendar.list'),
+    },
     initialView: 'timeGridWeek',
     initialDate: '2026-04-30',
     validRange: {

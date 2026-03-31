@@ -52,5 +52,13 @@
 		"orleans_logo": "Logo d'Orléans Métropole",
 		"primary_venue": "Photo du lieu principal",
 		"secondary_venue": "Photo du lieu secondaire"
+	},
+	"calendar": {
+		"prev": "Précédent",
+		"next": "Suivant",
+		"today": "Aujourd'hui",
+		"week": "Semaine",
+		"day": "Jour",
+		"list": "Liste"
 	}
 }

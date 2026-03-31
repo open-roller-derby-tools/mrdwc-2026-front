@@ -28,8 +28,8 @@
     border-width: 1px;
 }
 
-.fc .fc-timegrid-slot-minor {
-    border-top-style: dashed;
+.fc .fc-timegrid-slot {
+    border-top-style: dotted;
 }
 
 .fc .fc-timegrid-slot-minor {

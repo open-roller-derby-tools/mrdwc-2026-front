@@ -96,11 +96,11 @@ import { useGamesStore } from '~/stores/games';
 import { useTeamsStore } from '~/stores/teams';
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
-
+const { locale } = useI18n();
 const currentDisplay = ref<string>("calendar");
 const buttonClasses = 'bg-yellow text-black font-shoulders font-bold text-sm px-4 py-2 rounded-md cursor-pointer';
 
-declare module 'nuxt/app' {
+/* declare module 'nuxt/app' {
     interface NuxtLayouts {
         'debug': unknown
     }
@@ -108,7 +108,7 @@ declare module 'nuxt/app' {
 
 definePageMeta({
     layout: 'debug',
-})
+}) */
 
 const gameRP1 = computed(() => gamesStore.getGameByNumber(50));
 const gameRP2 = computed(() => gamesStore.getGameByNumber(49));
