@@ -1,0 +1,37 @@
+:root {
+    --fc-border-color: var(--color-white);
+    --fc-page-bg-color: var(--color-blue-light);
+}
+
+.fc-v-event {
+    border: 0;
+}
+
+.fc-timegrid-event {
+    border-radius: 0;
+}
+
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+    box-shadow: none;
+}
+
+.fc-direction-ltr .fc-timegrid-col-events {
+    margin: 0 0.2em;
+}
+
+.fc .fc-timegrid-slot {
+    height: 3em;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-width: 1px;
+}
+
+.fc .fc-timegrid-slot-minor {
+    border-top-style: dashed;
+}
+
+.fc .fc-timegrid-slot-minor {
+    border-top-style: dotted;
+}
