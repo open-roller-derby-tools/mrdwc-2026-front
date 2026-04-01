@@ -3,6 +3,7 @@
     --fc-page-bg-color: var(--color-transparent);
     --fc-today-bg-color: var(--color-transparent);
     --fc-now-indicator-color: var(--color-red-text);
+    --fc-list-event-hover-bg-color: var(--color-transparent);
     /* Base */
     --fc-button-bg-color: var(--color-blue-inactive);
     --fc-button-text-color: var(--color-blue-text);
@@ -46,7 +47,6 @@
     @apply mx-1;
 }
 
-
 .fc-theme-standard td,
 .fc-theme-standard th {
     @apply border-0;
@@ -66,7 +66,8 @@
     }
 
     .fc-timegrid-slot-label-cushion,
-    .fc-col-header-cell-cushion {
+    .fc-col-header-cell-cushion,
+    .fc-list-day-text {
         @apply font-shoulders font-bold capitalize text-lg py-4;
     }
 
@@ -76,5 +77,34 @@
 
     .fc-timegrid-now-indicator-line {
         @apply border-t-2;
+    }
+
+    .fc-list-event-time,
+    .fc-list-event-graphic {
+        @apply hidden;
+    }
+
+    .fc-list-table {
+        @apply bg-blue-text rounded-2xl;
+
+        td {
+            @apply px-2 py-2;
+        }
+
+        tr.fc-list-event:last-of-type td {
+            @apply pb-8;
+        }
+    }
+
+    .fc-list-event-title {
+        @apply w-full;
+    }
+
+    .fc-list-day-cushion {
+        @apply p-0 flex items-center justify-center;
+
+        &.fc-cell-shaded {
+            @apply bg-transparent;
+        }
     }
 }

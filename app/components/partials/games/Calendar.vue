@@ -1,7 +1,8 @@
 <template>
     <FullCalendar ref="calendarRef" :options="calendarOptions">
-        <template v-slot:eventContent="{ event }">
-            <CalendarGame :event="event" />
+        <template v-slot:eventContent="arg">
+            <CalendarListGame v-if="arg.view.type.startsWith('list')" :event="arg.event" />
+            <CalendarGame v-else :event="arg.event" />
         </template>
     </FullCalendar>
 </template>
@@ -19,6 +20,7 @@ import { addMinutes, format, parseISO } from 'date-fns';
 import { useGamesStore } from '~/stores/games';
 import { GameDuration } from '~~/types/games';
 import CalendarGame from './CalendarGame.vue';
+import CalendarListGame from './CalendarListGame.vue';
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
@@ -101,6 +103,9 @@ const calendarOptions = computed<CalendarOptions>(() => {
                 dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true },
                 slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' }
             },
+            listDay: {
+                listDayFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true },
+            }
         },
         eventClick: (info: EventClickArg) => {
             console.log(info);
