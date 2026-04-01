@@ -28,6 +28,8 @@ const { getBreakpointPx } = useTailwindBreakpoint();
 const { formatDayShort } = useFormatTimeLocalized();
 
 const DEFAULT_MOBILE_BREAKPOINT = 640;
+const WC_DATES = ['2026-04-30', '2026-05-01', '2026-05-02', '2026-05-03'] as const;
+const END_DATE = '2026-05-04';
 
 const mobileBreakpoint = ref(DEFAULT_MOBILE_BREAKPOINT);
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
@@ -84,16 +86,13 @@ const calendarOptions = computed<CalendarOptions>(() => {
         plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin],
         headerToolbar: { start: viewButtons, end: '' },
         buttonText: {
-            today: t('calendar.today'),
             week: t('calendar.week'),
-            day: t('calendar.day'),
-            list: t('calendar.list'),
         },
         initialView: isMobile.value ? 'timeGridDay' : 'timeGridWeek',
-        initialDate: '2026-04-30',
+        initialDate: WC_DATES[0],
         validRange: {
-            start: '2026-04-30',
-            end: '2026-05-04'
+            start: WC_DATES[0],
+            end: END_DATE
         },
         firstDay: 1,
         hiddenDays: [1, 2, 3],
@@ -102,27 +101,27 @@ const calendarOptions = computed<CalendarOptions>(() => {
         eventBorderColor: 'transparent',
         customButtons: {
             dayOne: {
-                text: formatDayShort('2026-04-30'),
+                text: formatDayShort(WC_DATES[0]),
                 click: () => {
-                    calendarRef.value?.getApi().changeView('dayOne', '2026-04-30');
+                    calendarRef.value?.getApi().changeView('dayOne', WC_DATES[0]);
                 }
             },
             dayTwo: {
-                text: formatDayShort('2026-05-01'),
+                text: formatDayShort(WC_DATES[1]),
                 click: () => {
-                    calendarRef.value?.getApi().changeView('dayTwo', '2026-05-01');
+                    calendarRef.value?.getApi().changeView('dayTwo', WC_DATES[1]);
                 }
             },
             dayThree: {
-                text: formatDayShort('2026-05-02'),
+                text: formatDayShort(WC_DATES[2]),
                 click: () => {
-                    calendarRef.value?.getApi().changeView('dayThree', '2026-05-02');
+                    calendarRef.value?.getApi().changeView('dayThree', WC_DATES[2]);
                 }
             },
             dayFour: {
-                text: formatDayShort('2026-05-03'),
+                text: formatDayShort(WC_DATES[3]),
                 click: () => {
-                    calendarRef.value?.getApi().changeView('dayFour', '2026-05-03');
+                    calendarRef.value?.getApi().changeView('dayFour', WC_DATES[3]);
                 }
             },
         },
@@ -130,27 +129,27 @@ const calendarOptions = computed<CalendarOptions>(() => {
             timeGridWeek: {
                 ...commonTimeGridOptions,
             },
-            timeGridDay: {
+            /* timeGridDay: {
                 ...commonTimeGridOptions,
-            },
-            listDay: {
+            }, */
+            /* listDay: {
                 listDayFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
-            },
+            }, */
             dayOne: {
                 ...commonDayOptions,
-                buttonText: formatDayShort('2026-04-30')
+                buttonText: formatDayShort(WC_DATES[0])
             },
             dayTwo: {
                 ...commonDayOptions,
-                buttonText: formatDayShort('2026-05-01')
+                buttonText: formatDayShort(WC_DATES[1])
             },
             dayThree: {
                 ...commonDayOptions,
-                buttonText: formatDayShort('2026-05-02')
+                buttonText: formatDayShort(WC_DATES[2])
             },
             dayFour: {
                 ...commonDayOptions,
-                buttonText: formatDayShort('2026-05-03')
+                buttonText: formatDayShort(WC_DATES[3])
             },
         },
         eventClick: (info: EventClickArg) => {
@@ -177,6 +176,6 @@ watch(isMobile, (mobileNow) => {
         return;
 
     if (mobileNow && api.view.type === 'timeGridWeek')
-        api.changeView('dayOne', '2026-04-30');
+        api.changeView('dayOne', WC_DATES[0]);
 });
 </script>

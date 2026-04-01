@@ -1,29 +1,12 @@
 <template>
     <div class="maxed padded my-32 w-full">
-        <div class="hidden flex flex-row gap-2 my-8">
+        <div class="flex flex-row gap-2 my-8">
             <button @click="currentDisplay = 'calendar'" :class="buttonClasses">Calendar</button>
-            <button @click="currentDisplay = 'groups_stage'" :class="buttonClasses">Groups Stage</button>
-            <button @click="currentDisplay = 'rankings_play'" :class="buttonClasses">Rankings Play</button>
             <button @click="currentDisplay = 'bracket_play'" :class="buttonClasses">Bracket Play</button>
         </div>
         <div v-if="gamesStore.isReady && teamsStore.isReady">
             <div v-if="currentDisplay === 'calendar'" class="mt-8">
                 <Calendar />
-            </div>
-            <div v-if="currentDisplay === 'groups_stage'">
-                <DebugGame v-for="game in gamesStore.typeGroupsStageGames" :key="game.id" :game="game" />
-            </div>
-            <div v-if="currentDisplay === 'rankings_play'">
-                <div class="grid grid-cols-7 select-none cursor-default">
-                    <div class="flex flex-col">
-                        <BracketGame v-if="gameRP1" :game="gameRP1" :level="1" />
-                        <BracketGame v-if="gameRP2" :game="gameRP2" :level="1" />
-                        <BracketGame v-if="gameRP3" :game="gameRP3" :level="1" />
-                        <BracketGame v-if="gameRP4" :game="gameRP4" :level="1" />
-                        <BracketGame v-if="gameRP5" :game="gameRP5" :level="1" />
-                        <BracketGame v-if="gameRP6" :game="gameRP6" :level="1" />
-                    </div>
-                </div>
             </div>
             <div v-if="currentDisplay === 'bracket_play'">
                 <div class="grid grid-cols-7 select-none cursor-default">
