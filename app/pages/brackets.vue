@@ -1,19 +1,12 @@
 <template>
     <div class="maxed padded my-32 w-full">
         <div class="flex flex-row gap-2 my-8">
-            <button @click="currentDisplay = 'planning'" :class="buttonClasses">Planning</button>
             <button @click="currentDisplay = 'calendar'" :class="buttonClasses">Calendar</button>
             <button @click="currentDisplay = 'groups_stage'" :class="buttonClasses">Groups Stage</button>
             <button @click="currentDisplay = 'rankings_play'" :class="buttonClasses">Rankings Play</button>
             <button @click="currentDisplay = 'bracket_play'" :class="buttonClasses">Bracket Play</button>
         </div>
         <div v-if="gamesStore.isReady && teamsStore.isReady">
-            <div v-if="currentDisplay === 'planning'">
-                <div v-for="([date, games]) in Object.entries(gamesStore.gamesGroupedByDate)" :key="date">
-                    <h2 class="text-xl font-bold">{{ date }}</h2>
-                    <DebugGame v-for="game of games" :key="game.id" :game="game" />
-                </div>
-            </div>
             <div v-if="currentDisplay === 'calendar'">
                 <Calendar />
             </div>

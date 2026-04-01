@@ -87,7 +87,7 @@
 	}
 
 	.padded {
-		@apply px-6 sm:px-12;
+		@apply px-4 sm:px-12;
 	}
 
 	a.rich-yellow--button {

@@ -21,7 +21,7 @@ const props = defineProps<{
     game: IGame;
 }>();
 
-const COMMON_DIV_CLASSES = 'h-full flex flex-col items-center justify-center leading-none';
+const COMMON_DIV_CLASSES = 'h-full py-3 flex flex-col items-center justify-center leading-none';
 
 const homeTeamName = computed(() => teamsStore.getTeamById(props.game.home_team)?.name_letters ?? props.game.home_source);
 const awayTeamName = computed(() => teamsStore.getTeamById(props.game.away_team)?.name_letters ?? props.game.away_source);

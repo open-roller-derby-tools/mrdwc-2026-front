@@ -1,37 +1,54 @@
 :root {
-    --fc-border-color: var(--color-white);
-    --fc-page-bg-color: var(--color-blue-light);
+    --fc-border-color: var(--color-transparent);
+    --fc-page-bg-color: var(--color-transparent);
 }
 
 .fc-v-event {
-    border: 0;
+    @apply border-none;
 }
 
 .fc-timegrid-event {
-    border-radius: 0;
+    @apply rounded-none;
+}
+
+.fc-col-header th {
+    @apply even:bg-blue-text even:rounded-t-2xl;
+}
+
+.fc-timegrid-col {
+    @apply even:bg-blue-text even:rounded-b-2xl;
 }
 
 .fc-timegrid-event-harness-inset .fc-timegrid-event {
-    box-shadow: none;
+    @apply shadow-none;
 }
 
 .fc-direction-ltr .fc-timegrid-col-events {
-    margin: 0 0.2em;
+    @apply mx-1;
 }
 
-.fc .fc-timegrid-slot {
-    height: 3em;
-}
 
 .fc-theme-standard td,
 .fc-theme-standard th {
-    border-width: 1px;
+    @apply border-0;
 }
 
-.fc .fc-timegrid-slot {
-    border-top-style: dotted;
-}
+.fc {
+    table {
+        @apply text-base;
+    }
 
-.fc .fc-timegrid-slot-minor {
-    border-top-style: dotted;
+    .fc-toolbar {
+        @apply flex flex-col gap-3;
+        @apply sm:flex-row sm:items-center sm:justify-between;
+    }
+
+    .fc-timegrid-slot-label-cushion,
+    .fc-col-header-cell-cushion {
+        @apply font-shoulders font-bold capitalize text-lg py-4;
+    }
+
+    .fc-timegrid-slot {
+        @apply h-14 border-dotted border-t;
+    }
 }

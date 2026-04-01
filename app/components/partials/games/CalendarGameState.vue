@@ -64,8 +64,9 @@ const gameTimeOrStateClass = computed<string>(() => {
     switch (props.game.state) {
         case GameState.InProgressP1:
         case GameState.InProgressP2:
-        case GameState.HalfTime:
             return 'text-red-base bg-white';
+        case GameState.HalfTime:
+            return 'text-blue-text bg-white';
         default:
             return 'text-black bg-yellow';
     }
