@@ -1,6 +1,24 @@
 :root {
     --fc-border-color: var(--color-transparent);
     --fc-page-bg-color: var(--color-transparent);
+    --fc-today-bg-color: var(--color-transparent);
+    --fc-now-indicator-color: var(--color-red-text);
+    /* Base */
+    --fc-button-bg-color: var(--color-blue-inactive);
+    --fc-button-text-color: var(--color-blue-text);
+    --fc-button-border-color: var(--color-transparent);
+    /* Hover */
+    --fc-button-hover-bg-color: var(--color-yellow);
+    --fc-button-hover-text-color: var(--color-blue-text);
+    --fc-button-hover-border-color: var(--color-transparent);
+    /* Active */
+    --fc-button-active-bg-color: var(--color-yellow);
+    --fc-button-active-text-color: var(--color-blue-text);
+    --fc-button-active-border-color: var(--color-transparent);
+    /* Disabled */
+    --fc-button-disabled-bg-color: var(--color-blue-inactive);
+    --fc-button-disabled-text-color: var(--color-blue-text);
+    --fc-button-disabled-border-color: var(--color-transparent);
 }
 
 .fc-v-event {
@@ -15,7 +33,8 @@
     @apply even:bg-blue-text even:rounded-t-2xl;
 }
 
-.fc-timegrid-col {
+.fc-timegrid-col,
+.fc-timegrid-col.fc-day-today {
     @apply even:bg-blue-text even:rounded-b-2xl;
 }
 
@@ -39,8 +58,11 @@
     }
 
     .fc-toolbar {
-        @apply flex flex-col gap-3;
-        @apply sm:flex-row sm:items-center sm:justify-between;
+        @apply flex flex-row items-center justify-between;
+    }
+
+    .fc-button-primary {
+        @apply font-shoulders font-bold text-base sm:text-lg px-4 py-2 cursor-pointer rounded-xl select-none transition-colors duration-200;
     }
 
     .fc-timegrid-slot-label-cushion,
@@ -50,5 +72,9 @@
 
     .fc-timegrid-slot {
         @apply h-14 border-dotted border-t;
+    }
+
+    .fc-timegrid-now-indicator-line {
+        @apply border-t-2;
     }
 }
