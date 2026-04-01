@@ -15,5 +15,15 @@ export const useFormatTimeLocalized = () => {
         return format(parsedTime, 'p', { locale: locale.value === 'fr-FR' ? fr : enUS });
     };
 
-    return { formatDate, formatTime };
+    const formatDay = (date: Date | string): string => {
+        const parsedDate = typeof date === 'string' ? parseISO(date) : date;
+        return format(parsedDate, 'eeee', { locale: locale.value === 'fr-FR' ? fr : enUS });
+    };
+
+    const formatDayShort = (date: Date | string): string => {
+        const parsedDate = typeof date === 'string' ? parseISO(date) : date;
+        return format(parsedDate, 'eee', { locale: locale.value === 'fr-FR' ? fr : enUS });
+    };
+
+    return { formatDate, formatTime, formatDay, formatDayShort };
 };

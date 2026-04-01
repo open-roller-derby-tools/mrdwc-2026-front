@@ -25,6 +25,7 @@ import CalendarListGame from './CalendarListGame.vue';
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const { getBreakpointPx } = useTailwindBreakpoint();
+const { formatDayShort } = useFormatTimeLocalized();
 
 const DEFAULT_MOBILE_BREAKPOINT = 640;
 
@@ -58,13 +59,30 @@ const updateViewportState = () => {
     isMobile.value = window.innerWidth < mobileBreakpoint.value;
 };
 
+const commonTimeGridOptions = {
+    allDaySlot: false,
+    slotDuration: '00:30:00',
+    slotMinTime: '09:00:00',
+    slotMaxTime: '23:00:00',
+    slotEventOverlap: false,
+    nowIndicator: true,
+    dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
+    slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' } as const
+};
+
+const commonDayOptions = {
+    ...commonTimeGridOptions,
+    type: 'timeGrid',
+    duration: { days: 1 },
+};
+
 const calendarOptions = computed<CalendarOptions>(() => {
-    const viewButtons = isMobile.value ? 'timeGridDay,listDay' : 'timeGridWeek,timeGridDay,listDay';
+    const viewButtons = isMobile.value ? 'dayOne,dayTwo,dayThree,dayFour' : 'timeGridWeek,dayOne,dayTwo,dayThree,dayFour';
 
     return {
         locale: locale.value,
         plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin],
-        headerToolbar: { start: viewButtons, end: 'prev,next,today' },
+        headerToolbar: { start: viewButtons, end: '' },
         buttonText: {
             today: t('calendar.today'),
             week: t('calendar.week'),
@@ -82,32 +100,61 @@ const calendarOptions = computed<CalendarOptions>(() => {
         height: 'auto',
         eventColor: 'transparent',
         eventBorderColor: 'transparent',
+        customButtons: {
+            dayOne: {
+                text: formatDayShort('2026-04-30'),
+                click: () => {
+                    calendarRef.value?.getApi().changeView('dayOne', '2026-04-30');
+                }
+            },
+            dayTwo: {
+                text: formatDayShort('2026-05-01'),
+                click: () => {
+                    calendarRef.value?.getApi().changeView('dayTwo', '2026-05-01');
+                }
+            },
+            dayThree: {
+                text: formatDayShort('2026-05-02'),
+                click: () => {
+                    calendarRef.value?.getApi().changeView('dayThree', '2026-05-02');
+                }
+            },
+            dayFour: {
+                text: formatDayShort('2026-05-03'),
+                click: () => {
+                    calendarRef.value?.getApi().changeView('dayFour', '2026-05-03');
+                }
+            },
+        },
         views: {
             timeGridWeek: {
-                allDaySlot: false,
-                slotDuration: '00:30:00',
-                slotMinTime: '09:00:00',
-                slotMaxTime: '23:00:00',
-                slotEventOverlap: false,
-                nowIndicator: true,
-                dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true },
-                slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' }
+                ...commonTimeGridOptions,
             },
             timeGridDay: {
-                allDaySlot: false,
-                slotDuration: '00:30:00',
-                slotMinTime: '09:00:00',
-                slotMaxTime: '23:00:00',
-                slotEventOverlap: false,
-                nowIndicator: true,
-                dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true },
-                slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' }
+                ...commonTimeGridOptions,
             },
             listDay: {
-                listDayFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true },
-            }
+                listDayFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
+            },
+            dayOne: {
+                ...commonDayOptions,
+                buttonText: formatDayShort('2026-04-30')
+            },
+            dayTwo: {
+                ...commonDayOptions,
+                buttonText: formatDayShort('2026-05-01')
+            },
+            dayThree: {
+                ...commonDayOptions,
+                buttonText: formatDayShort('2026-05-02')
+            },
+            dayFour: {
+                ...commonDayOptions,
+                buttonText: formatDayShort('2026-05-03')
+            },
         },
         eventClick: (info: EventClickArg) => {
+            // TODO: Open game details modal
             console.log(info);
         },
         events: events.value,
@@ -130,7 +177,6 @@ watch(isMobile, (mobileNow) => {
         return;
 
     if (mobileNow && api.view.type === 'timeGridWeek')
-        api.changeView('timeGridDay');
+        api.changeView('dayOne', '2026-04-30');
 });
-
 </script>

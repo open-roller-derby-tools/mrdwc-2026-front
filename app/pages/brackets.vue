@@ -1,13 +1,13 @@
 <template>
     <div class="maxed padded my-32 w-full">
-        <div class="flex flex-row gap-2 my-8">
+        <div class="hidden flex flex-row gap-2 my-8">
             <button @click="currentDisplay = 'calendar'" :class="buttonClasses">Calendar</button>
             <button @click="currentDisplay = 'groups_stage'" :class="buttonClasses">Groups Stage</button>
             <button @click="currentDisplay = 'rankings_play'" :class="buttonClasses">Rankings Play</button>
             <button @click="currentDisplay = 'bracket_play'" :class="buttonClasses">Bracket Play</button>
         </div>
         <div v-if="gamesStore.isReady && teamsStore.isReady">
-            <div v-if="currentDisplay === 'calendar'">
+            <div v-if="currentDisplay === 'calendar'" class="mt-8">
                 <Calendar />
             </div>
             <div v-if="currentDisplay === 'groups_stage'">

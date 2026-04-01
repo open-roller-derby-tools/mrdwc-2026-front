@@ -58,11 +58,11 @@
     }
 
     .fc-toolbar {
-        @apply flex flex-row items-center justify-between;
+        @apply flex flex-row items-center justify-center;
     }
 
     .fc-button-primary {
-        @apply font-shoulders font-bold text-base sm:text-lg px-4 py-2 cursor-pointer rounded-xl select-none transition-colors duration-200;
+        @apply font-shoulders font-bold capitalize text-base sm:text-lg px-4 py-2 cursor-pointer rounded-xl select-none transition-colors duration-200;
     }
 
     .fc-timegrid-slot-label-cushion,
