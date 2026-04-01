@@ -16,6 +16,10 @@
 
 	--color-red-text: #d33231;
 	--color-red-light: #fd4947;
+
+	--color-red-base: #FF0000;
+	--color-green-base: #00FF00;
+	--color-blue-base: #0000FF;
 }
 
 :root,

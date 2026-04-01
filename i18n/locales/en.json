@@ -60,5 +60,13 @@
 		"week": "Week",
 		"day": "Day",
 		"list": "List"
+	},
+	"game_state": {
+		"scheduled": "Scheduled",
+		"pre_game": "Pre-Game",
+		"in_progress_p1": "Live (P1)",
+		"half_time": "Half-Time",
+		"in_progress_p2": "Live (P2)",
+		"finished": "Finished"
 	}
 }

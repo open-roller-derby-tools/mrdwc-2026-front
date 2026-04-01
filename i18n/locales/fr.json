@@ -60,5 +60,13 @@
 		"week": "Semaine",
 		"day": "Jour",
 		"list": "Liste"
+	},
+	"game_state": {
+		"scheduled": "Programmé",
+		"pre_game": "Pré-Match",
+		"in_progress_p1": "En cours (P1)",
+		"half_time": "Mi-Temps",
+		"in_progress_p2": "En cours (P2)",
+		"finished": "Terminé"
 	}
 }
