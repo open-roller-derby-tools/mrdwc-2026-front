@@ -1,4 +1,5 @@
 <template>
+    <p @click="toggleNoSpoilerMode">NO SPOILER MODE: {{ isNoSpoilerModeActive }}</p>
     <FullCalendar ref="calendarRef" :options="calendarOptions">
         <template v-slot:eventContent="arg">
             <CalendarListGame v-if="arg.view.type.startsWith('list')" :event="arg.event" />
@@ -26,6 +27,7 @@ const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const { formatDayShort } = useFormatTimeLocalized();
 const { smOrSmaller } = useResponsive()
+const { isNoSpoilerModeActive, toggleNoSpoilerMode } = useNoSpoilerMode();
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 

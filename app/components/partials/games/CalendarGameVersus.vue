@@ -2,11 +2,11 @@
     <div class="relative grid grid-cols-6 text-sm grow">
         <div :style="homeDivStyle" :class="`${homeDivClasses} ${COMMON_DIV_CLASSES}`" class="rounded-tl-md">
             <span>{{ homeTeamName }}</span>
-            <span v-if="gameHasStarted">{{ game.home_score }}</span>
+            <span v-if="gameHasStarted && !isNoSpoilerModeActive">{{ game.home_score }}</span>
         </div>
         <div :style="awayDivStyle" :class="`${awayDivClasses} ${COMMON_DIV_CLASSES}`" class="rounded-tr-md">
             <span>{{ awayTeamName }}</span>
-            <span v-if="gameHasStarted">{{ game.away_score }}</span>
+            <span v-if="gameHasStarted && !isNoSpoilerModeActive">{{ game.away_score }}</span>
         </div>
     </div>
 </template>
@@ -15,6 +15,7 @@
 import { GameState, type IGame } from '~~/types/games';
 import { useTeamsStore } from '~/stores/teams';
 
+const { isNoSpoilerModeActive } = useNoSpoilerMode();
 const teamsStore = useTeamsStore();
 
 const props = defineProps<{
@@ -39,6 +40,9 @@ const awayDivStyle = computed(() => ({
 }));
 
 const homeDivClasses = computed(() => {
+    if (isNoSpoilerModeActive.value) {
+        return 'col-span-3';
+    }
     if (gameIsOver.value && homeWon.value) {
         return 'font-bold text-base col-span-4';
     }
@@ -48,6 +52,9 @@ const homeDivClasses = computed(() => {
     return 'col-span-3';
 });
 const awayDivClasses = computed(() => {
+    if (isNoSpoilerModeActive.value) {
+        return 'col-span-3';
+    }
     if (gameIsOver.value && awayWon.value) {
         return 'font-bold text-base col-span-4';
     }
