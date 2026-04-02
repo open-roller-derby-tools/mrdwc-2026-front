@@ -17,6 +17,7 @@ import type { EventClickArg } from '@fullcalendar/core';
 import type { CalendarOptions } from '@fullcalendar/core';
 
 import { useGamesStore } from '~/stores/games';
+import { useGamesAutoRefresh } from '~/composables/useGamesAutoRefresh';
 import CalendarGame from './CalendarGame.vue';
 import CalendarListGame from './CalendarListGame.vue';
 import { getGameEndTime } from '~/utils/game'
@@ -25,6 +26,8 @@ const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const { formatDayShort } = useFormatTimeLocalized();
 const { smOrSmaller } = useResponsive()
+
+useGamesAutoRefresh({ intervalMs: 60000 });
 
 const WC_DATES = ['2026-04-30', '2026-05-01', '2026-05-02', '2026-05-03'] as const;
 const END_DATE = '2026-05-04';
@@ -61,8 +64,6 @@ const commonDayOptions = {
 
 const calendarOptions = computed<CalendarOptions>(() => {
     const viewButtons = smOrSmaller.value ? 'dayOne,dayTwo,dayThree,dayFour' : 'timeGridWeek,dayOne,dayTwo,dayThree,dayFour';
-
-    console.log('calendarOptions smOrSmaller', smOrSmaller.value);
 
     return {
         locale: locale.value,

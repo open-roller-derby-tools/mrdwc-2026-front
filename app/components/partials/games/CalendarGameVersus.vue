@@ -2,11 +2,11 @@
     <div class="relative grid grid-cols-6 text-sm grow">
         <div :style="homeDivStyle" :class="`${homeDivClasses} ${COMMON_DIV_CLASSES}`" class="rounded-tl-md">
             <span>{{ homeTeamName }}</span>
-            <span v-if="game.home_score > 0">{{ game.home_score }}</span>
+            <span v-if="gameHasStarted">{{ game.home_score }}</span>
         </div>
         <div :style="awayDivStyle" :class="`${awayDivClasses} ${COMMON_DIV_CLASSES}`" class="rounded-tr-md">
             <span>{{ awayTeamName }}</span>
-            <span v-if="game.away_score > 0">{{ game.away_score }}</span>
+            <span v-if="gameHasStarted">{{ game.away_score }}</span>
         </div>
     </div>
 </template>
@@ -57,6 +57,7 @@ const awayDivClasses = computed(() => {
     return 'col-span-3';
 });
 
+const gameHasStarted = computed(() => props.game.state !== GameState.Scheduled && props.game.state !== GameState.PreGame && props.game.state !== GameState.Unknown);
 const gameIsOver = computed(() => props.game.state === GameState.Finished);
 const homeWon = computed(() => props.game.home_score > props.game.away_score);
 const awayWon = computed(() => props.game.away_score > props.game.home_score);
