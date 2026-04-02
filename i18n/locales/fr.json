@@ -68,5 +68,14 @@
 		"half_time": "Mi-Temps",
 		"in_progress_p2": "En cours (P2)",
 		"finished": "Terminé"
+	},
+	"no_spoiler_mode": {
+		"title": "Mode sans spoilers",
+		"show_spoilers": "Afficher les spoilers",
+		"hide_spoilers": "Masquer les spoilers",
+		"enabled": "Activé",
+		"disabled": "Désactivé",
+		"enabled_description": "Les scores, classements et rencontres (hors phase de groupes) sont masqués.",
+		"disabled_description": "Les scores, classements et rencontres (hors phase de groupes) sont visibles."
 	}
 }

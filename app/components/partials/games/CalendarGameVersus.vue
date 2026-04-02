@@ -1,5 +1,5 @@
 <template>
-    <div class="relative grid grid-cols-6 text-sm grow">
+    <div class="relative flex text-sm grow">
         <div :style="homeDivStyle" :class="`${homeDivClasses} ${COMMON_DIV_CLASSES}`" class="rounded-tl-md">
             <span>{{ homeTeamName }}</span>
             <span v-if="gameHasStarted && !isNoSpoilerModeActive">{{ game.home_score }}</span>
@@ -13,55 +13,39 @@
 
 <script lang="ts" setup>
 import { GameState, type IGame } from '~~/types/games';
-import { useTeamsStore } from '~/stores/teams';
 
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
-const teamsStore = useTeamsStore();
+const { getTeamNameShort, getTeamColors, isGameSpoiler } = useGameFormatting();
 
 const props = defineProps<{
     game: IGame;
 }>();
 
-const COMMON_DIV_CLASSES = 'h-full py-3 flex flex-col items-center justify-center leading-none';
+const COMMON_DIV_CLASSES = 'h-full py-3 flex flex-col items-center justify-center leading-none transition-width duration-150 ease-out';
 
-const homeTeamName = computed(() => teamsStore.getTeamById(props.game.home_team)?.name_letters ?? props.game.home_source);
-const awayTeamName = computed(() => teamsStore.getTeamById(props.game.away_team)?.name_letters ?? props.game.away_source);
+const homeTeamName = computed(() => getTeamNameShort(props.game.home_team, props.game.home_source, isGameSpoiler(props.game)));
+const awayTeamName = computed(() => getTeamNameShort(props.game.away_team, props.game.away_source, isGameSpoiler(props.game)));
 
-const homeTextColor = useContrastingColor(computed(() => props.game.home_color));
-const awayTextColor = useContrastingColor(computed(() => props.game.away_color));
-
-const homeDivStyle = computed(() => ({
-    backgroundColor: props.game.home_color,
-    color: homeTextColor.value,
-}));
-const awayDivStyle = computed(() => ({
-    backgroundColor: props.game.away_color,
-    color: awayTextColor.value,
-}));
+const homeDivStyle = computed(() => getTeamColors(props.game.home_color, "#000000", isGameSpoiler(props.game)));
+const awayDivStyle = computed(() => getTeamColors(props.game.away_color, "#FFFFFF", isGameSpoiler(props.game)));
 
 const homeDivClasses = computed(() => {
-    if (isNoSpoilerModeActive.value) {
-        return 'col-span-3';
+    if (gameIsOver.value && !isNoSpoilerModeActive.value) {
+        if (homeWon.value)
+            return 'font-bold text-base w-2/3';
+        else if (awayWon.value)
+            return 'w-1/3';
     }
-    if (gameIsOver.value && homeWon.value) {
-        return 'font-bold text-base col-span-4';
-    }
-    else if (gameIsOver.value && awayWon.value) {
-        return 'col-span-2';
-    }
-    return 'col-span-3';
+    return 'w-1/2';
 });
 const awayDivClasses = computed(() => {
-    if (isNoSpoilerModeActive.value) {
-        return 'col-span-3';
+    if (gameIsOver.value && !isNoSpoilerModeActive.value) {
+        if (awayWon.value)
+            return 'font-bold text-base w-2/3';
+        else if (homeWon.value)
+            return 'w-1/3';
     }
-    if (gameIsOver.value && awayWon.value) {
-        return 'font-bold text-base col-span-4';
-    }
-    else if (gameIsOver.value && homeWon.value) {
-        return 'col-span-2';
-    }
-    return 'col-span-3';
+    return 'w-1/2';
 });
 
 const gameHasStarted = computed(() => props.game.state !== GameState.Scheduled && props.game.state !== GameState.PreGame && props.game.state !== GameState.Unknown);

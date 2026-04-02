@@ -1,5 +1,5 @@
 <template>
-    <p @click="toggleNoSpoilerMode">NO SPOILER MODE: {{ isNoSpoilerModeActive }}</p>
+    <NoSpoilerModeToggle />
     <FullCalendar ref="calendarRef" :options="calendarOptions">
         <template v-slot:eventContent="arg">
             <CalendarListGame v-if="arg.view.type.startsWith('list')" :event="arg.event" />
@@ -19,9 +19,10 @@ import type { CalendarOptions } from '@fullcalendar/core';
 
 import { useGamesStore } from '~/stores/games';
 import { useGamesAutoRefresh } from '~/composables/useGamesAutoRefresh';
+import { getGameEndTime } from '~/utils/game'
 import CalendarGame from './CalendarGame.vue';
 import CalendarListGame from './CalendarListGame.vue';
-import { getGameEndTime } from '~/utils/game'
+import NoSpoilerModeToggle from '~/components/navigation/NoSpoilerModeToggle.vue';
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();

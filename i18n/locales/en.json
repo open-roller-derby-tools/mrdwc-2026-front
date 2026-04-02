@@ -68,5 +68,14 @@
 		"half_time": "Half-Time",
 		"in_progress_p2": "Live (P2)",
 		"finished": "Finished"
+	},
+	"no_spoiler_mode": {
+		"title": "No Spoilers Mode",
+		"show_spoilers": "Show spoilers",
+		"hide_spoilers": "Hide spoilers",
+		"enabled": "Enabled",
+		"disabled": "Disabled",
+		"enabled_description": "Scores, rankings and non-groups-stage matchups are hidden.",
+		"disabled_description": "Scores, rankings and non-groups-stage matchups are visible."
 	}
 }
