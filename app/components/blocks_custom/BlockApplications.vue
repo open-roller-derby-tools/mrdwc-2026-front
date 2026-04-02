@@ -2,21 +2,14 @@
   <div class="maxed padded my-6 sm:my-10">
     <h2>{{ t("applications.title") }}</h2>
 
-    <UCarousel
-      v-slot="{ item }"
-      :items="activeApplications"
-      :arrows="shouldShowNav"
-      :dots="shouldShowNav"
+    <UCarousel v-slot="{ item }" :items="activeApplications" :arrows="shouldShowNav" :dots="shouldShowNav"
       :prev="{ variant: 'ghost', color: 'primary', size: 'xl' }"
-      :next="{ variant: 'ghost', color: 'primary', size: 'xl' }"
-      prev-icon="i-lucide-chevron-left"
-      next-icon="i-lucide-chevron-right"
-      :ui="{
+      :next="{ variant: 'ghost', color: 'primary', size: 'xl' }" prev-icon="i-lucide-chevron-left"
+      next-icon="i-lucide-chevron-right" :ui="{
         item: 'basis-full md:basis-1/2 lg:basis-1/3 self-stretch',
         dots: 'relative bottom-0 mt-4',
         dot: 'bg-white/70 border-1 border-white data-[state=active]:bg-red-light shadow',
-      }"
-    >
+      }">
       <Application :application="item" />
     </UCarousel>
   </div>
@@ -24,8 +17,7 @@
 
 <script setup lang="ts">
 import { useApplicationsStore } from "~/stores/applications"
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
-import { computed, ref, onMounted, onBeforeUnmount } from "vue"
+import { computed, onMounted, onBeforeUnmount } from "vue"
 import Application from "../partials/Application.vue"
 
 import { useWindowSize } from "@vueuse/core"
@@ -37,12 +29,6 @@ const { getApplicationsWithStatus } = storeToRefs(applicationsStore)
 const activeApplications = computed(() =>
   getApplicationsWithStatus.value(["open", "upcoming"])
 )
-
-// --- Responsive (vueuse)
-const breakpoints = useBreakpoints(breakpointsTailwind, {
-  ssrWidth: breakpointsTailwind.sm,
-})
-const smOrSmaller = breakpoints.smallerOrEqual("sm")
 
 // --- Largeur de fenêtre (pour évaluer le nombre d’items visibles)
 
