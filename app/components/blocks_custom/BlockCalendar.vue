@@ -1,19 +1,20 @@
 <template>
-    <!-- <div class="maxed padded flex justify-center">
-        <ul class="my-4 flex flex-col sm:flex-row gap-0.5 items-center list-none font-shoulders font-semibold text-lg">
-            <li v-for="track in trackList" :key="`track_${track.id}`"
-                class="transition-colors duration-100 px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
-                :class="selectedTrackId === track.id ? 'bg-yellow text-blue-text' : 'bg-blue-inactive text-blue-text hover:bg-yellow'"
-                @click="selectedTrackId = track.id">
-                <span>{{ track.label }}</span>
-            </li>
-        </ul>
-    </div> -->
-    <FullCalendar ref="calendarRef" :options="calendarOptions">
-        <template v-slot:eventContent="arg">
-            <CalendarGame :event="arg.event" />
-        </template>
-    </FullCalendar>
+    <div :class="wrapperClass" class="padded sm:mx-auto">
+        <FullCalendar ref="calendarRef" :options="calendarOptions">
+            <template v-slot:eventContent="arg">
+                <CalendarGame :event="arg.event" />
+            </template>
+            <template v-slot:dayHeaderContent="arg" class="bg-red-text">
+                <p class="mb-4">{{ arg.text }}</p>
+                <div v-if="selectedTrackId == 0" class="track-header w-full flex flex-row gap-1 mb-1 pl-0.5">
+                    <div>{{ t('calendar_track_short', { index: 1 }) }}</div>
+                    <div v-if="firstTwoDays.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
+                        index: 2
+                    }) }}</div>
+                </div>
+            </template>
+        </FullCalendar>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -28,20 +29,20 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useGamesStore } from '~/stores/games';
 import { useVenuesStore } from '~/stores/venues';
 import { getGameEndTime } from '~/utils/game'
-import { useGamesAutoRefresh } from '~/composables/useGamesAutoRefresh';
 
 import CalendarGame from '~/components/partials/games/CalendarGame.vue';
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const venuesStore = useVenuesStore();
-const { formatDayShort } = useFormatTimeLocalized();
+const { formatDayShort, formatDateYMD } = useFormatTimeLocalized();
 const { smOrSmaller } = useResponsive()
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 
-const WC_DATES = ['2026-04-30', '2026-05-01', '2026-05-02', '2026-05-03'] as const;
-const END_DATE = '2026-05-04';
+const WC_DATES = ["2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03"] as const;
+const END_DATE = "2026-05-04";
+const firstTwoDays: string[] = [WC_DATES[0], WC_DATES[1]];
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 
@@ -87,6 +88,14 @@ const trackToolbarButtons = computed(() => {
 });
 
 const selectedTrackId = ref(0);
+const currentViewType = ref(smOrSmaller.value ? 'dayOne' : 'timeGridWeek');
+
+const wrapperClass = computed(() => {
+    if (currentViewType.value === 'timeGridWeek')
+        return 'calendar-week-view sm:max-w-screen-2xl';
+    else
+        return 'calendar-day-view sm:max-w-5xl';
+});
 
 const getTrackButtonName = (trackId: number) => {
     return trackId === 0 ? 'allGames' : `track_${trackId}`;
@@ -207,8 +216,18 @@ const calendarOptions = computed<CalendarOptions>(() => {
             // TODO: Open game details modal
             console.log(info);
         },
+        datesSet: (info) => {
+            currentViewType.value = info.view.type;
+        },
         events: events.value,
     };
+});
+
+onMounted(() => {
+    nextTick(() => {
+        currentViewType.value = calendarRef.value?.getApi().view.type ?? currentViewType.value;
+        syncTrackButtonClasses();
+    });
 });
 
 watch(smOrSmaller, (smOrSmallerNow) => {
@@ -220,12 +239,6 @@ watch(smOrSmaller, (smOrSmallerNow) => {
         api.changeView('dayOne', WC_DATES[0]);
     else if (!smOrSmallerNow && api.view.type != 'timeGridWeek')
         api.changeView('timeGridWeek');
-});
-
-onMounted(() => {
-    nextTick(() => {
-        syncTrackButtonClasses();
-    });
 });
 
 watch(selectedTrackId, () => {

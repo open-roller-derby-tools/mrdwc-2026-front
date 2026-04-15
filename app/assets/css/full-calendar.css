@@ -59,7 +59,7 @@
 
     .fc-toolbar {
         @apply w-full px-4 flex flex-col gap-0.5 items-center justify-between my-6;
-        @apply sm:max-w-5xl sm:mx-auto sm:px-12 sm:flex-row;
+        @apply sm:flex-row sm:max-w-5xl sm:mx-auto;
     }
 
     .fc-button-primary {
@@ -123,5 +123,27 @@
         &.fc-cell-shaded {
             @apply bg-transparent;
         }
+    }
+
+    .fc-col-header-cell-cushion {
+        @apply w-full pb-0;
+
+        .track-header {
+            >div {
+                @apply flex-grow bg-red-light text-white font-cabin font-normal uppercase text-sm rounded-t-lg;
+            }
+        }
+    }
+}
+
+.calendar-week-view {
+    .fc-header-toolbar {
+        @apply sm:px-12;
+    }
+}
+
+.calendar-day-view {
+    .fc-header-toolbar {
+        @apply sm:px-0;
     }
 }
