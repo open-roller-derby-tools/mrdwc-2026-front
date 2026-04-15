@@ -243,6 +243,7 @@ export interface ISponsorsRequestData {
 // VENUES
 
 export interface IVenue {
+	id: number;
 	name: string;
 	type: "main" | "secondary";
 	address: string;

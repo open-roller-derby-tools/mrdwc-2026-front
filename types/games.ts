@@ -25,17 +25,12 @@ export enum GameDuration {
     TwoXThirty = "2x30",
 }
 
-export enum Track {
-    PalaisDesSports = 1,
-    GymnaseClaudeRobert = 2,
-}
-
 export interface IGame {
     id: number;
     number: number;
     start_time: string;
     duration: GameDuration;
-    track: Track;
+    venue: number;
     home_team: number;
     away_team: number;
     home_score: number;

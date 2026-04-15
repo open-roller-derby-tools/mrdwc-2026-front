@@ -77,5 +77,7 @@
 		"disabled": "Disabled",
 		"enabled_description": "Scores, rankings and non-groups-stage matchups are hidden.",
 		"disabled_description": "Scores, rankings and non-groups-stage matchups are visible."
-	}
+	},
+	"calendar_track": "Track {index} - {name}",
+	"calendar_track_all": "All games"
 }

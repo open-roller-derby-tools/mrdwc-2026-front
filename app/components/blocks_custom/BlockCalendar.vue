@@ -1,4 +1,14 @@
 <template>
+    <div class="maxed padded flex justify-center">
+        <ul class="my-4 flex flex-col sm:flex-row gap-0.5 items-center list-none font-shoulders font-semibold text-lg">
+            <li v-for="track in trackList" :key="`track_${track.id}`"
+                class="transition-colors duration-100 px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
+                :class="selectedTrackId === track.id ? 'bg-yellow text-blue-text' : 'bg-blue-inactive text-blue-text hover:bg-yellow'"
+                @click="selectedTrackId = track.id">
+                <span>{{ track.label }}</span>
+            </li>
+        </ul>
+    </div>
     <FullCalendar ref="calendarRef" :options="calendarOptions">
         <template v-slot:eventContent="arg">
             <CalendarGame :event="arg.event" />
@@ -16,14 +26,15 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
 import { useGamesStore } from '~/stores/games';
+import { useVenuesStore } from '~/stores/venues';
 import { getGameEndTime } from '~/utils/game'
 import { useGamesAutoRefresh } from '~/composables/useGamesAutoRefresh';
 
 import CalendarGame from '~/components/partials/games/CalendarGame.vue';
-import CalendarListGame from '~/components/partials/games/CalendarListGame.vue';
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
+const venuesStore = useVenuesStore();
 const { formatDayShort } = useFormatTimeLocalized();
 const { smOrSmaller } = useResponsive()
 
@@ -35,7 +46,12 @@ const END_DATE = '2026-05-04';
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 
 const events = computed(() => {
-    return gamesStore.games?.map((game) => {
+    const filteredGames = gamesStore.games?.filter((game) => {
+        if (selectedTrackId.value === 0)
+            return true;
+        return game.venue === selectedTrackId.value;
+    }) ?? [];
+    return filteredGames.map((game) => {
         return {
             title: `Game ${game.number}`,
             start: game.start_time,
@@ -44,6 +60,22 @@ const events = computed(() => {
         };
     }) ?? [];
 });
+
+const trackList = computed(() => {
+    const venueTracks = venuesStore.localizedVenues.map((venue, index) => ({
+        id: venue.id,
+        label: t('calendar_track', { index: index + 1, name: venue.name }),
+    }));
+    return [
+        {
+            id: 0,
+            label: t('calendar_track_all'),
+        },
+        ...venueTracks,
+    ];
+});
+
+const selectedTrackId = ref(0);
 
 const commonTimeGridOptions = {
     allDaySlot: false,

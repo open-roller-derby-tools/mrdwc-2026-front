@@ -77,5 +77,7 @@
 		"disabled": "Désactivé",
 		"enabled_description": "Les scores, classements et rencontres (hors phase de groupes) sont masqués.",
 		"disabled_description": "Les scores, classements et rencontres (hors phase de groupes) sont visibles."
-	}
+	},
+	"calendar_track": "Track {index} - {name}",
+	"calendar_track_all": "Tous les matchs"
 }
