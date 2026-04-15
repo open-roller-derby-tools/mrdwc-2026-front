@@ -26,8 +26,8 @@ const COMMON_DIV_CLASSES = 'h-full py-3 flex flex-col items-center justify-cente
 const homeTeamName = computed(() => getTeamNameShort(props.game.home_team, props.game.home_source, isGameSpoiler(props.game)));
 const awayTeamName = computed(() => getTeamNameShort(props.game.away_team, props.game.away_source, isGameSpoiler(props.game)));
 
-const homeDivStyle = computed(() => getTeamColors(props.game.home_color, "#000000", isGameSpoiler(props.game)));
-const awayDivStyle = computed(() => getTeamColors(props.game.away_color, "#FFFFFF", isGameSpoiler(props.game)));
+const homeDivStyle = computed(() => getTeamColors(props.game.home_color, "hsl(237.9, 78.2%, 60%)", isGameSpoiler(props.game)));
+const awayDivStyle = computed(() => getTeamColors(props.game.away_color, "hsl(237.9, 78.2%, 70%)", isGameSpoiler(props.game)));
 
 const homeDivClasses = computed(() => {
     if (gameIsOver.value && !isNoSpoilerModeActive.value) {
