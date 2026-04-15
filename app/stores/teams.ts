@@ -22,6 +22,21 @@ export const useTeamsStore = defineStore("teams", () => {
   const isReady = ref<boolean>(false);
   const teams = ref<ITeam[]>();
 
+  const slugify = (str: string) =>
+    str
+      ?.toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") ?? "";
+
+  const getAssetId = (file: any): string | null => {
+    if (!file) return null;
+    if (typeof file === "string") return file;
+    if (typeof file === "object" && file.id) return file.id;
+    return null;
+  };
+
   /**
    * Fetch data from the API.
    * Skips the network request when data was already loaded (e.g. from a previous call during the same server run).
@@ -34,6 +49,17 @@ export const useTeamsStore = defineStore("teams", () => {
       const fields = {
         name: true,
         logo: true,
+        Instagram: true,
+        Facebook: true,
+        Website: true,
+        Crowdfunding: true,
+        countries_represented: true,
+        national_anthem: true,
+        anthem_audio: true,
+        previous_participations: true,
+        team_history: true,
+        preparation_games: true,
+        team_anecdotes: true,
         /* members: {
           name: true,
           number: true,
@@ -44,13 +70,16 @@ export const useTeamsStore = defineStore("teams", () => {
         }, */
       };
       const { data } = await $fetch<ITeamsRequestData>(
-        buildRESTURL("teams", fields).href
+        buildRESTURL("teams", fields).href,
       );
 
       teams.value = [...data].sort((a, b) =>
-        (a.name ?? "").localeCompare(b.name ?? "", undefined, { sensitivity: "base" })
+        (a.name ?? "").localeCompare(b.name ?? "", undefined, {
+          sensitivity: "base",
+        }),
       );
       isReady.value = true;
+      // console.log("RAW DATA", data);
       return data;
     } catch (error) {
       console.error("Error fetching teams:", error);
@@ -69,8 +98,17 @@ export const useTeamsStore = defineStore("teams", () => {
     teams.value?.forEach((team: ITeam) => {
       let l_team: ILocalizedTeam = {
         id: team.id,
+        slug: slugify(team.name),
         name: team.name,
         logo: team.logo,
+        instagram: team.Instagram,
+        facebook: team.Facebook,
+        website: team.Website,
+        crowdfunding: team.Crowdfunding,
+        countriesRepresented: team.countries_represented,
+        history: team.team_history,
+        anecdotes: team.team_anecdotes,
+        previousParticipations: team.previous_participations,
         // members: [],
       };
 
@@ -105,8 +143,12 @@ export const useTeamsStore = defineStore("teams", () => {
     return list;
   });
 
+  function getTeamBySlug(slug: string) {
+    return localizedTeams.value.find((t) => t.slug === slug);
+  }
+
   /**
    * Expose the required properties, getters and actions
    */
-  return { fetch, isReady, teams, localizedTeams };
+  return { fetch, isReady, teams, localizedTeams, getTeamBySlug };
 });

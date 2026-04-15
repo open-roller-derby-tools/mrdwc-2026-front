@@ -18,15 +18,14 @@
               {{ team.displayName }}
             </p>
           </div>
-          <NuxtImg
-            :src="`${config.public.apiBase}/assets/${team.logo}`"
-            :alt="team.name"
-            :title="team.name"
-            class="w-auto object-contain cursor-pointer rounded-lg p-2 bg-white"
-            @click="
-              overlayLogo = `${config.public.apiBase}/assets/${team.logo}`
-            "
-          />
+          <NuxtLink :to="`/teams/${team.slug}`">
+            <NuxtImg
+              :src="`${config.public.apiBase}/assets/${team.logo}`"
+              :alt="team.name"
+              :title="team.name"
+              class="w-auto object-contain cursor-pointer rounded-lg p-2 bg-white hover:scale-105 transition"
+            />
+          </NuxtLink>
         </li>
       </ul>
 
@@ -65,6 +64,7 @@ const overlayLogo = ref<string | null>(null);
 const formattedTeams = computed(() =>
   teamsStore.localizedTeams.map((team) => ({
     ...team,
+
     displayName: team.name.replace(
       /\broller\s+derby\s*$/i,
       "Roller\u00A0Derby",
