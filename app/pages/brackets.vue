@@ -1,14 +1,7 @@
 <template>
     <div class="maxed padded my-32 w-full">
-        <div class="flex flex-row gap-2 my-8">
-            <button @click="currentDisplay = 'calendar'" :class="buttonClasses">Calendar</button>
-            <button @click="currentDisplay = 'bracket_play'" :class="buttonClasses">Bracket Play</button>
-        </div>
         <div v-if="gamesStore.isReady && teamsStore.isReady">
-            <div v-if="currentDisplay === 'calendar'" class="mt-8">
-                <Calendar />
-            </div>
-            <div v-if="currentDisplay === 'bracket_play'">
+            <div>
                 <div class="grid grid-cols-7 select-none cursor-default">
                     <div class="flex flex-col">
                         <BracketGame v-if="gameQ1" :game="gameQ1" :level="1" />
@@ -66,25 +59,13 @@
 
 <script lang="ts" setup>
 import BracketGame from '~/components/partials/games/BracketGame.vue';
-import DebugGame from '~/components/partials/games/DebugGame.vue';
-import Calendar from '~/components/partials/games/Calendar.vue';
 import { useGamesStore } from '~/stores/games';
 import { useTeamsStore } from '~/stores/teams';
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
 const { locale } = useI18n();
-const currentDisplay = ref<string>("calendar");
+const currentDisplay = ref<string>("bracket_play");
 const buttonClasses = 'bg-yellow text-black font-shoulders font-bold text-sm px-4 py-2 rounded-md cursor-pointer';
-
-/* declare module 'nuxt/app' {
-    interface NuxtLayouts {
-        'debug': unknown
-    }
-}
-
-definePageMeta({
-    layout: 'debug',
-}) */
 
 const gameRP1 = computed(() => gamesStore.getGameByNumber(50));
 const gameRP2 = computed(() => gamesStore.getGameByNumber(49));

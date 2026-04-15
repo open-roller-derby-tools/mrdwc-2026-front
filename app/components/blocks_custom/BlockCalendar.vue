@@ -1,34 +1,31 @@
 <template>
-    <NoSpoilerModeToggle />
     <FullCalendar ref="calendarRef" :options="calendarOptions">
         <template v-slot:eventContent="arg">
-            <CalendarListGame v-if="arg.view.type.startsWith('list')" :event="arg.event" />
-            <CalendarGame v-else :event="arg.event" />
+            <CalendarGame :event="arg.event" />
         </template>
     </FullCalendar>
 </template>
 
 <script lang="ts" setup>
+import type { EventClickArg } from '@fullcalendar/core';
+import type { CalendarOptions } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import type { EventClickArg } from '@fullcalendar/core';
-import type { CalendarOptions } from '@fullcalendar/core';
 
 import { useGamesStore } from '~/stores/games';
-import { useGamesAutoRefresh } from '~/composables/useGamesAutoRefresh';
 import { getGameEndTime } from '~/utils/game'
-import CalendarGame from './CalendarGame.vue';
-import CalendarListGame from './CalendarListGame.vue';
-import NoSpoilerModeToggle from '~/components/navigation/NoSpoilerModeToggle.vue';
+import { useGamesAutoRefresh } from '~/composables/useGamesAutoRefresh';
+
+import CalendarGame from '~/components/partials/games/CalendarGame.vue';
+import CalendarListGame from '~/components/partials/games/CalendarListGame.vue';
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const { formatDayShort } = useFormatTimeLocalized();
 const { smOrSmaller } = useResponsive()
-const { isNoSpoilerModeActive, toggleNoSpoilerMode } = useNoSpoilerMode();
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 
@@ -116,12 +113,6 @@ const calendarOptions = computed<CalendarOptions>(() => {
             timeGridWeek: {
                 ...commonTimeGridOptions,
             },
-            /* timeGridDay: {
-                ...commonTimeGridOptions,
-            }, */
-            /* listDay: {
-                listDayFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
-            }, */
             dayOne: {
                 ...commonDayOptions,
                 buttonText: formatDayShort(WC_DATES[0])
