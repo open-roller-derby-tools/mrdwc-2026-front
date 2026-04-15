@@ -1,5 +1,5 @@
 <template>
-    <div class="maxed padded flex justify-center">
+    <!-- <div class="maxed padded flex justify-center">
         <ul class="my-4 flex flex-col sm:flex-row gap-0.5 items-center list-none font-shoulders font-semibold text-lg">
             <li v-for="track in trackList" :key="`track_${track.id}`"
                 class="transition-colors duration-100 px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
@@ -8,7 +8,7 @@
                 <span>{{ track.label }}</span>
             </li>
         </ul>
-    </div>
+    </div> -->
     <FullCalendar ref="calendarRef" :options="calendarOptions">
         <template v-slot:eventContent="arg">
             <CalendarGame :event="arg.event" />
@@ -61,21 +61,55 @@ const events = computed(() => {
     }) ?? [];
 });
 
-const trackList = computed(() => {
-    const venueTracks = venuesStore.localizedVenues.map((venue, index) => ({
-        id: venue.id,
-        label: t('calendar_track', { index: index + 1, name: venue.name }),
-    }));
+const trackButtons = computed(() => {
+    return Object.fromEntries(
+        venuesStore.localizedVenues.map((venue, index) => [
+            `track_${venue.id}`,
+            {
+                text: t('calendar_track_short', { index: index + 1 }),
+                click: () => {
+                    selectedTrackId.value = venue.id;
+                }
+            }
+        ])
+    );
+});
+
+const trackButtonNames = computed(() => {
     return [
-        {
-            id: 0,
-            label: t('calendar_track_all'),
-        },
-        ...venueTracks,
+        'allGames',
+        ...Object.keys(trackButtons.value),
     ];
 });
 
+const trackToolbarButtons = computed(() => {
+    return trackButtonNames.value.join(',');
+});
+
 const selectedTrackId = ref(0);
+
+const getTrackButtonName = (trackId: number) => {
+    return trackId === 0 ? 'allGames' : `track_${trackId}`;
+};
+
+const syncTrackButtonClasses = () => {
+    const calendarRoot = calendarRef.value?.$el as HTMLElement | undefined;
+    if (!calendarRoot)
+        return;
+
+    const activeButtonName = getTrackButtonName(selectedTrackId.value);
+
+    trackButtonNames.value.forEach((buttonName) => {
+        const buttonEl = calendarRoot.querySelector<HTMLElement>(`.fc-${buttonName}-button`);
+        if (!buttonEl)
+            return;
+
+        const isActive = buttonName === activeButtonName;
+        buttonEl.classList.add('fc-track-btn');
+        buttonEl.classList.toggle('fc-track-btn-active', isActive);
+        buttonEl.classList.toggle('fc-track-btn-inactive', !isActive);
+    });
+};
 
 const commonTimeGridOptions = {
     allDaySlot: false,
@@ -100,7 +134,7 @@ const calendarOptions = computed<CalendarOptions>(() => {
     return {
         locale: locale.value,
         plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin],
-        headerToolbar: { start: viewButtons, end: '' },
+        headerToolbar: { start: viewButtons, end: trackToolbarButtons.value },
         buttonText: {
             week: t('calendar.week'),
         },
@@ -140,6 +174,13 @@ const calendarOptions = computed<CalendarOptions>(() => {
                     calendarRef.value?.getApi().changeView('dayFour', WC_DATES[3]);
                 }
             },
+            allGames: {
+                text: t('calendar_track_all'),
+                click: () => {
+                    selectedTrackId.value = 0;
+                }
+            },
+            ...trackButtons.value,
         },
         views: {
             timeGridWeek: {
@@ -179,5 +220,23 @@ watch(smOrSmaller, (smOrSmallerNow) => {
         api.changeView('dayOne', WC_DATES[0]);
     else if (!smOrSmallerNow && api.view.type != 'timeGridWeek')
         api.changeView('timeGridWeek');
+});
+
+onMounted(() => {
+    nextTick(() => {
+        syncTrackButtonClasses();
+    });
+});
+
+watch(selectedTrackId, () => {
+    nextTick(() => {
+        syncTrackButtonClasses();
+    });
+});
+
+watch(trackToolbarButtons, () => {
+    nextTick(() => {
+        syncTrackButtonClasses();
+    });
 });
 </script>

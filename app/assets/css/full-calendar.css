@@ -58,11 +58,28 @@
     }
 
     .fc-toolbar {
-        @apply flex flex-row items-center justify-center;
+        @apply w-full px-4 flex flex-col gap-0.5 items-center justify-between my-6;
+        @apply sm:max-w-5xl sm:mx-auto sm:px-12 sm:flex-row;
     }
 
     .fc-button-primary {
-        @apply font-shoulders font-bold capitalize text-base sm:text-lg px-4 py-2 cursor-pointer rounded-xl select-none transition-colors duration-200;
+        @apply font-shoulders font-bold capitalize text-base text-blue-text sm:text-lg px-4 py-2 cursor-pointer rounded-xl select-none transition-colors duration-200;
+    }
+
+    .fc-button-primary.fc-track-btn {
+        @apply normal-case;
+    }
+
+    .fc-button-primary.fc-track-btn.fc-track-btn-inactive {
+        @apply bg-blue-inactive;
+    }
+
+    .fc-button-primary.fc-track-btn.fc-track-btn-inactive:hover {
+        @apply bg-yellow;
+    }
+
+    .fc-button-primary.fc-track-btn.fc-track-btn-active {
+        @apply bg-yellow;
     }
 
     .fc-timegrid-slot-label-cushion,
