@@ -11,7 +11,6 @@ import { defineStore } from "pinia";
 import type { IOptions, IOptionsRequestData } from "~~/types/custom";
 
 export const useOptionsStore = defineStore("options", () => {
-  const { locale, fallbackLocale } = useI18n();
   const isReady = ref<boolean>(false);
   const options = ref<IOptions | null>(null);
 

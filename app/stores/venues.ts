@@ -23,6 +23,7 @@ export const useVenuesStore = defineStore("venues", () => {
     }
     try {
       const fields = {
+        id: true,
         name: true,
         type: true,
         address: true,
