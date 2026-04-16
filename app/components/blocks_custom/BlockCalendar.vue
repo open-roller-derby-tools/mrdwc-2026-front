@@ -212,10 +212,6 @@ const calendarOptions = computed<CalendarOptions>(() => {
                 buttonText: formatDayShort(WC_DATES[3])
             },
         },
-        eventClick: (info: EventClickArg) => {
-            // TODO: Open game details modal
-            console.log(info);
-        },
         datesSet: (info) => {
             currentViewType.value = info.view.type;
         },

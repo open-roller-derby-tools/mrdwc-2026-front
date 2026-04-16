@@ -1,6 +1,6 @@
 <template>
     <div class="maxed padded">
-        <div class="bg-white text-black text-sm rounded-xl p-4 my-8 w-fit">
+        <div class="bg-white text-black text-sm rounded-2xl p-4 my-8 w-fit">
             <p class="font-shoulders font-bold">
                 <span class="text-lg mr-2">{{ t('no_spoiler_mode.title') }}</span>
                 <span :class="statusClasses" class="text-lg uppercase">{{ isNoSpoilerModeActive ?

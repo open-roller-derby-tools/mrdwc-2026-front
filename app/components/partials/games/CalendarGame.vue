@@ -1,5 +1,6 @@
 <template>
-    <div :class="eventClass" class="relative flex flex-col h-full select-none cursor-pointer">
+    <div :class="eventClass" class="relative flex flex-col h-full select-none cursor-pointer"
+        @click="showGameCard = true">
         <!-- Game teams/scores -->
         <CalendarGameVersus :game="event.extendedProps.game" />
         <!-- Game state/time -->
@@ -10,12 +11,17 @@
             {{ event.extendedProps.game.description }}
         </div>
     </div>
+    <ModalContainer :show="showGameCard" @close="showGameCard = false">
+        <GameCard :game="event.extendedProps.game" />
+    </ModalContainer>
 </template>
 
 <script lang="ts" setup>
 import { GameState, type IGame } from '~~/types/games';
+import ModalContainer from '../ModalContainer.vue';
 import CalendarGameState from './CalendarGameState.vue';
 import CalendarGameVersus from './CalendarGameVersus.vue';
+import GameCard from './GameCard.vue';
 
 const props = defineProps<{
     event: {
@@ -27,6 +33,8 @@ const props = defineProps<{
         };
     };
 }>();
+
+const showGameCard = ref(false);
 
 const eventClass = computed(() => ({
     'opacity-100': props.event.extendedProps.game.state !== GameState.Finished,
