@@ -31,12 +31,12 @@
 }
 
 .fc-col-header th {
-    @apply even:bg-blue-text even:rounded-t-2xl;
+    @apply even:bg-blue even:rounded-t-2xl;
 }
 
 .fc-timegrid-col,
 .fc-timegrid-col.fc-day-today {
-    @apply even:bg-blue-text even:rounded-b-2xl;
+    @apply even:bg-blue even:rounded-b-2xl;
 }
 
 .fc-timegrid-event-harness-inset .fc-timegrid-event {

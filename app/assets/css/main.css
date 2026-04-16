@@ -116,6 +116,10 @@
 	h2[id^="reka-dialog-title"] {
 		@apply !mb-0;
 	}
+
+	.block-rich-text.no-margin {
+		@apply !py-0;
+	}
 }
 
 @layer components {}

@@ -13,6 +13,7 @@ import BlockOfficialsCrews from "~/components/blocks_custom/BlockOfficialsCrews.
 import BlockOfficialsCrew from "~/components/blocks_custom/BlockOfficialsCrew.vue";
 import BlockCalendar from "~/components/blocks_custom/BlockCalendar.vue";
 import BlockNoSpoilers from "~/components/blocks_custom/BlockNoSpoilers.vue";
+import BlockTrackLocations from "~/components/blocks_custom/BlockTrackLocations.vue";
 
 const components = new Map<string, Component>([
   // Blocks
@@ -30,6 +31,7 @@ const components = new Map<string, Component>([
   ["BlockOfficialsCrew", BlockOfficialsCrew],
   ["BlockCalendar", BlockCalendar],
   ["BlockNoSpoilers", BlockNoSpoilers],
+  ["BlockTrackLocations", BlockTrackLocations],
 ]);
 
 export default (collection: string) => components.get(collection);

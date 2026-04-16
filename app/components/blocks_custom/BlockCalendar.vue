@@ -1,19 +1,21 @@
 <template>
-    <div :class="wrapperClass" class="padded sm:mx-auto">
-        <FullCalendar ref="calendarRef" :options="calendarOptions">
-            <template v-slot:eventContent="arg">
-                <CalendarGame :event="arg.event" />
-            </template>
-            <template v-slot:dayHeaderContent="arg" class="bg-red-text">
-                <p class="mb-4">{{ arg.text }}</p>
-                <div v-if="selectedTrackId == 0" class="track-header w-full flex flex-row gap-1 mb-1 pl-0.5">
-                    <div>{{ t('calendar_track_short', { index: 1 }) }}</div>
-                    <div v-if="firstTwoDays.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
-                        index: 2
-                    }) }}</div>
-                </div>
-            </template>
-        </FullCalendar>
+    <div class="bg-blue-text">
+        <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
+            <FullCalendar ref="calendarRef" :options="calendarOptions">
+                <template v-slot:eventContent="arg">
+                    <CalendarGame :event="arg.event" />
+                </template>
+                <template v-slot:dayHeaderContent="arg" class="bg-red-text">
+                    <p class="mb-4">{{ arg.text }}</p>
+                    <div v-if="selectedTrackId == 0" class="track-header w-full flex flex-row gap-1 mb-1 pl-0.5">
+                        <div>{{ t('calendar_track_short', { index: 1 }) }}</div>
+                        <div v-if="firstTwoDays.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
+                            index: 2
+                        }) }}</div>
+                    </div>
+                </template>
+            </FullCalendar>
+        </div>
     </div>
 </template>
 
