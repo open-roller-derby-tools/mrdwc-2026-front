@@ -20,7 +20,7 @@ import PageHeader from '~/components/partials/PageHeader.vue';
 const route = useRoute();
 const { t } = useI18n();
 const gamesStore = useGamesStore();
-const { getTeamNameShort, getTeamName, isGameSpoiler } = useGameFormatting();
+const { getTeamNameShort, isGameSpoiler } = useGameFormatting();
 
 useGamesAutoRefresh({ intervalMs: 30000 });
 

@@ -1,6 +1,5 @@
 <template>
-    <div :class="eventClass" class="relative flex flex-col h-full select-none cursor-pointer"
-        @click="showGameCard = true">
+    <div :class="eventClass" class="relative flex flex-col h-full select-none">
         <!-- Game teams/scores -->
         <CalendarGameVersus :game="event.extendedProps.game" />
         <!-- Game state/time -->
@@ -22,6 +21,8 @@ import ModalContainer from '../ModalContainer.vue';
 import CalendarGameState from './CalendarGameState.vue';
 import CalendarGameVersus from './CalendarGameVersus.vue';
 import GameCard from './GameCard.vue';
+
+// TODO: add @click="showGameCard = true" back to the main div and the cursor-pointer class
 
 const props = defineProps<{
     event: {

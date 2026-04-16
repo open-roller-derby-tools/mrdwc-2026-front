@@ -18,13 +18,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { EventClickArg } from '@fullcalendar/core';
 import type { CalendarOptions } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import momentTimezonePlugin from '@fullcalendar/moment-timezone';
 
 import { useGamesStore } from '~/stores/games';
 import { useVenuesStore } from '~/stores/venues';
@@ -142,7 +142,8 @@ const calendarOptions = computed<CalendarOptions>(() => {
 
     return {
         locale: locale.value,
-        plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin],
+        timeZone: 'Europe/Paris',
+        plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin, momentTimezonePlugin],
         headerToolbar: { start: viewButtons, end: trackToolbarButtons.value },
         buttonText: {
             week: t('calendar.week'),

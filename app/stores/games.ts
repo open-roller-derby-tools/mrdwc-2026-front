@@ -34,7 +34,7 @@ export const useGamesStore = defineStore("games", () => {
 					sort: true,
 					start_time: true,
 					duration: true,
-					track: true,
+					venue: true,
 					home_team: true,
 					away_team: true,
 					home_score: true,
@@ -49,15 +49,15 @@ export const useGamesStore = defineStore("games", () => {
 					description: true,
 				};
 
-				// TODO Replace webhook access with regular API fetch when games data is ready to be public
 				// Regular fetch from the API
-				/* const { data } = await $fetch<IGamesRequestData>(
-					buildRESTURL("games", fields).href
-				);*/
-				// Temporary webhook access
 				const { data } = await $fetch<IGamesRequestData>(
-					`https://worldcup-dashboard.mrda.org/flows/trigger/${config.public.gamesFlowId}`
+					buildRESTURL("games", fields).href
 				);
+
+				// Add the event timezone to the start_time
+				data.forEach((game) => {
+					game.start_time = game.start_time + '+02:00';
+				});
 
 				// Sort games by start time.
 				const sortedData = [...data].sort((a, b) => {
