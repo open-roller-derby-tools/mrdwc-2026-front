@@ -12,8 +12,8 @@ const props = defineProps<{
     game: IGame;
 }>();
 
-const { getTeamNameShort, isGameSpoiler } = useGameFormatting();
+const { getTeamName } = useGameFormatting();
 
-const homeTeamName = computed(() => getTeamNameShort(props.game.home_team, props.game.home_source, isGameSpoiler(props.game)));
-const awayTeamName = computed(() => getTeamNameShort(props.game.away_team, props.game.away_source, isGameSpoiler(props.game)));
+const homeTeamName = computed(() => getTeamName(props.game, "home", true, props.game.home_source));
+const awayTeamName = computed(() => getTeamName(props.game, "away", true, props.game.away_source));
 </script>

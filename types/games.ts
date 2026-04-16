@@ -43,6 +43,7 @@ export interface IGame {
     video_url: string | null;
     type: GameType;
     description: string | null;
+    tournament_group: number | null;
 }
 
 export interface ILocalizedGame extends IGame { }

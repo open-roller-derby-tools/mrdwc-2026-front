@@ -310,6 +310,7 @@ export interface ITeam {
 	name_letters: string;
 	logo: string;
 	flag: string;
+	group_id: number | null;
 	// members: number[] | ITeamMember[];
 }
 
@@ -366,4 +367,14 @@ export interface ILocalizedOfficialsCrew extends IOfficialsCrew { }
 
 export interface IOfficialsCrewsRequestData {
 	data: IOfficialsCrew[];
+}
+
+export interface ITournamentGroup {
+	id: number;
+	number: number;
+	teams: number[];
+}
+
+export interface ITournamentGroupRequestData {
+	data: ITournamentGroup[];
 }
