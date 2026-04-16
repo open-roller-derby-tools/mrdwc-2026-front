@@ -16,10 +16,16 @@
         <div class="w-full grid grid-cols-3 gap-4">
             <div v-for="group in groups" :key="group.id">
                 <p class="font-shoulders text-2xl font-bold">Group {{ group.number }}</p>
-                <ul v-if="getGamesByGroup(group.number).length > 0">
-                    <li v-for="game in getGamesByGroup(group.number)" :key="game.id">
-                        <p>Game {{ game.number }}: {{ getTeamName(game, "home", true, game.home_source) }} - {{
-                            getTeamName(game, "away", true, game.away_source) }}</p>
+                <ul v-if="getGamesByGroup(group.number, true).length > 0">
+                    <li v-for="game in getGamesByGroup(group.number, true)" :key="game.id">
+                        <p class="flex gap-1">
+                            <span>Game {{ game.number }}:</span>
+                            <span>{{ getTeamName(game, "home", true, game.home_source) }}</span>
+                            <span>{{ game.home_score }}</span>
+                            <span>-</span>
+                            <span>{{ game.away_score }}</span>
+                            <span>{{ getTeamName(game, "away", true, game.away_source) }}</span>
+                        </p>
                     </li>
                 </ul>
             </div>

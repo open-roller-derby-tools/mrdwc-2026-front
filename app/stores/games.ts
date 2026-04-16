@@ -197,15 +197,35 @@ export const useGamesStore = defineStore("games", () => {
 		}, {} as Record<string, IGame[]>) ?? {};
 	});
 
-	function getGamesByGroup(group: number): IGame[] {
+	function getGamesByGroup(group: number, fakeScores: boolean = false): IGame[] {
+		if (fakeScores) {
+			return simulatedGames.value?.filter((game) => game.tournament_group === group) ?? [];
+		}
 		return games.value?.filter((game) => game.tournament_group === group) ?? [];
 	}
+
+	const simulatedGames = computed((): IGame[] => {
+		const baseGames = games.value ?? [];
+		return baseGames.map((game) => {
+			if (game.type !== GameType.GroupsStage) {
+				return { ...game };
+			}
+
+			return {
+				...game,
+				home_score: Math.floor(Math.random() * 1000),
+				away_score: Math.floor(Math.random() * 1000),
+				state: GameState.Finished,
+			};
+		});
+	});
 
 	return {
 		fetch,
 		refresh,
 		isReady,
 		games,
+		simulatedGames,
 		stateScheduledGames,
 		statePreGameGames,
 		stateInProgressP1Games,
