@@ -37,6 +37,7 @@ export const useTeamsStore = defineStore("teams", () => {
         name_letters: true,
         logo: true,
         flag: true,
+        group_id: true,
         /* members: {
           name: true,
           number: true,
@@ -72,6 +73,7 @@ export const useTeamsStore = defineStore("teams", () => {
         name_letters: team.name_letters,
         logo: team.logo,
         flag: team.flag,
+        group_id: team.group_id,
         // members: [],
       };
 

@@ -20,7 +20,7 @@ import PageHeader from '~/components/partials/PageHeader.vue';
 const route = useRoute();
 const { t } = useI18n();
 const gamesStore = useGamesStore();
-const { getTeamNameShort, isGameSpoiler } = useGameFormatting();
+const { getTeamName } = useGameFormatting();
 
 useGamesAutoRefresh({ intervalMs: 30000 });
 
@@ -28,8 +28,8 @@ const game = computed(() => gamesStore.getGameByNumber(Number(route.params.id)))
 
 const title = computed(() => {
     if (game.value) {
-        const homeTeamName = getTeamNameShort(game.value.home_team, game.value.home_source, isGameSpoiler(game.value));
-        const awayTeamName = getTeamNameShort(game.value.away_team, game.value.away_source, isGameSpoiler(game.value));
+        const homeTeamName = getTeamName(game.value, "home", true, game.value.home_source);
+        const awayTeamName = getTeamName(game.value, "away", true, game.value.away_source);
         return `${homeTeamName} - ${awayTeamName}`;
     }
     return 'Game loading...';

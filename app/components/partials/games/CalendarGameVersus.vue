@@ -15,7 +15,7 @@
 import { GameState, type IGame } from '~~/types/games';
 
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
-const { getTeamNameShort, getTeamColors, isGameSpoiler } = useGameFormatting();
+const { getTeamName, getTeamColors } = useGameFormatting();
 
 const props = defineProps<{
     game: IGame;
@@ -23,8 +23,8 @@ const props = defineProps<{
 
 const COMMON_DIV_CLASSES = 'h-full py-3 flex flex-col items-center justify-center leading-none transition-width duration-150 ease-out';
 
-const homeTeamName = computed(() => getTeamNameShort(props.game.home_team, props.game.home_source, isGameSpoiler(props.game)));
-const awayTeamName = computed(() => getTeamNameShort(props.game.away_team, props.game.away_source, isGameSpoiler(props.game)));
+const homeTeamName = computed(() => getTeamName(props.game, "home", true, props.game.home_source));
+const awayTeamName = computed(() => getTeamName(props.game, "away", true, props.game.away_source));
 
 const homeDivStyle = computed(() => getTeamColors(props.game, "home"));
 const awayDivStyle = computed(() => getTeamColors(props.game, "away"));

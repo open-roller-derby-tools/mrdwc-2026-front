@@ -9,17 +9,32 @@
 
 import { defineStore } from "pinia";
 import { GameState, GameType, type IGame } from "~~/types/games";
+import { useGroupsStore } from "./groups";
 
 type IGamesRequestData = {
 	data: IGame[];
 };
 
 export const useGamesStore = defineStore("games", () => {
-	const config = useRuntimeConfig()
-
+	const groupsStore = useGroupsStore();
 	const isReady = ref<boolean>(false);
 	const games = ref<IGame[] | null>(null);
 	const inFlight = ref<Promise<IGame[]> | null>(null);
+
+	function getTournamentGroupIdForGame(game: IGame): number | null {
+		const homeGroup = groupsStore.groups?.find((group) =>
+			group.teams.includes(game.home_team)
+		);
+		const awayGroup = groupsStore.groups?.find((group) =>
+			group.teams.includes(game.away_team)
+		);
+
+		if (homeGroup && awayGroup && homeGroup.id === awayGroup.id) {
+			return homeGroup.id;
+		}
+
+		return null;
+	}
 
 	async function fetch(options: { force?: boolean } = {}) {
 		const force = options.force === true;
@@ -28,6 +43,10 @@ export const useGamesStore = defineStore("games", () => {
 
 		const request = (async () => {
 			try {
+				if (!groupsStore.isReady || groupsStore.groups == null) {
+					await groupsStore.fetch();
+				}
+
 				const fields = {
 					id: true,
 					number: true,
@@ -57,6 +76,7 @@ export const useGamesStore = defineStore("games", () => {
 				// Add the event timezone to the start_time
 				data.forEach((game) => {
 					game.start_time = game.start_time + '+02:00';
+					game.tournament_group = getTournamentGroupIdForGame(game);
 				});
 
 				// Sort games by start time.
@@ -169,6 +189,18 @@ export const useGamesStore = defineStore("games", () => {
 		}, {} as Record<string, IGame[]>) ?? {};
 	});
 
+	const gamesGroupedByGroup = computed((): Record<string, IGame[]> => {
+		return games.value?.reduce((acc, game) => {
+			const group = game.tournament_group?.toString() ?? "unknown";
+			acc[group] = [...(acc[group] || []), game];
+			return acc;
+		}, {} as Record<string, IGame[]>) ?? {};
+	});
+
+	function getGamesByGroup(group: number): IGame[] {
+		return games.value?.filter((game) => game.tournament_group === group) ?? [];
+	}
+
 	return {
 		fetch,
 		refresh,
@@ -192,6 +224,8 @@ export const useGamesStore = defineStore("games", () => {
 		typeGrandFinalGames,
 		getGameByNumber,
 		gamesGroupedByDate,
+		gamesGroupedByGroup,
+		getGamesByGroup,
 	};
 });
 
