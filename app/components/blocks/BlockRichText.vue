@@ -1,20 +1,9 @@
 <template>
-  <div
-    :id="data.anchor_id"
-    class="block-rich-text relative scroll-mt-24"
-    :class="wrapperClasses"
-  >
+  <div :id="data.anchor_id" class="block-rich-text relative scroll-mt-24" :class="wrapperClasses">
     <div class="maxed padded">
       <div :class="elementClasses">
-        <h2
-          v-if="data.title"
-          v-html="formattedTitle"
-          class="flex gap-8 items-center"
-        ></h2>
-        <div
-          v-if="data.content"
-          v-html="data.content"
-        ></div>
+        <h2 v-if="data.title" v-html="formattedTitle" class="flex gap-8 items-center"></h2>
+        <div v-if="data.content" v-html="data.content"></div>
       </div>
     </div>
   </div>
@@ -148,7 +137,7 @@ const formattedTitle = computed(() => {
     @apply inline-flex text-white items-center gap-1 font-shoulders p-0 transition-colors duration-200 uppercase text-2xl -ml-2 after:hidden;
 
     &::before {
-      @apply content-[''] inline-block w-8 h-8 bg-blue-light mask-[url(/arrow-down-right.svg)] mask-no-repeat mask-center mask-contain transition-transform duration-200;
+      @apply content-[''] inline-block w-8 h-8 bg-blue-light mask-[url('/arrow-down-right.svg')] mask-no-repeat mask-center mask-contain transition-transform duration-200;
     }
 
     &:hover {

@@ -46,10 +46,11 @@ export default defineNuxtConfig({
 	ui: {
 		colorMode: false,
 	},
-	devtools: { enabled: false },
+	devtools: { enabled: true },
 	runtimeConfig: {
 		public: {
 			apiBase: "",
+			gamesFlowId: "",
 		},
 	},
 	routeRules: {

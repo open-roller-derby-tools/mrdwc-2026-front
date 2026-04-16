@@ -52,5 +52,34 @@
 		"orleans_logo": "Orléans Métropole logo",
 		"primary_venue": "Photo of the primary venue",
 		"secondary_venue": "Photo of the secondary venue"
-	}
+	},
+	"calendar": {
+		"prev": "Previous",
+		"next": "Next",
+		"today": "Today",
+		"week": "Week",
+		"day": "Day",
+		"list": "List"
+	},
+	"game_state": {
+		"scheduled": "Scheduled",
+		"pre_game": "Pre-Game",
+		"in_progress_p1": "Live (P1)",
+		"half_time": "Half-Time",
+		"in_progress_p2": "Live (P2)",
+		"finished": "Finished"
+	},
+	"no_spoiler_mode": {
+		"title": "No Spoilers Mode",
+		"show_spoilers": "Show spoilers",
+		"hide_spoilers": "Hide spoilers",
+		"enabled": "Enabled",
+		"disabled": "Disabled",
+		"enabled_description": "Scores, rankings and non-groups-stage matchups are hidden.",
+		"disabled_description": "Scores, rankings and non-groups-stage matchups are visible."
+	},
+	"calendar_track": "Track {index} - {name}",
+	"calendar_track_short": "Track {index}",
+	"calendar_track_all": "All games",
+	"calendar_test": "Track {index} | Track {index}:"
 }

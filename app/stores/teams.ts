@@ -32,8 +32,11 @@ export const useTeamsStore = defineStore("teams", () => {
     }
     try {
       const fields = {
+        id: true,
         name: true,
+        name_letters: true,
         logo: true,
+        flag: true,
         /* members: {
           name: true,
           number: true,
@@ -59,10 +62,6 @@ export const useTeamsStore = defineStore("teams", () => {
     }
   }
 
-  /**
-   * Return an array of localized teams.
-   * This getter transforms the raw teams data into a structure suitable for localized display.
-   */
   const localizedTeams = computed((): ILocalizedTeam[] => {
     const list: ILocalizedTeam[] = [];
 
@@ -70,7 +69,9 @@ export const useTeamsStore = defineStore("teams", () => {
       let l_team: ILocalizedTeam = {
         id: team.id,
         name: team.name,
+        name_letters: team.name_letters,
         logo: team.logo,
+        flag: team.flag,
         // members: [],
       };
 
@@ -105,8 +106,9 @@ export const useTeamsStore = defineStore("teams", () => {
     return list;
   });
 
-  /**
-   * Expose the required properties, getters and actions
-   */
-  return { fetch, isReady, teams, localizedTeams };
+  function getTeamById(id: number): ITeam | undefined {
+    return teams.value?.find((team) => team.id === id);
+  }
+
+  return { fetch, isReady, teams, localizedTeams, getTeamById };
 });
