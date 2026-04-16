@@ -35,16 +35,28 @@ export function useGameFormatting() {
 		return teamsStore.getTeamById(teamId)?.name ?? fallback ?? "---";
 	}
 
-	function getTeamColors(color: string, fallback: string | null, isSpoiler: boolean = false): { backgroundColor: string, color: string } {
+	function getTeamColors(game: IGame, team: "home" | "away"): { backgroundColor: string, color: string } {
+		// Spoiler status
+		const isSpoiler = isGameSpoiler(game);
+		// Default colors
 		const colors = {
-			backgroundColor: "#FFFFFF",
+			backgroundColor: team === "home" ? "var(--color-home)" : "var(--color-away)",
 			color: "#000000",
 		};
-		if (isSpoiler && isNoSpoilerModeActive.value)
-			colors.backgroundColor = fallback ?? "#FFFFFF";
-		else
-			colors.backgroundColor = color;
 
+		// If the game is a spoiler and the no spoiler mode is active, return the default colors
+		if (isSpoiler && isNoSpoilerModeActive.value) {
+			colors.color = getContrastingTextColor(colors.backgroundColor);
+			return colors;
+		}
+
+		// If the game is not a spoiler and the team is defined, use the team colors from Directus
+		if (team === "home" && game.home_team !== null) {
+			colors.backgroundColor = game.home_color;
+		}
+		else if (team === "away" && game.away_team !== null) {
+			colors.backgroundColor = game.away_color;
+		}
 		colors.color = getContrastingTextColor(colors.backgroundColor);
 		return colors;
 	}
