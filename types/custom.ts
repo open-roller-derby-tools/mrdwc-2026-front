@@ -164,11 +164,33 @@ export interface ILocalizedBlockTabs extends ILocalizedBlock {
   tabs: string[]; // Each tab will have a slug reference to the related page, no need for more
 }
 
+export interface IBlockTabsSlot {
+  anchor_id: string;
+  classes: string;
+  tabs: IBlockTabsSlotItem[];
+}
+
+export interface IBlockTabsSlotItem {
+  label: string;
+  slotKey: string;
+}
+
+export interface ILocalizedBlockTabsSlot {
+  anchor_id: string;
+  classes: string;
+  tabs: IBlockTabsSlotItem[];
+}
+
 // Page Block Wrapper
 export interface IBlockWrapper {
   sort: number;
   collection: string;
-  item: IBlockRichText | IBlockCustom | IBlockTwoColumns | IBlockTabs;
+  item:
+    | IBlockRichText
+    | IBlockCustom
+    | IBlockTwoColumns
+    | IBlockTabs
+    | IBlockTabsSlot;
 }
 
 // Page Wrapper
@@ -318,7 +340,10 @@ export interface ITeam {
   team_history: string;
   team_anecdotes: string;
   previous_participations: string[];
+  name_letters: string;
   // members: number[] | ITeamMember[];
+  members?: ITeamMember[];
+  charter?: ITeamMember[];
 }
 
 export interface ILocalizedTeam {
@@ -334,25 +359,47 @@ export interface ILocalizedTeam {
   history: string;
   anecdotes: string;
   previousParticipations: string[];
+  nameLetters: string;
   // members: number[] | ILocalizedTeamMember[];
+  members?: ILocalizedTeamMember[];
+  charter?: ILocalizedTeamMember[];
+}
+
+export interface ITeamWithRelations {
+  members: ITeamMember[];
+  charter: ITeamMember[];
 }
 
 export interface ITeamMember {
   id: number;
   team: number | ITeam;
-  name: string;
+  firstname: string;
+  lastname: string;
+  derbyname: string;
   number: string;
-  role: string;
+  roles: string[];
+  roster_photo: string;
+  pronouns: string;
+  member_information: string;
+  leagues_represented: string;
   translations: ITeamMemberTranslation[];
+  charter_skater_id: number;
 }
 
 export interface ILocalizedTeamMember {
   id: number;
   team: number | ITeam;
-  name: string;
+  firstname: string;
+  lastname: string;
+  derbyname: string;
   number: string;
-  role: string;
+  roles: string[];
+  rosterPhoto: string;
   pronouns: string;
+  memberInformation: string;
+  leaguesRepresented: string;
+  translations: ITeamMemberTranslation[];
+  charterSkaterId: number;
 }
 
 export interface ITeamMemberTranslation extends ITranslation {
@@ -362,6 +409,12 @@ export interface ITeamMemberTranslation extends ITranslation {
 
 export interface ITeamsRequestData {
   data: ITeam[];
+}
+
+export interface ICharter {
+  id: number;
+  team: number | ITeam;
+  charter_skaters: number[];
 }
 
 // OFFICIALS

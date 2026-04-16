@@ -10,7 +10,7 @@
     <div
       class="bg-linear-to-b from-blue-text/0 to-blue-text from-10% to-90% absolute inset-0"
     ></div>
-    <div class="maxed relative h-full px-0 padded">
+    <div class="maxed relative h-full padded flex">
       <slot></slot>
     </div>
   </div>
@@ -31,7 +31,7 @@ const backgroundStyles = computed(() => {
 });
 
 const wrapperClasses = computed(() => {
-  return props.image ? "h-48 sm:h-96" : "h-50 sm:h-64";
+  return props.image ? "h-48 sm:h-96" : "h-60 sm:h-64";
 });
 </script>
 

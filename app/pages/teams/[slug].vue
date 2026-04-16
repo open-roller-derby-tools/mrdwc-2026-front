@@ -3,7 +3,7 @@
     <PageHeader :image="null">
       <button
         @click="toggleNotifications"
-        class="mb-4 absolute bottom-2 left-0 md:left-8 sm:bottom-0 group inline-flex items-center text-md gap-2 px-3 py-2 rounded-xl font-semibold transition-all duration-300 cursor-pointer border-1"
+        class="mb-4 self-end mx-auto sm:mx-0 group flex items-center text-md gap-2 px-3 py-2 rounded-xl font-semibold transition-all duration-300 cursor-pointer border-1"
         :class="
           notificationsEnabled
             ? 'bg-yellow text-blue-text border-blue-text'
@@ -88,11 +88,11 @@
           v-if="
             team.facebook || team.instagram || team.website || team.crowdfunding
           "
-          class="flex flex-col gap-10 sm:flex-row mb-6 sm:mb-0 w-full items-center place-content-between bg-blue-text border-1 border-white/50 shadow-xl rounded-full py-3 pl-5 pr-3"
+          class="flex flex-col-reverse gap-10 sm:flex-row mb-6 sm:mb-0 w-full items-center place-content-between bg-blue-text border-1 border-white/50 shadow-xl rounded-xl sm:rounded-full py-7 px-5 sm:py-3 sm:pl-5 sm:pr-3"
         >
           <div
             v-if="team.facebook || team.instagram || team.website"
-            class="flex flex-row gap-2 sm:gap-4 items-center"
+            class="flex flex-row gap-3 sm:gap-4 items-center"
           >
             <NuxtLink
               v-if="team.facebook"
@@ -146,26 +146,35 @@
       </div>
     </div>
     <div v-if="team" class="sm:pt-16">
-      <div class="bg-blue-text py-16 sm:pt-0">
-        <div class="maxed padded">
-          <div
-            class="grid grid-cols-2 sm:flex sm:justify-center gap-2 sm:gap-0.5 mb-6 sm:mb-0 sm:-translate-y-1/2"
-          >
-            <!--  <button
-              v-for="(crew, index) in officialsStore.localizedOfficials"
-              :key="`crew_select_${index}`"
-              :class="[
-                'transition-colors duration-200 font-shoulders font-semibold text-center text-xl px-3 sm:px-6 py-2 rounded-xl sm:rounded-none sm:first:rounded-l-xl sm:last:rounded-r-xl w-full sm:w-auto select-none cursor-pointer',
-                selectedCrewIndex === index
-                  ? 'bg-yellow text-blue-text'
-                  : 'bg-blue-inactive text-blue-text hover:bg-yellow',
-              ]"
-              @click="selectedCrewIndex = index"
+      <div class="relative py-16 sm:py-0">
+        <!-- 🆕 TABS SLOT -->
+        <BlockTabsSlot v-if="team" :data="tabsConfig" class="mt-10">
+          <!-- TAB 1 : MEMBERS -->
+          <template #charter>
+            <div
+              class="grid grid-cols-2 bg-blue-text sm:grid-cols-4 gap-6 pb-6"
             >
-              {{ crew.name }}
-            </button> -->
-          </div>
-        </div>
+              <TeamMemberCard
+                v-for="m in team.members"
+                :key="m.id"
+                :member="m"
+              />
+            </div>
+          </template>
+
+          <!-- TAB 2 : CHARTER -->
+          <template #members>
+            <div
+              class="grid grid-cols-2 bg-blue-text sm:grid-cols-4 gap-6 pb-6"
+            >
+              <TeamMemberCard
+                v-for="m in team.charter"
+                :key="m.id"
+                :member="m"
+              />
+            </div>
+          </template>
+        </BlockTabsSlot>
       </div>
     </div>
   </div>
@@ -181,9 +190,12 @@ const teamsStore = useTeamsStore();
 const { t } = useI18n();
 const config = useRuntimeConfig();
 import { table } from "#build/ui";
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
 import PageHeader from "~/components/partials/PageHeader.vue";
 import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
+import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 
 const team = computed(() =>
   teamsStore.localizedTeams.find((t) => t.slug === String(route.params.slug)),
@@ -206,6 +218,15 @@ const notificationsEnabled = ref(false);
 const toggleNotifications = () => {
   notificationsEnabled.value = !notificationsEnabled.value;
 };
+
+const tabsConfig = computed(() => ({
+  anchor_id: "team-tabs",
+  classes: "",
+  tabs: [
+    { label: "Charter", slotKey: "charter" },
+    { label: "Staff", slotKey: "staff" },
+  ],
+}));
 
 console.log("team", team.value);
 </script>
