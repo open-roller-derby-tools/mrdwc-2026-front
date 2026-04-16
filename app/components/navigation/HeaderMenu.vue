@@ -1,27 +1,15 @@
 <template>
   <!-- Placeholder pendant le chargement -->
-  <div
-    v-if="!menuReady"
-    class="h-16 sm:h-20 bg-[#121356] animate-pulse transition-opacity duration-300"
-  ></div>
+  <div v-if="!menuReady" class="h-16 sm:h-20 bg-[#121356] animate-pulse transition-opacity duration-300"></div>
 
   <!-- Menu -->
-  <div
-    v-else
+  <div v-else
     class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6 sm:bg-gradient-to-b from-[#121356] to-transparent transition-opacity duration-500 opacity-0"
-    :class="{ 'opacity-100': menuReady }"
-  >
+    :class="{ 'opacity-100': menuReady }">
     <div class="maxed px-0 sm:px-6">
-      <UNavigationMenu
-        :items="convertedMenuItems"
-        :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
-        content-orientation="vertical"
-        variant="header"
-      >
-        <template
-          #list-trailing
-          v-if="!smOrSmaller"
-        >
+      <UNavigationMenu :items="convertedMenuItems" :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
+        content-orientation="vertical" variant="header">
+        <template #list-trailing v-if="!smOrSmaller">
           <LangSwitcher class="sm:mr-3" />
         </template>
       </UNavigationMenu>
@@ -30,26 +18,23 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref, watch, onMounted } from "vue"
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core"
 import type { NavigationMenuItem } from "@nuxt/ui"
-import LangSwitcher from "./LangSwitcher.vue"
 import type {
   ILocalizedCustomLinkMenuItem,
   ILocalizedMenu,
   ILocalizedMenuMenuItem,
   ILocalizedPageMenuItem,
 } from "~~/types/custom"
+import { nextTick, ref, watch, onMounted } from "vue"
+import { useResponsive } from "~/composables/useResponsive"
+import LangSwitcher from "./LangSwitcher.vue"
 
 const localePath = useLocalePath()
 const emit = defineEmits(["linkSelected"])
 const emitLinkSelected = (e: Event) => emit("linkSelected")
 
 // Responsive
-const breakpoints = useBreakpoints(breakpointsTailwind, {
-  ssrWidth: breakpointsTailwind.sm,
-})
-const smOrSmaller = breakpoints.smallerOrEqual("sm")
+const { smOrSmaller } = useResponsive()
 
 // Menu data
 const MENU_NAME = "header"

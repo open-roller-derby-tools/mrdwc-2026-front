@@ -37,12 +37,12 @@ export interface ILocalizedMenu {
 	classes: string;
 	display_name: string;
 	items:
-		| (
-				| ILocalizedPageMenuItem
-				| ILocalizedCustomLinkMenuItem
-				| ILocalizedMenuMenuItem
-		  )[]
-		| null;
+	| (
+		| ILocalizedPageMenuItem
+		| ILocalizedCustomLinkMenuItem
+		| ILocalizedMenuMenuItem
+	)[]
+	| null;
 }
 
 export interface IMenusRequestData {
@@ -205,13 +205,13 @@ export interface ILocalizedPage {
 	title: string;
 	menu_title: string;
 	blocks:
-		| (
-				| ILocalizedBlockRichText
-				| ILocalizedBlockCustom
-				| ILocalizedBlockTwoColumns
-				| ILocalizedBlockTabs
-		  )[]
-		| null;
+	| (
+		| ILocalizedBlockRichText
+		| ILocalizedBlockCustom
+		| ILocalizedBlockTwoColumns
+		| ILocalizedBlockTabs
+	)[]
+	| null;
 }
 
 export interface IPagesRequestData {
@@ -243,6 +243,7 @@ export interface ISponsorsRequestData {
 // VENUES
 
 export interface IVenue {
+	id: number;
 	name: string;
 	type: "main" | "secondary";
 	address: string;
@@ -301,23 +302,18 @@ export interface IOptionsRequestData {
 	data: IOptions;
 }
 
-// UNUSED DEFINITIONS (FOR NOW)
-
 // TEAMS & TEAM MEMBERS
 
 export interface ITeam {
 	id: number;
 	name: string;
+	name_letters: string;
 	logo: string;
+	flag: string;
 	// members: number[] | ITeamMember[];
 }
 
-export interface ILocalizedTeam {
-	id: number;
-	name: string;
-	logo: string;
-	// members: number[] | ILocalizedTeamMember[];
-}
+export interface ILocalizedTeam extends ITeam { }
 
 export interface ITeamMember {
 	id: number;
@@ -355,7 +351,7 @@ export interface IOfficial {
 	roles: string[];
 }
 
-export interface ILocalizedOfficial extends IOfficial {}
+export interface ILocalizedOfficial extends IOfficial { }
 
 export interface IOfficialsCrew {
 	id: number;
@@ -366,7 +362,7 @@ export interface IOfficialsCrew {
 	members_nso: IOfficial[];
 }
 
-export interface ILocalizedOfficialsCrew extends IOfficialsCrew {}
+export interface ILocalizedOfficialsCrew extends IOfficialsCrew { }
 
 export interface IOfficialsCrewsRequestData {
 	data: IOfficialsCrew[];

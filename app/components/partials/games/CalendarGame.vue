@@ -1,0 +1,45 @@
+<template>
+    <div :class="eventClass" class="relative flex flex-col h-full select-none">
+        <!-- Game teams/scores -->
+        <CalendarGameVersus :game="event.extendedProps.game" />
+        <!-- Game state/time -->
+        <CalendarGameState :game="event.extendedProps.game" />
+        <!-- Game description (Q1, S2, etc.) -->
+        <div v-if="event.extendedProps.game.description"
+            class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-text text-white font-shoulders font-bold px-2 py-1 rounded-full">
+            {{ event.extendedProps.game.description }}
+        </div>
+    </div>
+    <ModalContainer :show="showGameCard" @close="showGameCard = false">
+        <GameCard :game="event.extendedProps.game" />
+    </ModalContainer>
+</template>
+
+<script lang="ts" setup>
+import { GameState, type IGame } from '~~/types/games';
+import ModalContainer from '../ModalContainer.vue';
+import CalendarGameState from './CalendarGameState.vue';
+import CalendarGameVersus from './CalendarGameVersus.vue';
+import GameCard from './GameCard.vue';
+
+// TODO: add @click="showGameCard = true" back to the main div and the cursor-pointer class
+
+const props = defineProps<{
+    event: {
+        title: string;
+        start: Date;
+        end: Date;
+        extendedProps: {
+            game: IGame;
+        };
+    };
+}>();
+
+const showGameCard = ref(false);
+
+const eventClass = computed(() => ({
+    'opacity-100': props.event.extendedProps.game.state !== GameState.Finished,
+    'opacity-75 transition-opacity duration-200 hover:opacity-100': props.event.extendedProps.game.state === GameState.Finished,
+}));
+
+</script>
