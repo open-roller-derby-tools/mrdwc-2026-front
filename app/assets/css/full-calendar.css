@@ -37,6 +37,8 @@
 .fc-timegrid-col,
 .fc-timegrid-col.fc-day-today {
     @apply even:bg-blue even:rounded-b-2xl;
+
+    >.fc-timegrid-col-frame {}
 }
 
 .fc-timegrid-event-harness-inset .fc-timegrid-event {
@@ -132,6 +134,14 @@
             >div {
                 @apply flex-grow bg-red-light text-white font-cabin font-normal uppercase text-sm rounded-t-lg;
             }
+        }
+    }
+
+    .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky>* {
+        @apply -top-px pt-0 transition-[padding-top] duration-200;
+
+        &.is-pinned {
+            @apply bg-blue-text pt-24;
         }
     }
 }

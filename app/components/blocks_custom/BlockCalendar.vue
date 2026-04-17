@@ -13,16 +13,12 @@
 
                 <p class="mt-4">First game: {{ format(firstGameDate, 'yyyy-MM-dd HH:mm', { in: tz(active_timezone) }) }}
                 </p>
-                <p>First game date: {{ firstGameDateYMD }}</p>
-
                 <p class="mt-4">Last game: {{ format(lastGameDate, 'yyyy-MM-dd HH:mm', { in: tz(active_timezone) }) }}
                 </p>
-                <p>Last game date: {{ lastGameDateYMD }}</p>
-
                 <p>Date after last game: {{ dateAfterLastGameYMD }}</p>
 
-                <p class="mt-4">Valid range start: {{ validRange.start }}</p>
-                <p>Valid range end: {{ validRange.end }}</p>
+                <p class="mt-4">Valid range start: {{ calendarValidRange.start }}</p>
+                <p>Valid range end: {{ calendarValidRange.end }}</p>
             </div>
         </div>
         <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
@@ -32,12 +28,6 @@
                 </template>
                 <template v-slot:dayHeaderContent="arg" class="bg-red-text">
                     <p class="mb-4">{{ arg.text }}</p>
-                    <div v-if="selectedTrackId == 0" class="track-header w-full flex flex-row gap-1 mb-1 pl-0.5">
-                        <div>{{ t('calendar_track_short', { index: 1 }) }}</div>
-                        <div v-if="FIRST_TWO_DAYS.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
-                            index: 2
-                        }) }}</div>
-                    </div>
                 </template>
             </FullCalendar>
         </div>
@@ -48,11 +38,9 @@
 import type { CalendarOptions } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
-import { addDays, format } from 'date-fns';
+import { addDays, differenceInCalendarDays, format } from 'date-fns';
 import { TZDate, tz } from '@date-fns/tz';
 
 import { useGamesStore } from '~/stores/games';
@@ -64,7 +52,6 @@ import CalendarGame from '~/components/partials/games/CalendarGame.vue';
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const venuesStore = useVenuesStore();
-const { formatDayShort, formatDateYMD } = useFormatTimeLocalized();
 const { smOrSmaller } = useResponsive();
 const { active_timezone, tournament_timezone, user_timezone, toggleTimezone } = useTimezone();
 
@@ -72,7 +59,6 @@ useGamesAutoRefresh({ intervalMs: 60000 });
 
 const WC_DATES = ["2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03"] as const;
 const END_DATE = "2026-05-04";
-const FIRST_TWO_DAYS: string[] = [WC_DATES[0], WC_DATES[1]];
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 
@@ -102,17 +88,17 @@ const dateAfterLastGame = computed<TZDate>(() => {
 const dateAfterLastGameYMD = computed(() => {
     return format(dateAfterLastGame.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
 });
-
-const validRange = computed(() => {
-    if (!firstGameDate.value || !dateAfterLastGame.value) {
-        return {
-            start: WC_DATES[0],
-            end: END_DATE,
-        };
-    }
+const calendarFirstDay = computed<number>(() => {
+    const isoWeekDay = Number(format(firstGameDate.value, 'i', { in: tz(active_timezone.value) }));
+    return isoWeekDay === 7 ? 0 : isoWeekDay;
+});
+const calendarWeekDuration = computed<number>(() => {
+    return Math.max(1, differenceInCalendarDays(dateAfterLastGame.value, firstGameDate.value));
+});
+const calendarValidRange = computed(() => {
     return {
-        start: format(firstGameDate.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) }),
-        end: format(dateAfterLastGame.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) }),
+        start: firstGameDateYMD.value,
+        end: dateAfterLastGameYMD.value,
     };
 });
 
@@ -190,30 +176,28 @@ const syncTrackButtonClasses = () => {
     });
 };
 
+const realignCalendarToFirstDay = () => {
+    const api = calendarRef.value?.getApi();
+    if (!api)
+        return;
+    if (api.view.type !== 'timeGridWeek')
+        return;
+    api.gotoDate(firstGameDateYMD.value);
+    api.updateSize();
+};
+
 const [slotRefYear, slotRefMonth, slotRefDay] = WC_DATES[0].split('-').map(Number) as [number, number, number];
 const slotMinTime = new TZDate(slotRefYear, slotRefMonth - 1, slotRefDay, 9, 0, 0, tournament_timezone);
 const slotMaxTime = new TZDate(slotRefYear, slotRefMonth - 1, slotRefDay, 23, 0, 0, tournament_timezone);
 
-const getClampedSlotTime = (date: TZDate, clamp: 'min' | 'max') => {
-    const convertedDay = format(date, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
-
-    if (clamp === 'min' && convertedDay < WC_DATES[0])
-        return '00:00';
-    if (clamp === 'max' && convertedDay > WC_DATES[0])
-        return '24:00';
-
-    return format(date, 'HH:mm', { in: tz(active_timezone.value) });
-};
-
 const commonTimeGridOptions = computed(() => ({
     allDaySlot: false,
     slotDuration: '00:30:00',
-    // slotMinTime: getClampedSlotTime(slotMinTime, 'min'),
-    // slotMaxTime: getClampedSlotTime(slotMaxTime, 'max'),
     slotEventOverlap: false,
     nowIndicator: true,
     dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
-    slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' } as const
+    slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' } as const,
+    duration: { days: calendarWeekDuration.value },
 }));
 
 const commonDayOptions = computed(() => ({
@@ -223,7 +207,7 @@ const commonDayOptions = computed(() => ({
 }));
 
 const calendarOptions = computed<CalendarOptions>(() => {
-    const viewButtons = smOrSmaller.value ? 'dayOne,dayTwo,dayThree,dayFour' : 'timeGridWeek,dayOne,dayTwo,dayThree,dayFour';
+    const viewButtons = smOrSmaller.value ? 'timeGridDay' : 'timeGridWeek,timeGridDay';
 
     return {
         locale: locale.value,
@@ -231,44 +215,18 @@ const calendarOptions = computed<CalendarOptions>(() => {
         plugins: [dayGridPlugin, timeGridPlugin, momentTimezonePlugin],
         headerToolbar: { start: viewButtons, center: 'prev,next', end: trackToolbarButtons.value },
         buttonText: {
-            week: t('calendar.week'),
+            timeGridWeek: t('calendar.week'),
+            timeGridDay: t('calendar.day'),
         },
-        initialView: smOrSmaller.value ? 'dayOne' : 'timeGridWeek',
+        initialView: smOrSmaller.value ? 'timeGridDay' : 'timeGridWeek',
         initialDate: firstGameDateYMD.value,
-        validRange: {
-            start: firstGameDateYMD.value,
-            end: dateAfterLastGameYMD.value
-        },
-        firstDay: 1,
-        // hiddenDays: [1, 2, 3],
+        validRange: calendarValidRange.value,
+        firstDay: calendarFirstDay.value,
         height: 'auto',
+        stickyHeaderDates: true,
         eventColor: 'transparent',
         eventBorderColor: 'transparent',
         customButtons: {
-            dayOne: {
-                text: formatDayShort(WC_DATES[0]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayOne', WC_DATES[0]);
-                }
-            },
-            dayTwo: {
-                text: formatDayShort(WC_DATES[1]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayTwo', WC_DATES[1]);
-                }
-            },
-            dayThree: {
-                text: formatDayShort(WC_DATES[2]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayThree', WC_DATES[2]);
-                }
-            },
-            dayFour: {
-                text: formatDayShort(WC_DATES[3]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayFour', WC_DATES[3]);
-                }
-            },
             allGames: {
                 text: t('calendar_track_all'),
                 click: () => {
@@ -281,21 +239,8 @@ const calendarOptions = computed<CalendarOptions>(() => {
             timeGridWeek: {
                 ...commonTimeGridOptions.value,
             },
-            dayOne: {
+            timeGridDay: {
                 ...commonDayOptions.value,
-                buttonText: formatDayShort(WC_DATES[0])
-            },
-            dayTwo: {
-                ...commonDayOptions.value,
-                buttonText: formatDayShort(WC_DATES[1])
-            },
-            dayThree: {
-                ...commonDayOptions.value,
-                buttonText: formatDayShort(WC_DATES[2])
-            },
-            dayFour: {
-                ...commonDayOptions.value,
-                buttonText: formatDayShort(WC_DATES[3])
             },
         },
         datesSet: (info) => {
@@ -305,11 +250,52 @@ const calendarOptions = computed<CalendarOptions>(() => {
     };
 });
 
+let stickyObserver: IntersectionObserver | null = null;
+
+const observeStickyHeader = () => {
+    const calendarRoot = calendarRef.value?.$el as HTMLElement | undefined;
+    if (!calendarRoot) return;
+    // Target: .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > *
+    const stickyEl = calendarRoot.querySelector<HTMLElement>(
+        '.fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > *'
+    );
+    stickyObserver?.disconnect();
+    stickyObserver = null;
+
+    if (!stickyEl)
+        return;
+
+    if (smOrSmaller.value) {
+        stickyEl.classList.remove('is-pinned');
+        return;
+    }
+
+    stickyObserver = new IntersectionObserver(
+        (entries) => {
+            const entry = entries[0];
+            if (!entry)
+                return;
+            const rootTop = entry.rootBounds?.top ?? 0;
+            const isAtTop = entry.boundingClientRect.top <= rootTop + 1; // small tolerance
+            const isPinnedToTop = isAtTop && entry.intersectionRatio < 1;
+            entry.target.classList.toggle("is-pinned", isPinnedToTop);
+        },
+        { threshold: [1] }
+    );
+    stickyObserver.observe(stickyEl);
+};
+
 onMounted(() => {
     nextTick(() => {
         currentViewType.value = calendarRef.value?.getApi().view.type ?? currentViewType.value;
         syncTrackButtonClasses();
+        observeStickyHeader();
     });
+});
+
+onBeforeUnmount(() => {
+    stickyObserver?.disconnect();
+    stickyObserver = null;
 });
 
 watch(smOrSmaller, (smOrSmallerNow) => {
@@ -318,10 +304,19 @@ watch(smOrSmaller, (smOrSmallerNow) => {
         return;
 
     if (smOrSmallerNow && api.view.type == 'timeGridWeek')
-        api.changeView('dayOne', firstGameDateYMD.value);
+        api.changeView('timeGridDay', firstGameDateYMD.value);
     else if (!smOrSmallerNow && api.view.type != 'timeGridWeek')
-        api.changeView('timeGridWeek');
+        api.changeView('timeGridWeek', firstGameDateYMD.value);
+
+    nextTick(() => {
+        observeStickyHeader();
+    });
 });
+
+watch([active_timezone, firstGameDateYMD, calendarWeekDuration], async () => {
+    await nextTick();
+    realignCalendarToFirstDay();
+}, { flush: 'post' });
 
 watch(selectedTrackId, () => {
     nextTick(() => {
