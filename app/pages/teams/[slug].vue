@@ -1,28 +1,12 @@
 <template>
   <div v-if="team">
     <PageHeader :image="null">
-      <button
-        @click="toggleNotifications"
-        class="mb-4 self-end mx-auto sm:mx-0 group flex items-center text-md gap-2 px-3 py-2 rounded-xl font-semibold transition-all duration-300 cursor-pointer border-1"
-        :class="
-          notificationsEnabled
-            ? 'bg-yellow text-blue-text border-blue-text'
-            : 'bg-blue-inactive text-blue-text border-blue-inactive hover:bg-red-200 hover:text-red-light hover:border-red-light'
-        "
-      >
-        <UIcon
-          :name="notificationsEnabled ? 'i-lucide-bell' : 'i-lucide-bell-off'"
-          class="size-7 transition-all duration-300 origin-center"
-          :class="[
-            notificationsEnabled
-              ? 'scale-110 rotate-20'
-              : 'animate-bell group-hover:scale-115',
-          ]"
-        />
-        {{
-          notificationsEnabled ? t("notifications_on") : t("notifications_off")
-        }}
-      </button>
+      <NotificationToggle
+        v-model="notificationsEnabled"
+        :activeLabel="t('notifications_on')"
+        :inactiveLabel="t('notifications_off')"
+        class="mb-4 self-end mx-auto sm:mx-0"
+      />
       <!-- Logo -->
       <NuxtImg
         src="/mrdwc_logo@2x.png"
@@ -346,9 +330,9 @@ const onSlideChangeStaff = (swiper: any) => {
   staffIndex.value = swiper.activeIndex;
 };
 
-watchEffect(() => {
-  console.log("🧪 TEAM FINAL", team.value);
-  console.log("members length", team.value?.members?.length);
-  console.log("charter length", team.value?.charter?.length);
-});
+// watchEffect(() => {
+//   console.log("🧪 TEAM FINAL", team.value);
+//   console.log("members length", team.value?.members?.length);
+//   console.log("charter length", team.value?.charter?.length);
+// });
 </script>
