@@ -1,12 +1,13 @@
 <template>
   <div v-if="team">
     <PageHeader :image="null">
-      <NotificationToggle
+      <!-- Logo -->
+      <!-- <NotificationToggle
         v-model="notificationsEnabled"
         :activeLabel="t('notifications_on')"
         :inactiveLabel="t('notifications_off')"
         class="mb-4 self-end mx-auto sm:mx-0"
-      />
+      /> -->
       <!-- Logo -->
       <NuxtImg
         src="/mrdwc_logo@2x.png"
