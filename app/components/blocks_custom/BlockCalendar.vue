@@ -2,23 +2,11 @@
     <div class="bg-blue-text">
         <div class="maxed padded" v-if="true || user_timezone !== tournament_timezone">
             <div class="bg-white text-black p-6 rounded-2xl w-fit">
-                <p>The tournament timezone is {{ tournament_timezone }}</p>
+                <p>Tournament timezone: {{ tournament_timezone }}</p>
                 <p>Your timezone: {{ user_timezone }}</p>
                 <p class="font-bold text-red-text">Active timezone: {{ active_timezone }}</p>
-                <button @click="toggleTimezone" class="my-4 bg-yellow text-black p-2 rounded-lg cursor-pointer">Toggle
+                <button @click="toggleTimezone" class="mt-4 bg-yellow text-black p-2 rounded-lg cursor-pointer">Toggle
                     timezone</button>
-
-                <p>Slot min time: {{ format(slotMinTime, 'HH:mm', { in: tz(active_timezone) }) }}</p>
-                <p>Slot max time: {{ format(slotMaxTime, 'HH:mm', { in: tz(active_timezone) }) }}</p>
-
-                <p class="mt-4">First game: {{ format(firstGameDate, 'yyyy-MM-dd HH:mm', { in: tz(active_timezone) }) }}
-                </p>
-                <p class="mt-4">Last game: {{ format(lastGameDate, 'yyyy-MM-dd HH:mm', { in: tz(active_timezone) }) }}
-                </p>
-                <p>Date after last game: {{ dateAfterLastGameYMD }}</p>
-
-                <p class="mt-4">Valid range start: {{ calendarValidRange.start }}</p>
-                <p>Valid range end: {{ calendarValidRange.end }}</p>
             </div>
         </div>
         <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
