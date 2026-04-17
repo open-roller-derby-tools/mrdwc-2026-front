@@ -1,5 +1,16 @@
 <template>
     <div class="bg-blue-text">
+        <div class="maxed padded" v-if="true || user_timezone !== tournament_timezone">
+            <div class="bg-white text-black p-6 rounded-2xl w-fit">
+                <p>The tournament timezone is {{ tournament_timezone }}</p>
+                <p>Your timezone: {{ user_timezone }}</p>
+                <p class="font-bold text-red-text">Active timezone: {{ active_timezone }}</p>
+                <button @click="toggleTimezone" class="my-4 bg-yellow text-black p-2 rounded-lg cursor-pointer">Toggle
+                    timezone</button>
+                <p>Slot min time: {{ format(slotMinTime, 'HH:mm', { in: tz(active_timezone) }) }}</p>
+                <p>Slot max time: {{ format(slotMaxTime, 'HH:mm', { in: tz(active_timezone) }) }}</p>
+            </div>
+        </div>
         <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
             <FullCalendar ref="calendarRef" :options="calendarOptions">
                 <template v-slot:eventContent="arg">
@@ -9,7 +20,7 @@
                     <p class="mb-4">{{ arg.text }}</p>
                     <div v-if="selectedTrackId == 0" class="track-header w-full flex flex-row gap-1 mb-1 pl-0.5">
                         <div>{{ t('calendar_track_short', { index: 1 }) }}</div>
-                        <div v-if="firstTwoDays.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
+                        <div v-if="FIRST_TWO_DAYS.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
                             index: 2
                         }) }}</div>
                     </div>
@@ -27,6 +38,8 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+import { format } from 'date-fns';
+import { TZDate, tz } from '@date-fns/tz';
 
 import { useGamesStore } from '~/stores/games';
 import { useVenuesStore } from '~/stores/venues';
@@ -38,15 +51,17 @@ const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const venuesStore = useVenuesStore();
 const { formatDayShort, formatDateYMD } = useFormatTimeLocalized();
-const { smOrSmaller } = useResponsive()
+const { smOrSmaller } = useResponsive();
+const { active_timezone, tournament_timezone, user_timezone, toggleTimezone } = useTimezone();
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 
 const WC_DATES = ["2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03"] as const;
 const END_DATE = "2026-05-04";
-const firstTwoDays: string[] = [WC_DATES[0], WC_DATES[1]];
+const FIRST_TWO_DAYS: string[] = [WC_DATES[0], WC_DATES[1]];
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
+
 
 const events = computed(() => {
     const filteredGames = gamesStore.games?.filter((game) => {
@@ -122,29 +137,43 @@ const syncTrackButtonClasses = () => {
     });
 };
 
-const commonTimeGridOptions = {
+const slotMinTime = new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, tournament_timezone);
+const slotMaxTime = new TZDate(`${WC_DATES[0]}T23:00:00+02:00`, tournament_timezone);
+
+const getClampedSlotTime = (date: TZDate, clamp: 'min' | 'max') => {
+    const convertedDay = format(date, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+
+    if (clamp === 'min' && convertedDay < WC_DATES[0])
+        return '00:00';
+    if (clamp === 'max' && convertedDay > WC_DATES[0])
+        return '24:00';
+
+    return format(date, 'HH:mm', { in: tz(active_timezone.value) });
+};
+
+const commonTimeGridOptions = computed(() => ({
     allDaySlot: false,
     slotDuration: '00:30:00',
-    slotMinTime: '09:00:00',
-    slotMaxTime: '23:00:00',
+    slotMinTime: getClampedSlotTime(slotMinTime, 'min'),
+    slotMaxTime: getClampedSlotTime(slotMaxTime, 'max'),
     slotEventOverlap: false,
     nowIndicator: true,
     dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
     slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' } as const
-};
+}));
 
-const commonDayOptions = {
-    ...commonTimeGridOptions,
+const commonDayOptions = computed(() => ({
+    ...commonTimeGridOptions.value,
     type: 'timeGrid',
     duration: { days: 1 },
-};
+}));
 
 const calendarOptions = computed<CalendarOptions>(() => {
     const viewButtons = smOrSmaller.value ? 'dayOne,dayTwo,dayThree,dayFour' : 'timeGridWeek,dayOne,dayTwo,dayThree,dayFour';
 
     return {
         locale: locale.value,
-        timeZone: 'Europe/Paris',
+        timeZone: active_timezone.value,
         plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin, momentTimezonePlugin],
         headerToolbar: { start: viewButtons, end: trackToolbarButtons.value },
         buttonText: {
@@ -196,22 +225,22 @@ const calendarOptions = computed<CalendarOptions>(() => {
         },
         views: {
             timeGridWeek: {
-                ...commonTimeGridOptions,
+                ...commonTimeGridOptions.value,
             },
             dayOne: {
-                ...commonDayOptions,
+                ...commonDayOptions.value,
                 buttonText: formatDayShort(WC_DATES[0])
             },
             dayTwo: {
-                ...commonDayOptions,
+                ...commonDayOptions.value,
                 buttonText: formatDayShort(WC_DATES[1])
             },
             dayThree: {
-                ...commonDayOptions,
+                ...commonDayOptions.value,
                 buttonText: formatDayShort(WC_DATES[2])
             },
             dayFour: {
-                ...commonDayOptions,
+                ...commonDayOptions.value,
                 buttonText: formatDayShort(WC_DATES[3])
             },
         },
