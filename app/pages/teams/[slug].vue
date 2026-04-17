@@ -33,10 +33,10 @@
     <div v-if="team" class="maxed padded pt-6 sm:pt-16">
       <div class="sm:py-16 sm:pt-0">
         <div class="flex flex-col gap-10 sm:flex-row mb-6 sm:mb-0 items-start">
-          <div class="flex flex-1 items-center justify-center">
+          <div class="flex flex-1 w-full items-center justify-center">
             <!-- Logo -->
             <NuxtImg
-              :src="`${config.public.apiBase}/assets/${team.logo}`"
+              :src="`${config.public.apiBase}/assets/${team.logo}?width=300&format=webp&quality=70`"
               :alt="team.name"
               class="w-1/2 sm:w-full rounded-lg bg-white"
             />
@@ -48,9 +48,11 @@
             <p v-if="team.countriesRepresented" class="mt-2 italic">
               {{ team.countriesRepresented }}
             </p>
-            <p v-if="team.history" class="mt-6 text-left sm:text-justify">
+            <!--
+              <p v-if="team.history" class="mt-6 text-left sm:text-justify">
               {{ team.history }}
             </p>
+            -->
             <!-- PREMIÈRE PARTICIPATION -->
             <div v-if="isFirstParticipation" class="mt-8">
               <div class="flex items-center gap-2">
@@ -83,7 +85,7 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col sm:flex-row sm:py-16 sm:pt-0">
+      <div class="flex flex-col sm:flex-row">
         <div
           v-if="
             team.facebook || team.instagram || team.website || team.crowdfunding
@@ -146,31 +148,93 @@
       </div>
     </div>
     <div v-if="team" class="sm:pt-16">
-      <div class="relative py-16 sm:py-0">
+      <div class="relative pb-16 sm:py-0">
         <!-- 🆕 TABS SLOT -->
         <BlockTabsSlot v-if="team" :data="tabsConfig" class="mt-10">
           <!-- TAB 1 : MEMBERS -->
           <template #charter>
+            <!-- MOBILE SWIPER -->
+            <div class="sm:hidden bg-blue-text py-10">
+              <Swiper
+                :slides-per-view="1.2"
+                :space-between="16"
+                :grabCursor="true"
+                :centeredSlides="true"
+                @slideChange="onSlideChangeCharter"
+                class="!items-stretch"
+              >
+                <SwiperSlide
+                  v-for="(m, i) in charterSorted"
+                  :key="m.id"
+                  class="flex h-auto"
+                >
+                  <div class="px-6">
+                    <TeamMemberCard
+                      :member="m"
+                      :teamLogo="team.logo"
+                      class="flex-1"
+                    />
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+
+              <!-- PAGINATION -->
+              <div class="text-center text-sm text-white/60 mt-4">
+                {{ charterIndex + 1 }} / {{ charterSorted.length }}
+              </div>
+            </div>
+            <!-- DESKTOP GRID -->
             <div
-              class="grid grid-cols-2 bg-blue-text sm:grid-cols-4 gap-6 pb-6"
+              class="hidden sm:grid padded pt-10 pb-30 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 bg-blue-text gap-10"
             >
               <TeamMemberCard
-                v-for="m in team.members"
+                v-for="m in charterSorted"
                 :key="m.id"
                 :member="m"
+                :teamLogo="team.logo"
               />
             </div>
           </template>
 
           <!-- TAB 2 : CHARTER -->
-          <template #members>
+          <template #staffMembers>
+            <!-- MOBILE -->
+            <div class="sm:hidden bg-blue-text py-10">
+              <Swiper
+                :slides-per-view="1.2"
+                :space-between="16"
+                :grabCursor="true"
+                :centeredSlides="true"
+                @slideChange="onSlideChangeStaff"
+                class="!items-stretch min-h-[320px]"
+              >
+                <SwiperSlide
+                  v-for="(m, i) in staffMembers"
+                  :key="m.id"
+                  class="flex h-auto"
+                >
+                  <div class="px-6 h-full flex">
+                    <TeamMemberCard
+                      :member="m"
+                      :teamLogo="team.logo"
+                      class="flex-1"
+                    />
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+
+              <div class="text-center text-sm text-white/60 mt-4">
+                {{ staffIndex + 1 }} / {{ staffMembers.length }}
+              </div>
+            </div>
             <div
-              class="grid grid-cols-2 bg-blue-text sm:grid-cols-4 gap-6 pb-6"
+              class="hidden sm:grid padded pt-10 pb-30 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 bg-blue-text gap-10"
             >
               <TeamMemberCard
-                v-for="m in team.charter"
+                v-for="m in staffMembers"
                 :key="m.id"
                 :member="m"
+                :teamLogo="team.logo"
               />
             </div>
           </template>
@@ -196,6 +260,10 @@ import PageHeader from "~/components/partials/PageHeader.vue";
 import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
 import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
+import TeamMemberCard from "~/components/TeamMemberCard.vue";
+
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
 
 const team = computed(() =>
   teamsStore.localizedTeams.find((t) => t.slug === String(route.params.slug)),
@@ -224,9 +292,63 @@ const tabsConfig = computed(() => ({
   classes: "",
   tabs: [
     { label: "Charter", slotKey: "charter" },
-    { label: "Staff", slotKey: "staff" },
+    { label: "Staff", slotKey: "staffMembers" },
   ],
 }));
 
-console.log("team", team.value);
+const staffMembers = computed(() => {
+  const members = team.value?.members ?? [];
+
+  const isBench = (m: any) =>
+    m.roles?.some((r: string) => r.toLowerCase().includes("bench"));
+
+  const isStaff = (m: any) =>
+    m.roles?.some((r: string) => r.toLowerCase().includes("staff"));
+
+  return [...members]
+    .filter((m) => isBench(m) || isStaff(m))
+    .sort((a, b) => {
+      const aBench = isBench(a) ? 0 : 1;
+      const bBench = isBench(b) ? 0 : 1;
+
+      // bench staff en premier
+      if (aBench !== bBench) return aBench - bBench;
+
+      // sinon stabilité
+      return (a.derbyname ?? "").localeCompare(b.derbyname ?? "");
+    });
+});
+
+const charterSorted = computed(() => {
+  const members = team.value?.charter ?? [];
+
+  return [...members].sort((a, b) => {
+    const aKey = (a.number ?? "").charAt(0) || "9";
+    const bKey = (b.number ?? "").charAt(0) || "9";
+
+    if (aKey !== bKey) {
+      return aKey.localeCompare(bKey);
+    }
+
+    // fallback : ordre stable dans le groupe
+    return (a.number ?? "").localeCompare(b.number ?? "");
+  });
+});
+
+const charterIndex = ref(0);
+const staffIndex = ref(0);
+
+const onSlideChangeCharter = (swiper: any) => {
+  charterIndex.value = swiper.activeIndex;
+};
+
+const onSlideChangeStaff = (swiper: any) => {
+  staffIndex.value = swiper.activeIndex;
+};
+
+watchEffect(() => {
+  console.log("🧪 TEAM FINAL", team.value);
+  console.log("members length", team.value?.members?.length);
+  console.log("charter length", team.value?.charter?.length);
+});
 </script>

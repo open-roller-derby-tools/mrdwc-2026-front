@@ -145,7 +145,6 @@ export const useTeamsStore = defineStore("teams", () => {
       );
 
       isReady.value = true;
-      console.log("teams", teams.value);
 
       return teams.value;
     } catch (error) {
@@ -266,6 +265,8 @@ export const useTeamsStore = defineStore("teams", () => {
   function getTeamBySlug(slug: string) {
     return localizedTeams.value.find((t) => t.slug === slug);
   }
+
+  // console.log("🔥 teams", teams);
 
   /**
    * Expose the required properties, getters and actions
