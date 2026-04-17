@@ -7,8 +7,22 @@
                 <p class="font-bold text-red-text">Active timezone: {{ active_timezone }}</p>
                 <button @click="toggleTimezone" class="my-4 bg-yellow text-black p-2 rounded-lg cursor-pointer">Toggle
                     timezone</button>
+
                 <p>Slot min time: {{ format(slotMinTime, 'HH:mm', { in: tz(active_timezone) }) }}</p>
                 <p>Slot max time: {{ format(slotMaxTime, 'HH:mm', { in: tz(active_timezone) }) }}</p>
+
+                <p class="mt-4">First game: {{ format(firstGameDate, 'yyyy-MM-dd HH:mm', { in: tz(active_timezone) }) }}
+                </p>
+                <p>First game date: {{ firstGameDateYMD }}</p>
+
+                <p class="mt-4">Last game: {{ format(lastGameDate, 'yyyy-MM-dd HH:mm', { in: tz(active_timezone) }) }}
+                </p>
+                <p>Last game date: {{ lastGameDateYMD }}</p>
+
+                <p>Date after last game: {{ dateAfterLastGameYMD }}</p>
+
+                <p class="mt-4">Valid range start: {{ validRange.start }}</p>
+                <p>Valid range end: {{ validRange.end }}</p>
             </div>
         </div>
         <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
@@ -38,7 +52,7 @@ import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { TZDate, tz } from '@date-fns/tz';
 
 import { useGamesStore } from '~/stores/games';
@@ -62,6 +76,45 @@ const FIRST_TWO_DAYS: string[] = [WC_DATES[0], WC_DATES[1]];
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 
+const firstGameDate = computed<TZDate>(() => {
+    const date = gamesStore.games?.[0]?.start_time ?? null;
+    if (!date)
+        return new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, active_timezone.value);
+    return new TZDate(date, active_timezone.value);
+});
+const firstGameDateYMD = computed(() => {
+    return format(firstGameDate.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+});
+const lastGameDate = computed<TZDate>(() => {
+    const date = gamesStore.games?.[gamesStore.games.length - 1]?.start_time ?? null;
+    if (!date)
+        return new TZDate(`${WC_DATES[WC_DATES.length - 1]}T22:00:00+02:00`, active_timezone.value);
+    return new TZDate(date, active_timezone.value);
+});
+const lastGameDateYMD = computed(() => {
+    return format(lastGameDate.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+});
+const dateAfterLastGame = computed<TZDate>(() => {
+    if (!lastGameDate.value)
+        return new TZDate(`${END_DATE}T12:00:00+02:00`, active_timezone.value);
+    return addDays(lastGameDate.value, 1) as TZDate;
+});
+const dateAfterLastGameYMD = computed(() => {
+    return format(dateAfterLastGame.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+});
+
+const validRange = computed(() => {
+    if (!firstGameDate.value || !dateAfterLastGame.value) {
+        return {
+            start: WC_DATES[0],
+            end: END_DATE,
+        };
+    }
+    return {
+        start: format(firstGameDate.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) }),
+        end: format(dateAfterLastGame.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) }),
+    };
+});
 
 const events = computed(() => {
     const filteredGames = gamesStore.games?.filter((game) => {
@@ -137,8 +190,9 @@ const syncTrackButtonClasses = () => {
     });
 };
 
-const slotMinTime = new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, tournament_timezone);
-const slotMaxTime = new TZDate(`${WC_DATES[0]}T23:00:00+02:00`, tournament_timezone);
+const [slotRefYear, slotRefMonth, slotRefDay] = WC_DATES[0].split('-').map(Number) as [number, number, number];
+const slotMinTime = new TZDate(slotRefYear, slotRefMonth - 1, slotRefDay, 9, 0, 0, tournament_timezone);
+const slotMaxTime = new TZDate(slotRefYear, slotRefMonth - 1, slotRefDay, 23, 0, 0, tournament_timezone);
 
 const getClampedSlotTime = (date: TZDate, clamp: 'min' | 'max') => {
     const convertedDay = format(date, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
@@ -154,8 +208,8 @@ const getClampedSlotTime = (date: TZDate, clamp: 'min' | 'max') => {
 const commonTimeGridOptions = computed(() => ({
     allDaySlot: false,
     slotDuration: '00:30:00',
-    slotMinTime: getClampedSlotTime(slotMinTime, 'min'),
-    slotMaxTime: getClampedSlotTime(slotMaxTime, 'max'),
+    // slotMinTime: getClampedSlotTime(slotMinTime, 'min'),
+    // slotMaxTime: getClampedSlotTime(slotMaxTime, 'max'),
     slotEventOverlap: false,
     nowIndicator: true,
     dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
@@ -174,19 +228,19 @@ const calendarOptions = computed<CalendarOptions>(() => {
     return {
         locale: locale.value,
         timeZone: active_timezone.value,
-        plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin, momentTimezonePlugin],
-        headerToolbar: { start: viewButtons, end: trackToolbarButtons.value },
+        plugins: [dayGridPlugin, timeGridPlugin, momentTimezonePlugin],
+        headerToolbar: { start: viewButtons, center: 'prev,next', end: trackToolbarButtons.value },
         buttonText: {
             week: t('calendar.week'),
         },
         initialView: smOrSmaller.value ? 'dayOne' : 'timeGridWeek',
-        initialDate: WC_DATES[0],
+        initialDate: firstGameDateYMD.value,
         validRange: {
-            start: WC_DATES[0],
-            end: END_DATE
+            start: firstGameDateYMD.value,
+            end: dateAfterLastGameYMD.value
         },
         firstDay: 1,
-        hiddenDays: [1, 2, 3],
+        // hiddenDays: [1, 2, 3],
         height: 'auto',
         eventColor: 'transparent',
         eventBorderColor: 'transparent',
@@ -264,7 +318,7 @@ watch(smOrSmaller, (smOrSmallerNow) => {
         return;
 
     if (smOrSmallerNow && api.view.type == 'timeGridWeek')
-        api.changeView('dayOne', WC_DATES[0]);
+        api.changeView('dayOne', firstGameDateYMD.value);
     else if (!smOrSmallerNow && api.view.type != 'timeGridWeek')
         api.changeView('timeGridWeek');
 });
