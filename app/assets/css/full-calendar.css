@@ -59,16 +59,29 @@
         @apply text-base;
     }
 
-    .fc-toolbar {
-        @apply w-full px-4 my-6 grid grid-cols-2 items-center gap-2;
-        @apply sm:max-w-5xl sm:mx-auto sm:flex sm:justify-between;
+    .fc-header-toolbar {
+        @apply w-full my-6 flex flex-col items-center gap-2;
+        @apply sm:max-w-5xl sm:mx-auto sm:flex-row sm:justify-between;
+
+
+        > :nth-child(1) {
+            @apply hidden sm:block;
+        }
 
         > :nth-child(2) {
-            @apply justify-self-end;
+            @apply w-full sm:w-auto;
+
+            .fc-button-group {
+                @apply w-full;
+            }
         }
 
         > :nth-child(3) {
-            @apply col-span-2 justify-self-center;
+            @apply w-full;
+
+            .fc-button-group {
+                @apply w-full;
+            }
         }
 
         /* @apply w-full px-4 flex flex-col gap-0.5 items-center justify-between my-6;

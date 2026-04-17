@@ -36,7 +36,7 @@ const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const venuesStore = useVenuesStore();
 const { smOrSmaller } = useResponsive();
-const { active_timezone, tournament_timezone, user_timezone, toggleTimezone } = useTimezone();
+const { active_timezone } = useTimezone();
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 
