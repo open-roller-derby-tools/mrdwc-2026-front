@@ -4,20 +4,12 @@
       <!-- MOBILE SWIPER -->
 
       <div class="sm:hidden">
-        <Swiper :slides-per-view="1" :space-between="12" :grabCursor="true">
-          <SwiperSlide
-            v-for="(team, i) in formattedTeams"
-            :key="`team_mobile_${i}`"
-            class="flex"
-          >
+        <Swiper :slides-per-view="1" :space-between="12" :grabCursor="true" @slideChange="onSlideChange">
+          <SwiperSlide v-for="(team, i) in formattedTeams" :key="`team_mobile_${i}`" class="flex">
             <div class="flex flex-col items-center gap-3 w-full">
               <NuxtLink :to="`/teams/${team.slug}`" class="w-2/3">
-                <NuxtImg
-                  :src="`${config.public.apiBase}/assets/${team.logo}?width=300`"
-                  :alt="team.name"
-                  :title="team.name"
-                  class="w-full object-contain cursor-pointer rounded-lg p-2 bg-white"
-                />
+                <NuxtImg :src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name"
+                  :title="team.name" class="w-full object-contain cursor-pointer rounded-lg p-2 bg-white" />
               </NuxtLink>
 
               <div class="text-center min-h-[2.5lh]">
@@ -37,24 +29,14 @@
       </div>
 
       <ul
-        class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center list-none"
-      >
-        <li
-          v-for="(team, i) in formattedTeams"
-          :key="`team_${i}`"
-          class="flex flex-col items-center justify-start gap-3"
-        >
+        class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center list-none">
+        <li v-for="(team, i) in formattedTeams" :key="`team_${i}`"
+          class="flex flex-col items-center justify-start gap-3">
           <NuxtLink :to="`/teams/${team.slug}`">
-            <NuxtImg
-              :src="`${config.public.apiBase}/assets/${team.logo}?width=300`"
-              :alt="team.name"
-              :title="team.name"
-              class="w-auto object-contain cursor-pointer rounded-lg p-2 bg-white hover:scale-105 transition"
-            />
+            <NuxtImg :src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name" :title="team.name"
+              class="w-auto object-contain cursor-pointer rounded-lg p-2 bg-white hover:scale-105 transition" />
           </NuxtLink>
-          <div
-            class="flex leading-none min-h-[2.5lh] items-start justify-start text-center"
-          >
+          <div class="flex leading-none min-h-[2.5lh] items-start justify-start text-center">
             <p class="text-xl lg:text-2xl font-shoulders leading-none">
               {{ team.displayName }}
             </p>
@@ -63,24 +45,14 @@
       </ul>
 
       <Teleport to="body">
-        <Transition
-          enter-from-class="opacity-0"
-          enter-active-class="transition-opacity duration-200 ease-out"
-          enter-to-class="opacity-100"
-          leave-from-class="opacity-100"
-          leave-active-class="transition-opacity duration-200 ease-in"
-          leave-to-class="opacity-0"
-        >
-          <div
-            v-if="overlayLogo"
+        <Transition enter-from-class="opacity-0" enter-active-class="transition-opacity duration-200 ease-out"
+          enter-to-class="opacity-100" leave-from-class="opacity-100"
+          leave-active-class="transition-opacity duration-200 ease-in" leave-to-class="opacity-0">
+          <div v-if="overlayLogo"
             class="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center cursor-pointer"
-            @click="overlayLogo = null"
-          >
-            <img
-              :src="overlayLogo"
-              alt=""
-              class="max-w-[75vw] max-h-[80vh] w-auto h-auto object-contain pointer-events-none"
-            />
+            @click="overlayLogo = null">
+            <img :src="overlayLogo" alt=""
+              class="max-w-[75vw] max-h-[80vh] w-auto h-auto object-contain pointer-events-none" />
           </div>
         </Transition>
       </Teleport>
