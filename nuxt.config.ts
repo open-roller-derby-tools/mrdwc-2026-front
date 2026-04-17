@@ -41,6 +41,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@pinia/nuxt",
     "@nuxt/ui",
+    "nuxt-umami",
   ],
   css: ["~~/app/assets/css/main.css", "swiper/css"],
   ui: {
@@ -117,5 +118,18 @@ export default defineNuxtConfig({
     ],
     defaultLocale: "fr-FR",
     baseUrl: "https://worldcup.mrda.org/",
+  },
+  umami: {
+    id: "b356f90c-600c-48e2-b697-952a2bc900c3",
+    host: "https://umami.mrdwc.org",
+    autoTrack: true,
+    // proxy: 'cloak',
+    // useDirective: true,
+    // ignoreLocalhost: true,
+    // excludeQueryParams: false,
+    // domains: ['cool-site.app', 'my-space.site'],
+    // customEndpoint: '/my-custom-endpoint',
+    // enabled: false,
+    // logErrors: true,
   },
 });

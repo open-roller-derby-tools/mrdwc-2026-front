@@ -37,12 +37,12 @@ export interface ILocalizedMenu {
   classes: string;
   display_name: string;
   items:
-    | (
-        | ILocalizedPageMenuItem
-        | ILocalizedCustomLinkMenuItem
-        | ILocalizedMenuMenuItem
-      )[]
-    | null;
+  | (
+    | ILocalizedPageMenuItem
+    | ILocalizedCustomLinkMenuItem
+    | ILocalizedMenuMenuItem
+  )[]
+  | null;
 }
 
 export interface IMenusRequestData {
@@ -186,11 +186,11 @@ export interface IBlockWrapper {
   sort: number;
   collection: string;
   item:
-    | IBlockRichText
-    | IBlockCustom
-    | IBlockTwoColumns
-    | IBlockTabs
-    | IBlockTabsSlot;
+  | IBlockRichText
+  | IBlockCustom
+  | IBlockTwoColumns
+  | IBlockTabs
+  | IBlockTabsSlot;
 }
 
 // Page Wrapper
@@ -227,13 +227,13 @@ export interface ILocalizedPage {
   title: string;
   menu_title: string;
   blocks:
-    | (
-        | ILocalizedBlockRichText
-        | ILocalizedBlockCustom
-        | ILocalizedBlockTwoColumns
-        | ILocalizedBlockTabs
-      )[]
-    | null;
+  | (
+    | ILocalizedBlockRichText
+    | ILocalizedBlockCustom
+    | ILocalizedBlockTwoColumns
+    | ILocalizedBlockTabs
+  )[]
+  | null;
 }
 
 export interface IPagesRequestData {

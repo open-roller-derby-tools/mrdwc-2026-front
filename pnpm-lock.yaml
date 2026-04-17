@@ -77,9 +77,12 @@ importers:
       sharp:
         specifier: ^0.34.3
         version: 0.34.3
+      swiper:
+        specifier: ^12.1.3
+        version: 12.1.3
       tailwindcss:
         specifier: ^4.1.13
-        version: 4.1.13
+        version: 4.1.14
       vue:
         specifier: ^3.5.21
         version: 3.5.21(typescript@5.9.2)
@@ -4826,6 +4829,10 @@ packages:
     resolution: {integrity: sha512-VvrHQ+9uniE+Mvx3+C9IEe/lWasXCU0nXMY2kZeLrHNICuRiC8uMPyM14UEaMOFA5mhyQqEkB02VoQ16n3DLaw==}
     engines: {node: '>=16'}
     hasBin: true
+
+  swiper@12.1.3:
+    resolution: {integrity: sha512-XcWlVmkHFICI4fuoJKgbp8PscDcS4i7pBH8nwJRBi3dpQvhCySwsWRYm4bOf/BzKVWkHOYaFw7qz9uBSrY3oug==}
+    engines: {node: '>= 4.7.0'}
 
   swrv@1.1.0:
     resolution: {integrity: sha512-pjllRDr2s0iTwiE5Isvip51dZGR7GjLH1gCSVyE8bQnbAx6xackXsFdojau+1O5u98yHF5V73HQGOFxKUXO9gQ==}
@@ -10822,6 +10829,8 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.4.1
+
+  swiper@12.1.3: {}
 
   swrv@1.1.0(vue@3.5.21(typescript@5.9.2)):
     dependencies:
