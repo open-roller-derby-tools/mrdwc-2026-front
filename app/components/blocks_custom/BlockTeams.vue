@@ -1,31 +1,64 @@
 <template>
   <div class="bg-blue-text py-16">
     <div class="maxed padded">
+      <!-- MOBILE SWIPER -->
+
+      <div class="sm:hidden">
+        <Swiper :slides-per-view="1" :space-between="12" :grabCursor="true">
+          <SwiperSlide
+            v-for="(team, i) in formattedTeams"
+            :key="`team_mobile_${i}`"
+            class="flex"
+          >
+            <div class="flex flex-col items-center gap-3 w-full">
+              <NuxtLink :to="`/teams/${team.slug}`" class="w-2/3">
+                <NuxtImg
+                  :src="`${config.public.apiBase}/assets/${team.logo}?width=300`"
+                  :alt="team.name"
+                  :title="team.name"
+                  class="w-full object-contain cursor-pointer rounded-lg p-2 bg-white"
+                />
+              </NuxtLink>
+
+              <div class="text-center min-h-[2.5lh]">
+                <p class="text-3xl font-shoulders leading-none">
+                  {{ team.displayName }}
+                </p>
+              </div>
+            </div>
+          </SwiperSlide>
+        </Swiper>
+
+        <!-- PAGINATION -->
+
+        <div class="text-center text-white/60 mt-2 text-sm">
+          {{ index + 1 }} / {{ formattedTeams.length }}
+        </div>
+      </div>
+
       <ul
-        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center list-none"
+        class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center list-none"
       >
         <li
           v-for="(team, i) in formattedTeams"
           :key="`team_${i}`"
-          class="flex flex-col items-center justify-end gap-1"
+          class="flex flex-col items-center justify-start gap-3"
         >
-          <div
-            class="flex leading-none min-h-[2.5lh] items-center justify-center text-center"
-          >
-            <p
-              class="text-xl lg:text-2xl font-shoulders leading-none uppercase"
-            >
-              {{ team.displayName }}
-            </p>
-          </div>
           <NuxtLink :to="`/teams/${team.slug}`">
             <NuxtImg
-              :src="`${config.public.apiBase}/assets/${team.logo}`"
+              :src="`${config.public.apiBase}/assets/${team.logo}?width=300`"
               :alt="team.name"
               :title="team.name"
               class="w-auto object-contain cursor-pointer rounded-lg p-2 bg-white hover:scale-105 transition"
             />
           </NuxtLink>
+          <div
+            class="flex leading-none min-h-[2.5lh] items-start justify-start text-center"
+          >
+            <p class="text-xl lg:text-2xl font-shoulders leading-none">
+              {{ team.displayName }}
+            </p>
+          </div>
         </li>
       </ul>
 
@@ -59,6 +92,9 @@
 const teamsStore = useTeamsStore();
 const config = useRuntimeConfig();
 
+import { Swiper, SwiperSlide } from "swiper/vue";
+// import "swiper/css";
+
 const overlayLogo = ref<string | null>(null);
 
 const formattedTeams = computed(() =>
@@ -71,6 +107,12 @@ const formattedTeams = computed(() =>
     ),
   })),
 );
+
+const index = ref(0);
+
+const onSlideChange = (swiper: any) => {
+  index.value = swiper.activeIndex;
+};
 
 watch(overlayLogo, (visible) => {
   if (visible) {

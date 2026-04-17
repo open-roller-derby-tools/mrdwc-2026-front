@@ -247,7 +247,7 @@ import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 import TeamMemberCard from "~/components/TeamMemberCard.vue";
 
 import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
+// import "swiper/css";
 
 const team = computed(() =>
   teamsStore.localizedTeams.find((t) => t.slug === String(route.params.slug)),
@@ -267,9 +267,9 @@ const isFirstParticipation = computed(() =>
 
 const notificationsEnabled = ref(false);
 
-const toggleNotifications = () => {
-  notificationsEnabled.value = !notificationsEnabled.value;
-};
+// const toggleNotifications = () => {
+//   notificationsEnabled.value = !notificationsEnabled.value;
+// };
 
 const tabsConfig = computed(() => ({
   anchor_id: "team-tabs",
