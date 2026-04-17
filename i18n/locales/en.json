@@ -59,7 +59,10 @@
 		"today": "Today",
 		"week": "Week",
 		"day": "Day",
-		"list": "List"
+		"list": "List",
+		"current_timezone": "You are seeing times/dates in the {timezone} timezone.",
+		"use_tournament_timezone": "Use tournament timezone",
+		"use_user_timezone": "Use your timezone"
 	},
 	"game_state": {
 		"scheduled": "Scheduled",

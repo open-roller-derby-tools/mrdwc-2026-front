@@ -1,12 +1,23 @@
 <template>
-    <div class="bg-blue-text">
-        <div class="maxed padded" v-if="true || user_timezone !== tournament_timezone">
-            <div class="bg-white text-black p-6 rounded-2xl w-fit">
-                <p>Tournament timezone: {{ tournament_timezone }}</p>
-                <p>Your timezone: {{ user_timezone }}</p>
-                <p class="font-bold text-red-text">Active timezone: {{ active_timezone }}</p>
-                <button @click="toggleTimezone" class="mt-4 bg-yellow text-black p-2 rounded-lg cursor-pointer">Toggle
-                    timezone</button>
+    <div class="bg-blue-text pt-6">
+        <div class="maxed padded">
+            <div class="p-4 bg-white text-black rounded-2xl sm:w-fit sm:mx-auto">
+                <p class="font-shoulders font-bold sm:text-lg text-balance flex items-center gap-2 leading-tight">
+                    <span>{{ t('calendar.current_timezone', { timezone: active_timezone }) }}</span>
+                </p>
+                <p v-if="user_timezone !== tournament_timezone"
+                    class="mt-2 flex flex-col gap-0 sm:gap-1 sm:flex-row sm:items-center cursor-pointer font-bold text-lg sm:text-base"
+                    @click="toggleTimezone">
+                    <UIcon name="i-ic-round-swap-horiz" class="size-6 hidden sm:block text-red-text" />
+                    <span class="underline underline-offset-2 text-red-text">{{ active_timezone === tournament_timezone
+                        ?
+                        t('calendar.use_user_timezone', {
+                            timezone: user_timezone
+                        }) : t('calendar.use_tournament_timezone')
+                    }}</span>
+                    <span class="font-normal italic">({{ active_timezone === tournament_timezone ? user_timezone :
+                        tournament_timezone }})</span>
+                </p>
             </div>
         </div>
         <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
@@ -28,7 +39,7 @@ import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
-import { addDays, differenceInCalendarDays, format } from 'date-fns';
+import { addDays, addHours, differenceInCalendarDays, format, isAfter, isBefore } from 'date-fns';
 import { TZDate, tz } from '@date-fns/tz';
 
 import { useGamesStore } from '~/stores/games';
@@ -90,6 +101,63 @@ const calendarValidRange = computed(() => {
     };
 });
 
+const earliestGameTime = computed(() => {
+    const activeTz = tz(active_timezone.value);
+    const allGames = gamesStore.games ?? [];
+    const relevantGames = currentViewType.value === 'timeGridDay'
+        ? allGames.filter((game) => {
+            const gameDay = format(new TZDate(game.start_time, active_timezone.value), 'yyyy-MM-dd', { in: activeTz });
+            return gameDay === currentViewDateYMD.value;
+        })
+        : allGames;
+
+    let earliestGameTimeOfDay: TZDate | null = null;
+
+    relevantGames.forEach((game) => {
+        const gameDate = new TZDate(game.start_time, active_timezone.value);
+        const hour = Number(format(gameDate, 'HH', { in: activeTz }));
+        const minute = Number(format(gameDate, 'mm', { in: activeTz }));
+        const normalizedGameTime = new TZDate(2000, 0, 1, hour, minute, 0, active_timezone.value);
+
+        if (!earliestGameTimeOfDay || isBefore(normalizedGameTime, earliestGameTimeOfDay))
+            earliestGameTimeOfDay = normalizedGameTime;
+    });
+
+    if (!earliestGameTimeOfDay)
+        return '00:00';
+    return format(earliestGameTimeOfDay, 'HH:mm', { in: activeTz });
+});
+
+const latestGameTime = computed(() => {
+    const activeTz = tz(active_timezone.value);
+    const allGames = gamesStore.games ?? [];
+    const relevantGames = currentViewType.value === 'timeGridDay'
+        ? allGames.filter((game) => {
+            const gameDay = format(new TZDate(game.start_time, active_timezone.value), 'yyyy-MM-dd', { in: activeTz });
+            return gameDay === currentViewDateYMD.value;
+        })
+        : allGames;
+
+    let latestGameTimeOfDay: TZDate | null = null;
+
+    relevantGames.forEach((game) => {
+        const gameDate = new TZDate(game.start_time, active_timezone.value);
+        const hour = Number(format(gameDate, 'HH', { in: activeTz }));
+        const minute = Number(format(gameDate, 'mm', { in: activeTz }));
+        const normalizedGameTime = new TZDate(2000, 0, 1, hour, minute, 0, active_timezone.value);
+
+        if (!latestGameTimeOfDay || isAfter(normalizedGameTime, latestGameTimeOfDay))
+            latestGameTimeOfDay = normalizedGameTime;
+    });
+
+    if (!latestGameTimeOfDay)
+        return '24:00';
+    const latestGameTimeOfDayPlus2Hours = addHours(latestGameTimeOfDay, 2);
+    if (format(latestGameTimeOfDayPlus2Hours, 'yyyy-MM-dd', { in: activeTz }) !== '2000-01-01')
+        return '24:00';
+    return format(latestGameTimeOfDayPlus2Hours, 'HH:mm', { in: activeTz });
+});
+
 const events = computed(() => {
     const filteredGames = gamesStore.games?.filter((game) => {
         if (selectedTrackId.value === 0)
@@ -133,6 +201,7 @@ const trackToolbarButtons = computed(() => {
 
 const selectedTrackId = ref(0);
 const currentViewType = ref(smOrSmaller.value ? 'dayOne' : 'timeGridWeek');
+const currentViewDateYMD = ref(firstGameDateYMD.value);
 
 const wrapperClass = computed(() => {
     if (currentViewType.value === 'timeGridWeek')
@@ -174,10 +243,6 @@ const realignCalendarToFirstDay = () => {
     api.updateSize();
 };
 
-const [slotRefYear, slotRefMonth, slotRefDay] = WC_DATES[0].split('-').map(Number) as [number, number, number];
-const slotMinTime = new TZDate(slotRefYear, slotRefMonth - 1, slotRefDay, 9, 0, 0, tournament_timezone);
-const slotMaxTime = new TZDate(slotRefYear, slotRefMonth - 1, slotRefDay, 23, 0, 0, tournament_timezone);
-
 const commonTimeGridOptions = computed(() => ({
     allDaySlot: false,
     slotDuration: '00:30:00',
@@ -210,6 +275,8 @@ const calendarOptions = computed<CalendarOptions>(() => {
         initialDate: firstGameDateYMD.value,
         validRange: calendarValidRange.value,
         firstDay: calendarFirstDay.value,
+        slotMinTime: earliestGameTime.value,
+        slotMaxTime: latestGameTime.value,
         height: 'auto',
         stickyHeaderDates: true,
         eventColor: 'transparent',
@@ -226,6 +293,7 @@ const calendarOptions = computed<CalendarOptions>(() => {
         views: {
             timeGridWeek: {
                 ...commonTimeGridOptions.value,
+                dateAlignment: 'week'
             },
             timeGridDay: {
                 ...commonDayOptions.value,
@@ -233,6 +301,7 @@ const calendarOptions = computed<CalendarOptions>(() => {
         },
         datesSet: (info) => {
             currentViewType.value = info.view.type;
+            currentViewDateYMD.value = format(info.start, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
         },
         events: events.value,
     };
@@ -243,7 +312,7 @@ let stickyObserver: IntersectionObserver | null = null;
 const observeStickyHeader = () => {
     const calendarRoot = calendarRef.value?.$el as HTMLElement | undefined;
     if (!calendarRoot) return;
-    // Target: .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > *
+
     const stickyEl = calendarRoot.querySelector<HTMLElement>(
         '.fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > *'
     );
