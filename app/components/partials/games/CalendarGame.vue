@@ -6,7 +6,7 @@
         <CalendarGameState :game="event.extendedProps.game" />
         <!-- Game description (Q1, S2, etc.) -->
         <div v-if="event.extendedProps.game.description"
-            class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-text text-white font-shoulders font-bold px-2 py-1 rounded-full">
+            class="absolute top-0 left-1/2 -translate-x-1/2 bg-red-text text-white font-shoulders font-bold px-2 py-1 rounded-b-xl">
             {{ event.extendedProps.game.description }}
         </div>
     </div>

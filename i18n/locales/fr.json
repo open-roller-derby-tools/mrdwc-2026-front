@@ -59,7 +59,10 @@
 		"today": "Aujourd'hui",
 		"week": "Semaine",
 		"day": "Jour",
-		"list": "Liste"
+		"list": "Liste",
+		"current_timezone": "Les heures/dates affichées utilisent le fuseau horaire {timezone}.",
+		"use_tournament_timezone": "Utiliser le fuseau horaire du tournoi",
+		"use_user_timezone": "Utiliser votre fuseau horaire"
 	},
 	"game_state": {
 		"scheduled": "Programmé",
