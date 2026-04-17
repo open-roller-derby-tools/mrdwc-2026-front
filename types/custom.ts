@@ -265,6 +265,7 @@ export interface ISponsorsRequestData {
 // VENUES
 
 export interface IVenue {
+  id: number;
   name: string;
   type: "main" | "secondary";
   address: string;
@@ -323,15 +324,15 @@ export interface IOptionsRequestData {
   data: IOptions;
 }
 
-// UNUSED DEFINITIONS (FOR NOW)
-
 // TEAMS & TEAM MEMBERS
 
 export interface ITeam {
   id: number;
   name: string;
-  slug: string;
+  slug?: string;
+  name_letters: string;
   logo: string;
+  flag?: string;
   Instagram: string;
   Facebook: string;
   Website: string;
@@ -340,8 +341,6 @@ export interface ITeam {
   team_history: string;
   team_anecdotes: string;
   previous_participations: string[];
-  name_letters: string;
-  // members: number[] | ITeamMember[];
   members?: ITeamMember[];
   charter?: ITeamMember[];
 }
@@ -360,12 +359,13 @@ export interface ILocalizedTeam {
   anecdotes: string;
   previousParticipations: string[];
   nameLetters: string;
-  // members: number[] | ILocalizedTeamMember[];
+  name_letters?: string;
   members?: ILocalizedTeamMember[];
   charter?: ILocalizedTeamMember[];
+  flag?: string;
 }
 
-export interface ITeamWithRelations {
+export interface ITeamWithRelations extends ITeam {
   members: ITeamMember[];
   charter: ITeamMember[];
 }
@@ -426,7 +426,7 @@ export interface IOfficial {
   roles: string[];
 }
 
-export interface ILocalizedOfficial extends IOfficial {}
+export interface ILocalizedOfficial extends IOfficial { }
 
 export interface IOfficialsCrew {
   id: number;
@@ -437,7 +437,7 @@ export interface IOfficialsCrew {
   members_nso: IOfficial[];
 }
 
-export interface ILocalizedOfficialsCrew extends IOfficialsCrew {}
+export interface ILocalizedOfficialsCrew extends IOfficialsCrew { }
 
 export interface IOfficialsCrewsRequestData {
   data: IOfficialsCrew[];

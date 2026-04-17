@@ -1,0 +1,170 @@
+:root {
+    --fc-border-color: var(--color-transparent);
+    --fc-page-bg-color: var(--color-transparent);
+    --fc-today-bg-color: var(--color-transparent);
+    --fc-now-indicator-color: var(--color-red-text);
+    --fc-list-event-hover-bg-color: var(--color-transparent);
+    /* Base */
+    --fc-button-bg-color: var(--color-blue-inactive);
+    --fc-button-text-color: var(--color-blue-text);
+    --fc-button-border-color: var(--color-transparent);
+    /* Hover */
+    --fc-button-hover-bg-color: var(--color-yellow);
+    --fc-button-hover-text-color: var(--color-blue-text);
+    --fc-button-hover-border-color: var(--color-transparent);
+    /* Active */
+    --fc-button-active-bg-color: var(--color-yellow);
+    --fc-button-active-text-color: var(--color-blue-text);
+    --fc-button-active-border-color: var(--color-transparent);
+    /* Disabled */
+    --fc-button-disabled-bg-color: var(--color-blue-inactive);
+    --fc-button-disabled-text-color: var(--color-blue-text);
+    --fc-button-disabled-border-color: var(--color-transparent);
+}
+
+.fc-v-event {
+    @apply border-none;
+}
+
+.fc-timegrid-event {
+    @apply rounded-none;
+}
+
+.fc-col-header th {
+    @apply even:bg-blue even:rounded-t-2xl;
+}
+
+.fc-timegrid-col,
+.fc-timegrid-col.fc-day-today {
+    @apply even:bg-blue even:rounded-b-2xl;
+
+    >.fc-timegrid-col-frame {}
+}
+
+.fc-timegrid-event-harness-inset .fc-timegrid-event {
+    @apply shadow-none;
+}
+
+.fc-direction-ltr .fc-timegrid-col-events {
+    @apply mx-1;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    @apply border-0;
+}
+
+.fc {
+    table {
+        @apply text-base;
+    }
+
+    .fc-toolbar {
+        @apply w-full px-4 my-6 grid grid-cols-2 items-center gap-2;
+        @apply sm:max-w-5xl sm:mx-auto sm:flex sm:justify-between;
+
+        > :nth-child(2) {
+            @apply justify-self-end;
+        }
+
+        > :nth-child(3) {
+            @apply col-span-2 justify-self-center;
+        }
+
+        /* @apply w-full px-4 flex flex-col gap-0.5 items-center justify-between my-6;
+        @apply sm:flex-row sm:max-w-5xl sm:mx-auto; */
+    }
+
+    .fc-button-primary {
+        @apply font-shoulders font-bold capitalize text-base text-blue-text sm:text-lg px-4 py-2 cursor-pointer rounded-xl select-none transition-colors duration-200;
+    }
+
+    .fc-button-primary.fc-track-btn {
+        @apply normal-case;
+    }
+
+    .fc-button-primary.fc-track-btn.fc-track-btn-inactive {
+        @apply bg-blue-inactive;
+    }
+
+    .fc-button-primary.fc-track-btn.fc-track-btn-inactive:hover {
+        @apply bg-yellow;
+    }
+
+    .fc-button-primary.fc-track-btn.fc-track-btn-active {
+        @apply bg-yellow;
+    }
+
+    .fc-timegrid-slot-label-cushion,
+    .fc-col-header-cell-cushion,
+    .fc-list-day-text {
+        @apply font-shoulders font-bold capitalize text-lg py-4;
+    }
+
+    .fc-timegrid-slot {
+        @apply h-14 border-dotted border-t;
+    }
+
+    .fc-timegrid-now-indicator-line {
+        @apply border-t-2;
+    }
+
+    .fc-list-event-time,
+    .fc-list-event-graphic {
+        @apply hidden;
+    }
+
+    .fc-list-table {
+        @apply bg-blue-text rounded-2xl;
+
+        td {
+            @apply px-2 py-2;
+        }
+
+        tr.fc-list-event:last-of-type td {
+            @apply pb-8;
+        }
+    }
+
+    .fc-list-event-title {
+        @apply w-full;
+    }
+
+    .fc-list-day-cushion {
+        @apply p-0 flex items-center justify-center;
+
+        &.fc-cell-shaded {
+            @apply bg-transparent;
+        }
+    }
+
+    .fc-col-header-cell-cushion {
+        @apply w-full pb-0;
+
+        .track-header {
+            >div {
+                @apply flex-grow bg-red-light text-white font-cabin font-normal uppercase text-sm rounded-t-lg;
+            }
+        }
+    }
+
+    .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky>* {
+        @apply -top-px pt-0 transition-[padding-top] duration-200;
+
+        &.is-pinned {
+            @apply bg-blue-text pt-24;
+        }
+    }
+}
+
+.calendar-week-view {
+    .fc-header-toolbar {
+        @apply sm:px-12;
+    }
+}
+
+.calendar-day-view {
+    .fc-header-toolbar {
+        @apply sm:px-0;
+    }
+}

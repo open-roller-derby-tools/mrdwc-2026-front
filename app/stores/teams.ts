@@ -62,6 +62,7 @@ export const useTeamsStore = defineStore("teams", () => {
       const teamFields = {
         id: true,
         name: true,
+        name_letters: true,
         logo: true,
         Instagram: true,
         Facebook: true,
@@ -71,7 +72,6 @@ export const useTeamsStore = defineStore("teams", () => {
         previous_participations: true,
         team_history: true,
         team_anecdotes: true,
-        name_letters: true,
       };
 
       const memberFields = {
@@ -127,8 +127,8 @@ export const useTeamsStore = defineStore("teams", () => {
         // MEMBERS IN CHARTER
         const charterMembers = charter
           ? members.filter(
-              (m) => Number(m.charter_skater_id) === Number(charter.id),
-            )
+            (m) => Number(m.charter_skater_id) === Number(charter.id),
+          )
           : [];
 
         return {
@@ -246,6 +246,7 @@ export const useTeamsStore = defineStore("teams", () => {
         id: team.id,
         slug: slugify(team.name),
         name: team.name,
+        name_letters: team.name_letters,
         logo: team.logo,
         instagram: team.Instagram,
         facebook: team.Facebook,
@@ -266,10 +267,14 @@ export const useTeamsStore = defineStore("teams", () => {
     return localizedTeams.value.find((t) => t.slug === slug);
   }
 
+  function getTeamById(id: number) {
+    return teams.value?.find((team) => team.id === id);
+  }
+
   // console.log("🔥 teams", teams);
 
   /**
    * Expose the required properties, getters and actions
    */
-  return { fetch, isReady, teams, localizedTeams, getTeamBySlug };
+  return { fetch, isReady, teams, localizedTeams, getTeamBySlug, getTeamById };
 });
