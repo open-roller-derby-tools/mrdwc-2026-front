@@ -1,4 +1,4 @@
-import tailwindcss from "@tailwindcss/vite"
+import tailwindcss from "@tailwindcss/vite";
 
 const datetimeFormats = {
   d: {
@@ -30,7 +30,7 @@ const datetimeFormats = {
     hour: "2-digit",
     minute: "2-digit",
   },
-}
+};
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "nuxt-umami",
   ],
-  css: ["~~/app/assets/css/main.css"],
+  css: ["~~/app/assets/css/main.css", "swiper/css"],
   ui: {
     colorMode: false,
   },
@@ -54,8 +54,8 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    '/:slug': {
-      swr: 60,// Default 1 minute cache for non-static pages
+    "/:slug": {
+      swr: 60, // Default 1 minute cache for non-static pages
     },
   },
   app: {
@@ -117,7 +117,7 @@ export default defineNuxtConfig({
       { code: "fr-FR", language: "fr-FR", name: "Français", file: "fr.json" },
     ],
     defaultLocale: "fr-FR",
-    baseUrl: 'https://worldcup.mrda.org/',
+    baseUrl: "https://worldcup.mrda.org/",
   },
   umami: {
     id: "b356f90c-600c-48e2-b697-952a2bc900c3",

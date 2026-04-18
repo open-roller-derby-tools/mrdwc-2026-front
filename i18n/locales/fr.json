@@ -84,5 +84,10 @@
 	"calendar_track": "Track {index} - {name}",
 	"calendar_track_short": "Track {index}",
 	"calendar_track_all": "Tous les matchs",
-	"calendar_test": "Track {index} | Track {index} :"
+	"calendar_test": "Track {index} | Track {index} :",
+	"previous_participations": "Précédentes participations :",
+	"first_participation": "Première participation",
+	"support": "Soutenez votre équipe !",
+	"notifications_on": "Notifications activées",
+	"notifications_off": "Activer les notifications"
 }
