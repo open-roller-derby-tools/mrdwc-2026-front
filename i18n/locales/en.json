@@ -89,5 +89,6 @@
   "support": "Support your team!",
   "notifications_on": "Notifications enabled",
   "notifications_off": "Enable notifications",
-  "group": "Group {number} | Group {number}:"
+  "group": "Group {number} | Group {number}:",
+  "groups": "Groups"
 }

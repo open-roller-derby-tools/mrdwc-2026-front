@@ -89,5 +89,6 @@
   "support": "Soutenez votre équipe !",
   "notifications_on": "Notifications activées",
   "notifications_off": "Activer les notifications",
-  "group": "Groupe {number} | Groupe {number} :"
+  "group": "Groupe {number} | Groupe {number} :",
+  "groups": "Groupes"
 }
