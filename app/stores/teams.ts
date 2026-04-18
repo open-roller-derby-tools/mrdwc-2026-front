@@ -73,6 +73,7 @@ export const useTeamsStore = defineStore("teams", () => {
         team_history: true,
         team_anecdotes: true,
         group_id: true,
+        schedule_color: true,
       };
 
       const memberFields = {
@@ -204,6 +205,7 @@ export const useTeamsStore = defineStore("teams", () => {
         members: localizedMembers,
         charter: charterMembers.map(localizeMember),
         group_id: team.group_id,
+        schedule_color: team.schedule_color,
       };
     });
   });

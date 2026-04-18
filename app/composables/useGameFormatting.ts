@@ -67,9 +67,15 @@ export function useGameFormatting() {
 
     // If the game is not a spoiler and the team is defined, use the team colors from Directus
     if (team === "home" && game.home_team !== null) {
-      colors.backgroundColor = game.home_color;
+      colors.backgroundColor =
+        teamsStore.getTeamById(game.home_team)?.schedule_color ??
+        game.home_color;
+      // colors.backgroundColor = game.home_color;
     } else if (team === "away" && game.away_team !== null) {
-      colors.backgroundColor = game.away_color;
+      colors.backgroundColor =
+        teamsStore.getTeamById(game.away_team)?.schedule_color ??
+        game.away_color;
+      // colors.backgroundColor = game.away_color;
     }
     colors.color = getContrastingTextColor(colors.backgroundColor);
     return colors;

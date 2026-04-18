@@ -344,6 +344,7 @@ export interface ITeam {
   members?: ITeamMember[];
   charter?: ITeamMember[];
   group_id: number | null;
+  schedule_color: string | null;
 }
 
 export interface ILocalizedTeam {
@@ -364,6 +365,7 @@ export interface ILocalizedTeam {
   charter?: ILocalizedTeamMember[];
   flag?: string;
   group_id: number | null;
+  schedule_color: string | null;
 }
 
 export interface ITeamWithRelations extends ITeam {
