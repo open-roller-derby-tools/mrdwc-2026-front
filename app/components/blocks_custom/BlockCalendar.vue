@@ -1,5 +1,8 @@
 <template>
-    <div class="bg-blue-text">
+    <div class="bg-blue-text pt-6">
+        <div class="maxed padded">
+            <TimezoneSwitcher class="sm:w-fit sm:mx-auto" />
+        </div>
         <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
             <FullCalendar ref="calendarRef" :options="calendarOptions">
                 <template v-slot:eventContent="arg">
@@ -7,12 +10,6 @@
                 </template>
                 <template v-slot:dayHeaderContent="arg" class="bg-red-text">
                     <p class="mb-4">{{ arg.text }}</p>
-                    <div v-if="selectedTrackId == 0" class="track-header w-full flex flex-row gap-1 mb-1 pl-0.5">
-                        <div>{{ t('calendar_track_short', { index: 1 }) }}</div>
-                        <div v-if="firstTwoDays.includes(formatDateYMD(arg.date))">{{ t('calendar_track_short', {
-                            index: 2
-                        }) }}</div>
-                    </div>
                 </template>
             </FullCalendar>
         </div>
@@ -23,30 +20,127 @@
 import type { CalendarOptions } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import listPlugin from '@fullcalendar/list';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
+import { addDays, addHours, differenceInCalendarDays, format, isAfter, isBefore } from 'date-fns';
+import { TZDate, tz } from '@date-fns/tz';
 
 import { useGamesStore } from '~/stores/games';
 import { useVenuesStore } from '~/stores/venues';
 import { getGameEndTime } from '~/utils/game'
 
 import CalendarGame from '~/components/partials/games/CalendarGame.vue';
+import TimezoneSwitcher from '~/components/partials/TimezoneSwitcher.vue';
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
 const venuesStore = useVenuesStore();
-const { formatDayShort, formatDateYMD } = useFormatTimeLocalized();
-const { smOrSmaller } = useResponsive()
+const { smOrSmaller } = useResponsive();
+const { active_timezone } = useTimezone();
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 
 const WC_DATES = ["2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03"] as const;
 const END_DATE = "2026-05-04";
-const firstTwoDays: string[] = [WC_DATES[0], WC_DATES[1]];
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
+
+const firstGameDate = computed<TZDate>(() => {
+    const date = gamesStore.games?.[0]?.start_time ?? null;
+    if (!date)
+        return new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, active_timezone.value);
+    return new TZDate(date, active_timezone.value);
+});
+const firstGameDateYMD = computed(() => {
+    return format(firstGameDate.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+});
+const lastGameDate = computed<TZDate>(() => {
+    const date = gamesStore.games?.[gamesStore.games.length - 1]?.start_time ?? null;
+    if (!date)
+        return new TZDate(`${WC_DATES[WC_DATES.length - 1]}T22:00:00+02:00`, active_timezone.value);
+    return new TZDate(date, active_timezone.value);
+});
+const lastGameDateYMD = computed(() => {
+    return format(lastGameDate.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+});
+const dateAfterLastGame = computed<TZDate>(() => {
+    if (!lastGameDate.value)
+        return new TZDate(`${END_DATE}T12:00:00+02:00`, active_timezone.value);
+    return addDays(lastGameDate.value, 1) as TZDate;
+});
+const dateAfterLastGameYMD = computed(() => {
+    return format(dateAfterLastGame.value, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
+});
+const calendarFirstDay = computed<number>(() => {
+    const isoWeekDay = Number(format(firstGameDate.value, 'i', { in: tz(active_timezone.value) }));
+    return isoWeekDay === 7 ? 0 : isoWeekDay;
+});
+const calendarWeekDuration = computed<number>(() => {
+    return Math.max(1, differenceInCalendarDays(dateAfterLastGame.value, firstGameDate.value));
+});
+const calendarValidRange = computed(() => {
+    return {
+        start: firstGameDateYMD.value,
+        end: dateAfterLastGameYMD.value,
+    };
+});
+
+const earliestGameTime = computed(() => {
+    const activeTz = tz(active_timezone.value);
+    const allGames = gamesStore.games ?? [];
+    const relevantGames = currentViewType.value === 'timeGridDay'
+        ? allGames.filter((game) => {
+            const gameDay = format(new TZDate(game.start_time, active_timezone.value), 'yyyy-MM-dd', { in: activeTz });
+            return gameDay === currentViewDateYMD.value;
+        })
+        : allGames;
+
+    let earliestGameTimeOfDay: TZDate | null = null;
+
+    relevantGames.forEach((game) => {
+        const gameDate = new TZDate(game.start_time, active_timezone.value);
+        const hour = Number(format(gameDate, 'HH', { in: activeTz }));
+        const minute = Number(format(gameDate, 'mm', { in: activeTz }));
+        const normalizedGameTime = new TZDate(2000, 0, 1, hour, minute, 0, active_timezone.value);
+
+        if (!earliestGameTimeOfDay || isBefore(normalizedGameTime, earliestGameTimeOfDay))
+            earliestGameTimeOfDay = normalizedGameTime;
+    });
+
+    if (!earliestGameTimeOfDay)
+        return '00:00';
+    return format(earliestGameTimeOfDay, 'HH:mm', { in: activeTz });
+});
+
+const latestGameTime = computed(() => {
+    const activeTz = tz(active_timezone.value);
+    const allGames = gamesStore.games ?? [];
+    const relevantGames = currentViewType.value === 'timeGridDay'
+        ? allGames.filter((game) => {
+            const gameDay = format(new TZDate(game.start_time, active_timezone.value), 'yyyy-MM-dd', { in: activeTz });
+            return gameDay === currentViewDateYMD.value;
+        })
+        : allGames;
+
+    let latestGameTimeOfDay: TZDate | null = null;
+
+    relevantGames.forEach((game) => {
+        const gameDate = new TZDate(game.start_time, active_timezone.value);
+        const hour = Number(format(gameDate, 'HH', { in: activeTz }));
+        const minute = Number(format(gameDate, 'mm', { in: activeTz }));
+        const normalizedGameTime = new TZDate(2000, 0, 1, hour, minute, 0, active_timezone.value);
+
+        if (!latestGameTimeOfDay || isAfter(normalizedGameTime, latestGameTimeOfDay))
+            latestGameTimeOfDay = normalizedGameTime;
+    });
+
+    if (!latestGameTimeOfDay)
+        return '24:00';
+    const latestGameTimeOfDayPlus2Hours = addHours(latestGameTimeOfDay, 2);
+    if (format(latestGameTimeOfDayPlus2Hours, 'yyyy-MM-dd', { in: activeTz }) !== '2000-01-01')
+        return '24:00';
+    return format(latestGameTimeOfDayPlus2Hours, 'HH:mm', { in: activeTz });
+});
 
 const events = computed(() => {
     const filteredGames = gamesStore.games?.filter((game) => {
@@ -91,6 +185,7 @@ const trackToolbarButtons = computed(() => {
 
 const selectedTrackId = ref(0);
 const currentViewType = ref(smOrSmaller.value ? 'dayOne' : 'timeGridWeek');
+const currentViewDateYMD = ref(firstGameDateYMD.value);
 
 const wrapperClass = computed(() => {
     if (currentViewType.value === 'timeGridWeek')
@@ -122,70 +217,55 @@ const syncTrackButtonClasses = () => {
     });
 };
 
-const commonTimeGridOptions = {
+const realignCalendarToFirstDay = () => {
+    const api = calendarRef.value?.getApi();
+    if (!api)
+        return;
+    if (api.view.type !== 'timeGridWeek')
+        return;
+    api.gotoDate(firstGameDateYMD.value);
+    api.updateSize();
+};
+
+const commonTimeGridOptions = computed(() => ({
     allDaySlot: false,
     slotDuration: '00:30:00',
-    slotMinTime: '09:00:00',
-    slotMaxTime: '23:00:00',
     slotEventOverlap: false,
     nowIndicator: true,
     dayHeaderFormat: { weekday: 'long', month: 'numeric', day: 'numeric', omitCommas: true } as const,
-    slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' } as const
-};
+    slotLabelFormat: { hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' } as const,
+    duration: { days: calendarWeekDuration.value },
+}));
 
-const commonDayOptions = {
-    ...commonTimeGridOptions,
+const commonDayOptions = computed(() => ({
+    ...commonTimeGridOptions.value,
     type: 'timeGrid',
     duration: { days: 1 },
-};
+}));
 
 const calendarOptions = computed<CalendarOptions>(() => {
-    const viewButtons = smOrSmaller.value ? 'dayOne,dayTwo,dayThree,dayFour' : 'timeGridWeek,dayOne,dayTwo,dayThree,dayFour';
+    const viewButtons = smOrSmaller.value ? 'timeGridDay' : 'timeGridWeek,timeGridDay';
 
     return {
         locale: locale.value,
-        timeZone: 'Europe/Paris',
-        plugins: [dayGridPlugin, listPlugin, timeGridPlugin, interactionPlugin, momentTimezonePlugin],
-        headerToolbar: { start: viewButtons, end: trackToolbarButtons.value },
+        timeZone: active_timezone.value,
+        plugins: [dayGridPlugin, timeGridPlugin, momentTimezonePlugin],
+        headerToolbar: { start: viewButtons, center: 'prev,next', end: trackToolbarButtons.value },
         buttonText: {
-            week: t('calendar.week'),
+            timeGridWeek: t('calendar.week'),
+            timeGridDay: t('calendar.day'),
         },
-        initialView: smOrSmaller.value ? 'dayOne' : 'timeGridWeek',
-        initialDate: WC_DATES[0],
-        validRange: {
-            start: WC_DATES[0],
-            end: END_DATE
-        },
-        firstDay: 1,
-        hiddenDays: [1, 2, 3],
+        initialView: smOrSmaller.value ? 'timeGridDay' : 'timeGridWeek',
+        initialDate: firstGameDateYMD.value,
+        validRange: calendarValidRange.value,
+        firstDay: calendarFirstDay.value,
+        slotMinTime: earliestGameTime.value,
+        slotMaxTime: latestGameTime.value,
         height: 'auto',
+        stickyHeaderDates: true,
         eventColor: 'transparent',
         eventBorderColor: 'transparent',
         customButtons: {
-            dayOne: {
-                text: formatDayShort(WC_DATES[0]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayOne', WC_DATES[0]);
-                }
-            },
-            dayTwo: {
-                text: formatDayShort(WC_DATES[1]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayTwo', WC_DATES[1]);
-                }
-            },
-            dayThree: {
-                text: formatDayShort(WC_DATES[2]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayThree', WC_DATES[2]);
-                }
-            },
-            dayFour: {
-                text: formatDayShort(WC_DATES[3]),
-                click: () => {
-                    calendarRef.value?.getApi().changeView('dayFour', WC_DATES[3]);
-                }
-            },
             allGames: {
                 text: t('calendar_track_all'),
                 click: () => {
@@ -196,37 +276,67 @@ const calendarOptions = computed<CalendarOptions>(() => {
         },
         views: {
             timeGridWeek: {
-                ...commonTimeGridOptions,
+                ...commonTimeGridOptions.value,
+                dateAlignment: 'week'
             },
-            dayOne: {
-                ...commonDayOptions,
-                buttonText: formatDayShort(WC_DATES[0])
-            },
-            dayTwo: {
-                ...commonDayOptions,
-                buttonText: formatDayShort(WC_DATES[1])
-            },
-            dayThree: {
-                ...commonDayOptions,
-                buttonText: formatDayShort(WC_DATES[2])
-            },
-            dayFour: {
-                ...commonDayOptions,
-                buttonText: formatDayShort(WC_DATES[3])
+            timeGridDay: {
+                ...commonDayOptions.value,
             },
         },
         datesSet: (info) => {
             currentViewType.value = info.view.type;
+            currentViewDateYMD.value = format(info.start, 'yyyy-MM-dd', { in: tz(active_timezone.value) });
         },
         events: events.value,
     };
 });
 
+let stickyObserver: IntersectionObserver | null = null;
+
+const observeStickyHeader = () => {
+    const calendarRoot = calendarRef.value?.$el as HTMLElement | undefined;
+    if (!calendarRoot) return;
+
+    const stickyEl = calendarRoot.querySelector<HTMLElement>(
+        '.fc-scrollgrid-section-header.fc-scrollgrid-section-sticky > *'
+    );
+    stickyObserver?.disconnect();
+    stickyObserver = null;
+
+    if (!stickyEl)
+        return;
+
+    if (smOrSmaller.value) {
+        stickyEl.classList.remove('is-pinned');
+        return;
+    }
+
+    stickyObserver = new IntersectionObserver(
+        (entries) => {
+            const entry = entries[0];
+            if (!entry)
+                return;
+            const rootTop = entry.rootBounds?.top ?? 0;
+            const isAtTop = entry.boundingClientRect.top <= rootTop + 1; // small tolerance
+            const isPinnedToTop = isAtTop && entry.intersectionRatio < 1;
+            entry.target.classList.toggle("is-pinned", isPinnedToTop);
+        },
+        { threshold: [1] }
+    );
+    stickyObserver.observe(stickyEl);
+};
+
 onMounted(() => {
     nextTick(() => {
         currentViewType.value = calendarRef.value?.getApi().view.type ?? currentViewType.value;
         syncTrackButtonClasses();
+        observeStickyHeader();
     });
+});
+
+onBeforeUnmount(() => {
+    stickyObserver?.disconnect();
+    stickyObserver = null;
 });
 
 watch(smOrSmaller, (smOrSmallerNow) => {
@@ -235,10 +345,19 @@ watch(smOrSmaller, (smOrSmallerNow) => {
         return;
 
     if (smOrSmallerNow && api.view.type == 'timeGridWeek')
-        api.changeView('dayOne', WC_DATES[0]);
+        api.changeView('timeGridDay', firstGameDateYMD.value);
     else if (!smOrSmallerNow && api.view.type != 'timeGridWeek')
-        api.changeView('timeGridWeek');
+        api.changeView('timeGridWeek', firstGameDateYMD.value);
+
+    nextTick(() => {
+        observeStickyHeader();
+    });
 });
+
+watch([active_timezone, firstGameDateYMD, calendarWeekDuration], async () => {
+    await nextTick();
+    realignCalendarToFirstDay();
+}, { flush: 'post' });
 
 watch(selectedTrackId, () => {
     nextTick(() => {
