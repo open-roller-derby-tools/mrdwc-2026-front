@@ -45,6 +45,7 @@ export const useEventsStore = defineStore("events", () => {
       // Add the event timezone to the start_time
       data.forEach((event) => {
         event.start_time = event.start_time + "+02:00";
+        event.end_time = event.end_time + "+02:00";
       });
 
       // Sort events by start time.

@@ -28,8 +28,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import momentTimezonePlugin from "@fullcalendar/moment-timezone";
 import {
   addDays,
-  addHours,
+  addMinutes,
   differenceInCalendarDays,
+  endOfHour,
   format,
   isAfter,
   isBefore,
@@ -40,6 +41,7 @@ import { useGamesStore } from "~/stores/games";
 import { useEventsStore } from "~/stores/events";
 import { useVenuesStore } from "~/stores/venues";
 import { getGameEndTime } from "~/utils/game";
+import { GameDuration } from "~~/types/games";
 
 import CalendarGame from "~/components/partials/games/CalendarGame.vue";
 import CalendarEvent from "~/components/partials/games/CalendarEvent.vue";
@@ -64,62 +66,83 @@ const END_DATE = "2026-05-04";
 
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 
-const firstGameDate = computed<TZDate>(() => {
+const firstEventDate = computed<TZDate>(() => {
   const date = gamesStore.games?.[0]?.start_time ?? null;
-  if (!date)
-    return new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, active_timezone.value);
-  return new TZDate(date, active_timezone.value);
+  let result = !date
+    ? new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, active_timezone.value)
+    : new TZDate(date, active_timezone.value);
+
+  for (const event of eventsStore.localizedEvents) {
+    const eventDate = new TZDate(event.start_time, active_timezone.value);
+    if (isBefore(eventDate, result)) {
+      result = eventDate;
+    }
+  }
+
+  return result;
 });
-const firstGameDateYMD = computed(() => {
-  return format(firstGameDate.value, "yyyy-MM-dd", {
+const firstEventDateYMD = computed(() => {
+  return format(firstEventDate.value, "yyyy-MM-dd", {
     in: tz(active_timezone.value),
   });
 });
-const lastGameDate = computed<TZDate>(() => {
+
+const lastEventDate = computed<TZDate>(() => {
   const date =
     gamesStore.games?.[gamesStore.games.length - 1]?.start_time ?? null;
-  if (!date)
-    return new TZDate(
-      `${WC_DATES[WC_DATES.length - 1]}T22:00:00+02:00`,
-      active_timezone.value,
-    );
-  return new TZDate(date, active_timezone.value);
+  let result = !date
+    ? new TZDate(
+        `${WC_DATES[WC_DATES.length - 1]}T22:00:00+02:00`,
+        active_timezone.value,
+      )
+    : new TZDate(date, active_timezone.value);
+
+  for (const event of eventsStore.localizedEvents) {
+    const eventDate = new TZDate(event.start_time, active_timezone.value);
+    if (isAfter(eventDate, result)) {
+      result = eventDate;
+    }
+  }
+
+  return result;
 });
-const lastGameDateYMD = computed(() => {
-  return format(lastGameDate.value, "yyyy-MM-dd", {
+const lastEventDateYMD = computed(() => {
+  return format(lastEventDate.value, "yyyy-MM-dd", {
     in: tz(active_timezone.value),
   });
 });
-const dateAfterLastGame = computed<TZDate>(() => {
-  if (!lastGameDate.value)
+
+const dateAfterLastEvent = computed<TZDate>(() => {
+  if (!lastEventDate.value)
     return new TZDate(`${END_DATE}T12:00:00+02:00`, active_timezone.value);
-  return addDays(lastGameDate.value, 1) as TZDate;
+  return addDays(lastEventDate.value, 1) as TZDate;
 });
-const dateAfterLastGameYMD = computed(() => {
-  return format(dateAfterLastGame.value, "yyyy-MM-dd", {
+const dateAfterLastEventYMD = computed(() => {
+  return format(dateAfterLastEvent.value, "yyyy-MM-dd", {
     in: tz(active_timezone.value),
   });
 });
+
 const calendarFirstDay = computed<number>(() => {
   const isoWeekDay = Number(
-    format(firstGameDate.value, "i", { in: tz(active_timezone.value) }),
+    format(firstEventDate.value, "i", { in: tz(active_timezone.value) }),
   );
   return isoWeekDay === 7 ? 0 : isoWeekDay;
 });
 const calendarWeekDuration = computed<number>(() => {
   return Math.max(
     1,
-    differenceInCalendarDays(dateAfterLastGame.value, firstGameDate.value),
+    differenceInCalendarDays(dateAfterLastEvent.value, firstEventDate.value),
   );
 });
 const calendarValidRange = computed(() => {
   return {
-    start: firstGameDateYMD.value,
-    end: dateAfterLastGameYMD.value,
+    start: firstEventDateYMD.value,
+    end: dateAfterLastEventYMD.value,
   };
 });
 
-const earliestGameTime = computed(() => {
+const earliestEventTime = computed(() => {
   const activeTz = tz(active_timezone.value);
   const allGames = gamesStore.games ?? [];
   const relevantGames =
@@ -134,7 +157,20 @@ const earliestGameTime = computed(() => {
         })
       : allGames;
 
-  let earliestGameTimeOfDay: TZDate | null = null;
+  const allEvents = eventsStore.localizedEvents;
+  const relevantEvents =
+    currentViewType.value === "timeGridDay"
+      ? allEvents.filter((event) => {
+          const eventDay = format(
+            new TZDate(event.start_time, active_timezone.value),
+            "yyyy-MM-dd",
+            { in: activeTz },
+          );
+          return eventDay === currentViewDateYMD.value;
+        })
+      : allEvents;
+
+  let earliestEventTimeOfDay: TZDate | null = null;
 
   relevantGames.forEach((game) => {
     const gameDate = new TZDate(game.start_time, active_timezone.value);
@@ -151,17 +187,38 @@ const earliestGameTime = computed(() => {
     );
 
     if (
-      !earliestGameTimeOfDay ||
-      isBefore(normalizedGameTime, earliestGameTimeOfDay)
+      !earliestEventTimeOfDay ||
+      isBefore(normalizedGameTime, earliestEventTimeOfDay)
     )
-      earliestGameTimeOfDay = normalizedGameTime;
+      earliestEventTimeOfDay = normalizedGameTime;
   });
 
-  if (!earliestGameTimeOfDay) return "00:00";
-  return format(earliestGameTimeOfDay, "HH:mm", { in: activeTz });
+  relevantEvents.forEach((event) => {
+    const eventDate = new TZDate(event.start_time, active_timezone.value);
+    const hour = Number(format(eventDate, "HH", { in: activeTz }));
+    const minute = Number(format(eventDate, "mm", { in: activeTz }));
+    const normalizedEventTime = new TZDate(
+      2000,
+      0,
+      1,
+      hour,
+      minute,
+      0,
+      active_timezone.value,
+    );
+
+    if (
+      !earliestEventTimeOfDay ||
+      isBefore(normalizedEventTime, earliestEventTimeOfDay)
+    )
+      earliestEventTimeOfDay = normalizedEventTime;
+  });
+
+  if (!earliestEventTimeOfDay) return "00:00";
+  return format(earliestEventTimeOfDay, "HH:mm", { in: activeTz });
 });
 
-const latestGameTime = computed(() => {
+const latestEventTime = computed(() => {
   const activeTz = tz(active_timezone.value);
   const allGames = gamesStore.games ?? [];
   const relevantGames =
@@ -176,13 +233,26 @@ const latestGameTime = computed(() => {
         })
       : allGames;
 
-  let latestGameTimeOfDay: TZDate | null = null;
+  const allEvents = eventsStore.localizedEvents;
+  const relevantEvents =
+    currentViewType.value === "timeGridDay"
+      ? allEvents.filter((event) => {
+          const eventDay = format(
+            new TZDate(event.start_time, active_timezone.value),
+            "yyyy-MM-dd",
+            { in: activeTz },
+          );
+          return eventDay === currentViewDateYMD.value;
+        })
+      : allEvents;
 
-  relevantGames.forEach((game) => {
+  let latestGameEndOfDay: TZDate | null = null;
+
+  for (const game of relevantGames) {
     const gameDate = new TZDate(game.start_time, active_timezone.value);
     const hour = Number(format(gameDate, "HH", { in: activeTz }));
     const minute = Number(format(gameDate, "mm", { in: activeTz }));
-    const normalizedGameTime = new TZDate(
+    const normalizedStart = new TZDate(
       2000,
       0,
       1,
@@ -192,21 +262,54 @@ const latestGameTime = computed(() => {
       active_timezone.value,
     );
 
+    const durationMinutes =
+      game.duration === GameDuration.TwoXFifteen ? 45 : 90;
+
+    const normalizedEnd = addMinutes(normalizedStart, durationMinutes);
+
     if (
-      !latestGameTimeOfDay ||
-      isAfter(normalizedGameTime, latestGameTimeOfDay)
-    )
-      latestGameTimeOfDay = normalizedGameTime;
+      format(normalizedEnd, "yyyy-MM-dd", { in: activeTz }) !== "2000-01-01"
+    ) {
+      return "24:00";
+    }
+
+    if (!latestGameEndOfDay || isAfter(normalizedEnd, latestGameEndOfDay)) {
+      latestGameEndOfDay = normalizedEnd;
+    }
+  }
+
+  let best: TZDate | null = null;
+
+  if (latestGameEndOfDay) {
+    best = latestGameEndOfDay;
+  }
+
+  relevantEvents.forEach((event) => {
+    const endDate = new TZDate(event.end_time, active_timezone.value);
+    const hour = Number(format(endDate, "HH", { in: activeTz }));
+    const minute = Number(format(endDate, "mm", { in: activeTz }));
+    const normalizedEndTime = new TZDate(
+      2000,
+      0,
+      1,
+      hour,
+      minute,
+      0,
+      active_timezone.value,
+    );
+
+    if (!best || isAfter(normalizedEndTime, best)) {
+      best = normalizedEndTime;
+    }
   });
 
-  if (!latestGameTimeOfDay) return "24:00";
-  const latestGameTimeOfDayPlus2Hours = addHours(latestGameTimeOfDay, 2);
-  if (
-    format(latestGameTimeOfDayPlus2Hours, "yyyy-MM-dd", { in: activeTz }) !==
-    "2000-01-01"
-  )
+  if (!best) return "24:00";
+
+  const atEndOfHour = endOfHour(best, { in: activeTz });
+  if (format(atEndOfHour, "yyyy-MM-dd", { in: activeTz }) !== "2000-01-01") {
     return "24:00";
-  return format(latestGameTimeOfDayPlus2Hours, "HH:mm", { in: activeTz });
+  }
+  return format(atEndOfHour, "HH:mm", { in: activeTz });
 });
 
 const events = computed(() => {
@@ -268,7 +371,7 @@ const trackToolbarButtons = computed(() => {
 
 const selectedTrackId = ref(0);
 const currentViewType = ref(smOrSmaller.value ? "dayOne" : "timeGridWeek");
-const currentViewDateYMD = ref(firstGameDateYMD.value);
+const currentViewDateYMD = ref(firstEventDateYMD.value);
 
 const wrapperClass = computed(() => {
   if (currentViewType.value === "timeGridWeek")
@@ -303,7 +406,7 @@ const realignCalendarToFirstDay = () => {
   const api = calendarRef.value?.getApi();
   if (!api) return;
   if (api.view.type !== "timeGridWeek") return;
-  api.gotoDate(firstGameDateYMD.value);
+  api.gotoDate(firstEventDateYMD.value);
   api.updateSize();
 };
 
@@ -352,11 +455,11 @@ const calendarOptions = computed<CalendarOptions>(() => {
       timeGridDay: t("calendar.day"),
     },
     initialView: smOrSmaller.value ? "timeGridDay" : "timeGridWeek",
-    initialDate: firstGameDateYMD.value,
+    initialDate: firstEventDateYMD.value,
     validRange: calendarValidRange.value,
     firstDay: calendarFirstDay.value,
-    slotMinTime: earliestGameTime.value,
-    slotMaxTime: latestGameTime.value,
+    slotMinTime: earliestEventTime.value,
+    slotMaxTime: latestEventTime.value,
     height: "auto",
     stickyHeaderDates: true,
     eventColor: "transparent",
@@ -442,9 +545,9 @@ watch(smOrSmaller, (smOrSmallerNow) => {
   if (!api) return;
 
   if (smOrSmallerNow && api.view.type == "timeGridWeek")
-    api.changeView("timeGridDay", firstGameDateYMD.value);
+    api.changeView("timeGridDay", firstEventDateYMD.value);
   else if (!smOrSmallerNow && api.view.type != "timeGridWeek")
-    api.changeView("timeGridWeek", firstGameDateYMD.value);
+    api.changeView("timeGridWeek", firstEventDateYMD.value);
 
   nextTick(() => {
     observeStickyHeader();
@@ -452,7 +555,7 @@ watch(smOrSmaller, (smOrSmallerNow) => {
 });
 
 watch(
-  [active_timezone, firstGameDateYMD, calendarWeekDuration],
+  [active_timezone, firstEventDateYMD, calendarWeekDuration],
   async () => {
     await nextTick();
     realignCalendarToFirstDay();
