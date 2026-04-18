@@ -359,7 +359,6 @@ export interface ILocalizedTeam {
   history: string;
   anecdotes: string;
   previousParticipations: string[];
-  nameLetters: string;
   name_letters?: string;
   members?: ILocalizedTeamMember[];
   charter?: ILocalizedTeamMember[];

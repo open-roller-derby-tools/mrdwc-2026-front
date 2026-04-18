@@ -200,7 +200,6 @@ export const useTeamsStore = defineStore("teams", () => {
         countriesRepresented: team.countries_represented,
         history: team.team_history,
         anecdotes: team.team_anecdotes,
-        nameLetters: team.name_letters,
         previousParticipations: team.previous_participations,
         members: localizedMembers,
         charter: charterMembers.map(localizeMember),
