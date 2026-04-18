@@ -209,11 +209,11 @@ export const useTeamsStore = defineStore("teams", () => {
   });
 
   function getTeamBySlug(slug: string) {
-    return localizedTeams.value.find((t) => t.slug === slug);
+    return localizedTeams.value?.find((t) => t.slug === slug) ?? null;
   }
 
   function getTeamById(id: number) {
-    return teams.value?.find((team) => team.id === id);
+    return localizedTeams.value?.find((team) => team.id === id) ?? null;
   }
 
   // console.log("🔥 teams", teams);
