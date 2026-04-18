@@ -30,17 +30,19 @@
 
       <ul
         class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center list-none">
-        <li v-for="(team, i) in formattedTeams" :key="`team_${i}`"
-          class="flex flex-col items-center justify-start gap-3">
-          <NuxtLink :to="`/teams/${team.slug}`">
-            <NuxtImg :src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name" :title="team.name"
-              class="w-auto object-contain cursor-pointer rounded-lg p-2 bg-white hover:scale-105 transition" />
+        <li v-for="(team, i) in formattedTeams" :key="`team_${i}`">
+          <NuxtLink :to="`/teams/${team.slug}`" class="flex flex-col items-center justify-start gap-3">
+            <div
+              class="w-full aspect-square flex items-center justify-center bg-white rounded-lg p-2 cursor-pointer hover:scale-105 transition-transform">
+              <NuxtImg :src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name"
+                :title="team.name" class="w-auto object-contain" />
+            </div>
+            <div class="flex leading-none min-h-[2.5lh] items-start justify-start text-center">
+              <p class="text-xl lg:text-2xl font-shoulders leading-none">
+                {{ team.displayName }}
+              </p>
+            </div>
           </NuxtLink>
-          <div class="flex leading-none min-h-[2.5lh] items-start justify-start text-center">
-            <p class="text-xl lg:text-2xl font-shoulders leading-none">
-              {{ team.displayName }}
-            </p>
-          </div>
         </li>
       </ul>
 
