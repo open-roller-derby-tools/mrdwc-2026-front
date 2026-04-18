@@ -42,6 +42,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/ui",
     "nuxt-umami",
+    "@nuxt/eslint",
   ],
   css: ["~~/app/assets/css/main.css", "swiper/css"],
   ui: {
