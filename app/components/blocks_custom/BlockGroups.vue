@@ -16,15 +16,14 @@
           <h3 class="font-bold text-2xl text-red-text">
             {{ t("group", { number: group.number }) }}
           </h3>
-          <ul class="list-none text-base">
+          <ul class="list-none text-base flex flex-col gap-1">
             <li v-for="team in group.teams" :key="team">
-              <NuxtLink :to="`/teams/${getTeamById(team)?.slug}`">
-                <span
-                  class="font-mono font-bold px-1.5 mr-2 bg-yellow text-black rounded-md"
-                >
-                  {{ getTeamById(team)?.name_letters }}</span
-                >
-                <span class="font-medium">
+              <NuxtLink
+                :to="`/teams/${getTeamById(team)?.slug}`"
+                class="flex items-center gap-2"
+              >
+                <TeamLettersBadge :team="getTeamById(team)" />
+                <span class="font-medium leading-none text-balance">
                   {{ getTeamById(team)?.name }}
                 </span>
               </NuxtLink>
@@ -37,6 +36,8 @@
 </template>
 
 <script lang="ts" setup>
+import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
+
 const { t } = useI18n();
 const groupsStore = useGroupsStore();
 const teamsStore = useTeamsStore();

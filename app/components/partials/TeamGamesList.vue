@@ -14,16 +14,16 @@
           <span class="mr-2">{{ formatTime(game.start_time) }}</span>
         </div>
         <div class="space-x-1">
-          <span
-            class="font-mono font-bold px-1.5 bg-yellow text-black rounded-md"
-          >
-            {{ getTeamName(game, "home", true, game.home_source) }}</span
-          >
-          <span
-            class="font-mono font-bold px-1.5 bg-yellow text-black rounded-md"
-          >
-            {{ getTeamName(game, "away", true, game.away_source) }}</span
-          >
+          <TeamLettersBadge
+            :team="getTeam(game, 'home')"
+            :fallback="game.home_source"
+            :style="getTeamColors(game, 'home', false)"
+          />
+          <TeamLettersBadge
+            :team="getTeam(game, 'away')"
+            :fallback="game.away_source"
+            :style="getTeamColors(game, 'away', false)"
+          />
         </div>
       </li>
     </ul>
@@ -31,13 +31,15 @@
 </template>
 
 <script lang="ts" setup>
+import TeamLettersBadge from "./TeamLettersBadge.vue";
+
 import type { ILocalizedTeam } from "~~/types/custom";
 import { useGamesStore } from "~/stores/games";
 import { useGameFormatting } from "~/composables/useGameFormatting";
 
 const gamesStore = useGamesStore();
 const { getGamesByTeam } = gamesStore;
-const { getTeamName } = useGameFormatting();
+const { getTeam, getTeamColors } = useGameFormatting();
 const { formatTime, formatDateYMD, formatDay } = useFormatTimeLocalized();
 
 const props = defineProps<{

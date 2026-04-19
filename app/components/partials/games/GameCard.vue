@@ -2,7 +2,10 @@
   <div
     class="w-xl max-w-full mx-auto rounded-2xl bg-white p-8 text-black shadow-2xl"
   >
-    <h3>{{ homeTeamName }} - {{ awayTeamName }}</h3>
+    <div class="grid grid-cols-2 gap-4">
+      <GameCardVersusTeam :game="game" team="home" />
+      <GameCardVersusTeam :game="game" team="away" />
+    </div>
     <!-- Watch live button -->
     <NuxtLink
       v-if="isGameInProgress(game)"
@@ -36,16 +39,9 @@
 import { GameState, type IGame } from "~~/types/games";
 import { isGameInProgress } from "~/utils/game";
 
+import GameCardVersusTeam from "./GameCardVersusTeam.vue";
+
 const props = defineProps<{
   game: IGame;
 }>();
-
-const { getTeamName } = useGameFormatting();
-
-const homeTeamName = computed(() =>
-  getTeamName(props.game, "home", true, props.game.home_source),
-);
-const awayTeamName = computed(() =>
-  getTeamName(props.game, "away", true, props.game.away_source),
-);
 </script>

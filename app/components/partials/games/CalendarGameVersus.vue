@@ -43,8 +43,8 @@ const awayTeamName = computed(() =>
   getTeamName(props.game, "away", true, props.game.away_source),
 );
 
-const homeDivStyle = computed(() => getTeamColors(props.game, "home"));
-const awayDivStyle = computed(() => getTeamColors(props.game, "away"));
+const homeDivStyle = computed(() => getTeamColors(props.game, "home", true));
+const awayDivStyle = computed(() => getTeamColors(props.game, "away", true));
 
 const homeDivClasses = computed(() => {
   if (gameIsOver.value && !isNoSpoilerModeActive.value) {

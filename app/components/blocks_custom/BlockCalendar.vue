@@ -4,6 +4,16 @@
       <TimezoneSwitcher class="sm:w-fit sm:mx-auto" />
       <NoSpoilerModeToggle v-if="isDev" />
       <SimulateGamesToggle v-if="isDev" />
+      <div class="grid grid-cols-2 gap-4 my-6">
+        <GameCard
+          v-if="gamesStore.gamesData?.[0]"
+          :game="gamesStore.gamesData?.[0]"
+        />
+        <GameCard
+          v-if="gamesStore.gamesData?.[1]"
+          :game="gamesStore.gamesData?.[1]"
+        />
+      </div>
     </div>
     <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
       <FullCalendar ref="calendarRef" :options="calendarOptions">
@@ -50,6 +60,7 @@ import CalendarEvent from "~/components/partials/games/CalendarEvent.vue";
 import TimezoneSwitcher from "~/components/partials/TimezoneSwitcher.vue";
 import NoSpoilerModeToggle from "~/components/navigation/NoSpoilerModeToggle.vue";
 import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue";
+import GameCard from "~/components/partials/games/GameCard.vue";
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
