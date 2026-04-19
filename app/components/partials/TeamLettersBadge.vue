@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="inline-block font-mono font-bold px-1.5 rounded-md border-1 text-base sm:text-lg"
-    :style="teamColors"
-  >
+  <div class="inline-block font-mono font-bold px-1.5 rounded-md text-sm sm:text-base" :style="teamBadgeStyle">
     {{ teamLetters }}
   </div>
 </template>
@@ -19,13 +16,12 @@ const teamLetters = computed(
   () => props.team?.name_letters ?? props.fallback ?? "---",
 );
 
-const teamColors = computed(() => {
+const teamBadgeStyle = computed(() => {
   const backgroundColor = props.team?.schedule_color ?? "var(--color-yellow)";
   const color = getContrastingTextColor(backgroundColor);
   return {
     backgroundColor: backgroundColor,
     color: color,
-    borderColor: color,
   };
 });
 </script>
