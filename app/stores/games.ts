@@ -20,6 +20,8 @@ export const useGamesStore = defineStore("games", () => {
   const isReady = ref<boolean>(false);
   const games = ref<IGame[] | null>(null);
   const inFlight = ref<Promise<IGame[]> | null>(null);
+  const simulatedGames = ref<IGame[] | null>(null);
+  const useSimulatedGames = ref(false);
 
   function getTournamentGroupIdForGame(game: IGame): number | null {
     const homeGroup = groupsStore.groups?.find((group) =>
@@ -176,14 +178,14 @@ export const useGamesStore = defineStore("games", () => {
   // Game by number
 
   function getGameByNumber(n: number): IGame | undefined {
-    return games.value?.find((game) => game.number === n);
+    return gamesData.value?.find((game) => game.number === n);
   }
 
   // Games grouped by team
 
   function getGamesByTeam(teamId: number): IGame[] {
     return (
-      games.value?.filter(
+      gamesData.value?.filter(
         (game) => game.home_team === teamId || game.away_team === teamId,
       ) ?? []
     );
@@ -193,7 +195,7 @@ export const useGamesStore = defineStore("games", () => {
 
   const gamesGroupedByDate = computed((): Record<string, IGame[]> => {
     return (
-      games.value?.reduce(
+      gamesData.value?.reduce(
         (acc, game) => {
           const date = game.start_time.split("T")[0] ?? "unknown";
           acc[date] = [...(acc[date] || []), game];
@@ -206,7 +208,7 @@ export const useGamesStore = defineStore("games", () => {
 
   const gamesGroupedByGroup = computed((): Record<string, IGame[]> => {
     return (
-      games.value?.reduce(
+      gamesData.value?.reduce(
         (acc, game) => {
           const group = game.tournament_group?.toString() ?? "unknown";
           acc[group] = [...(acc[group] || []), game];
@@ -217,34 +219,53 @@ export const useGamesStore = defineStore("games", () => {
     );
   });
 
-  function getGamesByGroup(
-    group: number,
-    fakeScores: boolean = false,
-  ): IGame[] {
-    if (fakeScores) {
-      return (
-        simulatedGames.value?.filter(
-          (game) => game.tournament_group === group,
-        ) ?? []
-      );
-    }
-    return games.value?.filter((game) => game.tournament_group === group) ?? [];
+  function getGamesByGroup(group: number): IGame[] {
+    return (
+      gamesData.value?.filter((game) => game.tournament_group === group) ?? []
+    );
   }
 
-  const simulatedGames = computed((): IGame[] => {
-    const baseGames = games.value ?? [];
-    return baseGames.map((game) => {
-      if (game.type !== GameType.GroupsStage) {
-        return { ...game };
-      }
+  function toggleSimulatedGames() {
+    useSimulatedGames.value = !useSimulatedGames.value;
 
-      return {
-        ...game,
-        home_score: Math.floor(Math.random() * 1000),
-        away_score: Math.floor(Math.random() * 1000),
-        state: GameState.Finished,
-      };
-    });
+    if (useSimulatedGames.value) {
+      const baseGames = games.value ?? [];
+      simulatedGames.value = baseGames.map((game) => {
+        if (game.type !== GameType.GroupsStage) {
+          return { ...game };
+        }
+        const modifiedGame = { ...game };
+        let rand = Math.floor(Math.random() * 10);
+        if (rand < 2) {
+          modifiedGame.state = GameState.InProgressP1;
+          modifiedGame.home_score = Math.floor(Math.random() * 100);
+          modifiedGame.away_score = Math.floor(Math.random() * 100);
+        } else if (rand < 4) {
+          modifiedGame.state = GameState.HalfTime;
+          modifiedGame.home_score = Math.floor(Math.random() * 200);
+          modifiedGame.away_score = Math.floor(Math.random() * 200);
+        } else if (rand < 6) {
+          modifiedGame.state = GameState.InProgressP2;
+          modifiedGame.home_score = Math.floor(Math.random() * 300);
+          modifiedGame.away_score = Math.floor(Math.random() * 300);
+        } else if (rand < 8) {
+          modifiedGame.state = GameState.Finished;
+          modifiedGame.home_score = Math.floor(Math.random() * 400);
+          modifiedGame.away_score = Math.floor(Math.random() * 400);
+          if (Math.random() < 0.5) {
+            modifiedGame.video_url =
+              "https://youtu.be/TwWmwPWxVYE?list=PLrMPTi78zARnVChE9djRevH59tVqbtdTe";
+          }
+        }
+        return modifiedGame;
+      });
+    } else {
+      simulatedGames.value = null;
+    }
+  }
+
+  const gamesData = computed(() => {
+    return useSimulatedGames.value ? simulatedGames.value : games.value;
   });
 
   return {
@@ -252,7 +273,8 @@ export const useGamesStore = defineStore("games", () => {
     refresh,
     isReady,
     games,
-    simulatedGames,
+    gamesData,
+    toggleSimulatedGames,
     stateScheduledGames,
     statePreGameGames,
     stateInProgressP1Games,

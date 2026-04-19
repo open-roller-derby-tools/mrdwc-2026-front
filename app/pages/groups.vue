@@ -3,16 +3,19 @@
     <h1>TOURNAMENT GROUPS</h1>
     <BlockGroups />
     <h2 class="mt-16">GAMES</h2>
+    <span
+      @click="toggleSimulatedGames()"
+      class="cursor-pointer underline underline-offset-2 text-yellow"
+      >Toggle simulated games</span
+    >
     <div class="w-full grid grid-cols-3 gap-4">
       <div v-for="group in groups" :key="group.id">
         <p class="font-shoulders text-2xl font-bold">
           Group {{ group.number }}
         </p>
-        <ul v-if="getGamesByGroup(group.number, true).length > 0">
-          <li
-            v-for="game in getGamesByGroup(group.number, true)"
-            :key="game.id"
-          >
+
+        <ul v-if="getGamesByGroup(group.number).length > 0">
+          <li v-for="game in getGamesByGroup(group.number)" :key="game.id">
             <p class="flex gap-1">
               <span>Game {{ game.number }}:</span>
               <span>{{
@@ -39,8 +42,7 @@ const groupsStore = useGroupsStore();
 const teamsStore = useTeamsStore();
 const gamesStore = useGamesStore();
 const { getTeamName } = useGameFormatting();
-const { getTeamById } = teamsStore;
-const { getGamesByGroup } = gamesStore;
+const { getGamesByGroup, toggleSimulatedGames } = gamesStore;
 
 onMounted(async () => {
   await groupsStore.fetch();

@@ -2,6 +2,14 @@
   <div class="bg-blue-text pt-6">
     <div class="maxed padded">
       <TimezoneSwitcher class="sm:w-fit sm:mx-auto" />
+      <div v-if="isDev">
+        <NoSpoilerModeToggle />
+        <span
+          @click="gamesStore.toggleSimulatedGames()"
+          class="cursor-pointer underline underline-offset-2 text-yellow"
+          >Toggle simulated games</span
+        >
+      </div>
     </div>
     <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
       <FullCalendar ref="calendarRef" :options="calendarOptions">
@@ -46,6 +54,7 @@ import { GameDuration } from "~~/types/games";
 import CalendarGame from "~/components/partials/games/CalendarGame.vue";
 import CalendarEvent from "~/components/partials/games/CalendarEvent.vue";
 import TimezoneSwitcher from "~/components/partials/TimezoneSwitcher.vue";
+import NoSpoilerModeToggle from "~/components/navigation/NoSpoilerModeToggle.vue";
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
@@ -53,6 +62,8 @@ const venuesStore = useVenuesStore();
 const eventsStore = useEventsStore();
 const { smOrSmaller } = useResponsive();
 const { active_timezone } = useTimezone();
+
+const isDev = import.meta.dev;
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 
@@ -67,7 +78,7 @@ const END_DATE = "2026-05-04";
 const calendarRef = ref<InstanceType<typeof FullCalendar> | null>(null);
 
 const firstEventDate = computed<TZDate>(() => {
-  const date = gamesStore.games?.[0]?.start_time ?? null;
+  const date = gamesStore.gamesData?.[0]?.start_time ?? null;
   let result = !date
     ? new TZDate(`${WC_DATES[0]}T09:00:00+02:00`, active_timezone.value)
     : new TZDate(date, active_timezone.value);
@@ -89,7 +100,7 @@ const firstEventDateYMD = computed(() => {
 
 const lastEventDate = computed<TZDate>(() => {
   const date =
-    gamesStore.games?.[gamesStore.games.length - 1]?.start_time ?? null;
+    gamesStore.gamesData?.[gamesStore.gamesData.length - 1]?.start_time ?? null;
   let result = !date
     ? new TZDate(
         `${WC_DATES[WC_DATES.length - 1]}T22:00:00+02:00`,
@@ -144,7 +155,7 @@ const calendarValidRange = computed(() => {
 
 const earliestEventTime = computed(() => {
   const activeTz = tz(active_timezone.value);
-  const allGames = gamesStore.games ?? [];
+  const allGames = gamesStore.gamesData ?? [];
   const relevantGames =
     currentViewType.value === "timeGridDay"
       ? allGames.filter((game) => {
@@ -220,7 +231,7 @@ const earliestEventTime = computed(() => {
 
 const latestEventTime = computed(() => {
   const activeTz = tz(active_timezone.value);
-  const allGames = gamesStore.games ?? [];
+  const allGames = gamesStore.gamesData ?? [];
   const relevantGames =
     currentViewType.value === "timeGridDay"
       ? allGames.filter((game) => {
@@ -315,7 +326,7 @@ const latestEventTime = computed(() => {
 const events = computed(() => {
   // Get games filtered by selected track
   const filteredGames =
-    gamesStore.games?.filter((game) => {
+    gamesStore.gamesData?.filter((game) => {
       if (selectedTrackId.value === 0) return true;
       return game.venue === selectedTrackId.value;
     }) ?? [];
