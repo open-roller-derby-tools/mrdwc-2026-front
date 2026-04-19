@@ -225,7 +225,7 @@ export const useGamesStore = defineStore("games", () => {
     );
   }
 
-  function toggleSimulatedGames() {
+  function toggleSimulatedGames(allFinished: boolean = false) {
     useSimulatedGames.value = !useSimulatedGames.value;
 
     if (useSimulatedGames.value) {
@@ -235,26 +235,36 @@ export const useGamesStore = defineStore("games", () => {
           return { ...game };
         }
         const modifiedGame = { ...game };
-        let rand = Math.floor(Math.random() * 10);
-        if (rand < 2) {
-          modifiedGame.state = GameState.InProgressP1;
-          modifiedGame.home_score = Math.floor(Math.random() * 100);
-          modifiedGame.away_score = Math.floor(Math.random() * 100);
-        } else if (rand < 4) {
-          modifiedGame.state = GameState.HalfTime;
-          modifiedGame.home_score = Math.floor(Math.random() * 200);
-          modifiedGame.away_score = Math.floor(Math.random() * 200);
-        } else if (rand < 6) {
-          modifiedGame.state = GameState.InProgressP2;
-          modifiedGame.home_score = Math.floor(Math.random() * 300);
-          modifiedGame.away_score = Math.floor(Math.random() * 300);
-        } else if (rand < 8) {
+        if (allFinished) {
           modifiedGame.state = GameState.Finished;
           modifiedGame.home_score = Math.floor(Math.random() * 400);
           modifiedGame.away_score = Math.floor(Math.random() * 400);
-          if (Math.random() < 0.5) {
+          if (Math.random() < 0.666) {
             modifiedGame.video_url =
               "https://youtu.be/TwWmwPWxVYE?list=PLrMPTi78zARnVChE9djRevH59tVqbtdTe";
+          }
+        } else {
+          let rand = Math.floor(Math.random() * 10);
+          if (rand < 2) {
+            modifiedGame.state = GameState.InProgressP1;
+            modifiedGame.home_score = Math.floor(Math.random() * 100);
+            modifiedGame.away_score = Math.floor(Math.random() * 100);
+          } else if (rand < 4) {
+            modifiedGame.state = GameState.HalfTime;
+            modifiedGame.home_score = Math.floor(Math.random() * 200);
+            modifiedGame.away_score = Math.floor(Math.random() * 200);
+          } else if (rand < 6) {
+            modifiedGame.state = GameState.InProgressP2;
+            modifiedGame.home_score = Math.floor(Math.random() * 300);
+            modifiedGame.away_score = Math.floor(Math.random() * 300);
+          } else if (rand < 8) {
+            modifiedGame.state = GameState.Finished;
+            modifiedGame.home_score = Math.floor(Math.random() * 400);
+            modifiedGame.away_score = Math.floor(Math.random() * 400);
+            if (Math.random() < 0.5) {
+              modifiedGame.video_url =
+                "https://youtu.be/TwWmwPWxVYE?list=PLrMPTi78zARnVChE9djRevH59tVqbtdTe";
+            }
           }
         }
         return modifiedGame;
@@ -274,6 +284,7 @@ export const useGamesStore = defineStore("games", () => {
     isReady,
     games,
     gamesData,
+    useSimulatedGames,
     toggleSimulatedGames,
     stateScheduledGames,
     statePreGameGames,
