@@ -33,11 +33,11 @@
 </template>
 
 <script lang="ts" setup>
-type Side = "home" | "away";
-
 import type { IGame } from "~~/types/games";
 import TeamLettersBadge from "../TeamLettersBadge.vue";
 import { hasGameStarted } from "~/utils/game";
+
+type Side = "home" | "away";
 
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
 const { getTeam, getTeamName, getTeamColors } = useGameFormatting();

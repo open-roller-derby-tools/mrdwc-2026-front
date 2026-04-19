@@ -66,8 +66,8 @@ export default <URL>(
 };
 
 function getString(fields: object, prefix: string) {
-  let list: string[] = [];
-  for (let key in fields) {
+  const list: string[] = [];
+  for (const key in fields) {
     const value = (fields as any)[key];
     const full_key = prefix !== "" ? `${prefix}.${key}` : key;
     if (value === true) {

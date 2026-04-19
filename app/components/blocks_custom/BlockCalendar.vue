@@ -7,14 +7,14 @@
     </div>
     <div :class="wrapperClass" class="padded sm:mx-auto pb-8">
       <FullCalendar ref="calendarRef" :options="calendarOptions">
-        <template v-slot:eventContent="arg">
+        <template #eventContent="arg">
           <CalendarGame
             v-if="arg.event.extendedProps.game"
             :event="arg.event"
           />
           <CalendarEvent v-else :event="arg.event" />
         </template>
-        <template v-slot:dayHeaderContent="arg" class="bg-red-text">
+        <template #dayHeaderContent="arg" class="bg-red-text">
           <p class="mb-4">{{ arg.text }}</p>
         </template>
       </FullCalendar>

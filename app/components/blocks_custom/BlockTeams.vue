@@ -4,11 +4,12 @@
       <!-- MOBILE SWIPER -->
 
       <div class="sm:hidden">
-        <Swiper :slides-per-view="1" :space-between="12" :grabCursor="true" @slideChange="onSlideChange">
+        <Swiper :slides-per-view="1" :space-between="12" :grab-cursor="true" @slide-change="onSlideChange">
           <SwiperSlide v-for="(team, i) in formattedTeams" :key="`team_mobile_${i}`" class="flex">
             <div class="flex flex-col items-center gap-3 w-full">
               <NuxtLink :to="`/teams/${team.slug}`" class="w-2/3">
-                <NuxtImg :src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name"
+                <NuxtImg
+:src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name"
                   :title="team.name" class="w-full object-contain cursor-pointer rounded-lg p-2 bg-white" />
               </NuxtLink>
 
@@ -34,7 +35,8 @@
           <NuxtLink :to="`/teams/${team.slug}`" class="flex flex-col items-center justify-start gap-3">
             <div
               class="w-full aspect-square flex items-center justify-center bg-white rounded-lg p-2 cursor-pointer hover:scale-105 transition-transform">
-              <NuxtImg :src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name"
+              <NuxtImg
+:src="`${config.public.apiBase}/assets/${team.logo}?width=300`" :alt="team.name"
                 :title="team.name" class="w-auto object-contain" />
             </div>
             <div class="flex leading-none min-h-[2.5lh] items-start justify-start text-center">
@@ -47,13 +49,16 @@
       </ul>
 
       <Teleport to="body">
-        <Transition enter-from-class="opacity-0" enter-active-class="transition-opacity duration-200 ease-out"
+        <Transition
+enter-from-class="opacity-0" enter-active-class="transition-opacity duration-200 ease-out"
           enter-to-class="opacity-100" leave-from-class="opacity-100"
           leave-active-class="transition-opacity duration-200 ease-in" leave-to-class="opacity-0">
-          <div v-if="overlayLogo"
+          <div
+v-if="overlayLogo"
             class="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center cursor-pointer"
             @click="overlayLogo = null">
-            <img :src="overlayLogo" alt=""
+            <img
+:src="overlayLogo" alt=""
               class="max-w-[75vw] max-h-[80vh] w-auto h-auto object-contain pointer-events-none" />
           </div>
         </Transition>
@@ -63,10 +68,10 @@
 </template>
 
 <script lang="ts" setup>
+import { Swiper, SwiperSlide } from "swiper/vue";
+
 const teamsStore = useTeamsStore();
 const config = useRuntimeConfig();
-
-import { Swiper, SwiperSlide } from "swiper/vue";
 // import "swiper/css";
 
 const overlayLogo = ref<string | null>(null);

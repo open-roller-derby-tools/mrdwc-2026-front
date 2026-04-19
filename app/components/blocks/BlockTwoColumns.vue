@@ -12,8 +12,8 @@
       >
         <h2
           v-if="data.title"
-          v-html="formattedTitle"
           class="flex gap-8 items-center font-bold"
+          v-html="formattedTitle"
         ></h2>
         <h3 v-if="data.subtitle" class="font-light text-white mt-4">
           {{ data.subtitle }}
@@ -29,17 +29,17 @@
       >
         <div class="flex-1 w-full md:w-auto">
           <component
+            :is="getBlockComponent(block.collection)"
             v-for="(block, i) in data.column_a_blocks"
             :key="`block_a_${i}`"
-            :is="getBlockComponent(block.collection)"
             :data="block"
           />
         </div>
         <div class="flex-1 w-full md:w-auto">
           <component
+            :is="getBlockComponent(block.collection)"
             v-for="(block, i) in data.column_b_blocks"
             :key="`block_b_${i}`"
-            :is="getBlockComponent(block.collection)"
             :data="block"
           />
         </div>

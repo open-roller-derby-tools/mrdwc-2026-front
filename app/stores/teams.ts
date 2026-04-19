@@ -7,6 +7,16 @@
  - function()s become actions
  */
 
+import { defineStore } from "pinia";
+import type {
+  ITeamsRequestData,
+  ITeam,
+  ILocalizedTeam,
+  ITeamMember,
+  ILocalizedTeamMember,
+  ICharter,
+} from "~~/types/custom";
+
 type ITeamMembersRequestData = {
   data: ITeamMember[];
 };
@@ -19,16 +29,6 @@ type ITeamWithRelations = ITeam & {
   members: ITeamMember[];
   charter: ITeamMember[];
 };
-
-import { defineStore } from "pinia";
-import type {
-  ITeamsRequestData,
-  ITeam,
-  ILocalizedTeam,
-  ITeamMember,
-  ILocalizedTeamMember,
-  ICharter,
-} from "~~/types/custom";
 
 export const useTeamsStore = defineStore("teams", () => {
   const { locale, fallbackLocale } = useI18n();

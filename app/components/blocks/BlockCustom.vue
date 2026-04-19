@@ -1,8 +1,8 @@
 <template>
   <component
+    :is="getBlockComponent(data.name)"
     :id="data.anchor_id"
     :class="data.classes"
-    :is="getBlockComponent(data.name)"
   ></component>
 </template>
 

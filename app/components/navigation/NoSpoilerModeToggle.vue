@@ -7,8 +7,9 @@
                 t('no_spoiler_mode.disabled') }}</span>
         </p>
         <p class="leading-tight mt-1 mb-3">{{ description }}</p>
-        <button @click="toggleNoSpoilerMode" :class="buttonClasses"
-            class="font-shoulders font-semibold uppercase text-sm pl-2 pr-4 py-2 rounded-md inline-flex items-center gap-2 cursor-pointer select-none">
+        <button
+:class="buttonClasses" class="font-shoulders font-semibold uppercase text-sm pl-2 pr-4 py-2 rounded-md inline-flex items-center gap-2 cursor-pointer select-none"
+            @click="toggleNoSpoilerMode">
             <UIcon v-show="isNoSpoilerModeActive" name="i-lucide-eye" class="size-4" />
             <UIcon v-show="!isNoSpoilerModeActive" name="i-lucide-eye-off" class="size-4" />
             <span>{{ toggleText }}</span>

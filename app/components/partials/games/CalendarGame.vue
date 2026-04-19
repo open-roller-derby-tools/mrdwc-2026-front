@@ -9,8 +9,8 @@
     <!-- Game state/time -->
     <GameStateLabel
       :game="event.extendedProps.game"
-      :withBackground="true"
-      :showTime="true"
+      :with-background="true"
+      :show-time="true"
     />
     <!-- Game description (Q1, S2, etc.) -->
     <div

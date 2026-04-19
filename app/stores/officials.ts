@@ -91,7 +91,7 @@ export const useOfficialsStore = defineStore("officials", () => {
         roles: member.officials_id?.roles || [],
       })) || [];
 
-      let l_crew: ILocalizedOfficialsCrew = {
+      const l_crew: ILocalizedOfficialsCrew = {
         id: crew.id,
         name: crew.name,
         secret_name: crew.secret_name,

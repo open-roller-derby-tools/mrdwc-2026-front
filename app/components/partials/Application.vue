@@ -22,8 +22,8 @@
           keypath="applications.date"
           tag="span"
         >
-          <template v-slot:label><strong>{{ date.label }}</strong></template>
-          <template v-slot:date>{{ date.date }}</template>
+          <template #label><strong>{{ date.label }}</strong></template>
+          <template #date>{{ date.date }}</template>
         </i18n-t>
       </li>
     </ul>

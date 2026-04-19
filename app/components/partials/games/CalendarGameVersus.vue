@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type IGame } from "~~/types/games";
+import type { IGame } from "~~/types/games";
 import {
   isGameFinished,
   hasGameStarted,

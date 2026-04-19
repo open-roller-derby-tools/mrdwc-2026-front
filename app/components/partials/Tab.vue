@@ -7,7 +7,8 @@
         </h2>
       </div>
     </div>
-    <component v-for="block, i in page?.blocks" :key="`block_${i}`" :is="getBlockComponent(block.collection)"
+    <component
+:is="getBlockComponent(block.collection)" v-for="block, i in page?.blocks" :key="`block_${i}`"
       :data="block"></component>
   </div>
 </template>

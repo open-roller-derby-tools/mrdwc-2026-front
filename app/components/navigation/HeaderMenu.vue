@@ -3,13 +3,15 @@
   <div v-if="!menuReady" class="h-16 sm:h-20 bg-[#121356] animate-pulse transition-opacity duration-300"></div>
 
   <!-- Menu -->
-  <div v-else
+  <div
+v-else
     class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6 sm:bg-gradient-to-b from-[#121356] to-transparent transition-opacity duration-500 opacity-0"
     :class="{ 'opacity-100': menuReady }">
     <div class="maxed px-0 sm:px-6">
-      <UNavigationMenu :items="convertedMenuItems" :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
+      <UNavigationMenu
+:items="convertedMenuItems" :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
         content-orientation="vertical" variant="header">
-        <template #list-trailing v-if="!smOrSmaller">
+        <template v-if="!smOrSmaller" #list-trailing>
           <LangSwitcher class="sm:mr-3" />
         </template>
       </UNavigationMenu>
@@ -75,7 +77,7 @@ const convertMenuItems = (
           onSelect: emitLinkSelected,
         }
       case "menus":
-        let submenu = getMenuWithName.value(
+        const submenu = getMenuWithName.value(
           (item as ILocalizedMenuMenuItem).name
         )
         if (
@@ -101,7 +103,7 @@ const menuReady = ref(false)
 watch(
   () => convertedMenuItems.value,
   async (items) => {
-    if (items.length > 0 && process.client) {
+    if (items.length > 0 && import.meta.client) {
       await nextTick()
       requestAnimationFrame(() => {
         menuReady.value = true
@@ -113,7 +115,7 @@ watch(
 
 // Fallback si les données sont lentes
 onMounted(() => {
-  if (process.client) {
+  if (import.meta.client) {
     setTimeout(() => {
       if (!menuReady.value) menuReady.value = true
     }, 3000)

@@ -13,7 +13,6 @@
         class="mt-0.5 first:mt-0"
       >
         <button
-          @click="toggleTab(tab.slotKey)"
           :data-slug="tab.slotKey"
           :class="[
             'flex items-center justify-between w-full px-6 py-3 text-blue-text font-shoulders font-semibold text-xl transition-colors duration-200',
@@ -21,6 +20,7 @@
               ? 'bg-yellow text-blue-text'
               : 'bg-blue-light text-white',
           ]"
+          @click="toggleTab(tab.slotKey)"
         >
           <span>{{ tab.label }}</span>
 
@@ -51,7 +51,6 @@
           <li
             v-for="tab in data.tabs"
             :key="tab.slotKey"
-            @click="activateTab(tab.slotKey)"
             :data-slug="tab.slotKey"
             class="transition-colors duration-100 font-shoulders font-semibold text-xl px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
             :class="[
@@ -59,6 +58,7 @@
                 ? 'bg-yellow text-blue-text'
                 : 'bg-blue-inactive text-blue-text hover:bg-yellow transition-all duration-200',
             ]"
+            @click="activateTab(tab.slotKey)"
           >
             {{ tab.label }}
 

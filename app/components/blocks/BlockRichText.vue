@@ -2,7 +2,7 @@
   <div :id="data.anchor_id" class="block-rich-text relative scroll-mt-24" :class="wrapperClasses">
     <div class="maxed padded">
       <div :class="elementClasses">
-        <h2 v-if="data.title" v-html="formattedTitle" class="flex gap-8 items-center"></h2>
+        <h2 v-if="data.title" class="flex gap-8 items-center" v-html="formattedTitle"></h2>
         <div v-if="data.content" v-html="data.content"></div>
       </div>
     </div>

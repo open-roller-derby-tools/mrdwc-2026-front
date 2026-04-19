@@ -15,8 +15,8 @@
         <p>
           <GameStateLabel
             :game="game"
-            :withBackground="false"
-            :showTime="false"
+            :with-background="false"
+            :show-time="false"
             class="!text-lg"
           />
         </p>
@@ -78,12 +78,12 @@ import { GameState, type IGame } from "~~/types/games";
 import { isGameInProgress } from "~/utils/game";
 import { useVenuesStore } from "~/stores/venues";
 
+import GameCardVersus from "./GameCardVersus.vue";
+import GameStateLabel from "./GameStateLabel.vue";
+
 const venuesStore = useVenuesStore();
 const { formatDateTime } = useFormatTimeLocalized();
 const { t } = useI18n();
-
-import GameCardVersus from "./GameCardVersus.vue";
-import GameStateLabel from "./GameStateLabel.vue";
 
 const props = defineProps<{
   game: IGame;

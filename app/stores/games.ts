@@ -257,7 +257,7 @@ export const useGamesStore = defineStore("games", () => {
               "https://youtu.be/TwWmwPWxVYE?list=PLrMPTi78zARnVChE9djRevH59tVqbtdTe";
           }
         } else {
-          let rand = Math.floor(Math.random() * 10);
+          const rand = Math.floor(Math.random() * 10);
           if (rand < 2) {
             modifiedGame.state = GameState.InProgressP1;
             modifiedGame.home_score = Math.floor(Math.random() * 100);

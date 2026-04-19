@@ -3,22 +3,22 @@
     <p>Use simulated games: {{ useSimulatedGames }}</p>
     <div v-if="!useSimulatedGames">
       <p
-        @click="toggleSimulatedGames()"
         class="cursor-pointer underline underline-offset-2 text-yellow"
+        @click="toggleSimulatedGames()"
       >
         Simulate games (random states)
       </p>
       <p
-        @click="toggleSimulatedGames(true)"
         class="cursor-pointer underline underline-offset-2 text-yellow"
+        @click="toggleSimulatedGames(true)"
       >
         Simulate games (all finished)
       </p>
     </div>
     <div v-else>
       <p
-        @click="toggleSimulatedGames()"
         class="cursor-pointer underline underline-offset-2 text-yellow"
+        @click="toggleSimulatedGames()"
       >
         Back to real games
       </p>

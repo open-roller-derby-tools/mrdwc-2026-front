@@ -9,7 +9,6 @@
     <div class="sm:hidden relative z-10 maxed mb-6">
       <div v-for="(slug, i) in data.tabs" :key="slug" class="mt-0.5 first:mt-0">
         <button
-          @click="toggleTab(slug)"
           :data-slug="slug"
           :class="[
             'flex items-center justify-between w-full px-6 py-3 text-blue-text font-shoulders font-semibold text-xl transition-colors duration-200',
@@ -17,6 +16,7 @@
               ? 'bg-yellow text-blue-text'
               : 'bg-blue-light text-white',
           ]"
+          @click="toggleTab(slug)"
         >
           <span>{{ getPageWithSlug(slug)?.menu_title || slug }}</span>
           <UIcon
@@ -44,7 +44,6 @@
           <li
             v-for="(slug, i) in data.tabs"
             :key="slug"
-            @click="activateTab(slug)"
             :data-slug="slug"
             class="transition-colors duration-100 font-shoulders font-semibold text-xl px-3 py-2 w-full sm:w-auto flex gap-4 items-center select-none cursor-pointer first:rounded-t-xl last:rounded-b-xl sm:first:rounded-tr-none sm:first:rounded-bl-xl sm:last:rounded-bl-none sm:last:rounded-tr-xl"
             :class="[
@@ -52,6 +51,7 @@
                 ? 'bg-yellow text-blue-text'
                 : 'bg-blue-inactive text-blue-text hover:bg-yellow transition-all duration-200',
             ]"
+            @click="activateTab(slug)"
           >
             {{ getPageWithSlug(slug)?.menu_title || slug }}
             <UIcon

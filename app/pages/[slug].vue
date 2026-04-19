@@ -2,15 +2,18 @@
   <div>
     <div v-if="pagesStore.isReady && page">
       <PageHeader :image="page.header_image">
-        <h1 v-if="page.show_title"
+        <h1
+v-if="page.show_title"
           class="flex gap-2 items-center mb-2 absolute bottom-2 left-4 sm:left-8 md:left-8 sm:bottom-0">
           <UIcon name="i-lucide-arrow-down-right" class="text-yellow size-12 sm:size-16" />{{ page.title }}
         </h1>
         <!-- Logo -->
-        <NuxtImg src="/mrdwc_logo@2x.png" :alt="t('image_alts.image_logo')"
+        <NuxtImg
+src="/mrdwc_logo@2x.png" :alt="t('image_alts.image_logo')"
           class="absolute -bottom-17 z-10 right-8 md:right-6 lg:right-2 w-52 self-center sm:self-auto hidden md:block" />
       </PageHeader>
-      <component v-for="(block, i) in page.blocks" :key="`block_${i}`" :is="getBlockComponent(block.collection)"
+      <component
+:is="getBlockComponent(block.collection)" v-for="(block, i) in page.blocks" :key="`block_${i}`"
         :data="block"></component>
     </div>
   </div>

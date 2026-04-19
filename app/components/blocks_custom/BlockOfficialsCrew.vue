@@ -1,10 +1,12 @@
 <template>
 	<div class="rounded-xl bg-white p-6 sm:p-8 text-blue-text">
-		<h2 v-if="crew && displayedName" class="text-red-text select-none normal-case"
+		<h2
+v-if="crew && displayedName" class="text-red-text select-none normal-case"
 			:style="crew?.color ? { color: crew.color } : {}" @click="clickCount++">
 			{{ displayedName }}
 		</h2>
-		<div v-if="crew && (crew.members_so.length || crew.members_nso.length)"
+		<div
+v-if="crew && (crew.members_so.length || crew.members_nso.length)"
 			class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
 			<!-- Skating Officials -->
 			<div v-if="crew.members_so.length" class="">
