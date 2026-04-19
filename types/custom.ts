@@ -271,6 +271,7 @@ export interface IVenue {
   address: string;
   map_url: string;
   image: string | null;
+  sort: number;
 }
 
 export interface ILocalizedVenue extends IVenue {

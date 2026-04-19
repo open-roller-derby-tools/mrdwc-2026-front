@@ -7,7 +7,11 @@
     <!-- Game teams/scores -->
     <CalendarGameVersus :game="event.extendedProps.game" />
     <!-- Game state/time -->
-    <CalendarGameState :game="event.extendedProps.game" />
+    <GameStateLabel
+      :game="event.extendedProps.game"
+      :withBackground="true"
+      :showTime="true"
+    />
     <!-- Game description (Q1, S2, etc.) -->
     <div
       v-if="event.extendedProps.game.description"
@@ -24,7 +28,7 @@
 <script lang="ts" setup>
 import { GameState, type IGame } from "~~/types/games";
 import ModalContainer from "../ModalContainer.vue";
-import CalendarGameState from "./CalendarGameState.vue";
+import GameStateLabel from "./GameStateLabel.vue";
 import CalendarGameVersus from "./CalendarGameVersus.vue";
 import GameCard from "./GameCard.vue";
 

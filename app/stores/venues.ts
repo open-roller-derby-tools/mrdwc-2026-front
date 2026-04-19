@@ -29,9 +29,10 @@ export const useVenuesStore = defineStore("venues", () => {
         address: true,
         map_url: true,
         image: true,
+        sort: true,
       };
       const { data } = await $fetch<IVenuesRequestData>(
-        buildRESTURL("venues", fields).href
+        buildRESTURL("venues", fields).href,
       );
       venues.value = data;
       isReady.value = true;
@@ -51,11 +52,15 @@ export const useVenuesStore = defineStore("venues", () => {
   const localizedVenues = computed((): ILocalizedVenue[] => {
     if (!venues.value) return [];
     return venues.value.map<ILocalizedVenue>(
-      (venue) => venue as ILocalizedVenue
+      (venue) => venue as ILocalizedVenue,
     );
   });
 
+  function getVenueById(id: number): ILocalizedVenue | null {
+    return localizedVenues.value?.find((venue) => venue.id === id) ?? null;
+  }
+
   // Expose the required properties, getters and actions
 
-  return { fetch, isReady, venues, localizedVenues };
+  return { fetch, isReady, venues, localizedVenues, getVenueById };
 });

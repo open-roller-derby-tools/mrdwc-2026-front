@@ -72,6 +72,21 @@
     "in_progress_p2": "Live (P2)",
     "finished": "Finished"
   },
+  "game_duration": {
+    "2x15": "2×15 min",
+    "2x30": "2×30 min"
+  },
+  "game_type": {
+    "groups_stage": "Group Stage",
+    "rankings_play": "Rankings Play",
+    "top_eight": "Top Eight",
+    "quarterfinals": "Quarterfinal",
+    "lower_top_eight": "Lower Top Eight",
+    "upper_top_eight": "Upper Top Eight",
+    "semifinals": "Semifinal",
+    "lower_final": "Lower Final",
+    "grand_final": "Grand Final"
+  },
   "no_spoiler_mode": {
     "title": "No Spoilers Mode",
     "show_spoilers": "Show spoilers",

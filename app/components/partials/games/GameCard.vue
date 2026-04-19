@@ -1,9 +1,47 @@
 <template>
   <div
-    class="w-xl max-w-full mx-auto rounded-2xl bg-white p-4 sm:p-6 text-black shadow-2xl"
+    class="rounded-2xl bg-white p-4 sm:p-6 text-black shadow-2xl flex flex-col gap-4"
+    :class="wrapperClass"
   >
+    <!-- Teams/scores -->
     <GameCardVersus :game="game" />
-    <div v-if="mode === 'card'" class="mt-6 flex gap-2 flex-col sm:flex-row">
+    <!-- Other infos -->
+    <div>
+      <!-- Date/time + state -->
+      <div class="flex items-center justify-between gap-2 text-lg">
+        <p class="first-letter:uppercase">
+          {{ formatDateTime(game.start_time) }}
+        </p>
+        <p>
+          <GameStateLabel
+            :game="game"
+            :withBackground="false"
+            :showTime="false"
+            class="!text-lg"
+          />
+        </p>
+      </div>
+      <!-- Duration + type -->
+      <div class="flex items-center justify-between gap-2 text-lg">
+        <p class="">
+          {{ t(`game_duration.${game.duration}`) }}
+        </p>
+        <p class="italic">{{ t(`game_type.${game.type}`) }}</p>
+      </div>
+      <a
+        v-if="venue"
+        :href="venue.map_url"
+        target="_blank"
+        class="text-lg font-bold"
+      >
+        <span class="font-shoulders">
+          {{ t("calendar_track_short", { index: venue.sort, count: 2 }) }}
+        </span>
+        <span class="text-blue-text ml-1">{{ venue.name }}</span>
+      </a>
+    </div>
+    <!-- Buttons -->
+    <div v-if="mode === 'card'" class="flex gap-2 flex-col sm:flex-row">
       <!-- Watch live button -->
       <NuxtLink
         v-if="isGameInProgress(game)"
@@ -38,11 +76,23 @@
 <script lang="ts" setup>
 import { GameState, type IGame } from "~~/types/games";
 import { isGameInProgress } from "~/utils/game";
+import { useVenuesStore } from "~/stores/venues";
+
+const venuesStore = useVenuesStore();
+const { formatDateTime } = useFormatTimeLocalized();
+const { t } = useI18n();
 
 import GameCardVersus from "./GameCardVersus.vue";
+import GameStateLabel from "./GameStateLabel.vue";
 
 const props = defineProps<{
   game: IGame;
   mode: "card" | "page";
 }>();
+
+const venue = computed(() => venuesStore.getVenueById(props.game.venue));
+
+const wrapperClass = computed(() => {
+  return props.mode === "card" ? "w-xl max-w-full mx-auto" : "w-full";
+});
 </script>

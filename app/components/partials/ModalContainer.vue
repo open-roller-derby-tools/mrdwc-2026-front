@@ -10,7 +10,7 @@
     >
       <div
         v-if="show"
-        class="fixed inset-0 z-[9999] flex items-center justify-center bg-blue/50"
+        class="fixed inset-0 z-[9999] flex items-center justify-center bg-blue/75"
         @click="onBackdropClick"
       >
         <div @click.stop class="max-w-screen p-4">

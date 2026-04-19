@@ -16,8 +16,8 @@
             }}</span
           >
           <a :href="venue.map_url" target="_blank" class="">
-            <span class="font-bold text-yellow mr-2">{{ venue.name }}</span>
-            <span class="italic">{{ venue.address }}</span></a
+            <span class="font-bold text-yellow">{{ venue.name }}</span>
+            <span class="hidden italic ml-2">{{ venue.address }}</span></a
           >
         </li>
       </ul>

@@ -16,25 +16,40 @@
         class="absolute -bottom-17 z-10 right-8 md:right-6 lg:right-2 w-52 self-center sm:self-auto hidden md:block"
       />
     </PageHeader>
-    <div class="maxed padded" v-if="game">
-      <p>Game details will go here</p>
-      <div v-if="game.video_url" class="w-full aspect-video">
-        <iframe
-          :src="game.video_url"
-          :title="title"
-          frameborder="0"
-          allow="
-            accelerometer;
-            autoplay;
-            clipboard-write;
-            encrypted-media;
-            gyroscope;
-            picture-in-picture;
-            web-share;
-          "
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
+    <div v-if="game">
+      <div class="maxed padded my-6">
+        <GameCard :game="game" mode="page" />
+      </div>
+      <div class="bg-blue-text py-6">
+        <div class="maxed padded">
+          <div v-if="game.video_url" class="w-full">
+            <h3>Watch the replay</h3>
+            <div class="w-full aspect-video rounded-2xl overflow-hidden">
+              <iframe
+                class="w-full h-full"
+                :src="game.video_url"
+                :title="title"
+                frameborder="0"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                  web-share;
+                "
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="maxed padded my-6">
+          <h3>Game stats</h3>
+        </div>
       </div>
     </div>
     <p v-else>Loading game data...</p>
@@ -42,6 +57,7 @@
 </template>
 
 <script lang="ts" setup>
+import GameCard from "~/components/partials/games/GameCard.vue";
 import PageHeader from "~/components/partials/PageHeader.vue";
 
 const route = useRoute();
