@@ -24,7 +24,13 @@
 </template>
 
 <script lang="ts" setup>
-import { GameState, type IGame } from "~~/types/games";
+import { type IGame } from "~~/types/games";
+import {
+  isGameFinished,
+  hasGameStarted,
+  hasHomeWon,
+  hasAwayWon,
+} from "~/utils/game";
 
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
 const { getTeamName, getTeamColors } = useGameFormatting();
@@ -47,27 +53,22 @@ const homeDivStyle = computed(() => getTeamColors(props.game, "home", true));
 const awayDivStyle = computed(() => getTeamColors(props.game, "away", true));
 
 const homeDivClasses = computed(() => {
-  if (gameIsOver.value && !isNoSpoilerModeActive.value) {
+  if (gameIsFinished.value && !isNoSpoilerModeActive.value) {
     if (homeWon.value) return "font-bold text-base w-2/3";
     else if (awayWon.value) return "w-1/3";
   }
   return "w-1/2";
 });
 const awayDivClasses = computed(() => {
-  if (gameIsOver.value && !isNoSpoilerModeActive.value) {
+  if (gameIsFinished.value && !isNoSpoilerModeActive.value) {
     if (awayWon.value) return "font-bold text-base w-2/3";
     else if (homeWon.value) return "w-1/3";
   }
   return "w-1/2";
 });
 
-const gameHasStarted = computed(
-  () =>
-    props.game.state !== GameState.Scheduled &&
-    props.game.state !== GameState.PreGame &&
-    props.game.state !== GameState.Unknown,
-);
-const gameIsOver = computed(() => props.game.state === GameState.Finished);
-const homeWon = computed(() => props.game.home_score > props.game.away_score);
-const awayWon = computed(() => props.game.away_score > props.game.home_score);
+const gameHasStarted = computed(() => hasGameStarted(props.game));
+const gameIsFinished = computed(() => isGameFinished(props.game));
+const homeWon = computed(() => hasHomeWon(props.game));
+const awayWon = computed(() => hasAwayWon(props.game));
 </script>

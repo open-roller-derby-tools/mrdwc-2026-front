@@ -17,6 +17,7 @@ type IGamesRequestData = {
 
 export const useGamesStore = defineStore("games", () => {
   const groupsStore = useGroupsStore();
+  const teamsStore = useTeamsStore();
   const isReady = ref<boolean>(false);
   const games = ref<IGame[] | null>(null);
   const inFlight = ref<Promise<IGame[]> | null>(null);
@@ -25,10 +26,10 @@ export const useGamesStore = defineStore("games", () => {
 
   function getTournamentGroupIdForGame(game: IGame): number | null {
     const homeGroup = groupsStore.groups?.find((group) =>
-      group.teams.includes(game.home_team),
+      group.teams.includes(game.home_team ?? -1),
     );
     const awayGroup = groupsStore.groups?.find((group) =>
-      group.teams.includes(game.away_team),
+      group.teams.includes(game.away_team ?? -1),
     );
 
     if (homeGroup && awayGroup && homeGroup.id === awayGroup.id) {
@@ -47,6 +48,10 @@ export const useGamesStore = defineStore("games", () => {
       try {
         if (!groupsStore.isReady || groupsStore.groups == null) {
           await groupsStore.fetch();
+        }
+
+        if (!teamsStore.isReady || teamsStore.teams == null) {
+          await teamsStore.fetch();
         }
 
         const fields = {
@@ -231,10 +236,18 @@ export const useGamesStore = defineStore("games", () => {
     if (useSimulatedGames.value) {
       const baseGames = games.value ?? [];
       simulatedGames.value = baseGames.map((game) => {
-        if (game.type !== GameType.GroupsStage) {
+        if (
+          game.type !== GameType.GroupsStage &&
+          game.type !== GameType.RankingsPlay
+        ) {
           return { ...game };
         }
         const modifiedGame = { ...game };
+        // Assign random teams for rankings play games
+        if (modifiedGame.type === GameType.RankingsPlay) {
+          modifiedGame.home_team = teamsStore.getRandomTeam()?.id ?? null;
+          modifiedGame.away_team = teamsStore.getRandomTeam()?.id ?? null;
+        }
         if (allFinished) {
           modifiedGame.state = GameState.Finished;
           modifiedGame.home_score = Math.floor(Math.random() * 400);

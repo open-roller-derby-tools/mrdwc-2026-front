@@ -1,6 +1,6 @@
 <template>
   <div
-    class="inline-block font-mono font-bold px-1.5 rounded-md"
+    class="inline-block font-mono font-bold px-1.5 rounded-md border-1 text-base sm:text-lg"
     :style="teamColors"
   >
     {{ teamLetters }}
@@ -21,9 +21,11 @@ const teamLetters = computed(
 
 const teamColors = computed(() => {
   const backgroundColor = props.team?.schedule_color ?? "var(--color-yellow)";
+  const color = getContrastingTextColor(backgroundColor);
   return {
     backgroundColor: backgroundColor,
-    color: getContrastingTextColor(backgroundColor),
+    color: color,
+    borderColor: color,
   };
 });
 </script>

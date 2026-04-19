@@ -218,10 +218,26 @@ export const useTeamsStore = defineStore("teams", () => {
     return localizedTeams.value?.find((team) => team.id === id) ?? null;
   }
 
+  function getRandomTeam() {
+    return (
+      localizedTeams.value?.[
+        Math.floor(Math.random() * localizedTeams.value.length)
+      ] ?? null
+    );
+  }
+
   // console.log("🔥 teams", teams);
 
   /**
    * Expose the required properties, getters and actions
    */
-  return { fetch, isReady, teams, localizedTeams, getTeamBySlug, getTeamById };
+  return {
+    fetch,
+    isReady,
+    teams,
+    localizedTeams,
+    getTeamBySlug,
+    getTeamById,
+    getRandomTeam,
+  };
 });

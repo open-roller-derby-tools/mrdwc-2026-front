@@ -4,14 +4,16 @@
       <TimezoneSwitcher class="sm:w-fit sm:mx-auto" />
       <NoSpoilerModeToggle v-if="isDev" />
       <SimulateGamesToggle v-if="isDev" />
-      <div class="grid grid-cols-2 gap-4 my-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
         <GameCard
           v-if="gamesStore.gamesData?.[0]"
           :game="gamesStore.gamesData?.[0]"
+          mode="card"
         />
         <GameCard
           v-if="gamesStore.gamesData?.[1]"
           :game="gamesStore.gamesData?.[1]"
+          mode="page"
         />
       </div>
     </div>

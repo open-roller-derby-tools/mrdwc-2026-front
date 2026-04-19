@@ -61,7 +61,7 @@ export function useGameFormatting() {
     game: IGame,
     team: "home" | "away",
     schedule: boolean = false,
-  ): { backgroundColor: string; color: string } {
+  ): { backgroundColor: string; color: string; borderColor: string } {
     // Spoiler status
     const isSpoiler = isGameSpoiler(game);
     // Default colors
@@ -69,11 +69,13 @@ export function useGameFormatting() {
       backgroundColor:
         team === "home" ? "var(--color-home)" : "var(--color-away)",
       color: "#000000",
+      borderColor: "#000000",
     };
 
     // If the game is a spoiler and the no spoiler mode is active, return the default colors
     if (isSpoiler && isNoSpoilerModeActive.value) {
       colors.color = getContrastingTextColor(colors.backgroundColor);
+      colors.borderColor = colors.color;
       return colors;
     }
 
@@ -96,6 +98,7 @@ export function useGameFormatting() {
       }
     }
     colors.color = getContrastingTextColor(colors.backgroundColor);
+    colors.borderColor = colors.color;
     return colors;
   }
 

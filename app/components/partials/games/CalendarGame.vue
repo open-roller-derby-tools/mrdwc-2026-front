@@ -17,7 +17,7 @@
     </div>
   </div>
   <ModalContainer :show="showGameCard" @close="showGameCard = false">
-    <GameCard :game="event.extendedProps.game" />
+    <GameCard :game="event.extendedProps.game" mode="card" />
   </ModalContainer>
 </template>
 

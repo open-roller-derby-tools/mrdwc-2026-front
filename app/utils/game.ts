@@ -24,3 +24,24 @@ export const isGameInProgress = (game: IGame): boolean => {
     game.state === GameState.HalfTime
   );
 };
+
+export const hasGameStarted = (game: IGame): boolean => {
+  return (
+    game.state === GameState.InProgressP1 ||
+    game.state === GameState.InProgressP2 ||
+    game.state === GameState.HalfTime ||
+    game.state === GameState.Finished
+  );
+};
+
+export const isGameFinished = (game: IGame): boolean => {
+  return game.state === GameState.Finished;
+};
+
+export const hasHomeWon = (game: IGame): boolean => {
+  return game.home_score > game.away_score;
+};
+
+export const hasAwayWon = (game: IGame): boolean => {
+  return game.away_score > game.home_score;
+};

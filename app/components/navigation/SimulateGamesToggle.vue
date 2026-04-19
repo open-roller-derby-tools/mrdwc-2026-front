@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-fit">
     <p>Use simulated games: {{ useSimulatedGames }}</p>
     <div v-if="!useSimulatedGames">
       <p

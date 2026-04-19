@@ -31,8 +31,8 @@ export interface IGame {
   start_time: string;
   duration: GameDuration;
   venue: number;
-  home_team: number;
-  away_team: number;
+  home_team: number | null;
+  away_team: number | null;
   home_score: number;
   away_score: number;
   home_color: string;
