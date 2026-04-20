@@ -31,6 +31,9 @@ type ITeamWithRelations = ITeam & {
 };
 
 export const useTeamsStore = defineStore("teams", () => {
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
 	const { locale, fallbackLocale } = useI18n();
 
 	const isReady = ref<boolean>(false);
@@ -99,11 +102,11 @@ export const useTeamsStore = defineStore("teams", () => {
 			};
 
 			const [teamsRes, membersRes, chartersRes] = await Promise.all([
-				$fetch<ITeamsRequestData>(buildRESTURL("teams", teamFields).href),
+				$fetch<ITeamsRequestData>(buildRESTURL(apiBase, "teams", teamFields).href),
 				$fetch<ITeamMembersRequestData>(
-					buildRESTURL("team_members", memberFields, { limit: -1 }).href
+					buildRESTURL(apiBase, "team_members", memberFields, { limit: -1 }).href
 				),
-				$fetch<IChartersRequestData>(buildRESTURL("charter", charterFields).href),
+				$fetch<IChartersRequestData>(buildRESTURL(apiBase, "charter", charterFields).href),
 			]);
 
 			const rawTeams = teamsRes.data;
