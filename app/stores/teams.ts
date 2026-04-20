@@ -1,6 +1,6 @@
 /**
  https://pinia.vuejs.org/core-concepts/#Setup-Stores
- 
+
  In Setup Stores:
  - ref()s become state properties
  - computed()s become getters
@@ -79,8 +79,6 @@ export const useTeamsStore = defineStore("teams", () => {
 			const memberFields = {
 				id: true,
 				team: true,
-				firstname: true,
-				lastname: true,
 				derbyname: true,
 				number: true,
 				roles: true,
@@ -160,8 +158,6 @@ export const useTeamsStore = defineStore("teams", () => {
 		return {
 			id: member.id,
 			team: member.team,
-			firstname: member.firstname,
-			lastname: member.lastname,
 			derbyname: member.derbyname,
 			number: member.number,
 			roles: member.roles,
