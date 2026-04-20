@@ -1,10 +1,7 @@
 <template>
 	<div class="flex items-center gap-2 font-shoulders">
 		<div class="min-w-[8ch] text-base">
-			<div
-				v-if="currentRole"
-				class="bg-yellow px-1.5 py-0 rounded-md inline-block"
-			>
+			<div v-if="currentRole" class="bg-yellow px-1.5 py-0 rounded-md inline-block">
 				<Transition
 					v-if="hasMultipleRoles"
 					mode="out-in"
@@ -15,15 +12,9 @@
 					leave-from-class="opacity-100"
 					leave-to-class="opacity-0"
 				>
-					<span
-						:key="currentRole"
-						class="font-bold"
-					>{{ formatRole(currentRole) }}</span>
+					<span :key="currentRole" class="font-bold">{{ formatRole(currentRole) }}</span>
 				</Transition>
-				<span
-					v-else
-					class="font-bold"
-				>{{ formatRole(currentRole) }}</span>
+				<span v-else class="font-bold">{{ formatRole(currentRole) }}</span>
 			</div>
 		</div>
 		<div class="grow text-xl font-medium">{{ official?.name }}</div>
@@ -31,12 +22,11 @@
 	</div>
 </template>
 
-
 <script lang="ts" setup>
-import type { ILocalizedOfficial } from '~~/types/custom';
+import type { IOfficial } from "~~/types/custom";
 
 const props = defineProps<{
-	official?: ILocalizedOfficial;
+	official?: IOfficial;
 }>();
 
 const currentRoleIndex = ref(0);
@@ -52,7 +42,7 @@ const hasMultipleRoles = computed(() => {
 });
 
 const formatRole = (role: string) => {
-	return role.includes('_') ? role.split('_')[0] : role;
+	return role.includes("_") ? role.split("_")[0] : role;
 };
 
 let interval: ReturnType<typeof setInterval> | null = null;
@@ -80,10 +70,8 @@ const stopRoleInterval = () => {
 watch(
 	() => hasMultipleRoles.value,
 	(hasMultiple) => {
-		if (hasMultiple)
-			startRoleInterval();
-		else
-			stopRoleInterval();
+		if (hasMultiple) startRoleInterval();
+		else stopRoleInterval();
 	},
 	{ immediate: true }
 );

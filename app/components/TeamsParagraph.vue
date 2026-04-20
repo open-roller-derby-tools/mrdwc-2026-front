@@ -13,7 +13,8 @@
         })
           "
       ></p>
-      <p v-html="t('teams_application_text.date2', {
+      <p
+v-html="t('teams_application_text.date2', {
         date: formattedDate2,
       })
         "></p>

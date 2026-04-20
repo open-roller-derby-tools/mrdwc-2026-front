@@ -1,9 +1,20 @@
 import { GameType, type IGame } from "~~/types/games";
+import type { ILocalizedTeam } from "~~/types/custom";
 import { useTeamsStore } from "~/stores/teams";
 
 export function useGameFormatting() {
   const teamsStore = useTeamsStore();
   const { isNoSpoilerModeActive } = useNoSpoilerMode();
+
+  function getTeam(game: IGame, team: "home" | "away"): ILocalizedTeam | null {
+    const isSpoiler = isGameSpoiler(game);
+    if (isSpoiler && isNoSpoilerModeActive.value) return null;
+
+    const teamId = team === "home" ? game.home_team : game.away_team;
+    if (teamId === null) return null;
+
+    return teamsStore.getTeamById(teamId);
+  }
 
   function getTeamName(
     game: IGame,
@@ -49,7 +60,8 @@ export function useGameFormatting() {
   function getTeamColors(
     game: IGame,
     team: "home" | "away",
-  ): { backgroundColor: string; color: string } {
+    schedule: boolean = false,
+  ): { backgroundColor: string; color: string; borderColor: string } {
     // Spoiler status
     const isSpoiler = isGameSpoiler(game);
     // Default colors
@@ -57,27 +69,36 @@ export function useGameFormatting() {
       backgroundColor:
         team === "home" ? "var(--color-home)" : "var(--color-away)",
       color: "#000000",
+      borderColor: "#000000",
     };
 
     // If the game is a spoiler and the no spoiler mode is active, return the default colors
     if (isSpoiler && isNoSpoilerModeActive.value) {
       colors.color = getContrastingTextColor(colors.backgroundColor);
+      colors.borderColor = colors.color;
       return colors;
     }
 
     // If the game is not a spoiler and the team is defined, use the team colors from Directus
     if (team === "home" && game.home_team !== null) {
-      colors.backgroundColor =
-        teamsStore.getTeamById(game.home_team)?.schedule_color ??
-        game.home_color;
-      // colors.backgroundColor = game.home_color;
+      if (schedule) {
+        colors.backgroundColor =
+          teamsStore.getTeamById(game.home_team)?.schedule_color ??
+          game.home_color;
+      } else {
+        colors.backgroundColor = game.home_color;
+      }
     } else if (team === "away" && game.away_team !== null) {
-      colors.backgroundColor =
-        teamsStore.getTeamById(game.away_team)?.schedule_color ??
-        game.away_color;
-      // colors.backgroundColor = game.away_color;
+      if (schedule) {
+        colors.backgroundColor =
+          teamsStore.getTeamById(game.away_team)?.schedule_color ??
+          game.away_color;
+      } else {
+        colors.backgroundColor = game.away_color;
+      }
     }
     colors.color = getContrastingTextColor(colors.backgroundColor);
+    colors.borderColor = colors.color;
     return colors;
   }
 
@@ -86,6 +107,7 @@ export function useGameFormatting() {
   }
 
   return {
+    getTeam,
     getTeamName,
     getTeamColors,
     isGameSpoiler,

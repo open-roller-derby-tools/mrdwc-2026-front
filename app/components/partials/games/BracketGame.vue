@@ -3,14 +3,17 @@
         <div class="flex flex-row">
             <div class="flex items-center justify-center px-2 bg-blue-text text-white">{{ game.number }}</div>
             <div class="flex flex-col w-full">
-                <BracketGameTeam :teamName="homeTeamName" :teamColor="game.home_color"
+                <BracketGameTeam
+:team-name="homeTeamName" :team-color="game.home_color"
                     :style="`height: ${TEAM_HEIGHT}px`" />
-                <BracketGameTeam :teamName="awayTeamName" :teamColor="game.away_color"
+                <BracketGameTeam
+:team-name="awayTeamName" :team-color="game.away_color"
                     :style="`height: ${TEAM_HEIGHT}px`" />
             </div>
         </div>
         <p class="text-sm">{{ game.description }}</p>
-        <svg v-if="showLink"
+        <svg
+v-if="showLink"
             class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-full w-full h-full text-yellow"
             viewBox="0 0 100 100" preserveAspectRatio="none" stroke-width="2" stroke-linejoin="round"
             stroke="currentColor" fill="none">

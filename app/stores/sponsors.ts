@@ -10,6 +10,7 @@
 import { defineStore } from "pinia";
 import type {
 	ILocalizedSponsor,
+	IRequestField,
 	ISponsor,
 	ISponsorsRequestData,
 } from "~~/types/custom";
@@ -35,10 +36,8 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 					logo: true,
 				},
 				url: true,
-			};
-			const { data } = await $fetch<ISponsorsRequestData>(
-				buildRESTURL("sponsors", fields).href
-			);
+			} satisfies IRequestField;
+			const { data } = await $fetch<ISponsorsRequestData>(buildRESTURL("sponsors", fields).href);
 			sponsors.value = data;
 			isReady.value = true;
 			return data;
@@ -65,8 +64,7 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 			// If not found, try fallback locale
 			if (!sponsorTranslation) {
 				sponsorTranslation = sponsor.translations.find(
-					(translation) =>
-						translation.languages_code === fallbackLocale.value
+					(translation) => translation.languages_code === fallbackLocale.value
 				);
 			}
 			// If a translation is found, add the localized sponsor to the result

@@ -2,9 +2,9 @@
   <div>
     <div v-if="pagesStore.isReady && page">
       <component
+        :is="getBlockComponent(block.collection)"
         v-for="block, i in page.blocks"
         :key="`block_${i}`"
-        :is="getBlockComponent(block.collection)"
         :data="block"
       ></component>
     </div>

@@ -1,135 +1,102 @@
-import tailwindcss from "@tailwindcss/vite";
-
-const datetimeFormats = {
-  d: {
-    day: "numeric",
-  },
-  m: {
-    month: "long",
-  },
-  dm: {
-    month: "long",
-    day: "numeric",
-  },
-  dmy: {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  },
-  ddmy: {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-  },
-  dmyhm: {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    weekday: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-  },
-};
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
-  modules: [
-    "@nuxt/image",
-    "@nuxt/fonts",
-    "@nuxtjs/i18n",
-    "@pinia/nuxt",
-    "@nuxt/ui",
-    "nuxt-umami",
-  ],
-  css: ["~~/app/assets/css/main.css", "swiper/css"],
-  ui: {
-    colorMode: false,
-  },
-  devtools: { enabled: false },
-  runtimeConfig: {
-    public: {
-      apiBase: "",
-    },
-  },
-  routeRules: {
-    "/:slug": {
-      swr: 60, // Default 1 minute cache for non-static pages
-    },
-  },
-  app: {
-    head: {
-      viewport:
-        "width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes",
-      title: "Men's Roller Derby World Cup 2026",
-      link: [
-        {
-          rel: "apple-touch-icon",
-          sizes: "180x180",
-          href: "/apple-touch-icon.png",
-        },
-        {
-          rel: "icon",
-          type: "image/png",
-          sizes: "32x32",
-          href: "/favicon-32x32.png",
-        },
-        {
-          rel: "icon",
-          type: "image/png",
-          sizes: "16x16",
-          href: "/favicon-16x16.png",
-        },
-        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-        { rel: "manifest", href: "/site.webmanifest" },
-      ],
-    },
-  },
-  fonts: {
-    defaults: {
-      weights: ["400 700"], // Regular, Bold
-    },
-    families: [
-      {
-        name: "Big Shoulders",
-        provider: "fontsource",
-        weights: ["400 500 600 700 900"],
-      },
-      {
-        name: "Cabin",
-        provider: "fontsource",
-        weights: ["400 500 600 700"],
-      },
-    ],
-  },
-  vite: {
-    css: {
-      preprocessorOptions: {},
-    },
-  },
-  image: {
-    format: ["webp"],
-  },
-  i18n: {
-    locales: [
-      { code: "en-US", language: "en-US", name: "English", file: "en.json" },
-      { code: "fr-FR", language: "fr-FR", name: "Français", file: "fr.json" },
-    ],
-    defaultLocale: "fr-FR",
-    baseUrl: "https://worldcup.mrda.org/",
-  },
-  umami: {
-    id: "b356f90c-600c-48e2-b697-952a2bc900c3",
-    host: "https://umami.mrdwc.org",
-    autoTrack: true,
-    // proxy: 'cloak',
-    // useDirective: true,
-    // ignoreLocalhost: true,
-    // excludeQueryParams: false,
-    // domains: ['cool-site.app', 'my-space.site'],
-    // customEndpoint: '/my-custom-endpoint',
-    // enabled: false,
-    // logErrors: true,
-  },
+	compatibilityDate: "2025-07-15",
+	modules: [
+		"@nuxt/image",
+		"@nuxt/fonts",
+		"@nuxtjs/i18n",
+		"@pinia/nuxt",
+		"@nuxt/ui",
+		"nuxt-umami",
+		"@nuxt/eslint",
+	],
+	css: ["~~/app/assets/css/main.css", "swiper/css"],
+	ui: {
+		colorMode: false,
+	},
+	devtools: { enabled: false },
+	runtimeConfig: {
+		public: {
+			apiBase: "",
+		},
+	},
+	routeRules: {
+		"/:slug": {
+			swr: 60, // Default 1 minute cache for non-static pages
+		},
+	},
+	app: {
+		head: {
+			viewport:
+				"width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes",
+			title: "Men's Roller Derby World Cup 2026",
+			link: [
+				{
+					rel: "apple-touch-icon",
+					sizes: "180x180",
+					href: "/apple-touch-icon.png",
+				},
+				{
+					rel: "icon",
+					type: "image/png",
+					sizes: "32x32",
+					href: "/favicon-32x32.png",
+				},
+				{
+					rel: "icon",
+					type: "image/png",
+					sizes: "16x16",
+					href: "/favicon-16x16.png",
+				},
+				{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+				{ rel: "manifest", href: "/site.webmanifest" },
+			],
+		},
+	},
+	fonts: {
+		defaults: {
+			weights: ["400 700"], // Regular, Bold
+		},
+		families: [
+			{
+				name: "Big Shoulders",
+				provider: "fontsource",
+				weights: ["400 500 600 700 900"],
+			},
+			{
+				name: "Cabin",
+				provider: "fontsource",
+				weights: ["400 500 600 700"],
+			},
+		],
+	},
+	vite: {
+		css: {
+			preprocessorOptions: {},
+		},
+	},
+	image: {
+		format: ["webp"],
+	},
+	i18n: {
+		locales: [
+			{ code: "en-US", language: "en-US", name: "English", file: "en.json" },
+			{ code: "fr-FR", language: "fr-FR", name: "Français", file: "fr.json" },
+		],
+		defaultLocale: "fr-FR",
+		baseUrl: "https://worldcup.mrda.org/",
+	},
+	umami: {
+		id: "b356f90c-600c-48e2-b697-952a2bc900c3",
+		host: "https://umami.mrdwc.org",
+		autoTrack: true,
+		// proxy: 'cloak',
+		// useDirective: true,
+		// ignoreLocalhost: true,
+		// excludeQueryParams: false,
+		// domains: ['cool-site.app', 'my-space.site'],
+		// customEndpoint: '/my-custom-endpoint',
+		// enabled: false,
+		// logErrors: true,
+	},
 });
