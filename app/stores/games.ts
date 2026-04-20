@@ -247,7 +247,7 @@ export const useGamesStore = defineStore("games", () => {
 					modifiedGame.away_score = Math.floor(Math.random() * 400);
 					if (Math.random() < 0.666) {
 						modifiedGame.video_url =
-							"https://youtu.be/TwWmwPWxVYE?list=PLrMPTi78zARnVChE9djRevH59tVqbtdTe";
+							"https://www.youtube.com/embed/TwWmwPWxVYE?si=wCzrbadtsp13o720";
 					}
 				} else {
 					const rand = Math.floor(Math.random() * 10);
