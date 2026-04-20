@@ -132,5 +132,8 @@
 	},
 	"game_page": "Game page",
 	"watch_live": "Watch live",
-	"watch_replay": "Watch replay"
+	"watch_replay": "Watch replay",
+	"next_game": "Next match",
+	"next_games": "Next matches",
+	"all_games": "All matches"
 }

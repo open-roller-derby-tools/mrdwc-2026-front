@@ -29,7 +29,9 @@
 						/>
 					</div>
 					<div class="flex-2">
-						<p>{{ team?.name_letters }}</p>
+						<p class="border border-white/40 py-1 px-2 w-fit rounded-lg mb-2">
+							{{ team?.name_letters }}
+						</p>
 						<h1 v-if="team.name" class="flex gap-2 items-center mb-2">
 							{{ team.name }}
 						</h1>
@@ -42,7 +44,7 @@
             </p>
             -->
 						<!-- PREMIÈRE PARTICIPATION -->
-						<div v-if="isFirstParticipation" class="mt-8">
+						<div v-if="isFirstParticipation" class="mt-8 mb-10">
 							<div class="flex items-center gap-2">
 								<UIcon
 									name="i-lucide-arrow-down-right"
@@ -53,7 +55,7 @@
 						</div>
 
 						<!-- LISTE DES PARTICIPATIONS -->
-						<div v-else-if="team.previousParticipations?.length" class="mt-8">
+						<div v-else-if="team.previousParticipations?.length" class="mt-8 mb-10">
 							<p class="font-semibold mb-2">
 								{{ t("previous_participations") }}
 							</p>
@@ -68,32 +70,10 @@
 								</span>
 							</div>
 						</div>
-
-						<div v-if="upcomingGames.length" class="maxed padded pb-10">
-							<h2 class="text-2xl font-shoulders mb-4 text-white">Prochains matchs</h2>
-
-							<div class="flex flex-col gap-3">
-								<div
-									v-for="game in upcomingGames"
-									:key="game.id"
-									class="bg-white/10 rounded-lg p-4 flex justify-between items-center"
-								>
-									<div class="text-white">
-										<p class="font-semibold">{{ team.name_letters }} vs {{ getOpponent(game) }}</p>
-										<p class="text-sm text-white/70">
-											{{ formatGameDate(game.start_time) }}
-										</p>
-									</div>
-
-									<span v-if="game.state !== 'scheduled'" class="text-xs text-yellow">
-										{{ game.state }}
-									</span>
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
+
 			<div class="flex flex-col sm:flex-row">
 				<div
 					v-if="team.facebook || team.instagram || team.website || team.crowdfunding"
@@ -147,6 +127,70 @@
 							{{ t("support") }}
 						</NuxtLink>
 					</div>
+				</div>
+			</div>
+
+			<div v-if="upcomingGames.length" class="pb-5 mt-14">
+				<div class="flex justify-between items-center mb-6">
+					<h2 class="text-2xl font-shoulders text-white mb-0">
+						{{ upcomingGames.length === 1 ? t("next_game") : t("next_games") }}
+					</h2>
+
+					<NuxtLink
+						to="/matches"
+						class="hidden sm:inline-flex arrow--link lowcase-link text-sm hover:text-yellow"
+					>
+						{{ t("all_games") }}
+					</NuxtLink>
+				</div>
+
+				<div class="flex flex-col gap-3">
+					<div
+						v-for="game in upcomingGames"
+						:key="game.id"
+						class="bg-blue-text rounded-lg p-4 flex justify-between items-center"
+					>
+						<div class="text-white">
+							<p class="font-semibold">{{ team.name_letters }} vs {{ getOpponent(game) }}</p>
+							<p class="text-sm text-white/70">
+								{{ formatGameDate(game.start_time) }}
+							</p>
+						</div>
+
+						<div class="flex items-center gap-3">
+							<div
+								:class="getGameStatus(game).class"
+								class="flex items-center gap-2 px-3 py-1 rounded-full text-xs"
+							>
+								<UIcon :name="getGameStatus(game).icon" class="w-4 h-4" />
+								<span>{{ getGameStatus(game).label }}</span>
+							</div>
+
+							<!-- Watch live button -->
+							<NuxtLink
+								v-if="isLiveState(game.state)"
+								:href="`/live#track-${game.venue}`"
+								class="button--red flex-1 px-3!"
+							>
+								<span class="text-md sm:text-lg">{{ t("watch_live") }}</span>
+								<div class="relative inline-flex">
+									<UIcon
+										name="ic:round-fiber-manual-record"
+										class="absolute size-5 opacity-75 animate-ping"
+									/>
+									<UIcon name="ic:round-fiber-manual-record" class="size-5" />
+								</div>
+							</NuxtLink>
+						</div>
+					</div>
+				</div>
+				<div class="flex justify-center items-center mt-8">
+					<NuxtLink
+						to="/matches"
+						class="inline-flex sm:hidden arrow--link lowcase-link hover:text-yellow"
+					>
+						{{ t("all_games") }}
+					</NuxtLink>
 				</div>
 			</div>
 		</div>
@@ -345,6 +389,7 @@
 import type { ILocalizedTeamMember } from "~~/types/custom";
 import type { Swiper as SwiperInstance } from "swiper/types";
 import type { IGame } from "~~/types/games";
+import { useGamesStore } from "~/stores/games";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import PageHeader from "~/components/partials/PageHeader.vue";
@@ -360,6 +405,8 @@ const teamsStore = useTeamsStore();
 const gamesStore = useGamesStore();
 const { t } = useI18n();
 // import "swiper/css";
+
+useGamesAutoRefresh({ intervalMs: 60000 });
 
 const team = computed(() =>
 	teamsStore.localizedTeams.find((t) => t.slug === String(route.params.slug))
@@ -379,24 +426,38 @@ const isFirstParticipation = computed(() => team.value?.previousParticipations?.
 //   notificationsEnabled.value = !notificationsEnabled.value;
 // };
 
-const upcomingGames = computed(() => {
-	if (!team.value || !gamesStore.games) return [];
+const { locale } = useI18n();
+
+const isEN = computed(() => locale.value?.startsWith("en"));
+
+const formatGameDate = (date: string) => {
+	const lang = isEN.value ? "en-GB" : "fr-FR";
+
+	return new Date(date).toLocaleString(lang, {
+		weekday: "short",
+		day: "2-digit",
+		month: "short",
+		hour: "2-digit",
+		minute: "2-digit",
+	});
+};
+
+const allGames = gamesStore.gamesData;
+
+const upcomingGames = computed<IGame[]>(() => {
+	if (!team.value || !allGames?.length) return [];
 
 	const now = new Date();
 
-	return gamesStore.games
+	return allGames
 		.filter((game) => {
-			// appartient à l’équipe
 			const isTeamGame = game.home_team === team.value!.id || game.away_team === team.value!.id;
 
-			// uniquement matchs futurs
 			const gameDate = new Date(game.start_time);
 
 			return isTeamGame && gameDate > now;
 		})
-		.sort((a, b) => {
-			return new Date(a.start_time).getTime() - new Date(b.start_time).getTime();
-		});
+		.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
 });
 
 const getOpponent = (game: IGame) => {
@@ -406,15 +467,62 @@ const getOpponent = (game: IGame) => {
 	return game.home_source;
 };
 
-const formatGameDate = (date: string) => {
-	return new Date(date).toLocaleString(undefined, {
-		weekday: "short",
-		day: "numeric",
-		month: "short",
-		hour: "2-digit",
-		minute: "2-digit",
-	});
+const getGameStatus = (game: IGame) => {
+	const base = {
+		icon: "",
+		class: "",
+		label: "",
+		isLive: false,
+	};
+
+	switch (game.state) {
+		case "scheduled":
+			return {
+				...base,
+				label: t("game_state.scheduled"),
+				icon: "i-lucide-calendar",
+				class: "bg-blue-500/20 border border-white/40 text-white/60 py-3 px-2",
+			};
+
+		case "pre_game":
+			return {
+				...base,
+				label: t("game_state.pre_game"),
+				icon: "i-lucide-clock",
+				class: "bg-yellow-500/20 border border-yellow/40 text-yellow py-3 px-2",
+			};
+
+		// case "in_progress_p1":
+		// case "in_progress_p2":
+		// case "half_time":
+		// 	return {
+		// 		...base,
+		// 		label: t("game_state.in_progress_p1"),
+		// 		icon: "i-lucide-radio",
+		// 		class: "bg-red-500/20 border border-red-light text-white animate-pulse py-3 px-2",
+		// 		isLive: true,
+		// 	};
+
+		case "finished":
+			return {
+				...base,
+				label: t("game_state.finished"),
+				icon: "i-lucide-check-circle",
+				class: "bg-gray-500/20 text-gray-300 py-3 px-2",
+			};
+
+		default:
+			return {
+				...base,
+				label: game.state,
+				icon: "i-lucide-help-circle",
+				class: "bg-white/10 text-white/60 py-3 px-2",
+			};
+	}
 };
+
+const isLiveState = (state: IGame["state"]) =>
+	["in_progress_p1", "in_progress_p2", "half_time"].includes(state);
 
 const tabsConfig = computed(() => ({
 	anchor_id: "team-tabs",
@@ -479,7 +587,8 @@ const onSlideChangeStaff = (swiper: SwiperInstance) => {
 };
 
 watchEffect(() => {
-	console.log("🧪 TEAM FINAL", team.value);
+	console.log("upcoming GAMES", upcomingGames.value);
+	// console.log("🧪 TEAM FINAL", team.value);
 	// console.log("members length", team.value?.members?.length);
 	// console.log("charter length", team.value?.charter?.length);
 });
