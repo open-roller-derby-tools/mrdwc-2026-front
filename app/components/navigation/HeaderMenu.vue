@@ -1,130 +1,127 @@
 <template>
-  <!-- Placeholder pendant le chargement -->
-  <div v-if="!menuReady" class="h-16 sm:h-20 bg-[#121356] animate-pulse transition-opacity duration-300"></div>
+	<!-- Placeholder pendant le chargement -->
+	<div
+		v-if="!menuReady"
+		class="h-16 sm:h-20 bg-[#121356] animate-pulse transition-opacity duration-300"
+	></div>
 
-  <!-- Menu -->
-  <div
-v-else
-    class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6 sm:bg-gradient-to-b from-[#121356] to-transparent transition-opacity duration-500 opacity-0"
-    :class="{ 'opacity-100': menuReady }">
-    <div class="maxed px-0 sm:px-6">
-      <UNavigationMenu
-:items="convertedMenuItems" :orientation="smOrSmaller ? 'vertical' : 'horizontal'"
-        content-orientation="vertical" variant="header">
-        <template v-if="!smOrSmaller" #list-trailing>
-          <LangSwitcher class="sm:mr-3" />
-        </template>
-      </UNavigationMenu>
-    </div>
-  </div>
+	<!-- Menu -->
+	<div
+		v-else
+		class="sm:fixed sm:top-0 sm:left-0 sm:z-100 sm:w-full sm:p-6 sm:bg-gradient-to-b from-[#121356] to-transparent transition-opacity duration-500 opacity-0"
+		:class="{ 'opacity-100': menuReady }"
+	>
+		<div class="maxed px-0 sm:px-6">
+			<UNavigationMenu
+				:items="convertedMenuItems"
+				:orientation="smOrSmaller ? 'vertical' : 'horizontal'"
+				content-orientation="vertical"
+				variant="header"
+			>
+				<template v-if="!smOrSmaller" #list-trailing>
+					<LangSwitcher class="sm:mr-3" />
+				</template>
+			</UNavigationMenu>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-import type { NavigationMenuItem } from "@nuxt/ui"
+import type { NavigationMenuItem } from "@nuxt/ui";
 import type {
-  ILocalizedCustomLinkMenuItem,
-  ILocalizedMenu,
-  ILocalizedMenuMenuItem,
-  ILocalizedPageMenuItem,
-} from "~~/types/custom"
-import { nextTick, ref, watch, onMounted } from "vue"
-import { useResponsive } from "~/composables/useResponsive"
-import LangSwitcher from "./LangSwitcher.vue"
+	ILocalizedCustomLinkMenuItem,
+	ILocalizedMenu,
+	ILocalizedMenuMenuItem,
+	ILocalizedPageMenuItem,
+} from "~~/types/custom";
+import { nextTick, ref, watch, onMounted } from "vue";
+import { useResponsive } from "~/composables/useResponsive";
+import LangSwitcher from "./LangSwitcher.vue";
 
-const localePath = useLocalePath()
-const emit = defineEmits(["linkSelected"])
-const emitLinkSelected = (e: Event) => emit("linkSelected")
+const localePath = useLocalePath();
+const emit = defineEmits(["linkSelected"]);
+const emitLinkSelected = () => emit("linkSelected");
 
 // Responsive
-const { smOrSmaller } = useResponsive()
+const { smOrSmaller } = useResponsive();
 
 // Menu data
-const MENU_NAME = "header"
-const menusStore = useMenusStore()
-const { getMenuWithName } = storeToRefs(menusStore)
+const MENU_NAME = "header";
+const menusStore = useMenusStore();
+const { getMenuWithName } = storeToRefs(menusStore);
 
-const menu = computed((): ILocalizedMenu | null =>
-  getMenuWithName.value(MENU_NAME)
-)
+const menu = computed((): ILocalizedMenu | null => getMenuWithName.value(MENU_NAME));
 
 const convertedMenuItems = computed<NavigationMenuItem[]>(() => {
-  if (!menu.value || !menu.value.items) return []
-  return convertMenuItems(menu.value.items)
-})
+	if (!menu.value || !menu.value.items) return [];
+	return convertMenuItems(menu.value.items);
+});
 
 const convertMenuItems = (
-  items: (
-    | ILocalizedPageMenuItem
-    | ILocalizedCustomLinkMenuItem
-    | ILocalizedMenuMenuItem
-  )[]
+	items: (ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem | ILocalizedMenuMenuItem)[]
 ): NavigationMenuItem[] => {
-  return items.map((item) => {
-    switch (item.collection) {
-      case "pages":
-        return {
-          label: (item as ILocalizedPageMenuItem).menu_title,
-          to: localePath(`/${(item as ILocalizedPageMenuItem).slug}`),
-          class: (item as ILocalizedPageMenuItem).classes,
-          onSelect: emitLinkSelected,
-        }
-      case "custom_links":
-        return {
-          label: (item as ILocalizedCustomLinkMenuItem).label,
-          to: (item as ILocalizedCustomLinkMenuItem).url,
-          class: (item as ILocalizedPageMenuItem).classes,
-          target: (item as ILocalizedCustomLinkMenuItem).target,
-          onSelect: emitLinkSelected,
-        }
-      case "menus":
-        const submenu = getMenuWithName.value(
-          (item as ILocalizedMenuMenuItem).name
-        )
-        if (
-          !submenu ||
-          !submenu.items ||
-          (item as ILocalizedMenuMenuItem).name == MENU_NAME
-        )
-          return {
-            label: (item as ILocalizedMenuMenuItem).display_name,
-          }
-        return {
-          label: (item as ILocalizedMenuMenuItem).display_name,
-          children: convertMenuItems(submenu.items),
-          onSelect: emitLinkSelected,
-        }
-    }
-  })
-}
+	return items.map((item) => {
+		switch (item.collection) {
+			case "pages":
+				return {
+					label: (item as ILocalizedPageMenuItem).menu_title,
+					to: localePath(`/${(item as ILocalizedPageMenuItem).slug}`),
+					class: (item as ILocalizedPageMenuItem).classes,
+					onSelect: emitLinkSelected,
+				};
+			case "custom_links":
+				return {
+					label: (item as ILocalizedCustomLinkMenuItem).label,
+					to: (item as ILocalizedCustomLinkMenuItem).url,
+					class: (item as ILocalizedPageMenuItem).classes,
+					target: (item as ILocalizedCustomLinkMenuItem).target,
+					onSelect: emitLinkSelected,
+				};
+			case "menus":
+				const submenu = getMenuWithName.value((item as ILocalizedMenuMenuItem).name);
+				if (!submenu || !submenu.items || (item as ILocalizedMenuMenuItem).name == MENU_NAME)
+					return {
+						label: (item as ILocalizedMenuMenuItem).display_name,
+					};
+				return {
+					label: (item as ILocalizedMenuMenuItem).display_name,
+					children: convertMenuItems(submenu.items),
+					onSelect: emitLinkSelected,
+				};
+		}
+	});
+};
 
 // Contrôle d'affichage
-const menuReady = ref(false)
+const menuReady = ref(false);
 
 watch(
-  () => convertedMenuItems.value,
-  async (items) => {
-    if (items.length > 0 && import.meta.client) {
-      await nextTick()
-      requestAnimationFrame(() => {
-        menuReady.value = true
-      })
-    }
-  },
-  { immediate: true }
-)
+	() => convertedMenuItems.value,
+	async (items) => {
+		if (items.length > 0 && import.meta.client) {
+			await nextTick();
+			requestAnimationFrame(() => {
+				menuReady.value = true;
+			});
+		}
+	},
+	{ immediate: true }
+);
 
 // Fallback si les données sont lentes
 onMounted(() => {
-  if (import.meta.client) {
-    setTimeout(() => {
-      if (!menuReady.value) menuReady.value = true
-    }, 3000)
-  }
-})
+	if (import.meta.client) {
+		setTimeout(() => {
+			if (!menuReady.value) menuReady.value = true;
+		}, 3000);
+	}
+});
 </script>
 
 <style scoped>
 div[role="navigation"] {
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+	transition:
+		opacity 0.4s ease-out,
+		transform 0.4s ease-out;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full bg-blue-text">
+	<div class="w-full bg-blue-text py-6">
 		<div class="w-full maxed padded">
 			<div class="w-full grid grid-cols-1 gap-4">
 				<div
@@ -117,7 +117,10 @@
 						</tbody>
 					</table>
 					<!-- Toggle group games -->
-					<div class="flex justify-center py-3 border-t border-blue-text/10">
+					<div
+						v-if="!isNoSpoilerModeActive"
+						class="flex justify-center py-3 border-t border-blue-text/10"
+					>
 						<button
 							class="flex items-center gap-1 text-base font-bold text-red-text hover:text-red-light hover:underline transition-colors cursor-pointer"
 							@click="toggleGroupGames(group.id)"
@@ -135,7 +138,7 @@
 						</button>
 					</div>
 					<!-- Group games & scores -->
-					<template v-if="expandedGroups.has(group.id)">
+					<template v-if="!isNoSpoilerModeActive && expandedGroups.has(group.id)">
 						<div
 							v-if="getGamesByGroup(group.number).length > 0"
 							class="grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 pb-4"
@@ -203,6 +206,7 @@ const gamesStore = useGamesStore();
 const { getTeamById } = teamsStore;
 const { getGamesByGroup } = gamesStore;
 const { getGroupStandings, getOverallRankings } = useGroupStandings();
+const { isNoSpoilerModeActive } = useNoSpoilerMode();
 
 const groups = computed(() => groupsStore.groups ?? []);
 
