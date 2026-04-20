@@ -124,7 +124,99 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="team" class="sm:pt-16">
+
+		<!-- ANNOUNCERS INFORMATION -->
+		<div v-if="hasAnnouncerInfo" class="maxed padded pt-10">
+			<h2 class="text-2xl sm:text-3xl font-bold mb-8 flex items-center gap-3">
+				<UIcon name="i-lucide-megaphone" class="size-8 text-yellow" />
+				{{ t("announcers_info") }}
+			</h2>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<!-- Countries Represented -->
+				<div
+					v-if="team.countriesRepresented"
+					class="bg-blue-text border border-white/20 rounded-xl p-6"
+				>
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-globe-2" class="size-5" />
+						{{ t("countries_represented") }}
+					</h3>
+					<p class="whitespace-pre-line">{{ team.countriesRepresented }}</p>
+				</div>
+
+				<!-- Preparation Games -->
+				<div
+					v-if="team.preparationGames"
+					class="bg-blue-text border border-white/20 rounded-xl p-6"
+				>
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-swords" class="size-5" />
+						{{ t("preparation_games") }}
+					</h3>
+					<p class="whitespace-pre-line">{{ team.preparationGames }}</p>
+				</div>
+
+				<!-- National Anthem -->
+				<div v-if="team.nationalAnthem" class="bg-blue-text border border-white/20 rounded-xl p-6">
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-music" class="size-5" />
+						{{ t("national_anthem") }}
+					</h3>
+					<p class="whitespace-pre-line">{{ team.nationalAnthem }}</p>
+				</div>
+
+				<!-- Anthem Audio -->
+				<div v-if="team.anthemAudio" class="bg-blue-text border border-white/20 rounded-xl p-6">
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-volume-2" class="size-5" />
+						{{ t("anthem_audio") }}
+					</h3>
+					<audio controls class="w-full mt-2">
+						<source
+							:src="`${config.public.apiBase}/assets/${team.anthemAudio}`"
+							type="audio/mpeg"
+						/>
+						{{ t("play_audio") }}
+					</audio>
+				</div>
+
+				<!-- Parade Audio -->
+				<div v-if="team.paradeAudio" class="bg-blue-text border border-white/20 rounded-xl p-6">
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-music-2" class="size-5" />
+						{{ t("parade_audio") }}
+					</h3>
+					<audio controls class="w-full mt-2">
+						<source
+							:src="`${config.public.apiBase}/assets/${team.paradeAudio}`"
+							type="audio/mpeg"
+						/>
+						{{ t("play_audio") }}
+					</audio>
+				</div>
+			</div>
+
+			<!-- Team History (full width) -->
+			<div v-if="team.history" class="bg-blue-text border border-white/20 rounded-xl p-6 mt-6">
+				<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+					<UIcon name="i-lucide-book-open" class="size-5" />
+					{{ t("team_history") }}
+				</h3>
+				<p class="whitespace-pre-line">{{ team.history }}</p>
+			</div>
+
+			<!-- Team Anecdotes (full width) -->
+			<div v-if="team.anecdotes" class="bg-blue-text border border-white/20 rounded-xl p-6 mt-6">
+				<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+					<UIcon name="i-lucide-lightbulb" class="size-5" />
+					{{ t("team_anecdotes") }}
+				</h3>
+				<p class="whitespace-pre-line">{{ team.anecdotes }}</p>
+			</div>
+		</div>
+
+		<div v-if="team">
 			<div class="relative pb-16 sm:py-0">
 				<!-- 🆕 TABS SLOT -->
 				<BlockTabsSlot v-if="team" :data="tabsConfig" class="mt-10">
@@ -236,6 +328,19 @@ const sortedParticipations = computed(() => {
 });
 
 const isFirstParticipation = computed(() => team.value?.previousParticipations?.includes("2026"));
+
+const hasAnnouncerInfo = computed(() => {
+	if (!team.value) return false;
+	return !!(
+		team.value.countriesRepresented ||
+		team.value.preparationGames ||
+		team.value.nationalAnthem ||
+		team.value.anthemAudio ||
+		team.value.paradeAudio ||
+		team.value.history ||
+		team.value.anecdotes
+	);
+});
 
 const tabsConfig = computed(() => ({
 	anchor_id: "team-tabs",
