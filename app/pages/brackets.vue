@@ -1,5 +1,5 @@
 <template>
-	<div class="mt-32">
+	<div v-if="isDev" class="mt-32">
 		<SimulateGamesToggle />
 		<NoSpoilerModeToggle />
 		<BlockGroups />
@@ -59,6 +59,9 @@
 			<p>Loading...</p>
 		</div>
 	</div>
+	<div v-else>
+		<p>Nothing to see here...</p>
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -72,6 +75,8 @@ import { useGamesStore } from "~/stores/games";
 import { useTeamsStore } from "~/stores/teams";
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
+
+const isDev = import.meta.dev;
 
 /* const gameRP1 = computed(() => gamesStore.getGameByNumber(50));
 const gameRP2 = computed(() => gamesStore.getGameByNumber(49));
