@@ -68,6 +68,29 @@
 								</span>
 							</div>
 						</div>
+
+						<div v-if="upcomingGames.length" class="maxed padded pb-10">
+							<h2 class="text-2xl font-shoulders mb-4 text-white">Prochains matchs</h2>
+
+							<div class="flex flex-col gap-3">
+								<div
+									v-for="game in upcomingGames"
+									:key="game.id"
+									class="bg-white/10 rounded-lg p-4 flex justify-between items-center"
+								>
+									<div class="text-white">
+										<p class="font-semibold">{{ team.name_letters }} vs {{ getOpponent(game) }}</p>
+										<p class="text-sm text-white/70">
+											{{ formatGameDate(game.start_time) }}
+										</p>
+									</div>
+
+									<span v-if="game.state !== 'scheduled'" class="text-xs text-yellow">
+										{{ game.state }}
+									</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -137,13 +160,13 @@
 					<template #charter>
 						<div class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4">
 							<button
-								@click="charterViewMode = 'grid'"
 								class="px-4 pt-3.5 pb-2 w-1/2 rounded-s-xl text-sm font-semibold transition"
 								:class="
 									charterViewMode === 'grid'
 										? 'bg-yellow text-blue-text border-yellow'
 										: 'bg-blue-inactive text-blue-text '
 								"
+								@click="charterViewMode = 'grid'"
 							>
 								<UIcon
 									name="i-lucide-grid-3x2"
@@ -151,13 +174,13 @@
 								/>
 							</button>
 							<button
-								@click="charterViewMode = 'swiper'"
 								class="px-4 pt-3.5 pb-2 w-1/2 rounded-e-xl text-sm font-semibold transition"
 								:class="
 									charterViewMode === 'swiper'
 										? 'bg-yellow text-blue-text border-yellow'
 										: 'bg-blue-inactive text-blue-text'
 								"
+								@click="charterViewMode = 'swiper'"
 							>
 								<UIcon
 									name="i-lucide-square-user-round"
@@ -174,14 +197,14 @@
 								<Swiper
 									:slides-per-view="1.2"
 									:space-between="16"
-									:grabCursor="true"
-									:centeredSlides="true"
-									@slideChange="onSlideChangeCharter"
+									:grab-cursor="true"
+									:centered-slides="true"
 									class="!items-stretch"
+									@slide-change="onSlideChangeCharter"
 								>
 									<SwiperSlide v-for="m in charterSorted" :key="m.id" class="flex pt-8">
 										<div class="px-6 flex w-full">
-											<TeamMemberCard :member="m" :teamLogo="team.logo" class="flex-1" />
+											<TeamMemberCard :member="m" :team-logo="team.logo" class="flex-1" />
 										</div>
 									</SwiperSlide>
 								</Swiper>
@@ -199,11 +222,11 @@
 											v-for="(m, i) in charterSorted"
 											:key="m.id"
 											:member="m"
-											:teamLogo="team.logo"
+											:team-logo="team.logo"
 											:index="i"
 											:total="charterSorted.length"
-											:itemsPerRow="2"
-											:isGrid="true"
+											:items-per-row="2"
+											:is-grid="true"
 										/>
 									</div>
 								</div>
@@ -217,7 +240,7 @@
 								v-for="m in charterSorted"
 								:key="m.id"
 								:member="m"
-								:teamLogo="team.logo"
+								:team-logo="team.logo"
 							/>
 						</div>
 					</template>
@@ -228,13 +251,13 @@
 						<div class="sm:hidden bg-blue-text pb-10">
 							<div class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4">
 								<button
-									@click="staffViewMode = 'grid'"
 									class="px-4 pt-3.5 pb-2 w-1/2 rounded-s-xl text-sm font-semibold transition"
 									:class="
 										staffViewMode === 'grid'
 											? 'bg-yellow text-blue-text border-yellow'
 											: 'bg-blue-inactive text-blue-text '
 									"
+									@click="staffViewMode = 'grid'"
 								>
 									<UIcon
 										name="i-lucide-grid-3x2"
@@ -242,13 +265,13 @@
 									/>
 								</button>
 								<button
-									@click="staffViewMode = 'swiper'"
 									class="px-4 pt-3.5 pb-2 w-1/2 rounded-e-xl text-sm font-semibold transition"
 									:class="
 										staffViewMode === 'swiper'
 											? 'bg-yellow text-blue-text border-yellow'
 											: 'bg-blue-inactive text-blue-text'
 									"
+									@click="staffViewMode = 'swiper'"
 								>
 									<UIcon
 										name="i-lucide-square-user-round"
@@ -261,14 +284,14 @@
 								<Swiper
 									:slides-per-view="1.2"
 									:space-between="16"
-									:grabCursor="true"
-									:centeredSlides="true"
-									@slideChange="onSlideChangeStaff"
+									:grab-cursor="true"
+									:centered-slides="true"
 									class="!items-stretch"
+									@slide-change="onSlideChangeStaff"
 								>
 									<SwiperSlide v-for="m in staffMembers" :key="m.id" class="flex pt-8">
 										<div class="px-6 flex w-full">
-											<TeamMemberCard :member="m" :teamLogo="team.logo" class="flex-1" />
+											<TeamMemberCard :member="m" :team-logo="team.logo" class="flex-1" />
 										</div>
 									</SwiperSlide>
 								</Swiper>
@@ -286,11 +309,11 @@
 											v-for="(m, i) in staffMembers"
 											:key="m.id"
 											:member="m"
-											:teamLogo="team.logo"
+											:team-logo="team.logo"
 											:index="i"
 											:total="staffMembers.length"
-											:itemsPerRow="2"
-											:isGrid="true"
+											:items-per-row="2"
+											:is-grid="true"
 										/>
 									</div>
 								</div>
@@ -304,7 +327,7 @@
 								v-for="m in staffMembers"
 								:key="m.id"
 								:member="m"
-								:teamLogo="team.logo"
+								:team-logo="team.logo"
 							/>
 						</div>
 					</template>
@@ -321,7 +344,7 @@
 <script setup lang="ts">
 import type { ILocalizedTeamMember } from "~~/types/custom";
 import type { Swiper as SwiperInstance } from "swiper/types";
-
+import type { IGame } from "~~/types/games";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import PageHeader from "~/components/partials/PageHeader.vue";
@@ -334,6 +357,7 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 const route = useRoute();
 const config = useRuntimeConfig();
 const teamsStore = useTeamsStore();
+const gamesStore = useGamesStore();
 const { t } = useI18n();
 // import "swiper/css";
 
@@ -354,6 +378,43 @@ const isFirstParticipation = computed(() => team.value?.previousParticipations?.
 // const toggleNotifications = () => {
 //   notificationsEnabled.value = !notificationsEnabled.value;
 // };
+
+const upcomingGames = computed(() => {
+	if (!team.value || !gamesStore.games) return [];
+
+	const now = new Date();
+
+	return gamesStore.games
+		.filter((game) => {
+			// appartient à l’équipe
+			const isTeamGame = game.home_team === team.value!.id || game.away_team === team.value!.id;
+
+			// uniquement matchs futurs
+			const gameDate = new Date(game.start_time);
+
+			return isTeamGame && gameDate > now;
+		})
+		.sort((a, b) => {
+			return new Date(a.start_time).getTime() - new Date(b.start_time).getTime();
+		});
+});
+
+const getOpponent = (game: IGame) => {
+	if (game.home_team === team.value?.id) {
+		return game.away_source;
+	}
+	return game.home_source;
+};
+
+const formatGameDate = (date: string) => {
+	return new Date(date).toLocaleString(undefined, {
+		weekday: "short",
+		day: "numeric",
+		month: "short",
+		hour: "2-digit",
+		minute: "2-digit",
+	});
+};
 
 const tabsConfig = computed(() => ({
 	anchor_id: "team-tabs",
