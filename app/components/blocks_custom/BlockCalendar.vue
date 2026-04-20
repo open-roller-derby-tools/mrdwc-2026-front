@@ -1,9 +1,7 @@
 <template>
 	<div class="bg-blue-text pt-6">
-		<div class="maxed padded">
-			<TimezoneSwitcher class="sm:w-fit sm:mx-auto" />
-			<NoSpoilerModeToggle v-if="isDev" />
-			<SimulateGamesToggle v-if="isDev" />
+		<div v-if="isDev" class="maxed padded mb-8">
+			<SimulateGamesToggle />
 		</div>
 		<div :class="wrapperClass" class="padded sm:mx-auto pb-8">
 			<FullCalendar ref="calendarRef" :options="calendarOptions">
@@ -44,8 +42,6 @@ import { GameDuration } from "~~/types/games";
 
 import CalendarGame from "~/components/partials/games/CalendarGame.vue";
 import CalendarEvent from "~/components/partials/games/CalendarEvent.vue";
-import TimezoneSwitcher from "~/components/partials/TimezoneSwitcher.vue";
-import NoSpoilerModeToggle from "~/components/navigation/NoSpoilerModeToggle.vue";
 import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue";
 
 const { locale, t } = useI18n();

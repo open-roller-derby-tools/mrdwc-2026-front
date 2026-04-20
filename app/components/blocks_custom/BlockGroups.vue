@@ -1,5 +1,8 @@
 <template>
 	<div class="w-full bg-blue-text py-6">
+		<div v-if="isDev" class="maxed padded mb-8">
+			<SimulateGamesToggle />
+		</div>
 		<div class="w-full maxed padded">
 			<div class="w-full grid grid-cols-1 gap-4">
 				<div
@@ -197,6 +200,7 @@
 <script lang="ts" setup>
 import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
 import GameStateLabel from "../partials/games/GameStateLabel.vue";
+import SimulateGamesToggle from "../navigation/SimulateGamesToggle.vue";
 
 const { t } = useI18n();
 const groupsStore = useGroupsStore();
@@ -207,6 +211,8 @@ const { getTeamById } = teamsStore;
 const { getGamesByGroup } = gamesStore;
 const { getGroupStandings, getOverallRankings } = useGroupStandings();
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
+
+const isDev = import.meta.dev;
 
 const groups = computed(() => groupsStore.groups ?? []);
 
