@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-blue-text pt-6">
+	<div class="bg-blue-text">
 		<div v-if="isDev" class="maxed padded mb-8">
 			<SimulateGamesToggle />
 		</div>

@@ -15,25 +15,29 @@ import BlockCalendar from "~/components/blocks_custom/BlockCalendar.vue";
 import BlockNoSpoilers from "~/components/blocks_custom/BlockNoSpoilers.vue";
 import BlockTrackLocations from "~/components/blocks_custom/BlockTrackLocations.vue";
 import BlockGroups from "~/components/blocks_custom/BlockGroups.vue";
+import BlockGroupsRankings from "~/components/blocks_custom/BlockGroupsRankings.vue";
+import BlockTimezoneSwitcher from "~/components/blocks_custom/BlockTimezoneSwitcher.vue";
 
 const components = new Map<string, Component>([
-  // Blocks
-  ["blocks_richtext", BlockRichText],
-  ["blocks_custom", BlockCustom],
-  ["blocks_two_columns", BlockTwoColumns],
-  ["blocks_tabs", BlockTabs],
-  // Custom blocks
-  ["BlockHero", BlockHero],
-  ["BlockVenues", BlockVenues],
-  ["BlockApplications", BlockApplications],
-  ["BlockTickets", BlockTickets],
-  ["BlockTeams", BlockTeams],
-  ["BlockOfficialsCrews", BlockOfficialsCrews],
-  ["BlockOfficialsCrew", BlockOfficialsCrew],
-  ["BlockCalendar", BlockCalendar],
-  ["BlockNoSpoilers", BlockNoSpoilers],
-  ["BlockTrackLocations", BlockTrackLocations],
-  ["BlockGroups", BlockGroups],
+	// Blocks
+	["blocks_richtext", BlockRichText],
+	["blocks_custom", BlockCustom],
+	["blocks_two_columns", BlockTwoColumns],
+	["blocks_tabs", BlockTabs],
+	// Custom blocks
+	["BlockHero", BlockHero],
+	["BlockVenues", BlockVenues],
+	["BlockApplications", BlockApplications],
+	["BlockTickets", BlockTickets],
+	["BlockTeams", BlockTeams],
+	["BlockOfficialsCrews", BlockOfficialsCrews],
+	["BlockOfficialsCrew", BlockOfficialsCrew],
+	["BlockCalendar", BlockCalendar],
+	["BlockNoSpoilers", BlockNoSpoilers],
+	["BlockTrackLocations", BlockTrackLocations],
+	["BlockGroups", BlockGroups],
+	["BlockGroupsRankings", BlockGroupsRankings],
+	["BlockTimezoneSwitcher", BlockTimezoneSwitcher],
 ]);
 
 export default (collection: string) => components.get(collection);
