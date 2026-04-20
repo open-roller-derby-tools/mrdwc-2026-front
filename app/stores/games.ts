@@ -13,7 +13,6 @@ import { useGroupsStore } from "./groups";
 
 type IGamesRequestData = {
 	data: IGame[];
-	data: IGame[];
 };
 
 export const useGamesStore = defineStore("games", () => {
