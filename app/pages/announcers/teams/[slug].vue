@@ -234,7 +234,12 @@
 							>
 								<SwiperSlide v-for="m in charterSorted" :key="m.id" class="flex h-auto">
 									<div class="px-6">
-										<TeamMemberCard :member="m" :team-logo="team.logo" class="flex-1" />
+										<TeamMemberCard
+											:member="m"
+											:team-logo="team.logo"
+											:is-announcer="true"
+											class="flex-1"
+										/>
 									</div>
 								</SwiperSlide>
 							</Swiper>
@@ -253,6 +258,7 @@
 								:key="m.id"
 								:member="m"
 								:team-logo="team.logo"
+								:is-announcer="true"
 							/>
 						</div>
 					</template>
@@ -271,7 +277,12 @@
 							>
 								<SwiperSlide v-for="m in staffMembers" :key="m.id" class="flex h-auto">
 									<div class="px-6 h-full flex">
-										<TeamMemberCard :member="m" :team-logo="team.logo" class="flex-1" />
+										<TeamMemberCard
+											:member="m"
+											:team-logo="team.logo"
+											:is-announcer="true"
+											class="flex-1"
+										/>
 									</div>
 								</SwiperSlide>
 							</Swiper>
@@ -288,6 +299,7 @@
 								:key="m.id"
 								:member="m"
 								:team-logo="team.logo"
+								:is-announcer="true"
 							/>
 						</div>
 					</template>

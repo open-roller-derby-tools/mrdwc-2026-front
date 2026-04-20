@@ -375,6 +375,7 @@ export interface ITeamMember {
 	id: number;
 	team: number | ITeam;
 	derbyname: string;
+	derbyname_pronunciation: string;
 	number: string;
 	roles: string[];
 	roster_photo: string;
@@ -389,6 +390,7 @@ export interface ILocalizedTeamMember {
 	id: number;
 	team: number | ITeam;
 	derbyname: string;
+	derbynamePronunciation: string;
 	number: string;
 	roles: string[];
 	rosterPhoto: string;
