@@ -3,6 +3,7 @@ import type { IRequestField } from "~~/types/custom";
 /**
  * Build a REST API URL for fetching items from Directus with specified fields.
  *
+ * @param apiBase - Public Directus API base URL.
  * @param item - The name of the item to fetch from the API.
  * @param fields - An object representing the fields to include in the request.
  *                 Nested objects are supported for dot notation:
@@ -16,12 +17,12 @@ import type { IRequestField } from "~~/types/custom";
  * @returns A URL object with the appropriate query parameters set.
  */
 export default (
+	apiBase: string,
 	item: string,
 	fields: IRequestField,
 	params: Record<string, string | number | boolean> = {}
 ) => {
-	const config = useRuntimeConfig();
-	let base = config.public.apiBase as string;
+	let base = apiBase;
 
 	if (!base || typeof base !== "string") {
 		throw new Error(
@@ -36,16 +37,13 @@ export default (
 		);
 	}
 
-	// Relative apiBase (e.g. "/api"): resolve against request origin (SSR) or window (client)
+	// Relative apiBase (e.g. "/api"): resolve against window origin on client only.
 	if (!/^https?:\/\//i.test(base)) {
-		if (import.meta.server) {
-			const requestURL = useRequestURL();
-			base = requestURL.origin + (base.startsWith("/") ? base : `/${base}`);
-		} else if (typeof window !== "undefined") {
+		if (typeof window !== "undefined") {
 			base = window.location.origin + (base.startsWith("/") ? base : `/${base}`);
 		} else {
 			throw new Error(
-				"NUXT_PUBLIC_API_BASE must be an absolute URL (e.g. https://api.example.com) when not in a request or browser context."
+				"NUXT_PUBLIC_API_BASE must be an absolute URL (e.g. https://api.example.com) on server."
 			);
 		}
 	}

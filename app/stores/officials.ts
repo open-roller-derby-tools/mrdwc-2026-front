@@ -17,6 +17,9 @@ import type {
 } from "~~/types/custom";
 
 export const useOfficialsStore = defineStore("officials", () => {
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
 	const isReady = ref<boolean>(false);
 	const officials = ref<IOfficialsCrew[]>();
 
@@ -52,7 +55,7 @@ export const useOfficialsStore = defineStore("officials", () => {
 				},
 			};
 			const { data } = await $fetch<IOfficialsCrewsRequestData>(
-				buildRESTURL("officials_crews", fields).href
+				buildRESTURL(apiBase, "officials_crews", fields).href
 			);
 
 			officials.value = data;

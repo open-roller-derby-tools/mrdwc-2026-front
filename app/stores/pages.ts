@@ -24,6 +24,9 @@ import type {
 } from "~~/types/custom";
 
 export const usePagesStore = defineStore("pages", () => {
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
 	const { locale, fallbackLocale } = useI18n();
 	const isReady = ref<boolean>(false);
 	const pages = ref<IPage[] | null>(null);
@@ -92,9 +95,7 @@ export const usePagesStore = defineStore("pages", () => {
 					menu_title: true,
 				},
 			};
-			const { data } = await $fetch<IPagesRequestData>(
-				buildRESTURL("pages", fields).href
-			);
+			const { data } = await $fetch<IPagesRequestData>(buildRESTURL(apiBase, "pages", fields).href);
 			pages.value = data;
 			isReady.value = true;
 			return data;
@@ -133,8 +134,7 @@ export const usePagesStore = defineStore("pages", () => {
 			// If not found, try fallback locale
 			if (!pageTranslation) {
 				pageTranslation = page.translations.find(
-					(translation) =>
-						translation.languages_code === fallbackLocale.value
+					(translation) => translation.languages_code === fallbackLocale.value
 				);
 			}
 
@@ -145,10 +145,7 @@ export const usePagesStore = defineStore("pages", () => {
 				header_image: page.header_image,
 				show_title: pageTranslation?.show_title || false,
 				title: pageTranslation?.title || page.slug,
-				menu_title:
-					pageTranslation?.menu_title ||
-					pageTranslation?.title ||
-					page.slug,
+				menu_title: pageTranslation?.menu_title || pageTranslation?.title || page.slug,
 				blocks: localizeBlocks(page.blocks),
 			};
 		};
@@ -167,19 +164,15 @@ export const usePagesStore = defineStore("pages", () => {
 				// RichText block
 				case "blocks_richtext": {
 					// Get translation from current locale
-					const translations =
-						(block.item as IBlockRichText).translations || [];
+					const translations = (block.item as IBlockRichText).translations || [];
 
 					let blockTranslation = translations.find(
-						(translation) =>
-							translation.languages_code === locale.value
+						(translation) => translation.languages_code === locale.value
 					);
 
 					if (!blockTranslation) {
 						blockTranslation = translations.find(
-							(translation) =>
-								translation.languages_code ===
-								fallbackLocale.value
+							(translation) => translation.languages_code === fallbackLocale.value
 						);
 					}
 					// If found, add block to list
@@ -187,12 +180,9 @@ export const usePagesStore = defineStore("pages", () => {
 						localizedBlocks.push({
 							collection: block.collection,
 							name: (block.item as IBlockRichText).name,
-							background: (block.item as IBlockRichText)
-								.background,
-							background_style: (block.item as IBlockRichText)
-								.background_style,
-							background_section: (block.item as IBlockRichText)
-								.background_section,
+							background: (block.item as IBlockRichText).background,
+							background_style: (block.item as IBlockRichText).background_style,
+							background_section: (block.item as IBlockRichText).background_section,
 							anchor_id: block.item.anchor_id,
 							classes: block.item.classes,
 							title: blockTranslation?.title || "",
@@ -220,12 +210,8 @@ export const usePagesStore = defineStore("pages", () => {
 
 					const translations = blockTwoColumns.translations || [];
 					const blockTranslation =
-						translations.find(
-							(t) => t.languages_code === locale.value
-						) ||
-						translations.find(
-							(t) => t.languages_code === fallbackLocale.value
-						);
+						translations.find((t) => t.languages_code === locale.value) ||
+						translations.find((t) => t.languages_code === fallbackLocale.value);
 					localizedBlocks.push({
 						collection: block.collection,
 						anchor_id: blockTwoColumns.anchor_id,
@@ -234,12 +220,8 @@ export const usePagesStore = defineStore("pages", () => {
 						subtitle: blockTranslation?.subtitle || "",
 						background: blockTwoColumns.background,
 						reverse_mobile: blockTwoColumns.reverse_mobile || false,
-						column_a_blocks: localizeBlocks(
-							blockTwoColumns.column_a_blocks
-						),
-						column_b_blocks: localizeBlocks(
-							blockTwoColumns.column_b_blocks
-						),
+						column_a_blocks: localizeBlocks(blockTwoColumns.column_a_blocks),
+						column_b_blocks: localizeBlocks(blockTwoColumns.column_b_blocks),
 					} as ILocalizedBlockTwoColumns);
 
 					break;
@@ -252,9 +234,7 @@ export const usePagesStore = defineStore("pages", () => {
 						collection: block.collection,
 						anchor_id: block.item.anchor_id,
 						classes: block.item.classes,
-						tabs: (block.item as IBlockTabs).tabs.map(
-							(tab) => tab.item.slug
-						),
+						tabs: (block.item as IBlockTabs).tabs.map((tab) => tab.item.slug),
 					} as ILocalizedBlockTabs);
 					break;
 				}
