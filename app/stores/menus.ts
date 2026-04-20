@@ -9,185 +9,177 @@
 
 import { defineStore } from "pinia";
 import type {
-  IMenu,
-  IMenuItemWrapper,
-  IPage,
-  IPageTranslation,
-  ICustomLink,
-  ICustomLinkTranslation,
-  ILocalizedCustomLinkMenuItem,
-  ILocalizedPageMenuItem,
-  IMenusRequestData,
-  ILocalizedMenu,
-  IMenuTranslation,
-  ILocalizedMenuMenuItem,
+	IMenu,
+	IMenuItemWrapper,
+	IPage,
+	IPageTranslation,
+	ICustomLink,
+	ICustomLinkTranslation,
+	ILocalizedCustomLinkMenuItem,
+	ILocalizedPageMenuItem,
+	IMenusRequestData,
+	ILocalizedMenu,
+	IMenuTranslation,
+	ILocalizedMenuMenuItem,
 } from "~~/types/custom";
 
 export const useMenusStore = defineStore("menus", () => {
-  const { locale, fallbackLocale } = useI18n();
-  const isReady = ref<boolean>(false);
-  const menus = ref<IMenu[] | null>(null);
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
+	const { locale, fallbackLocale } = useI18n();
+	const isReady = ref<boolean>(false);
+	const menus = ref<IMenu[] | null>(null);
 
-  /**
-   * Fetch data from the API.
-   * Skips the network request when data was already loaded
-   */
-  async function fetch() {
-    if (isReady.value && menus.value != null) {
-      return menus.value;
-    }
-    try {
-      const fields = {
-        name: true,
-        classes: true,
-        translations: {
-          languages_code: true,
-          display_name: true,
-          items: {
-            sort: true,
-            collection: true,
-            item: {
-              "*": true,
-              translations: {
-                languages_code: true,
-                "*": true,
-              },
-            },
-          },
-        },
-      };
-      const { data } = await $fetch<IMenusRequestData>(
-        buildRESTURL("menus", fields).href
-      );
-      menus.value = data;
-      isReady.value = true;
-      return data;
-    } catch (error) {
-      console.error("Error fetching menus:", error);
-      isReady.value = false;
-      menus.value = null;
-      throw error;
-    }
-  }
+	/**
+	 * Fetch data from the API.
+	 * Skips the network request when data was already loaded
+	 */
+	async function fetch() {
+		if (isReady.value && menus.value != null) {
+			return menus.value;
+		}
+		try {
+			const fields = {
+				name: true,
+				classes: true,
+				translations: {
+					languages_code: true,
+					display_name: true,
+					items: {
+						sort: true,
+						collection: true,
+						item: {
+							"*": true,
+							translations: {
+								languages_code: true,
+								"*": true,
+							},
+						},
+					},
+				},
+			};
+			const { data } = await $fetch<IMenusRequestData>(buildRESTURL(apiBase, "menus", fields).href);
+			menus.value = data;
+			isReady.value = true;
+			return data;
+		} catch (error) {
+			console.error("Error fetching menus:", error);
+			isReady.value = false;
+			menus.value = null;
+			throw error;
+		}
+	}
 
-  /**
-   * Check if a menu exists for the requested name
-   */
-  const hasMenuWithName = computed(() => {
-    return (name: string): boolean => {
-      // Find menu from name
-      const menu = menus.value?.find((menu) => menu.name === name);
-      return menu != undefined;
-    };
-  });
+	/**
+	 * Check if a menu exists for the requested name
+	 */
+	const hasMenuWithName = computed(() => {
+		return (name: string): boolean => {
+			// Find menu from name
+			const menu = menus.value?.find((menu) => menu.name === name);
+			return menu != undefined;
+		};
+	});
 
-  /**
-   * Get the fully localized menu for the requested name.
-   */
-  const getMenuWithName = computed(() => {
-    return (name: string): ILocalizedMenu | null => {
-      // Find menu from name
-      const menu = menus.value?.find((menu) => menu.name === name);
-      if (!menu) return null;
+	/**
+	 * Get the fully localized menu for the requested name.
+	 */
+	const getMenuWithName = computed(() => {
+		return (name: string): ILocalizedMenu | null => {
+			// Find menu from name
+			const menu = menus.value?.find((menu) => menu.name === name);
+			if (!menu) return null;
 
-      // Get menu translation for current locale
-      let menuTranslation = menu.translations.find(
-        (translation) => translation.languages_code === locale.value
-      );
-      // If not found, try fallback locale
-      if (!menuTranslation) {
-        menuTranslation = menu.translations.find(
-          (translation) => translation.languages_code === fallbackLocale.value
-        );
-      }
-      if (!menuTranslation) return null;
+			// Get menu translation for current locale
+			let menuTranslation = menu.translations.find(
+				(translation) => translation.languages_code === locale.value
+			);
+			// If not found, try fallback locale
+			if (!menuTranslation) {
+				menuTranslation = menu.translations.find(
+					(translation) => translation.languages_code === fallbackLocale.value
+				);
+			}
+			if (!menuTranslation) return null;
 
-      // Get localized menu items
-      const localizedItems = localizeMenuItems(menuTranslation.items);
+			// Get localized menu items
+			const localizedItems = localizeMenuItems(menuTranslation.items);
 
-      // Return the final ILocalizedMenu object
-      return {
-        name: menu.name,
-        classes: menu.classes,
-        display_name: menuTranslation.display_name,
-        items: localizedItems,
-      };
-    };
-  });
+			// Return the final ILocalizedMenu object
+			return {
+				name: menu.name,
+				classes: menu.classes,
+				display_name: menuTranslation.display_name,
+				items: localizedItems,
+			};
+		};
+	});
 
-  const localizeMenuItems = (items: IMenuItemWrapper[]) => {
-    return items.reduce<
-      (
-        | ILocalizedPageMenuItem
-        | ILocalizedCustomLinkMenuItem
-        | ILocalizedMenuMenuItem
-      )[]
-    >((result, value: IMenuItemWrapper) => {
-      let itemTranslation = value.item.translations.find(
-        (translation) => translation.languages_code === locale.value
-      );
-      // If not found, try fallback locale
-      if (!itemTranslation) {
-        itemTranslation = value.item.translations.find(
-          (translation) => translation.languages_code === fallbackLocale.value
-        );
-      }
-      if (!itemTranslation) return result;
+	const localizeMenuItems = (items: IMenuItemWrapper[]) => {
+		return items.reduce<
+			(ILocalizedPageMenuItem | ILocalizedCustomLinkMenuItem | ILocalizedMenuMenuItem)[]
+		>((result, value: IMenuItemWrapper) => {
+			let itemTranslation = value.item.translations.find(
+				(translation) => translation.languages_code === locale.value
+			);
+			// If not found, try fallback locale
+			if (!itemTranslation) {
+				itemTranslation = value.item.translations.find(
+					(translation) => translation.languages_code === fallbackLocale.value
+				);
+			}
+			if (!itemTranslation) return result;
 
-      let typedItem: IPage | ICustomLink | IMenu;
-      let typedItemTranslation:
-        | IPageTranslation
-        | ICustomLinkTranslation
-        | IMenuTranslation;
-      switch (value.collection) {
-        // Page
-        case "pages":
-          typedItem = value.item as IPage;
-          typedItemTranslation = itemTranslation as IPageTranslation;
-          result.push({
-            collection: value.collection,
-            slug: typedItem.slug,
-            classes: typedItem.classes,
-            title: typedItemTranslation.title || typedItem.slug,
-            menu_title:
-              typedItemTranslation.menu_title ||
-              typedItemTranslation.title ||
-              typedItem.slug,
-          } as ILocalizedPageMenuItem);
-          break;
-        // Custom Link
-        case "custom_links":
-          typedItem = value.item as ICustomLink;
-          typedItemTranslation = itemTranslation as ICustomLinkTranslation;
-          result.push({
-            collection: value.collection,
-            classes: typedItem.classes,
-            target: typedItem.target,
-            label: typedItemTranslation.label,
-            url: typedItemTranslation.url,
-          } as ILocalizedCustomLinkMenuItem);
-          break;
-        // Menu
-        case "menus":
-          typedItem = value.item as IMenu;
-          typedItemTranslation = itemTranslation as IMenuTranslation;
-          result.push({
-            collection: value.collection,
-            name: typedItem.name,
-            display_name: typedItemTranslation.display_name,
-          } as ILocalizedMenuMenuItem);
-          break;
-      }
-      return result;
-    }, []);
-  };
+			let typedItem: IPage | ICustomLink | IMenu;
+			let typedItemTranslation: IPageTranslation | ICustomLinkTranslation | IMenuTranslation;
+			switch (value.collection) {
+				// Page
+				case "pages":
+					typedItem = value.item as IPage;
+					typedItemTranslation = itemTranslation as IPageTranslation;
+					result.push({
+						collection: value.collection,
+						slug: typedItem.slug,
+						classes: typedItem.classes,
+						title: typedItemTranslation.title || typedItem.slug,
+						menu_title:
+							typedItemTranslation.menu_title || typedItemTranslation.title || typedItem.slug,
+					} as ILocalizedPageMenuItem);
+					break;
+				// Custom Link
+				case "custom_links":
+					typedItem = value.item as ICustomLink;
+					typedItemTranslation = itemTranslation as ICustomLinkTranslation;
+					result.push({
+						collection: value.collection,
+						classes: typedItem.classes,
+						target: typedItem.target,
+						label: typedItemTranslation.label,
+						url: typedItemTranslation.url,
+					} as ILocalizedCustomLinkMenuItem);
+					break;
+				// Menu
+				case "menus":
+					typedItem = value.item as IMenu;
+					typedItemTranslation = itemTranslation as IMenuTranslation;
+					result.push({
+						collection: value.collection,
+						name: typedItem.name,
+						display_name: typedItemTranslation.display_name,
+					} as ILocalizedMenuMenuItem);
+					break;
+			}
+			return result;
+		}, []);
+	};
 
-  // Expose the required properties, getters and actions
-  return {
-    fetch,
-    isReady,
-    menus, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
-    hasMenuWithName,
-    getMenuWithName,
-  };
+	// Expose the required properties, getters and actions
+	return {
+		fetch,
+		isReady,
+		menus, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
+		hasMenuWithName,
+		getMenuWithName,
+	};
 });

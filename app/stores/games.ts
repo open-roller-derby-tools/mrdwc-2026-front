@@ -13,9 +13,13 @@ import { useGroupsStore } from "./groups";
 
 type IGamesRequestData = {
 	data: IGame[];
+	data: IGame[];
 };
 
 export const useGamesStore = defineStore("games", () => {
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
 	const groupsStore = useGroupsStore();
 	const teamsStore = useTeamsStore();
 	const isReady = ref<boolean>(false);
@@ -77,7 +81,9 @@ export const useGamesStore = defineStore("games", () => {
 				};
 
 				// Regular fetch from the API
-				const { data } = await $fetch<IGamesRequestData>(buildRESTURL("games", fields).href);
+				const { data } = await $fetch<IGamesRequestData>(
+					buildRESTURL(apiBase, "games", fields).href
+				);
 
 				// Add the event timezone to the start_time
 				data.forEach((game) => {

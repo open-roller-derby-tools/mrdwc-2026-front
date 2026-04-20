@@ -16,6 +16,9 @@ import type {
 } from "~~/types/custom";
 
 export const useSponsorsStore = defineStore("sponsors", () => {
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
 	const { locale, fallbackLocale } = useI18n();
 	const isReady = ref<boolean>(false);
 	const sponsors = ref<ISponsor[] | null>(null);
@@ -37,7 +40,9 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 				},
 				url: true,
 			} satisfies IRequestField;
-			const { data } = await $fetch<ISponsorsRequestData>(buildRESTURL("sponsors", fields).href);
+			const { data } = await $fetch<ISponsorsRequestData>(
+				buildRESTURL(apiBase, "sponsors", fields).href
+			);
 			sponsors.value = data;
 			isReady.value = true;
 			return data;

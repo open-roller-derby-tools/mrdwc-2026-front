@@ -366,8 +366,6 @@ export interface ITeamWithRelations extends ITeam {
 export interface ITeamMember {
 	id: number;
 	team: number | ITeam;
-	firstname: string;
-	lastname: string;
 	derbyname: string;
 	number: string;
 	roles: string[];
@@ -382,8 +380,6 @@ export interface ITeamMember {
 export interface ILocalizedTeamMember {
 	id: number;
 	team: number | ITeam;
-	firstname: string;
-	lastname: string;
 	derbyname: string;
 	number: string;
 	roles: string[];
