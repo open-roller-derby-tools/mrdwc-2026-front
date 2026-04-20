@@ -130,5 +130,7 @@
 		"rankings_play": "Rankings Play (9–20)",
 		"eliminated": "Eliminated (21–24)"
 	},
-	"game_page": "Game page"
+	"game_page": "Game page",
+	"watch_live": "Watch live",
+	"watch_replay": "Watch replay"
 }

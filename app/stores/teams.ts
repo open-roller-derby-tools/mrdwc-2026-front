@@ -1,6 +1,6 @@
 /**
  https://pinia.vuejs.org/core-concepts/#Setup-Stores
- 
+
  In Setup Stores:
  - ref()s become state properties
  - computed()s become getters
@@ -31,6 +31,9 @@ type ITeamWithRelations = ITeam & {
 };
 
 export const useTeamsStore = defineStore("teams", () => {
+	const {
+		public: { apiBase },
+	} = useRuntimeConfig();
 	const { locale, fallbackLocale } = useI18n();
 
 	const isReady = ref<boolean>(false);
@@ -79,8 +82,6 @@ export const useTeamsStore = defineStore("teams", () => {
 			const memberFields = {
 				id: true,
 				team: true,
-				firstname: true,
-				lastname: true,
 				derbyname: true,
 				number: true,
 				roles: true,
@@ -101,11 +102,11 @@ export const useTeamsStore = defineStore("teams", () => {
 			};
 
 			const [teamsRes, membersRes, chartersRes] = await Promise.all([
-				$fetch<ITeamsRequestData>(buildRESTURL("teams", teamFields).href),
+				$fetch<ITeamsRequestData>(buildRESTURL(apiBase, "teams", teamFields).href),
 				$fetch<ITeamMembersRequestData>(
-					buildRESTURL("team_members", memberFields, { limit: -1 }).href
+					buildRESTURL(apiBase, "team_members", memberFields, { limit: -1 }).href
 				),
-				$fetch<IChartersRequestData>(buildRESTURL("charter", charterFields).href),
+				$fetch<IChartersRequestData>(buildRESTURL(apiBase, "charter", charterFields).href),
 			]);
 
 			const rawTeams = teamsRes.data;
@@ -160,8 +161,6 @@ export const useTeamsStore = defineStore("teams", () => {
 		return {
 			id: member.id,
 			team: member.team,
-			firstname: member.firstname,
-			lastname: member.lastname,
 			derbyname: member.derbyname,
 			number: member.number,
 			roles: member.roles,

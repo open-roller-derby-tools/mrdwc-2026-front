@@ -75,13 +75,13 @@ const isLoaded = ref(false);
 
 /**
  * Nom affiché :
- * derbyname > firstname
+ * derbyname
  */
 // const displayName = computed(() => {
 //   return props.member.derbyname?.trim() || props.member.firstname || "Unknown";
 // });
 const displayName = computed(() => {
-	return props.member.derbyname;
+	return props.member.derbyname?.trim() || "Unknown";
 });
 
 /**

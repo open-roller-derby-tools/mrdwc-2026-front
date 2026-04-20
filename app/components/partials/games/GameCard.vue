@@ -42,7 +42,7 @@
 				v-if="isGameInProgress(game)"
 				:href="`/live#track-${game.venue}`"
 				class="button--red flex-1"
-				><span>Watch live</span>
+				><span>{{ t("watch_live") }}</span>
 				<div class="relative inline-flex">
 					<UIcon
 						name="ic:round-fiber-manual-record"
@@ -56,11 +56,12 @@
 				v-if="game.state === GameState.Finished && game.video_url"
 				:href="`/games/${game.number}`"
 				class="button--red flex-1"
-				><span>Watch replay</span><UIcon name="ic:round-smart-display" class="size-6"
+				><span>{{ t("watch_replay") }}</span
+				><UIcon name="ic:round-smart-display" class="size-6"
 			/></NuxtLink>
 			<!-- Go to game page button -->
 			<NuxtLink :href="`/games/${game.number}`" class="button--yellow flex-1"
-				><span>Go to game page</span> <UIcon name="lucide:arrow-right" class="size-6"
+				><span>{{ t("game_page") }}</span> <UIcon name="lucide:arrow-right" class="size-6"
 			/></NuxtLink>
 		</div>
 	</div>
