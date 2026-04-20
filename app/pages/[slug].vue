@@ -44,6 +44,7 @@ const page = computed((): ILocalizedPage | null =>
 useHead({
   title: `${page.value?.title} - ${t("site_title")}`,
   htmlAttrs: { ...head.value.htmlAttrs },
+  link: head.value.link,
   bodyAttrs: {
     class: `${page.value?.slug} ${page.value?.classes}`,
   },

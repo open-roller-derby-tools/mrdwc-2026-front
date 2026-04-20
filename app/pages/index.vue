@@ -27,6 +27,7 @@ const page = computed((): ILocalizedPage | null => getPageWithSlug.value(""))
 useHead({
   title: `${page.value?.title} - ${t("site_title")}`,
   htmlAttrs: {...head.value.htmlAttrs},
+  link: head.value.link,
   bodyAttrs: {
     class: `home ${page.value?.classes}`,
   },
