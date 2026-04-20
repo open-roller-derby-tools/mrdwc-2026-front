@@ -10,6 +10,7 @@ export default withNuxt(
 			"vue/multi-word-component-names": "off",
 			// This project uses v-html intentionally for CMS rich text content
 			"vue/no-v-html": "off",
+			"no-case-declarations": "off",
 		},
-	},
+	}
 );
