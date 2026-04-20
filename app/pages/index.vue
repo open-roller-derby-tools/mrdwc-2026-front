@@ -2,9 +2,9 @@
   <div>
     <div v-if="pagesStore.isReady && page">
       <component
+        :is="getBlockComponent(block.collection)"
         v-for="block, i in page.blocks"
         :key="`block_${i}`"
-        :is="getBlockComponent(block.collection)"
         :data="block"
       ></component>
     </div>
@@ -27,6 +27,7 @@ const page = computed((): ILocalizedPage | null => getPageWithSlug.value(""))
 useHead({
   title: `${page.value?.title} - ${t("site_title")}`,
   htmlAttrs: {...head.value.htmlAttrs},
+  link: head.value.link,
   bodyAttrs: {
     class: `home ${page.value?.classes}`,
   },

@@ -28,9 +28,9 @@
         :src="`${config.public.apiBase}/assets/${member.rosterPhoto}?width=300&quality=70`"
         :alt="displayName"
         loading="lazy"
-        @load="isLoaded = true"
         class="absolute inset-0 w-full h-full object-cover object-top transition-all duration-500"
         :class="isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'"
+        @load="isLoaded = true"
       />
     </div>
 

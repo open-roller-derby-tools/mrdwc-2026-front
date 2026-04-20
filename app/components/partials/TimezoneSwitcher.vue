@@ -3,7 +3,8 @@
         <p class="font-shoulders font-bold sm:text-lg text-balance flex items-center gap-2 leading-tight">
             <span>{{ t('calendar.current_timezone', { timezone: active_timezone }) }}</span>
         </p>
-        <p v-if="user_timezone !== tournament_timezone"
+        <p
+v-if="user_timezone !== tournament_timezone"
             class="mt-2 flex flex-col gap-0 sm:gap-1 sm:flex-row sm:items-center cursor-pointer font-bold text-lg sm:text-base leading-tight"
             @click="toggleTimezone">
             <UIcon name="i-ic-round-swap-horiz" class="size-6 hidden sm:block text-red-text" />

@@ -2,7 +2,8 @@
   <div class="maxed padded my-6 sm:my-10">
     <h2>{{ t("applications.title") }}</h2>
 
-    <UCarousel v-slot="{ item }" :items="activeApplications" :arrows="shouldShowNav" :dots="shouldShowNav"
+    <UCarousel
+v-slot="{ item }" :items="activeApplications" :arrows="shouldShowNav" :dots="shouldShowNav"
       :prev="{ variant: 'ghost', color: 'primary', size: 'xl' }"
       :next="{ variant: 'ghost', color: 'primary', size: 'xl' }" prev-icon="i-lucide-chevron-left"
       next-icon="i-lucide-chevron-right" :ui="{

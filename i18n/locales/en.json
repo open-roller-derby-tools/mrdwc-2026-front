@@ -72,6 +72,21 @@
 		"in_progress_p2": "Live (P2)",
 		"finished": "Finished"
 	},
+	"game_duration": {
+		"2x15": "2×15 min",
+		"2x30": "2×30 min"
+	},
+	"game_type": {
+		"groups_stage": "Group Stage",
+		"rankings_play": "Rankings Play",
+		"top_eight": "Top Eight",
+		"quarterfinals": "Quarterfinal",
+		"lower_top_eight": "Lower Top Eight",
+		"upper_top_eight": "Upper Top Eight",
+		"semifinals": "Semifinal",
+		"lower_final": "Lower Final",
+		"grand_final": "Grand Final"
+	},
 	"no_spoiler_mode": {
 		"title": "No Spoilers Mode",
 		"show_spoilers": "Show spoilers",
@@ -82,12 +97,38 @@
 		"disabled_description": "Scores, rankings and non-groups-stage matchups are visible."
 	},
 	"calendar_track": "Track {index} - {name}",
-	"calendar_track_short": "Track {index}",
+	"calendar_track_short": "Track {index} | Track {index}:",
 	"calendar_track_all": "All games",
-	"calendar_test": "Track {index} | Track {index}:",
 	"previous_participations": "Previous participations:",
 	"first_participation": "First participation",
 	"support": "Support your team!",
 	"notifications_on": "Notifications enabled",
-	"notifications_off": "Enable notifications"
+	"notifications_off": "Enable notifications",
+	"group": "Group {number} | Group {number}:",
+	"groups": "Group | Groups",
+	"teams": "Team | Teams",
+	"rankings": {
+		"played": "Played",
+		"played_short": "P",
+		"won": "Won",
+		"won_short": "W",
+		"lost": "Lost",
+		"lost_short": "L",
+		"for": "For",
+		"for_short": "F",
+		"against": "Against",
+		"against_short": "A",
+		"diff": "Diff",
+		"diff_short": "D",
+		"diff_full": "Differential",
+		"adj": "Adj",
+		"adj_short": "Adj",
+		"adj_full": "Adjusted Differential",
+		"see_scores_and_games": "See scores & games",
+		"hide_scores_and_games": "Hide scores & games",
+		"bracket_play": "Bracket Play (1–8)",
+		"rankings_play": "Rankings Play (9–20)",
+		"eliminated": "Eliminated (21–24)"
+	},
+	"game_page": "Game page"
 }

@@ -1,8 +1,8 @@
 <template>
   <button
-    @click="toggle"
     class="group flex items-center text-md gap-2 px-3 py-2 rounded-xl font-semibold transition-all duration-300 cursor-pointer border"
     :class="isActive ? activeClass : inactiveClass"
+    @click="toggle"
   >
     <UIcon
       :name="isActive ? 'i-lucide-bell' : 'i-lucide-bell-off'"

@@ -72,6 +72,21 @@
 		"in_progress_p2": "En cours (P2)",
 		"finished": "Terminé"
 	},
+	"game_duration": {
+		"2x15": "2×15 min",
+		"2x30": "2×30 min"
+	},
+	"game_type": {
+		"groups_stage": "Phase de groupes",
+		"rankings_play": "Match de classement",
+		"top_eight": "Top 8",
+		"quarterfinals": "Quart de finale",
+		"lower_top_eight": "Bas Top 8",
+		"upper_top_eight": "Haut Top 8",
+		"semifinals": "Demi-finale",
+		"lower_final": "Petite finale",
+		"grand_final": "Grande finale"
+	},
 	"no_spoiler_mode": {
 		"title": "Mode sans spoilers",
 		"show_spoilers": "Afficher les spoilers",
@@ -82,12 +97,38 @@
 		"disabled_description": "Les scores, classements et rencontres (hors phase de groupes) sont visibles."
 	},
 	"calendar_track": "Track {index} - {name}",
-	"calendar_track_short": "Track {index}",
+	"calendar_track_short": "Track {index} | Track {index} :",
 	"calendar_track_all": "Tous les matchs",
-	"calendar_test": "Track {index} | Track {index} :",
 	"previous_participations": "Précédentes participations :",
 	"first_participation": "Première participation",
 	"support": "Soutenez votre équipe !",
 	"notifications_on": "Notifications activées",
-	"notifications_off": "Activer les notifications"
+	"notifications_off": "Activer les notifications",
+	"group": "Groupe {number} | Groupe {number} :",
+	"groups": "Groupe | Groupes",
+	"teams": "Équipe | Équipes",
+	"rankings": {
+		"played": "Joués",
+		"played_short": "J",
+		"won": "Gagnés",
+		"won_short": "G",
+		"lost": "Perdus",
+		"lost_short": "P",
+		"for": "Pour",
+		"for_short": "P",
+		"against": "Contre",
+		"against_short": "C",
+		"diff": "Diff",
+		"diff_short": "D",
+		"diff_full": "Différentiel",
+		"adj": "Aj",
+		"adj_short": "Aj",
+		"adj_full": "Différentiel ajusté",
+		"see_scores_and_games": "Voir les scores & les matchs",
+		"hide_scores_and_games": "Masquer les scores & les matchs",
+		"bracket_play": "Phase finale (1–8)",
+		"rankings_play": "Phase de classement (9–20)",
+		"eliminated": "Eliminés (21–24)"
+	},
+	"game_page": "Page du match"
 }

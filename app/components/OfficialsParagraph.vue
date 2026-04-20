@@ -4,7 +4,8 @@
     <div class="text-pretty">
       <p class="mb-6">{{ t("officials_application_text.line1") }}</p>
       <p class="">{{ t("officials_application_text.line2") }}</p>
-      <p v-html="t('officials_application_text.date1', {
+      <p
+v-html="t('officials_application_text.date1', {
         date: formattedDate1,
       })
         "></p>
@@ -18,7 +19,8 @@
         })
           "
       ></p>
-      <p v-html="t('officials_application_text.date3', {
+      <p
+v-html="t('officials_application_text.date3', {
         date: formattedDate3,
       })
         "></p>
