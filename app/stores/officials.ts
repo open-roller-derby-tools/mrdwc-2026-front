@@ -1,6 +1,6 @@
 /**
  https://pinia.vuejs.org/core-concepts/#Setup-Stores
- 
+
  In Setup Stores:
  - ref()s become state properties
  - computed()s become getters
@@ -41,7 +41,9 @@ export const useOfficialsStore = defineStore("officials", () => {
 					officials_id: {
 						id: true,
 						name: true,
-						country: true,
+						country: {
+							three_letters_code: true,
+						},
 						roles: true,
 					},
 				},
@@ -49,7 +51,9 @@ export const useOfficialsStore = defineStore("officials", () => {
 					officials_id: {
 						id: true,
 						name: true,
-						country: true,
+						country: {
+							three_letters_code: true,
+						},
 						roles: true,
 					},
 				},
@@ -82,7 +86,7 @@ export const useOfficialsStore = defineStore("officials", () => {
 				(crew.members_so as IOfficialId[])?.map((member: IOfficialId) => ({
 					id: member.officials_id?.id || 0,
 					name: member.officials_id?.name || "",
-					country: member.officials_id?.country || "",
+					country: member.officials_id?.country?.three_letters_code || "",
 					roles: member.officials_id?.roles || [],
 				})) || [];
 
@@ -91,7 +95,7 @@ export const useOfficialsStore = defineStore("officials", () => {
 				(crew.members_nso as IOfficialId[])?.map((member: IOfficialId) => ({
 					id: member.officials_id?.id || 0,
 					name: member.officials_id?.name || "",
-					country: member.officials_id?.country || "",
+					country: member.officials_id?.country?.three_letters_code || "",
 					roles: member.officials_id?.roles || [],
 				})) || [];
 
