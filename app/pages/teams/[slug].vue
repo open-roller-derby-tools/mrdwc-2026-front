@@ -130,69 +130,13 @@
 				</div>
 			</div>
 
-			<div v-if="upcomingGames.length" class="pb-5 mt-14">
-				<div class="flex justify-between items-center mb-6">
-					<h2 class="text-2xl font-shoulders text-white mb-0">
-						{{ upcomingGames.length === 1 ? t("next_game") : t("next_games") }}
-					</h2>
-
-					<NuxtLink
-						to="/games"
-						class="hidden sm:inline-flex arrow--link lowcase-link text-sm hover:text-yellow"
-					>
-						{{ t("all_games") }}
-					</NuxtLink>
-				</div>
-
-				<div class="flex flex-col gap-3">
-					<div
-						v-for="game in upcomingGames"
-						:key="game.id"
-						class="bg-blue-text rounded-lg p-4 flex justify-between items-center"
-					>
-						<div class="text-white">
-							<p class="font-semibold">{{ team.name_letters }} vs {{ getOpponent(game) }}</p>
-							<p class="text-sm text-white/70">
-								{{ formatGameDate(game.start_time) }}
-							</p>
-						</div>
-
-						<div class="flex items-center gap-3">
-							<div
-								:class="getGameStatus(game).class"
-								class="flex items-center gap-2 px-3 py-1 rounded-full text-xs"
-							>
-								<UIcon :name="getGameStatus(game).icon" class="w-4 h-4" />
-								<span>{{ getGameStatus(game).label }}</span>
-							</div>
-
-							<!-- Watch live button -->
-							<NuxtLink
-								v-if="isLiveState(game.state)"
-								:href="`/live#track-${game.venue}`"
-								class="button--red flex-1 px-3!"
-							>
-								<span class="text-md sm:text-lg">{{ t("watch_live") }}</span>
-								<div class="relative inline-flex">
-									<UIcon
-										name="ic:round-fiber-manual-record"
-										class="absolute size-5 opacity-75 animate-ping"
-									/>
-									<UIcon name="ic:round-fiber-manual-record" class="size-5" />
-								</div>
-							</NuxtLink>
-						</div>
-					</div>
-				</div>
-				<div class="flex justify-center items-center mt-8">
-					<NuxtLink
-						to="/matches"
-						class="inline-flex sm:hidden arrow--link lowcase-link hover:text-yellow"
-					>
-						{{ t("all_games") }}
-					</NuxtLink>
-				</div>
-			</div>
+			<TeamGamesList :team="team" />
+			<NuxtLink
+				to="/games"
+				class="inline-flex sm:hidden arrow--link lowcase-link hover:text-yellow"
+			>
+				{{ t("all_games") }}
+			</NuxtLink>
 		</div>
 
 		<!-- CHARTER & STAFF -->
@@ -388,8 +332,6 @@
 <script setup lang="ts">
 import type { ILocalizedTeamMember } from "~~/types/custom";
 import type { Swiper as SwiperInstance } from "swiper/types";
-import type { IGame } from "~~/types/games";
-import { useGamesStore } from "~/stores/games";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import PageHeader from "~/components/partials/PageHeader.vue";
@@ -397,20 +339,15 @@ import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
 import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 import TeamMemberCard from "~/components/TeamMemberCard.vue";
-
+import TeamGamesList from "~/components/partials/TeamGamesList.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
+
 const route = useRoute();
+const { t } = useI18n();
 const config = useRuntimeConfig();
 const teamsStore = useTeamsStore();
-const gamesStore = useGamesStore();
-const { t } = useI18n();
-// import "swiper/css";
 
-useGamesAutoRefresh({ intervalMs: 60000 });
-
-const team = computed(() =>
-	teamsStore.localizedTeams.find((t) => t.slug === String(route.params.slug))
-);
+const team = computed(() => teamsStore.getTeamBySlug(String(route.params.slug)) ?? null);
 
 const sortedParticipations = computed(() => {
 	if (!team.value?.previousParticipations) return [];
@@ -419,110 +356,6 @@ const sortedParticipations = computed(() => {
 });
 
 const isFirstParticipation = computed(() => team.value?.previousParticipations?.includes("2026"));
-
-// const notificationsEnabled = ref(false);
-
-// const toggleNotifications = () => {
-//   notificationsEnabled.value = !notificationsEnabled.value;
-// };
-
-const { locale } = useI18n();
-
-const isEN = computed(() => locale.value?.startsWith("en"));
-
-const formatGameDate = (date: string) => {
-	const lang = isEN.value ? "en-GB" : "fr-FR";
-
-	return new Date(date).toLocaleString(lang, {
-		weekday: "short",
-		day: "2-digit",
-		month: "short",
-		hour: "2-digit",
-		minute: "2-digit",
-	});
-};
-
-const allGames = gamesStore.gamesData;
-
-const upcomingGames = computed<IGame[]>(() => {
-	if (!team.value || !allGames?.length) return [];
-
-	const now = new Date();
-
-	return allGames
-		.filter((game) => {
-			const isTeamGame = game.home_team === team.value!.id || game.away_team === team.value!.id;
-
-			const gameDate = new Date(game.start_time);
-
-			return isTeamGame && gameDate > now;
-		})
-		.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime());
-});
-
-const getOpponent = (game: IGame) => {
-	if (game.home_team === team.value?.id) {
-		return game.away_source;
-	}
-	return game.home_source;
-};
-
-const getGameStatus = (game: IGame) => {
-	const base = {
-		icon: "",
-		class: "",
-		label: "",
-		isLive: false,
-	};
-
-	switch (game.state) {
-		case "scheduled":
-			return {
-				...base,
-				label: t("game_state.scheduled"),
-				icon: "i-lucide-calendar",
-				class: "bg-blue-500/20 border border-white/40 text-white/60 py-3 px-2",
-			};
-
-		case "pre_game":
-			return {
-				...base,
-				label: t("game_state.pre_game"),
-				icon: "i-lucide-clock",
-				class: "bg-yellow-500/20 border border-yellow/40 text-yellow py-3 px-2",
-			};
-
-		// case "in_progress_p1":
-		// case "in_progress_p2":
-		// case "half_time":
-		// 	return {
-		// 		...base,
-		// 		label: t("game_state.in_progress_p1"),
-		// 		icon: "i-lucide-radio",
-		// 		class: "bg-red-500/20 border border-red-light text-white animate-pulse py-3 px-2",
-		// 		isLive: true,
-		// 	};
-
-		case "finished":
-			return {
-				...base,
-				label: t("game_state.finished"),
-				icon: "i-lucide-check-circle",
-				class: "bg-gray-500/20 text-gray-300 border border-white/20 py-3 px-2",
-			};
-
-		default:
-			return {
-				...base,
-				// label: game.state,
-				// icon: "i-lucide-help-circle",
-				// class: "bg-white/10 text-white/60 py-3 px-2",
-			};
-	}
-};
-
-const isLiveState = (state: IGame["state"]) =>
-	["in_progress_p1", "in_progress_p2", "half_time"].includes(state);
 
 const tabsConfig = computed(() => ({
 	anchor_id: "team-tabs",
