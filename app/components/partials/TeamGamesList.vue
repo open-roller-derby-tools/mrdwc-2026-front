@@ -14,11 +14,7 @@
 			>
 				<div class="space-y-2">
 					<div class="flex items-center gap-2">
-						<TeamLettersBadge
-							:team="getTeam(game, 'home')"
-							:fallback="game.home_source"
-							:style="getTeamColors(game, 'home', false)"
-						/>
+						<TeamLettersBadge :team="getTeam(game, 'home')" :fallback="game.home_source" />
 						<div
 							v-if="hasGameStarted(game) && !isNoSpoilerModeActive"
 							class="flex items-center gap-1"
@@ -31,11 +27,7 @@
 								{{ game.away_score }}
 							</span>
 						</div>
-						<TeamLettersBadge
-							:team="getTeam(game, 'away')"
-							:fallback="game.away_source"
-							:style="getTeamColors(game, 'away', false)"
-						/>
+						<TeamLettersBadge :team="getTeam(game, 'away')" :fallback="game.away_source" />
 					</div>
 					<p class="text-sm sm:text-base text-white/70 capitalize text-balance leading-none">
 						{{ formatDay(game.start_time) }}, {{ formatTime(game.start_time) }}
@@ -73,7 +65,7 @@ import { hasGameStarted } from "~/utils/game";
 
 const gamesStore = useGamesStore();
 const { getGamesByTeam } = gamesStore;
-const { getTeam, getTeamColors } = useGameFormatting();
+const { getTeam } = useGameFormatting();
 const { formatDay, formatTime } = useFormatTimeLocalized();
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
 

@@ -23,7 +23,7 @@
 						<div
 							class="flex flex-col flex-1 border-y border-r border-white/40 sm:border-0 pl-4 sm:p-0 leading-none sm:items-center justify-center sm:justify-start h-full gap-2 py-2 sm:py-0 bg-white/10 sm:bg-transparent rounded-e-xl"
 						>
-							<TeamLettersBadge :team="team" />
+							<!-- <TeamLettersBadge :team="team" /> -->
 							<p
 								class="text-2xl sm:text-xl lg:text-2xl font-shoulders text-white leading-7 text:left sm:text-center"
 							>
@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts" setup>
-import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
+// import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
 
 const teamsStore = useTeamsStore();
 const config = useRuntimeConfig();
