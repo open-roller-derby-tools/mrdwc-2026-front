@@ -10,25 +10,13 @@
 import { defineStore } from "pinia";
 import type {
 	ITeamsRequestData,
-	ITeam,
 	ILocalizedTeam,
 	ITeamMember,
 	ILocalizedTeamMember,
-	ICharter,
-} from "~~/types/custom";
-
-type ITeamMembersRequestData = {
-	data: ITeamMember[];
-};
-
-type IChartersRequestData = {
-	data: ICharter[];
-};
-
-type ITeamWithRelations = ITeam & {
-	members: ITeamMember[];
-	charter: ITeamMember[];
-};
+	ITeamWithRelations,
+	ITeamMembersRequestData,
+	IChartersRequestData,
+} from "~~/types/teams";
 
 export const useTeamsStore = defineStore("teams", () => {
 	const {

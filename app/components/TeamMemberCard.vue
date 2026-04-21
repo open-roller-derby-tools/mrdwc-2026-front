@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ILocalizedTeamMember } from "~~/types/custom";
+import type { ILocalizedTeamMember } from "~~/types/teams";
 
 const props = defineProps<{
 	member: ILocalizedTeamMember;

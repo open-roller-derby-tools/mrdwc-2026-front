@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { ILocalizedTeam } from "~~/types/custom";
+import type { ILocalizedTeam } from "~~/types/teams";
 
 const props = defineProps<{
 	team: ILocalizedTeam | null;

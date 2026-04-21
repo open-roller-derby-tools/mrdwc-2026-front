@@ -313,7 +313,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
-import type { ILocalizedTeamMember } from "~~/types/custom";
+import type { ILocalizedTeamMember } from "~~/types/teams";
 import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
 import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";

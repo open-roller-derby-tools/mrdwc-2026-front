@@ -66,7 +66,7 @@ import NoSpoilerModeToggle from "../navigation/NoSpoilerModeToggle.vue";
 import ModalContainer from "../partials/ModalContainer.vue";
 import GameCard from "./games/GameCard.vue";
 
-import type { ILocalizedTeam } from "~~/types/custom";
+import type { ILocalizedTeam } from "~~/types/teams";
 import { useGamesStore } from "~/stores/games";
 import { useGameFormatting } from "~/composables/useGameFormatting";
 import { hasGameStarted } from "~/utils/game";

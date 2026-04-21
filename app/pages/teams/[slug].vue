@@ -325,7 +325,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ILocalizedTeamMember } from "~~/types/custom";
+import type { ILocalizedTeamMember } from "~~/types/teams";
 import type { Swiper as SwiperInstance } from "swiper/types";
 
 import { computed, ref } from "vue";
