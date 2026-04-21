@@ -29,18 +29,15 @@
 						/>
 					</div>
 					<div class="flex-2">
-						<TeamLettersBadge :team="team" class="px-2.5! py-1! text-base! sm:text-lg! mb-2" />
 						<h1 v-if="team.name" class="flex gap-2 items-center mb-2">
 							{{ team.name }}
 						</h1>
-						<p v-if="countriesRepresented" class="mt-2 italic">
-							{{ countriesRepresented }}
-						</p>
-						<!--
-              <p v-if="team.history" class="mt-6 text-left sm:text-justify">
-              {{ team.history }}
-            </p>
-            -->
+						<div class="flex items-center gap-3 mt-2">
+							<TeamLettersBadge :team="team" class="px-2.5! py-1! text-base! sm:text-lg!" />
+							<p v-if="countriesRepresented" class="italic leading-none">
+								{{ countriesRepresented }}
+							</p>
+						</div>
 						<!-- PREMIÈRE PARTICIPATION -->
 						<div v-if="isFirstParticipation" class="mt-8 mb-10">
 							<div class="flex items-center gap-2">
