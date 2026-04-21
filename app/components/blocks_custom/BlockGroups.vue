@@ -78,7 +78,7 @@
 											:fallback="null"
 											class=""
 										/>
-										<NuxtLink
+										<NuxtLinkLocale
 											:to="`/teams/${getTeamById(standing.teamId)?.slug}`"
 											class="hover:underline text-left"
 										>
@@ -88,7 +88,7 @@
 													getTeamById(standing.teamId)?.name
 												}}
 											</span>
-										</NuxtLink>
+										</NuxtLinkLocale>
 									</div>
 								</td>
 								<td class="">{{ standing.played }}</td>
@@ -186,10 +186,13 @@
 								</div>
 								<div class="flex items-center justify-between px-3 py-1.5 bg-yellow text-blue-text">
 									<GameStateLabel :game="game" :with-background="false" :show-time="true" />
-									<NuxtLink :to="`/games/${game.id}`" class="flex items-center gap-1 text-black">
+									<NuxtLinkLocale
+										:to="`/games/${game.number}`"
+										class="flex items-center gap-1 text-black"
+									>
 										<span class="text-sm">{{ t("game_page") }}</span>
 										<UIcon name="lucide:arrow-right" class="size-4" />
-									</NuxtLink>
+									</NuxtLinkLocale>
 								</div>
 							</div>
 						</div>

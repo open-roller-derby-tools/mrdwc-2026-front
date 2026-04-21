@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div class="maxed padded mt-8">
-			<NuxtLink to="/announcers/teams" class="flex items-center gap-2 text-yellow">
+			<NuxtLinkLocale to="/announcers/teams" class="flex items-center gap-2 text-yellow">
 				<UIcon name="i-lucide-arrow-left" class="size-6" />
 				<span class="underline underline-offset-2 text-lg">Back to teams</span>
-			</NuxtLink>
+			</NuxtLinkLocale>
 		</div>
 		<div v-if="team">
 			<div v-if="team" class="maxed padded pt-6 sm:pt-16">
@@ -19,6 +19,7 @@
 							/>
 						</div>
 						<div class="flex-2">
+							<TeamLettersBadge :team="team" class="px-2.5! py-1! text-base! sm:text-lg! mb-2" />
 							<h1 v-if="team.name" class="flex gap-2 items-center mb-2">
 								{{ team.name }}
 							</h1>
@@ -69,29 +70,29 @@
 							v-if="team.facebook || team.instagram || team.website"
 							class="flex flex-row gap-3 sm:gap-4 items-center"
 						>
-							<NuxtLink
+							<a
 								v-if="team.facebook"
-								:to="team.facebook"
+								:href="team.facebook"
 								target="_blank"
 								class="group hover:text-yellow duration-200 transition-all"
 							>
 								<IconFacebook class="w-10 h-10 transition-all duration-200 group-hover:scale-125" />
-							</NuxtLink>
+							</a>
 
-							<NuxtLink
+							<a
 								v-if="team.instagram"
-								:to="team.instagram"
+								:href="team.instagram"
 								target="_blank"
 								class="group hover:text-yellow duration-200 transition-all"
 							>
 								<IconInstagram
 									class="w-10 h-10 transition-all duration-200 group-hover:scale-125"
 								/>
-							</NuxtLink>
+							</a>
 
-							<NuxtLink
+							<a
 								v-if="team.website"
-								:to="team.website"
+								:href="team.website"
 								target="_blank"
 								class="group hover:text-yellow duration-200 transition-all flex items-center justify-center"
 							>
@@ -99,12 +100,12 @@
 									name="i-lucide-globe"
 									class="w-11 h-11 transition-all duration-200 group-hover:scale-125"
 								/>
-							</NuxtLink>
+							</a>
 						</div>
 						<div v-if="team.crowdfunding" class="flex flex-row gap-2 sm:gap-4">
-							<NuxtLink
+							<a
 								v-if="team.crowdfunding"
-								:to="team.crowdfunding"
+								:href="team.crowdfunding"
 								target="_blank"
 								class="group inline-flex items-center text-lg gap-2 border-1 border-yellow bg-yellow text-blue-text px-5 py-3 rounded-full font-semibold hover:bg-red-200 hover:text-red-light hover:border-red-light transition-all duration-200 cursor-pointer"
 							>
@@ -113,7 +114,7 @@
 									class="size-7 transition-all duration-200 group-hover:scale-125"
 								/>
 								{{ t("support") }}
-							</NuxtLink>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -311,14 +312,17 @@
 </template>
 
 <script setup lang="ts">
+import type { ILocalizedTeamMember } from "~~/types/teams";
+
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
-import type { ILocalizedTeamMember } from "~~/types/teams";
+
+import { Swiper, SwiperSlide } from "swiper/vue";
 import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
 import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 import TeamMemberCard from "~/components/TeamMemberCard.vue";
-import { Swiper, SwiperSlide } from "swiper/vue";
+import TeamLettersBadge from "~/components/partials/TeamLettersBadge.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -329,9 +333,7 @@ definePageMeta({
 	layout: "announcers",
 });
 
-const team = computed(() =>
-	teamsStore.localizedTeams.find((t) => t.slug === String(route.params.slug))
-);
+const team = computed(() => teamsStore.getTeamBySlug(String(route.params.slug)) ?? null);
 
 const sortedParticipations = computed(() => {
 	if (!team.value?.previousParticipations) return [];

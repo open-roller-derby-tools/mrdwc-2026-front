@@ -58,7 +58,7 @@
 						<td class="!pl-2">
 							<div class="flex flex-col items-start sm:flex-row sm:items-center gap-1 sm:gap-3">
 								<TeamLettersBadge :team="getTeamById(standing.teamId)" />
-								<NuxtLink
+								<NuxtLinkLocale
 									:to="`/teams/${getTeamById(standing.teamId)?.slug}`"
 									class="hover:underline text-left"
 								>
@@ -67,7 +67,7 @@
 											getTeamById(standing.teamId)?.country ?? getTeamById(standing.teamId)?.name
 										}}
 									</span>
-								</NuxtLink>
+								</NuxtLinkLocale>
 							</div>
 						</td>
 						<td class="">{{ standing.played }}</td>

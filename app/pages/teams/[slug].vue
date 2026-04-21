@@ -33,8 +33,8 @@
 						<h1 v-if="team.name" class="flex gap-2 items-center mb-2">
 							{{ team.name }}
 						</h1>
-						<p v-if="team.countriesRepresented" class="mt-2 italic">
-							{{ team.countriesRepresented }}
+						<p v-if="countriesRepresented" class="mt-2 italic">
+							{{ countriesRepresented }}
 						</p>
 						<!--
               <p v-if="team.history" class="mt-6 text-left sm:text-justify">
@@ -81,27 +81,27 @@
 						v-if="team.facebook || team.instagram || team.website"
 						class="flex flex-row gap-3 sm:gap-4 items-center"
 					>
-						<NuxtLink
+						<a
 							v-if="team.facebook"
-							:to="team.facebook"
+							:href="team.facebook"
 							target="_blank"
 							class="group hover:text-yellow duration-200 transition-all"
 						>
 							<IconFacebook class="w-10 h-10 transition-all duration-200 group-hover:scale-125" />
-						</NuxtLink>
+						</a>
 
-						<NuxtLink
+						<a
 							v-if="team.instagram"
-							:to="team.instagram"
+							:href="team.instagram"
 							target="_blank"
 							class="group hover:text-yellow duration-200 transition-all"
 						>
 							<IconInstagram class="w-10 h-10 transition-all duration-200 group-hover:scale-125" />
-						</NuxtLink>
+						</a>
 
-						<NuxtLink
+						<a
 							v-if="team.website"
-							:to="team.website"
+							:href="team.website"
 							target="_blank"
 							class="group hover:text-yellow duration-200 transition-all flex items-center justify-center"
 						>
@@ -109,12 +109,12 @@
 								name="i-lucide-globe"
 								class="w-11 h-11 transition-all duration-200 group-hover:scale-125"
 							/>
-						</NuxtLink>
+						</a>
 					</div>
 					<div v-if="team.crowdfunding" class="flex flex-row gap-2 sm:gap-4">
-						<NuxtLink
+						<a
 							v-if="team.crowdfunding"
-							:to="team.crowdfunding"
+							:href="team.crowdfunding"
 							target="_blank"
 							class="group inline-flex items-center text-lg gap-2 border-1 border-yellow bg-yellow text-blue-text px-5 py-3 rounded-full font-semibold hover:bg-red-200 hover:text-red-light hover:border-red-light transition-all duration-200 cursor-pointer"
 						>
@@ -123,15 +123,15 @@
 								class="size-7 transition-all duration-200 group-hover:scale-125"
 							/>
 							{{ t("support") }}
-						</NuxtLink>
+						</a>
 					</div>
 				</div>
 			</div>
 
 			<TeamGamesList :team="team" class="mt-8 mb-4" />
-			<NuxtLink to="/games" class="inline-flex arrow--link lowcase-link hover:text-yellow">
+			<NuxtLinkLocale to="/games" class="inline-flex arrow--link lowcase-link hover:text-yellow">
 				{{ t("all_games") }}
-			</NuxtLink>
+			</NuxtLinkLocale>
 		</div>
 
 		<!-- CHARTER & STAFF -->
@@ -345,6 +345,10 @@ const config = useRuntimeConfig();
 const teamsStore = useTeamsStore();
 
 const team = computed(() => teamsStore.getTeamBySlug(String(route.params.slug)) ?? null);
+
+const countriesRepresented = computed(() => {
+	return team.value?.countriesRepresented ?? team.value?.country ?? null;
+});
 
 const sortedParticipations = computed(() => {
 	if (!team.value?.previousParticipations) return [];

@@ -12,14 +12,14 @@
 				>
 					<SwiperSlide v-for="(team, i) in formattedTeams" :key="`team_mobile_${i}`" class="flex">
 						<div class="flex flex-col items-center gap-3 w-full">
-							<NuxtLink :to="`/announcers/teams/${team.slug}`" class="w-2/3">
+							<NuxtLinkLocale :to="`/announcers/teams/${team.slug}`" class="w-2/3">
 								<NuxtImg
 									:src="`${config.public.apiBase}/assets/${team.logo}?width=300`"
 									:alt="team.name"
 									:title="team.name"
 									class="w-full object-contain cursor-pointer rounded-lg p-2 bg-white"
 								/>
-							</NuxtLink>
+							</NuxtLinkLocale>
 
 							<div class="text-center min-h-[2.5lh]">
 								<p class="text-3xl font-shoulders leading-none">
@@ -41,7 +41,7 @@
 				class="hidden sm:grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center list-none"
 			>
 				<li v-for="(team, i) in formattedTeams" :key="`team_${i}`">
-					<NuxtLink
+					<NuxtLinkLocale
 						:to="`/announcers/teams/${team.slug}`"
 						class="flex flex-col items-center justify-start gap-3"
 					>
@@ -60,7 +60,7 @@
 								{{ team.displayName }}
 							</p>
 						</div>
-					</NuxtLink>
+					</NuxtLinkLocale>
 				</li>
 			</ul>
 

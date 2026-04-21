@@ -197,7 +197,6 @@ export const useGamesStore = defineStore("games", () => {
 	// Games grouped by team
 
 	function getGamesByTeam(teamId: number): IGame[] {
-		console.log("isNoSpoilerModeActive.value", isNoSpoilerModeActive.value);
 		return (
 			gamesData.value?.filter(
 				(game) =>
