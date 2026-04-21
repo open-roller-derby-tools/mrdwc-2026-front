@@ -6,7 +6,7 @@
 			<li
 				v-for="game in getGamesByTeam(team.id)"
 				:key="game.id"
-				class="bg-blue-text rounded-lg px-4 py-3 flex justify-between items-center"
+				class="bg-blue-text rounded-lg px-4 py-3 flex justify-between items-center select-none cursor-pointer"
 				@click="
 					selectedGame = game;
 					showGameCard = true;
