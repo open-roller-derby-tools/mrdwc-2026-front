@@ -132,5 +132,14 @@
 	},
 	"game_page": "Game page",
 	"watch_live": "Watch live",
-	"watch_replay": "Watch replay"
+	"watch_replay": "Watch replay",
+	"announcers_info": "Announcers Information",
+	"team_history": "Team History",
+	"team_anecdotes": "Team Anecdotes",
+	"preparation_games": "Preparation Games",
+	"national_anthem": "National Anthem",
+	"anthem_audio": "Anthem Audio",
+	"parade_audio": "Parade Audio",
+	"countries_represented": "Countries Represented",
+	"play_audio": "Play audio"
 }

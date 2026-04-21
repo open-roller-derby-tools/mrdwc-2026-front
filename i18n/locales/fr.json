@@ -132,5 +132,14 @@
 	},
 	"game_page": "Page du match",
 	"watch_live": "Regarder en direct",
-	"watch_replay": "Revoir le match"
+	"watch_replay": "Revoir le match",
+	"announcers_info": "Informations Annonceurs",
+	"team_history": "Histoire de l'équipe",
+	"team_anecdotes": "Anecdotes de l'équipe",
+	"preparation_games": "Matchs de préparation",
+	"national_anthem": "Hymne national",
+	"anthem_audio": "Audio de l'hymne",
+	"parade_audio": "Audio de parade",
+	"countries_represented": "Pays représentés",
+	"play_audio": "Écouter l'audio"
 }
