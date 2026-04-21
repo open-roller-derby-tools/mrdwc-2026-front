@@ -23,7 +23,7 @@ export const useNotificationsStore = defineStore('notifications', {
     async fetchAll(userId: string) {
       const [allChannels, userSubs, teamSubs] = await Promise.all([
         $fetch<IChannel[]>('/api/channels/list'),
-        $fetch<IUserSubscription[]>(`/api/subscriptions/${userId}`),
+        $fetch<IUserSubscription[]>(`/api/channel-subscriptions/${userId}`),
         $fetch<{ team_id: number }[]>(`/api/team-subscriptions/${userId}`)
       ])
 
@@ -42,8 +42,8 @@ export const useNotificationsStore = defineStore('notifications', {
       try {
         // API call
         const endpoint = wasSubscribed
-          ? '/api/subscriptions/unsubscribe'
-          : '/api/subscriptions/subscribe'
+          ? '/api/channel-subscriptions/unsubscribe'
+          : '/api/channel-subscriptions/subscribe'
 
         await $fetch(endpoint, {
           method: 'POST',
