@@ -163,7 +163,12 @@
 											:fallback="game.home_source"
 										/>
 										<span class="font-medium text-sm">
-											{{ getTeamById(game.home_team ?? -1)?.name ?? game.home_source ?? "---" }}
+											{{
+												getTeamById(game.home_team ?? -1)?.country ??
+												getTeamById(game.home_team ?? -1)?.name ??
+												game.home_source ??
+												"---"
+											}}
 										</span>
 									</div>
 									<span class="font-bold text-lg">
@@ -177,7 +182,12 @@
 											:fallback="game.away_source"
 										/>
 										<span class="font-medium text-sm">
-											{{ getTeamById(game.away_team ?? -1)?.name ?? game.away_source ?? "---" }}
+											{{
+												getTeamById(game.away_team ?? -1)?.country ??
+												getTeamById(game.away_team ?? -1)?.name ??
+												game.away_source ??
+												"---"
+											}}
 										</span>
 									</div>
 									<span class="font-bold text-lg">
