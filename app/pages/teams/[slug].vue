@@ -137,7 +137,7 @@
 					</h2>
 
 					<NuxtLink
-						to="/matches"
+						to="/games"
 						class="hidden sm:inline-flex arrow--link lowcase-link text-sm hover:text-yellow"
 					>
 						{{ t("all_games") }}
@@ -508,15 +508,15 @@ const getGameStatus = (game: IGame) => {
 				...base,
 				label: t("game_state.finished"),
 				icon: "i-lucide-check-circle",
-				class: "bg-gray-500/20 text-gray-300 py-3 px-2",
+				class: "bg-gray-500/20 text-gray-300 border border-white/20 py-3 px-2",
 			};
 
 		default:
 			return {
 				...base,
-				label: game.state,
-				icon: "i-lucide-help-circle",
-				class: "bg-white/10 text-white/60 py-3 px-2",
+				// label: game.state,
+				// icon: "i-lucide-help-circle",
+				// class: "bg-white/10 text-white/60 py-3 px-2",
 			};
 	}
 };
@@ -587,7 +587,7 @@ const onSlideChangeStaff = (swiper: SwiperInstance) => {
 };
 
 watchEffect(() => {
-	console.log("upcoming GAMES", upcomingGames.value);
+	// console.log("upcoming GAMES", upcomingGames.value);
 	// console.log("🧪 TEAM FINAL", team.value);
 	// console.log("members length", team.value?.members?.length);
 	// console.log("charter length", team.value?.charter?.length);
