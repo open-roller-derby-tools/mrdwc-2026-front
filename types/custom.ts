@@ -373,3 +373,22 @@ export interface ITournamentGroupRequestData {
 export interface IRequestField {
 	[key: string]: boolean | IRequestField;
 }
+
+// NOTIFICATIONS
+
+export interface IChannel {
+  id: string
+  slug: string
+  name: string
+  track: number | null
+  team_id_1: number | null
+  team_id_2: number | null
+  created_at: string
+}
+
+export interface IUserSubscription {
+  id: string
+  slug: string
+  name: string
+  created_at: string
+}
