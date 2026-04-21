@@ -3,13 +3,13 @@
 		class="w-full h-[100px] z-90 absolute p-3 before:content-[''] before:fixed before:t-0 before:h-[100px] before:inset-0 before:bg-gradient-to-b before:from-[#121356] before:to-transparent before:transition-opacity before:duration-500"
 	>
 		<!-- Logo -->
-		<NuxtLink href="/" class="inline-block sm:hidden">
+		<NuxtLinkLocale href="/" class="inline-block sm:hidden">
 			<NuxtImg
 				src="/mrdwc_logo@2x.png"
 				:alt="t('image_alts.image_logo')"
 				class="w-[120px] z-100 relative self-center sm:self-auto"
 			/>
-		</NuxtLink>
+		</NuxtLinkLocale>
 		<USlideover
 			v-if="smOrSmaller"
 			v-model:open="open"

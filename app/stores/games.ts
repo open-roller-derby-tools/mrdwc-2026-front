@@ -10,6 +10,8 @@
 import { defineStore } from "pinia";
 import { GameState, GameType, type IGame } from "~~/types/games";
 import { useGroupsStore } from "./groups";
+import { useNoSpoilerMode } from "~/composables/useNoSpoilerMode";
+import { useGameFormatting } from "~/composables/useGameFormatting";
 
 type IGamesRequestData = {
 	data: IGame[];
@@ -22,6 +24,8 @@ export const useGamesStore = defineStore("games", () => {
 	const groupsStore = useGroupsStore();
 	const teamsStore = useTeamsStore();
 	const isReady = ref<boolean>(false);
+	const { isNoSpoilerModeActive } = useNoSpoilerMode();
+	const { isGameSpoiler } = useGameFormatting();
 	const games = ref<IGame[] | null>(null);
 	const inFlight = ref<Promise<IGame[]> | null>(null);
 	const simulatedGames = ref<IGame[] | null>(null);
@@ -194,8 +198,11 @@ export const useGamesStore = defineStore("games", () => {
 
 	function getGamesByTeam(teamId: number): IGame[] {
 		return (
-			gamesData.value?.filter((game) => game.home_team === teamId || game.away_team === teamId) ??
-			[]
+			gamesData.value?.filter(
+				(game) =>
+					(game.home_team === teamId || game.away_team === teamId) &&
+					(!isNoSpoilerModeActive.value || !isGameSpoiler(game))
+			) ?? []
 		);
 	}
 

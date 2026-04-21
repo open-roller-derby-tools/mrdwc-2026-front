@@ -38,9 +38,9 @@
 		<!-- Buttons -->
 		<div v-if="mode === 'card'" class="flex gap-2 flex-col sm:flex-row">
 			<!-- Watch live button -->
-			<NuxtLink
+			<NuxtLinkLocale
 				v-if="isGameInProgress(game)"
-				:href="`/live#track-${game.venue}`"
+				:to="`/live#track-${game.venue}`"
 				class="button--red flex-1"
 				><span>{{ t("watch_live") }}</span>
 				<div class="relative inline-flex">
@@ -50,19 +50,19 @@
 					/>
 					<UIcon name="ic:round-fiber-manual-record" class="size-5" />
 				</div>
-			</NuxtLink>
+			</NuxtLinkLocale>
 			<!-- Watch replay button -->
-			<NuxtLink
+			<NuxtLinkLocale
 				v-if="game.state === GameState.Finished && game.video_url"
-				:href="`/games/${game.number}`"
+				:to="`/games/${game.number}`"
 				class="button--red flex-1"
 				><span>{{ t("watch_replay") }}</span
 				><UIcon name="ic:round-smart-display" class="size-6"
-			/></NuxtLink>
+			/></NuxtLinkLocale>
 			<!-- Go to game page button -->
-			<NuxtLink :href="`/games/${game.number}`" class="button--yellow flex-1"
+			<NuxtLinkLocale :to="`/games/${game.number}`" class="button--yellow flex-1"
 				><span>{{ t("game_page") }}</span> <UIcon name="lucide:arrow-right" class="size-6"
-			/></NuxtLink>
+			/></NuxtLinkLocale>
 		</div>
 	</div>
 </template>

@@ -78,14 +78,17 @@
 											:fallback="null"
 											class=""
 										/>
-										<NuxtLink
+										<NuxtLinkLocale
 											:to="`/teams/${getTeamById(standing.teamId)?.slug}`"
 											class="hover:underline text-left"
 										>
 											<span class="font-bold leading-none text-balance text-base">
-												{{ getTeamById(standing.teamId)?.name }}
+												{{
+													getTeamById(standing.teamId)?.country ??
+													getTeamById(standing.teamId)?.name
+												}}
 											</span>
-										</NuxtLink>
+										</NuxtLinkLocale>
 									</div>
 								</td>
 								<td class="">{{ standing.played }}</td>
@@ -160,7 +163,12 @@
 											:fallback="game.home_source"
 										/>
 										<span class="font-medium text-sm">
-											{{ getTeamById(game.home_team ?? -1)?.name ?? game.home_source ?? "---" }}
+											{{
+												getTeamById(game.home_team ?? -1)?.country ??
+												getTeamById(game.home_team ?? -1)?.name ??
+												game.home_source ??
+												"---"
+											}}
 										</span>
 									</div>
 									<span class="font-bold text-lg">
@@ -174,7 +182,12 @@
 											:fallback="game.away_source"
 										/>
 										<span class="font-medium text-sm">
-											{{ getTeamById(game.away_team ?? -1)?.name ?? game.away_source ?? "---" }}
+											{{
+												getTeamById(game.away_team ?? -1)?.country ??
+												getTeamById(game.away_team ?? -1)?.name ??
+												game.away_source ??
+												"---"
+											}}
 										</span>
 									</div>
 									<span class="font-bold text-lg">
@@ -183,10 +196,13 @@
 								</div>
 								<div class="flex items-center justify-between px-3 py-1.5 bg-yellow text-blue-text">
 									<GameStateLabel :game="game" :with-background="false" :show-time="true" />
-									<NuxtLink :to="`/games/${game.id}`" class="flex items-center gap-1 text-black">
+									<NuxtLinkLocale
+										:to="`/games/${game.number}`"
+										class="flex items-center gap-1 text-black"
+									>
 										<span class="text-sm">{{ t("game_page") }}</span>
 										<UIcon name="lucide:arrow-right" class="size-4" />
-									</NuxtLink>
+									</NuxtLinkLocale>
 								</div>
 							</div>
 						</div>
