@@ -93,6 +93,10 @@
 <script lang="ts" setup>
 import { Swiper, SwiperSlide } from "swiper/vue";
 
+definePageMeta({
+	layout: "announcers",
+});
+
 const teamsStore = useTeamsStore();
 const config = useRuntimeConfig();
 
