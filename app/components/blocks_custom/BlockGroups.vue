@@ -83,7 +83,10 @@
 											class="hover:underline text-left"
 										>
 											<span class="font-bold leading-none text-balance text-base">
-												{{ getTeamById(standing.teamId)?.name }}
+												{{
+													getTeamById(standing.teamId)?.country ??
+													getTeamById(standing.teamId)?.name
+												}}
 											</span>
 										</NuxtLink>
 									</div>

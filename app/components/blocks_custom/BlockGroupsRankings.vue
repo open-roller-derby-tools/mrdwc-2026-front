@@ -57,13 +57,15 @@
 						</td>
 						<td class="!pl-2">
 							<div class="flex flex-col items-start sm:flex-row sm:items-center gap-1 sm:gap-3">
-								<TeamLettersBadge :team="getTeamById(standing.teamId)" :fallback="null" class="" />
+								<TeamLettersBadge :team="getTeamById(standing.teamId)" />
 								<NuxtLink
 									:to="`/teams/${getTeamById(standing.teamId)?.slug}`"
 									class="hover:underline text-left"
 								>
 									<span class="font-bold leading-none text-balance text-base">
-										{{ getTeamById(standing.teamId)?.name }}
+										{{
+											getTeamById(standing.teamId)?.country ?? getTeamById(standing.teamId)?.name
+										}}
 									</span>
 								</NuxtLink>
 							</div>

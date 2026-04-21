@@ -70,6 +70,10 @@ export const useTeamsStore = defineStore("teams", () => {
 				parade_audio: true,
 				group_id: true,
 				schedule_color: true,
+				translations: {
+					languages_code: true,
+					country: true,
+				},
 			};
 
 			const memberFields = {
@@ -171,12 +175,20 @@ export const useTeamsStore = defineStore("teams", () => {
 	const localizedTeams = computed((): ILocalizedTeam[] => {
 		if (!teams.value) return [];
 
-		return teams.value.map((team) => {
+		return teams.value.reduce<ILocalizedTeam[]>((result, team) => {
+			// Get translation from current locale
+			const teamTranslation =
+				team.translations.find((translation) => translation.languages_code === locale.value) ??
+				team.translations.find(
+					(translation) => translation.languages_code === fallbackLocale.value
+				) ??
+				null;
+
 			const localizedMembers = team.members?.map(localizeMember) ?? [];
+			const localizedCharterMembers = (team.charter ?? []).map(localizeMember) ?? [];
 
-			const charterMembers = team.charter ?? [];
-
-			return {
+			// If a translation is found, add the localized application to the result
+			result.push({
 				id: team.id,
 				slug: slugify(team.name),
 				name: team.name,
@@ -196,11 +208,14 @@ export const useTeamsStore = defineStore("teams", () => {
 				paradeAudio: team.parade_audio,
 				previousParticipations: team.previous_participations,
 				members: localizedMembers,
-				charter: charterMembers.map(localizeMember),
+				charter: localizedCharterMembers,
 				group_id: team.group_id,
 				schedule_color: team.schedule_color,
-			};
-		});
+				country: teamTranslation?.country ?? null,
+			} as ILocalizedTeam);
+
+			return result;
+		}, []);
 	});
 
 	function getTeamBySlug(slug: string) {

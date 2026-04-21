@@ -31,12 +31,24 @@ export function useGameFormatting() {
 		// If home team is defined, return the team name
 		if (team === "home" && game.home_team !== null) {
 			if (short) return teamsStore.getTeamById(game.home_team)?.name_letters ?? fallback ?? "---";
-			else return teamsStore.getTeamById(game.home_team)?.name ?? fallback ?? "---";
+			else
+				return (
+					teamsStore.getTeamById(game.home_team)?.country ??
+					teamsStore.getTeamById(game.home_team)?.name ??
+					fallback ??
+					"---"
+				);
 		}
 		// If away team is defined, return the team name
 		else if (team === "away" && game.away_team !== null) {
 			if (short) return teamsStore.getTeamById(game.away_team)?.name_letters ?? fallback ?? "---";
-			else return teamsStore.getTeamById(game.away_team)?.name ?? fallback ?? "---";
+			else
+				return (
+					teamsStore.getTeamById(game.away_team)?.country ??
+					teamsStore.getTeamById(game.away_team)?.name ??
+					fallback ??
+					"---"
+				);
 		}
 		return fallback ?? "---";
 	}

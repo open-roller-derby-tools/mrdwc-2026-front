@@ -25,6 +25,11 @@ export interface ITeam {
 	charter?: ITeamMember[];
 	group_id: number | null;
 	schedule_color: string | null;
+	translations: ITeamTranslation[];
+}
+
+export interface ITeamTranslation extends ITranslation {
+	country: string;
 }
 
 export interface ILocalizedTeam {
@@ -50,6 +55,7 @@ export interface ILocalizedTeam {
 	flag?: string;
 	group_id: number | null;
 	schedule_color: string | null;
+	country: string | null;
 }
 
 export interface ITeamWithRelations extends ITeam {
