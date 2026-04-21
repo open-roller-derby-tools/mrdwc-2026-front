@@ -316,6 +316,10 @@ export interface IOptionsRequestData {
 
 // OFFICIALS
 
+export interface ICountry {
+	three_letters_code: string;
+}
+
 export interface IOfficial {
 	id: number;
 	name: string;
@@ -323,8 +327,15 @@ export interface IOfficial {
 	roles: string[];
 }
 
+export interface IOfficialRaw {
+	id: number;
+	name: string;
+	country: ICountry;
+	roles: string[];
+}
+
 export interface IOfficialId {
-	officials_id: IOfficial;
+	officials_id: IOfficialRaw;
 }
 
 export interface IOfficialsCrew {
