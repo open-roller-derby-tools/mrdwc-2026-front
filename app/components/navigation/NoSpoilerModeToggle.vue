@@ -1,7 +1,13 @@
 <template>
 	<div
-		class="bg-white text-black text-sm rounded-xl p-4 my-8 w-fit mx-auto"
-		:class="layout === 'col' ? 'flex flex-col gap-0' : 'flex flex-row gap-4 items-center'"
+		class="bg-white text-black text-sm rounded-xl p-4 w-fit"
+		:class="
+			layout === 'col'
+				? 'flex flex-col gap-2'
+				: layout === 'row'
+					? 'flex flex-row gap-4 items-center'
+					: 'flex flex-col gap-2 sm:flex-row sm:gap-4 sm:items-center'
+		"
 	>
 		<div>
 			<p class="font-shoulders font-bold">
@@ -30,10 +36,10 @@ const { t } = useI18n();
 
 withDefaults(
 	defineProps<{
-		layout?: "col" | "row";
+		layout?: "col" | "row" | "auto";
 	}>(),
 	{
-		layout: "col",
+		layout: "auto",
 	}
 );
 

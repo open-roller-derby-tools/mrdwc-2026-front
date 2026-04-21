@@ -29,9 +29,7 @@
 						/>
 					</div>
 					<div class="flex-2">
-						<p class="border border-white/40 py-1 px-2 w-fit rounded-lg mb-2">
-							{{ team?.name_letters }}
-						</p>
+						<TeamLettersBadge :team="team" class="px-2.5! py-1! text-base! sm:text-lg! mb-2" />
 						<h1 v-if="team.name" class="flex gap-2 items-center mb-2">
 							{{ team.name }}
 						</h1>
@@ -130,17 +128,14 @@
 				</div>
 			</div>
 
-			<TeamGamesList :team="team" />
-			<NuxtLink
-				to="/games"
-				class="inline-flex sm:hidden arrow--link lowcase-link hover:text-yellow"
-			>
+			<TeamGamesList :team="team" class="mt-8 mb-4" />
+			<NuxtLink to="/games" class="inline-flex arrow--link lowcase-link hover:text-yellow">
 				{{ t("all_games") }}
 			</NuxtLink>
 		</div>
 
 		<!-- CHARTER & STAFF -->
-		<div v-if="team" class="sm:pt-16">
+		<div v-if="team" class="sm:pt-12">
 			<div class="relative pb-16 sm:py-0">
 				<!-- 🆕 TABS SLOT -->
 				<BlockTabsSlot v-if="team" :data="tabsConfig" class="mt-10">
@@ -332,15 +327,17 @@
 <script setup lang="ts">
 import type { ILocalizedTeamMember } from "~~/types/custom";
 import type { Swiper as SwiperInstance } from "swiper/types";
+
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import { Swiper, SwiperSlide } from "swiper/vue";
 import PageHeader from "~/components/partials/PageHeader.vue";
 import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
 import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 import TeamMemberCard from "~/components/TeamMemberCard.vue";
 import TeamGamesList from "~/components/partials/TeamGamesList.vue";
-import { Swiper, SwiperSlide } from "swiper/vue";
+import TeamLettersBadge from "~/components/partials/TeamLettersBadge.vue";
 
 const route = useRoute();
 const { t } = useI18n();
