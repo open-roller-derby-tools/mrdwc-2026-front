@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="inline-block font-mono font-bold px-1.5 rounded-md text-sm sm:text-base"
+		class="inline-block font-mono font-bold px-1.5 rounded-md border text-sm sm:text-base"
 		:style="teamBadgeStyle"
 	>
 		{{ teamLetters }}
@@ -23,6 +23,7 @@ const teamBadgeStyle = computed(() => {
 	return {
 		backgroundColor: backgroundColor,
 		color: color,
+		borderColor: color,
 	};
 });
 </script>
