@@ -1,9 +1,10 @@
 <template>
 	<div class="@container w-full">
 		<div
-			class="px-4 py-2 bg-white text-black text-base rounded-2xl flex gap-1 flex-col @3xl:flex-row @3xl:items-center @3xl:justify-center @3xl:gap-2"
+			class="text-black text-base rounded-2xl flex gap-1 flex-col @3xl:flex-row @3xl:items-center @3xl:justify-center @3xl:gap-2"
+			:class="{ 'px-4 py-2 bg-white': withBackground }"
 		>
-			<div class="font-medium text-balance flex items-center gap-2 leading-tight">
+			<div class="font-medium flex items-center gap-2 leading-tight">
 				<span>{{ timezoneLabel }}</span>
 			</div>
 			<div
@@ -34,6 +35,15 @@
 <script lang="ts" setup>
 const { active_timezone, tournament_timezone, user_timezone, toggleTimezone } = useTimezone();
 const { t } = useI18n();
+
+withDefaults(
+	defineProps<{
+		withBackground?: boolean;
+	}>(),
+	{
+		withBackground: true,
+	}
+);
 
 const timezoneLabel = computed(() => {
 	const timezoneName =
