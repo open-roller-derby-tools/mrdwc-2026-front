@@ -122,32 +122,12 @@
 							</tr>
 						</tbody>
 					</table>
-					<!-- Toggle group games -->
-					<div
-						v-if="!isNoSpoilerModeActive"
-						class="flex justify-center py-3 border-t border-blue-text/10"
-					>
-						<button
-							class="flex items-center gap-1 text-base font-bold text-red-text hover:text-red-light hover:underline transition-colors cursor-pointer"
-							@click="toggleGroupGames(group.id)"
-						>
-							<UIcon
-								:name="
-									expandedGroups.has(group.id) ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'
-								"
-								class="size-5"
-							/>
-							<span v-if="!expandedGroups.has(group.id)">{{
-								t("rankings.see_scores_and_games")
-							}}</span>
-							<span v-else>{{ t("rankings.hide_scores_and_games") }}</span>
-						</button>
-					</div>
+					<div v-if="expandedGroups.has(group.id)" class="border-b border-blue-text/10"></div>
 					<!-- Group games & scores -->
-					<template v-if="!isNoSpoilerModeActive && expandedGroups.has(group.id)">
+					<template v-if="expandedGroups.has(group.id)">
 						<div
 							v-if="getGamesByGroup(group.number).length > 0"
-							class="grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 pb-4"
+							class="grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 pt-4 pb-4"
 						>
 							<div
 								v-for="game in getGamesByGroup(group.number)"
@@ -171,7 +151,7 @@
 											}}
 										</span>
 									</div>
-									<span class="font-bold text-lg">
+									<span v-if="!isNoSpoilerModeActive" class="font-bold text-lg">
 										{{ game.home_score }}
 									</span>
 								</div>
@@ -190,7 +170,7 @@
 											}}
 										</span>
 									</div>
-									<span class="font-bold text-lg">
+									<span v-if="!isNoSpoilerModeActive" class="font-bold text-lg">
 										{{ game.away_score }}
 									</span>
 								</div>
@@ -207,6 +187,22 @@
 							</div>
 						</div>
 					</template>
+					<!-- Toggle group games -->
+					<div class="flex justify-center py-3 border-t border-blue-text/10">
+						<button
+							class="flex items-center gap-1 text-base font-bold text-red-text hover:text-red-light hover:underline transition-colors cursor-pointer"
+							@click="toggleGroupGames(group.id)"
+						>
+							<UIcon
+								:name="
+									expandedGroups.has(group.id) ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'
+								"
+								class="size-5"
+							/>
+							<span v-if="!expandedGroups.has(group.id)">{{ t("rankings.see_games") }}</span>
+							<span v-else>{{ t("rankings.hide_games") }}</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

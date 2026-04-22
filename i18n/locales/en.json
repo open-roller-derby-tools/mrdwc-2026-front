@@ -124,8 +124,8 @@
 		"adj": "Adj",
 		"adj_short": "Adj",
 		"adj_full": "Adjusted Differential",
-		"see_scores_and_games": "See scores & games",
-		"hide_scores_and_games": "Hide scores & games",
+		"see_games": "See games",
+		"hide_games": "Hide games",
 		"bracket_play": "Bracket Play (1–8)",
 		"rankings_play": "Rankings Play (9–20)",
 		"eliminated": "Eliminated (21–24)"
