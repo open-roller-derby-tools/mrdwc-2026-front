@@ -124,8 +124,8 @@
 		"adj": "Aj",
 		"adj_short": "Aj",
 		"adj_full": "Différentiel ajusté",
-		"see_scores_and_games": "Voir les scores & les matchs",
-		"hide_scores_and_games": "Masquer les scores & les matchs",
+		"see_games": "Voir les matchs",
+		"hide_games": "Masquer les matchs",
 		"bracket_play": "Phase finale (1–8)",
 		"rankings_play": "Phase de classement (9–20)",
 		"eliminated": "Eliminés (21–24)"
