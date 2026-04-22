@@ -18,7 +18,10 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		databaseUrl: process.env.DATABASE_URL || "postgresql://dev:dev@localhost:5432/poc",
 		redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
+		vapidPrivateKey: process.env.VAPID_PRIVATE_KEY,
+		vapidPublicKey: process.env.VAPID_PUBLIC_KEY,
 		public: {
+			vapidPublicKey: process.env.VAPID_PUBLIC_KEY,
 			apiBase: "",
 		},
 	},
