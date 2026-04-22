@@ -16,6 +16,8 @@ export default defineNuxtConfig({
 	},
 	devtools: { enabled: false },
 	runtimeConfig: {
+		databaseUrl: process.env.DATABASE_URL || "postgresql://dev:dev@localhost:5432/poc",
+		redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
 		public: {
 			apiBase: "",
 		},
