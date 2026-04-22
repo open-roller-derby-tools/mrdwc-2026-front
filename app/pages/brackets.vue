@@ -1,62 +1,90 @@
 <template>
-	<div v-if="isDev" class="mt-32">
+	<div v-if="isDev" class="mt-32 bg-blue-text">
 		<SimulateGamesToggle />
-		<NoSpoilerModeToggle />
-		<BlockGroups />
-		<BlockGroupsRankings />
-		<div v-show="false" v-if="gamesStore.isReady && teamsStore.isReady">
-			<div>
-				<div class="grid grid-cols-7 select-none cursor-default">
+		<div class="w-full maxed padded">
+			<div class="w-full overflow-x-auto">
+				<!-- Quarterfinals + Semifinals + Grand Final -->
+				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
+					<!-- Quarterfinals -->
 					<div class="flex flex-col">
-						<BracketGame v-if="gameQ1" :game="gameQ1" :level="1" />
-						<BracketGame v-if="gameQ4" :game="gameQ4" :level="1" />
-						<BracketGame v-if="gameQ3" :game="gameQ3" :level="1" />
-						<BracketGame v-if="gameQ2" :game="gameQ2" :level="1" />
+						<BracketGame v-if="gameQ4" :game="gameQ4" background-color="white" class="mb-6" />
+						<BracketGame v-if="gameQ1" :game="gameQ1" background-color="white" class="mb-18" />
+						<BracketGame v-if="gameQ2" :game="gameQ2" background-color="white" class="mb-6" />
+						<BracketGame v-if="gameQ3" :game="gameQ3" background-color="white" class="" />
 					</div>
 					<div></div>
-					<div class="flex flex-col">
-						<BracketGame v-if="gameS1" :game="gameS1" :level="2" :show-link="true" />
-						<BracketGame v-if="gameS2" :game="gameS2" :level="2" :show-link="true" />
+					<!-- Semifinals -->
+					<div class="flex flex-col justify-center gap-24">
+						<BracketGame
+							v-if="gameS1"
+							:game="gameS1"
+							:show-link="true"
+							background-color="white"
+							class="-translate-y-1/2"
+						/>
+						<BracketGame
+							v-if="gameS2"
+							:game="gameS2"
+							:show-link="true"
+							background-color="white"
+							class="translate-y-1/2"
+						/>
 					</div>
 					<div></div>
-					<div class="flex flex-col">
-						<BracketGame v-if="gameGF" :game="gameGF" :level="3" :show-link="true" />
+					<!-- Grand Final -->
+					<div class="flex flex-col justify-center">
+						<BracketGame
+							v-if="gameGF"
+							:game="gameGF"
+							:show-link="true"
+							:level="2"
+							background-color="white"
+							class=""
+						/>
 					</div>
 				</div>
-				<div class="grid grid-cols-7 select-none cursor-default">
+				<!-- Lower Final -->
+				<div
+					class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default mb-24"
+				>
 					<div></div>
 					<div></div>
 					<div></div>
 					<div></div>
 					<div class="flex flex-col">
-						<BracketGame v-if="gameLF" :game="gameLF" :level="1" />
+						<BracketGame v-if="gameLF" :game="gameLF" background-color="white" />
 					</div>
 				</div>
-				<div class="grid grid-cols-7 select-none cursor-default">
+				<!-- Lower Quarterfinals + Top Eight -->
+				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
 					<div></div>
 					<div></div>
 					<div class="flex flex-col">
-						<BracketGame v-if="gameTE1" :game="gameTE1" :level="1" />
-						<BracketGame v-if="gameTE2" :game="gameTE2" :level="1" />
+						<BracketGame v-if="gameTE1" :game="gameTE1" background-color="white" class="mb-6" />
+						<BracketGame v-if="gameTE2" :game="gameTE2" background-color="white" class="" />
 					</div>
 					<div></div>
-					<div class="flex flex-col">
-						<BracketGame v-if="gameUTE" :game="gameUTE" :level="2" :show-link="true" />
+					<div class="flex flex-col justify-center">
+						<BracketGame
+							v-if="gameUTE"
+							:game="gameUTE"
+							:show-link="true"
+							:level="1"
+							background-color="white"
+						/>
 					</div>
 				</div>
-				<div class="grid grid-cols-7 select-none cursor-default">
+				<!-- Lower Top Eight -->
+				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
 					<div></div>
 					<div></div>
 					<div></div>
 					<div></div>
 					<div class="flex flex-col">
-						<BracketGame v-if="gameLTE" :game="gameLTE" :level="1" />
+						<BracketGame v-if="gameLTE" :game="gameLTE" background-color="white" />
 					</div>
 				</div>
 			</div>
-		</div>
-		<div v-else>
-			<p>Loading...</p>
 		</div>
 	</div>
 	<div v-else>
@@ -66,10 +94,7 @@
 
 <script lang="ts" setup>
 import BracketGame from "~/components/partials/games/BracketGame.vue";
-import BlockGroups from "~/components/blocks_custom/BlockGroups.vue";
-import NoSpoilerModeToggle from "~/components/navigation/NoSpoilerModeToggle.vue";
 import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue";
-import BlockGroupsRankings from "~/components/blocks_custom/BlockGroupsRankings.vue";
 
 import { useGamesStore } from "~/stores/games";
 import { useTeamsStore } from "~/stores/teams";
@@ -101,10 +126,9 @@ const gameTE2 = computed(() => gamesStore.getGameByNumber(45));
 const gameUTE = computed(() => gamesStore.getGameByNumber(52));
 const gameLTE = computed(() => gamesStore.getGameByNumber(51));
 
+useGamesAutoRefresh({ intervalMs: 30000 });
+
 onMounted(async () => {
-	const fetches: Promise<unknown>[] = [];
-	if (!gamesStore.isReady) fetches.push(gamesStore.fetch());
-	if (!teamsStore.isReady) fetches.push(teamsStore.fetch());
-	await Promise.all(fetches);
+	teamsStore.fetch();
 });
 </script>
