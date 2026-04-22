@@ -1,7 +1,7 @@
 <template>
 	<div class="@container w-full">
 		<div
-			class="px-4 py-2 bg-white text-black text-base rounded-2xl flex gap-0 flex-col @3xl:flex-row @3xl:items-center @3xl:justify-center @3xl:gap-2"
+			class="px-4 py-2 bg-white text-black text-base rounded-2xl flex gap-1 flex-col @3xl:flex-row @3xl:items-center @3xl:justify-center @3xl:gap-2"
 		>
 			<div class="font-medium text-balance flex items-center gap-2 leading-tight">
 				<span>{{ timezoneLabel }}</span>
@@ -11,7 +11,7 @@
 				class="flex gap-1 items-center cursor-pointer font-bold"
 				@click="toggleTimezone"
 			>
-				<UIcon name="i-ic-round-swap-horiz" class="size-8 text-red-text" />
+				<UIcon name="ic:round-language" class="size-6 text-red-text" />
 				<p class="underline underline-offset-2 text-red-text leading-none">
 					{{
 						active_timezone === tournament_timezone
