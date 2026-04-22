@@ -20,7 +20,7 @@
 			<Transition name="drawer-open">
 				<div
 					v-if="isOpen"
-					class="w-full overflow-hidden bg-white text-black rounded-tr-2xl pointer-events-auto"
+					class="w-full sm:rounded-tr-2xl sm:max-w-md overflow-hidden bg-white text-black pointer-events-auto"
 				>
 					<div class="flex flex-col px-4 pb-4 divide-y divide-blue-text/20">
 						<div class="py-4 flex items-center justify-between">
