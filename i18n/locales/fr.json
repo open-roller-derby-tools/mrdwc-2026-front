@@ -128,7 +128,8 @@
 		"hide_games": "Masquer les matchs",
 		"bracket_play": "Phase finale (1–8)",
 		"rankings_play": "Phase de classement (9–20)",
-		"eliminated": "Eliminés (21–24)"
+		"eliminated": "Eliminés (21–24)",
+		"legend": "Légende :"
 	},
 	"game_page": "Page du match",
 	"watch_live": "Regarder en direct",

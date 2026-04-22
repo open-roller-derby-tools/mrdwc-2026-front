@@ -128,7 +128,8 @@
 		"hide_games": "Hide games",
 		"bracket_play": "Bracket Play (1–8)",
 		"rankings_play": "Rankings Play (9–20)",
-		"eliminated": "Eliminated (21–24)"
+		"eliminated": "Eliminated (21–24)",
+		"legend": "Legend:"
 	},
 	"game_page": "Game page",
 	"watch_live": "Watch live",

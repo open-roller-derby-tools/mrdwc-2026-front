@@ -18,7 +18,7 @@
 					<table class="w-full text-sm table-fixed">
 						<thead>
 							<tr class="border-b border-blue/20 bg-blue text-white">
-								<th class="w-8"></th>
+								<th class="w-8"><RankingsHelp /></th>
 								<th class="!text-left !pl-2">{{ t("teams") }}</th>
 								<th class="w-10 md:w-14 lg:w-20">
 									<span class="hidden md:inline">{{ t("rankings.played") }}</span
@@ -213,6 +213,7 @@
 import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
 import GameStateLabel from "../partials/games/GameStateLabel.vue";
 import SimulateGamesToggle from "../navigation/SimulateGamesToggle.vue";
+import RankingsHelp from "../partials/RankingsHelp.vue";
 
 const { t } = useI18n();
 const groupsStore = useGroupsStore();
