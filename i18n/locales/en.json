@@ -62,7 +62,8 @@
 		"list": "List",
 		"current_timezone": "You are seeing times/dates in the {timezone} timezone.",
 		"use_tournament_timezone": "Use tournament timezone",
-		"use_user_timezone": "Use your timezone"
+		"use_user_timezone": "Use your timezone",
+		"tournament_timezone": "Orléans, France"
 	},
 	"game_state": {
 		"scheduled": "Scheduled",
@@ -91,6 +92,8 @@
 		"title": "No Spoilers Mode",
 		"show_spoilers": "Show spoilers",
 		"hide_spoilers": "Hide spoilers",
+		"show_results": "Show results",
+		"hide_results": "Hide results",
 		"enabled": "Enabled",
 		"disabled": "Disabled",
 		"enabled_description": "Scores, rankings and non-groups-stage matchups are hidden.",
