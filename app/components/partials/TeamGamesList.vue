@@ -34,12 +34,7 @@
 					</p>
 				</div>
 				<div class="">
-					<GameStateLabel
-						:game="game"
-						:with-background="true"
-						:show-time="false"
-						class="!rounded-lg !p-2 !w-full"
-					/>
+					<GameStateLabel :game="game" :show-time="false" class="!rounded-lg !p-2 !w-full" />
 				</div>
 			</li>
 		</ul>

@@ -175,7 +175,7 @@
 									</span>
 								</div>
 								<div class="flex items-center justify-between px-3 py-1.5 bg-yellow text-blue-text">
-									<GameStateLabel :game="game" :with-background="false" :show-time="true" />
+									<GameStateLabel :game="game" :with-background="false" :show-day="true" />
 									<NuxtLinkLocale
 										:to="`/games/${game.number}`"
 										class="flex items-center gap-1 text-black"
