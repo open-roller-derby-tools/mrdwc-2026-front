@@ -24,6 +24,9 @@ tests
 vitest.config.ts
 coverage
 
+# Docker compose (local dev only)
+docker-compose.yml
+
 # Misc
 .dockerignore
 CloudronManifest.json
