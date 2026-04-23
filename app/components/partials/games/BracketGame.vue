@@ -28,7 +28,17 @@
 				class="absolute bottom-0 -translate-x-1/2 translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm px-2 py-1 min-w-7 rounded-full"
 				:style="linkInLabelStyle"
 			>
-				{{ game.description }}
+				<span>{{ game.description }}</span>
+				<div
+					v-if="linkInWin !== 'none' || linkInLose !== 'none'"
+					:class="linkInArrowClasses"
+					class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full w-0 h-0 border-x-6 border-t-12 border-b-0 border-x-transparent border-b-transparent"
+				></div>
+				<div
+					v-if="linkInWin === 'both' || linkInLose === 'both'"
+					:class="linkInArrowClasses"
+					class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-x-6 border-b-12 border-t-0 border-x-transparent border-t-transparent"
+				></div>
 			</div>
 			<div
 				v-if="linkOutWin === 'down'"
@@ -137,8 +147,15 @@ const linkInStyle = computed(() => {
 
 const linkInLabelStyle = computed(() => {
 	const style = [];
-	style.push(`left: -${GAME_SPACING_X * props.linkInRatio}rem;`);
+	style.push(`left: calc(-${GAME_SPACING_X * props.linkInRatio}rem - 1px);`);
 	return style.join(" ");
+});
+
+const linkInArrowClasses = computed(() => {
+	return {
+		"border-blue-light": props.linkInLose !== "none",
+		"border-yellow": props.linkInWin !== "none",
+	};
 });
 
 const getLinkOutStyle = (type: "win" | "lose") => {
