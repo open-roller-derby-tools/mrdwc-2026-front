@@ -32,25 +32,21 @@
 			</div>
 			<div
 				v-if="linkOutWin === 'down'"
-				:class="linkOutClasses"
 				:style="getLinkOutStyle('win')"
 				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-yellow"
 			></div>
 			<div
 				v-if="linkOutWin === 'up'"
-				:class="linkOutClasses"
 				:style="getLinkOutStyle('win')"
 				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-yellow"
 			></div>
 			<div
 				v-if="linkOutLose === 'down'"
-				:class="linkOutClasses"
 				:style="getLinkOutStyle('lose')"
 				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-blue-light"
 			></div>
 			<div
 				v-if="linkOutLose === 'up'"
-				:class="linkOutClasses"
 				:style="getLinkOutStyle('lose')"
 				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-blue-light"
 			></div>
@@ -84,7 +80,7 @@ import type { IGame } from "~~/types/games";
 import TeamLettersBadge from "../TeamLettersBadge.vue";
 import GameStateLabel from "./GameStateLabel.vue";
 import { useTeamsStore } from "~/stores/teams";
-import { isGameFinished, GAME_SPACING_X } from "~/utils/game";
+import { isGameFinished, GAME_SPACING_X, GAME_HEIGHT } from "~/utils/game";
 
 const { t } = useI18n();
 const teamsStore = useTeamsStore();
@@ -107,6 +103,8 @@ const props = withDefaults(
 		linkInRatio?: number;
 		linkOutWinRatio?: number;
 		linkOutLoseRatio?: number;
+		linkOutWinHeight?: number;
+		linkOutLoseHeight?: number;
 	}>(),
 	{
 		showLink: false,
@@ -119,6 +117,8 @@ const props = withDefaults(
 		linkInRatio: 0.5,
 		linkOutWinRatio: 0.5,
 		linkOutLoseRatio: 0.5,
+		linkOutWinHeight: GAME_HEIGHT * 0.65,
+		linkOutLoseHeight: GAME_HEIGHT * 0.65,
 	}
 );
 
@@ -148,24 +148,63 @@ const linkInLabelStyle = computed(() => {
 
 const getLinkOutStyle = (type: "win" | "lose") => {
 	const style = [];
-	if (type === "win") style.push(`width: ${GAME_SPACING_X * props.linkOutWinRatio}rem;`);
-	else style.push(`width: ${GAME_SPACING_X * props.linkOutLoseRatio}rem;`);
+
+	if (!isGameFinished(props.game) || (!isHomeTeamWinning.value && !isAwayTeamWinning.value)) {
+		style.push(`bottom: 0;`);
+		if (type === "win") {
+			style.push(`height: ${props.linkOutWinHeight}rem;`);
+		} else {
+			style.push(`height: ${props.linkOutLoseHeight}rem;`);
+		}
+	}
+
+	if (type === "win") {
+		style.push(`width: ${GAME_SPACING_X * props.linkOutWinRatio}rem;`);
+
+		if (props.linkOutWin === "down") {
+			style.push(`transform: translateY(-2px);`);
+		}
+
+		if (isHomeTeamWinning.value) {
+			style.push("bottom: 50%;");
+
+			if (props.linkOutWin === "down") {
+				style.push(`height: ${props.linkOutWinHeight + GAME_HEIGHT * 0.3}rem;`);
+			} else {
+				style.push(`height: ${props.linkOutWinHeight - GAME_HEIGHT * 0.1}rem;`);
+			}
+		} else if (isAwayTeamWinning.value) {
+			style.push("bottom: -50%;");
+
+			if (props.linkOutWin === "up") {
+				style.push(`height: ${props.linkOutWinHeight + GAME_HEIGHT * 0.3}rem;`);
+			} else {
+				style.push(`height: ${props.linkOutWinHeight - GAME_HEIGHT * 0.1}rem;`);
+			}
+		}
+	} else {
+		style.push(`width: ${GAME_SPACING_X * props.linkOutLoseRatio}rem;`);
+
+		if (isHomeTeamWinning.value) {
+			style.push("bottom: -50%;");
+
+			if (props.linkOutLose === "down") {
+				style.push(`height: ${props.linkOutLoseHeight - GAME_HEIGHT * 0.1}rem;`);
+			} else {
+				style.push(`height: ${props.linkOutLoseHeight + GAME_HEIGHT * 0.3}rem;`);
+			}
+		} else if (isAwayTeamWinning.value) {
+			style.push("bottom: 50%;");
+
+			if (props.linkOutLose === "down") {
+				style.push(`height: ${props.linkOutLoseHeight + GAME_HEIGHT * 0.3}rem;`);
+			} else {
+				style.push(`height: ${props.linkOutLoseHeight - GAME_HEIGHT * 0.1}rem;`);
+			}
+		}
+	}
 	return style.join(" ");
 };
-
-const linkOutClasses = computed(() => {
-	const classes = [];
-
-	if (props.level === 0) classes.push("h-[100%]");
-	else if (props.level === 1) classes.push("h-[100%]");
-
-	if (!isGameFinished(props.game) || (!isHomeTeamWinning.value && !isAwayTeamWinning.value))
-		classes.push("bottom-0");
-	else if (isHomeTeamWinning.value) classes.push("bottom-1/2");
-	else if (isAwayTeamWinning.value) classes.push("-bottom-1/2");
-
-	return classes.join(" ");
-});
 
 onMounted(async () => {
 	teamsStore.fetch();

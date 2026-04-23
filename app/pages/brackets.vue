@@ -14,6 +14,7 @@
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.5"
+						:link-out-lose-height="GAME_HEIGHT * 1.5"
 					/>
 					<BracketGame
 						v-if="gameQ1"
@@ -24,6 +25,7 @@
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.5"
+						:link-out-lose-height="GAME_HEIGHT * 5.9"
 					/>
 					<BracketGame
 						v-if="gameQ2"
@@ -34,6 +36,7 @@
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.25"
+						:link-out-lose-height="GAME_HEIGHT * 1.5"
 					/>
 					<BracketGame
 						v-if="gameQ3"
@@ -44,6 +47,7 @@
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.25"
+						:link-out-lose-height="GAME_HEIGHT * 4.2"
 					/>
 					<!-- Semifinals -->
 					<BracketGame
@@ -55,6 +59,8 @@
 						:link-in-ratio="0.25"
 						:link-out-win-ratio="0.666"
 						:link-out-lose-ratio="0.333"
+						:link-out-win-height="GAME_HEIGHT * 1.5"
+						:link-out-lose-height="GAME_HEIGHT * 3.1"
 						background-color="white"
 						:style="getGameStyle(1, 0.5, 1, 0.5)"
 					/>
@@ -67,6 +73,8 @@
 						:link-in-ratio="0.25"
 						:link-out-win-ratio="0.666"
 						:link-out-lose-ratio="0.333"
+						:link-out-win-height="GAME_HEIGHT * 1.5"
+						:link-out-lose-height="GAME_HEIGHT * 1.35"
 						background-color="white"
 						:style="getGameStyle(1, 2.5, 1, 4.5)"
 					/>
@@ -81,6 +89,7 @@
 						:link-in-ratio="0.5"
 						:link-out-win-ratio="0.666"
 						:link-out-lose-ratio="0.333"
+						:link-out-lose-height="GAME_HEIGHT * 1.5"
 						:style="getGameStyle(1, 5, 1, 10)"
 					/>
 					<BracketGame
@@ -93,6 +102,7 @@
 						:link-in-ratio="0.75"
 						:link-out-win-ratio="0.666"
 						:link-out-lose-ratio="0.333"
+						:link-out-lose-height="GAME_HEIGHT * 2.2"
 						:style="getGameStyle(1, 6, 1, 11)"
 					/>
 					<!-- Grand Final -->
