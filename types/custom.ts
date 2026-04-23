@@ -392,3 +392,13 @@ export interface IUserSubscription {
   name: string
   created_at: string
 }
+
+export type NotificationCategory = "game" | "on_site_notices" | "global_notices";
+
+export interface INotificationType {
+  label: string;
+  index: number;
+  title: string;
+  template: string;
+  isScheduled: boolean;
+}

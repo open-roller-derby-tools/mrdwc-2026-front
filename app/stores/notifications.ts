@@ -6,6 +6,7 @@ import type {
 
 export const useNotificationsStore = defineStore('notifications', {
   state: () => ({
+    channelsLoaded: false,
     channels: [] as IChannel[],
     subscribedSlugs: new Set<string>(),
     teamSubscriptions: new Set<number>()
@@ -20,16 +21,24 @@ export const useNotificationsStore = defineStore('notifications', {
   },
 
   actions: {
-    async fetchAll(userId: string) {
-      const [allChannels, userSubs, teamSubs] = await Promise.all([
-        $fetch<IChannel[]>('/api/channels/list'),
-        $fetch<IUserSubscription[]>(`/api/channel-subscriptions/${userId}`),
-        $fetch<{ team_id: number }[]>(`/api/team-subscriptions/${userId}`)
-      ])
+      async fetchChannels() {
+      if (this.channelsLoaded) return;
+      this.channels = await $fetch<IChannel[]>('/api/channels/list');
+      this.channelsLoaded = true;
+    },
 
-      this.channels = allChannels
-      this.subscribedSlugs = new Set(userSubs.map(s => s.slug))
-      this.teamSubscriptions = new Set(teamSubs.map(t => t.team_id))
+    async fetchSubscriptions(userId: string) {
+      const [userSubs, teamSubs] = await Promise.all([
+        $fetch<IUserSubscription[]>(`/api/channel-subscriptions/${userId}`),
+        $fetch<{ team_id: number }[]>(`/api/team-subscriptions/${userId}`),
+    ]);
+      this.subscribedSlugs = new Set(userSubs.map(s => s.slug));
+      this.teamSubscriptions = new Set(teamSubs.map(t => t.team_id));
+    },
+
+    async fetchAll(userId: string) {
+      await this.fetchChannels();
+      await this.fetchSubscriptions(userId);
     },
 
     async toggleChannel(slug: string, userId: string) {

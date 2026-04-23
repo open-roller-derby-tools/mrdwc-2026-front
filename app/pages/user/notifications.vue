@@ -21,11 +21,16 @@
 </template>
 
 <script lang="ts" setup>
+import type {
+  IChannel,
+  IUserSubscription
+} from "~~/types/custom";
+
 definePageMeta({
   layout: 'default'
 })
 
-const channels = ref([])
+const channels = ref<IChannel[]>([])
 const { ensureUserExists, userId } = useUser()
 const notificationsEnabled = useState('notifications_enabled')
 

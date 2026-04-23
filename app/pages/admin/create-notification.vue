@@ -1,5 +1,5 @@
 <template>
-	<div class="space-y-8" p-8>
+	<div class="space-y-8 p-8">
 		<h1 class="text-3xl font-bold">Create Notification</h1>
 
 		<form class="space-y-6 max-w-xl" @submit="handleSubmit">
@@ -49,7 +49,7 @@
 			>
 				<!-- Score 1 -->
 				<div class="flex-1">
-					<label class="block mb-2 text-gray-300"> Score team id {{ channel.team_id_1 }} </label>
+					<label class="block mb-2 text-gray-300"> {{ team1Name }} score </label>
 					<input
 						v-model="score1"
 						required
@@ -60,7 +60,7 @@
 				</div>
 				<!-- Score 2 -->
 				<div class="flex-1">
-					<label class="block mb-2 text-gray-300"> Score team id {{ channel.team_id_2 }} </label>
+					<label class="block mb-2 text-gray-300"> {{ team2Name }} score </label>
 					<input
 						v-model="score2"
 						type="number"
@@ -137,10 +137,21 @@
 </template>
 
 <script lang="ts" setup>
+import type { 
+  IChannel,
+  INotificationType,
+  NotificationCategory
+ } from "~~/types/custom";
+
 definePageMeta({
 	layout: "admin",
 });
+
+
 const { toUtc } = useUtcDate();
+const venuesStore = useVenuesStore();
+const teamsStore = useTeamsStore();
+const notificationsStore = useNotificationsStore();
 
 const notificationTypes = {
 	// Channel starts with "game_":
@@ -149,14 +160,14 @@ const notificationTypes = {
 			label: "Start soon",
 			index: 1,
 			title: "Game is starting soon",
-			template: "The game {{team1}} vs. {{team2}} will start soon on track {{track}}",
+			template: "The game {{team1}} vs. {{team2}} will start soon on venue {{track}}",
 			isScheduled: true,
 		}, // scheduled, link to the game
 		{
 			label: "Started",
 			index: 2,
 			title: "Game has started",
-			template: "The game  {{team1}} vs. {{team2}} has started on track {{track}}",
+			template: "The game  {{team1}} vs. {{team2}} has started on venue {{track}}",
 			isScheduled: true,
 		}, // scheduled, link to the game
 		{
@@ -183,15 +194,28 @@ const notificationTypes = {
 	],
 	// Channel is on_site_notices
 	on_site_notices: [
-		{ label: "on_site_info", index: 6, title: "", template: "{{message}}" }, // manual, link to the app - free text
+		{ label: "on_site_info", index: 6, title: "", template: "{{message}}", isScheduled: false, }, // manual, link to the app - free text
 	],
 	// Channel is global_notices
 	global_notices: [
-		{ label: "global_info", index: 7, title: "", template: "{{message}}" }, // manual, link to the app - free text
+		{ label: "global_info", index: 7, title: "", template: "{{message}}", isScheduled: false, }, // manual, link to the app - free text
 	],
 };
 
-const channelType = computed(() => {
+const notificationType = ref<INotificationType | null>(null);
+const message = ref<string>("");
+const channel = ref<IChannel | null>(null);
+const mode = ref<"live" | "scheduled">("live"); // 'live' or 'scheduled'
+const scheduledAt = ref<string | null>(null);
+
+const score1 = ref<number | null>(null);
+const score2 = ref<number | null>(null);
+
+const gameDelay = ref<number | null>(null);
+
+const channels = computed(() => notificationsStore.channels);
+
+const channelType = computed<NotificationCategory | null>(() => {
 	if (!channel.value) return null;
 
 	if (channel.value.slug.startsWith("game_")) return "game";
@@ -201,51 +225,49 @@ const channelType = computed(() => {
 	return null;
 });
 
-const availableNotificationTypes = computed(() => {
-	return notificationTypes[channelType.value] ?? [];
+const availableNotificationTypes = computed<INotificationType[]>(() => {
+	return channelType.value ? notificationTypes[channelType.value] : [];
 });
 
-const isFreeText = computed(() => {
+const isFreeText = computed<boolean>(() => {
 	if (!channel.value || !notificationType.value) return false;
 
-	return ["on_site_notices", "global_notices"].includes(channelType.value);
+	return ["on_site_notices", "global_notices"].includes(channelType.value!);
 });
 
-const notificationType = ref(null);
-const message = ref("");
-const channel = ref(null);
-const mode = ref("live"); // 'live' or 'scheduled'
-const scheduledAt = ref(null);
-
-const score1 = ref(null);
-const score2 = ref(null);
-
-const gameDelay = ref(null);
-
-const channels = ref([]);
-
-onMounted(async () => {
-	channels.value = await $fetch("/api/channels/list");
-	if (channels.value.length > 0) {
-		channel.value = channels.value[0];
-	}
-});
-
-const autoTitle = computed(() => {
+const autoTitle = computed<string>(() => {
 	return notificationType.value?.title ?? "";
 });
 
-const autoMode = computed(() => {
+const autoMode = computed<"live" | "scheduled">(() => {
 	return notificationType.value?.isScheduled ? "scheduled" : "live";
 });
 
-const autoMessage = computed(() => {
+const location = computed<string>(() =>
+  channel.value?.track != null ? 
+    venuesStore.getVenueById(channel.value.track)?.name ?? "no location found for track ID " + channel.value?.track
+    : "no track ID found"
+);
+
+const team1Name = computed<string>(() =>
+  channel.value?.team_id_1 != null ? 
+    teamsStore.getTeamById(channel.value.team_id_1)?.name ?? "no team found for ID " + channel.value.team_id_1
+    : "no team ID found"
+);
+
+const team2Name = computed<string>(() =>
+  channel.value?.team_id_2 != null
+    ? teamsStore.getTeamById(channel.value.team_id_2)?.name ?? "no team found for ID " + channel.value.team_id_2
+    : "no team ID found"
+);
+
+const autoMessage = computed<string>(() => {
 	if (!notificationType.value || !channel.value) return "";
 
 	const vars = {
-		track: channel.value.track,
-		team1: channel.value.team_id_1,
-		team2: channel.value.team_id_2,
+		track: location.value,
+		team1: team1Name.value,
+		team2: team2Name.value,
 		score1: score1.value,
 		score2: score2.value,
 		minutes: gameDelay.value,
@@ -255,27 +277,39 @@ const autoMessage = computed(() => {
 	return applyTemplate(notificationType.value.template, vars);
 });
 
-function applyTemplate(template, vars) {
+function applyTemplate(template: string, vars: Record<string, any>): string {
 	return template.replace(/{{(.*?)}}/g, (_, key) => {
 		const k = key.trim();
 		return vars[k] ?? "";
 	});
 }
 
-function handleSubmit(e) {
+function handleSubmit(e: Event) {
 	e.preventDefault();
-	if (!e.target.checkValidity()) return;
+  const form = e.target as HTMLFormElement;
+	if (!form.checkValidity()) return;
 	submit();
 }
+
+function resetForm() {
+  notificationType.value = null;
+  message.value = "";
+  score1.value = null;
+  score2.value = null;
+  gameDelay.value = null;
+  scheduledAt.value = null;
+}
+
+watch(channel, resetForm);
 
 async function submit() {
 	await $fetch("/api/notifications/create", {
 		method: "POST",
 		body: {
-			channel_slug: channel.value.slug,
+			channel_slug: channel.value!.slug,
 			title: autoTitle.value,
 			body: isFreeText.value ? message.value : autoMessage.value,
-			scheduled_at: mode.value === "scheduled" ? toUtc(scheduledAt.value) : null,
+			scheduled_at: mode.value === "scheduled" && scheduledAt.value? toUtc(scheduledAt.value) : null,
 		},
 	});
 
@@ -285,4 +319,11 @@ async function submit() {
 	scheduledAt.value = null;
 	gameDelay.value = null;
 }
+
+onMounted(async () => {
+  await notificationsStore.fetchChannels();
+  if (!channel.value && channels.value.length > 0) {
+    channel.value = channels.value[0]!;
+  }
+});
 </script>

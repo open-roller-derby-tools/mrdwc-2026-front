@@ -22,15 +22,15 @@
 				<div>
 					<label class="block mb-1 text-gray-300">Team 1</label>
 					<select v-model="team_id_1" class="w-full p-3 bg-gray-900 border border-gray-700 rounded">
-						<option v-for="t in teams" :key="t.teamId" :value="t.teamId">{{ t.label }}</option>
+						<option v-for="t in teamsStore.teams" :key="t.id" :value="t.id">{{ t.name }}</option>
 					</select>
 				</div>
 				<!-- Team 2 -->
 				<div>
 					<label class="block mb-1 text-gray-300">Team 2</label>
 					<select v-model="team_id_2" class="w-full p-3 bg-gray-900 border border-gray-700 rounded">
-						<option v-for="t in filteredTeam2List" :key="t.teamId" :value="t.teamId">
-							{{ t.label }}
+						<option v-for="t in filteredTeam2List" :key="t.id" :value="t.id">
+							{{ t.name }}
 						</option>
 					</select>
 				</div>
@@ -38,7 +38,7 @@
 				<div>
 					<label class="block mb-1 text-gray-300">Track</label>
 					<select v-model="track" class="w-full p-3 bg-gray-900 border border-gray-700 rounded">
-						<option v-for="t in tracks" :key="t.trackId" :value="t.trackId">{{ t.label }}</option>
+						<option v-for="t in venuesStore.venues" :key="t.id" :value="t.id">{{ t.name }}</option>
 					</select>
 				</div>
 			</div>
@@ -70,66 +70,55 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-	layout: "admin",
-});
+  import { useVenuesStore } from "~/stores/venues";
+  import { useTeamsStore } from "~/stores/teams";
+  import type { IChannel } from "~~/types/custom";
 
-/*** For POC only if initialization script is done */
-const tracks = [
-	{ label: "Track 1", trackId: 1 },
-	{ label: "Track 2", trackId: 2 },
-];
+  definePageMeta({
+    layout: "admin",
+  });
 
-const teams = [
-	{ label: "France", teamId: 1 },
-	{ label: "Australia", teamId: 2 },
-	{ label: "USA", teamId: 3 },
-];
+  const venuesStore = useVenuesStore();
+  const teamsStore = useTeamsStore();
+  const notificationsStore = useNotificationsStore();
 
-const filteredTeam2List = computed(() => {
-	return teams.filter((t) => t.teamId !== team_id_1.value);
-});
+  const filteredTeam2List = computed(() => teamsStore.localizedTeams.filter((t) => t.id !== team_id_1.value));
 
-const team_id_1 = ref(null);
-const team_id_2 = ref(null);
-const track = ref(null);
+  const isGameChannel = computed(() => slug.value.startsWith("game_"));
+  const team_id_1 = ref<number | null>(null);
+  const team_id_2 = ref<number | null>(null);
+  const track = ref<number | null>(null);
 
-const isGameChannel = computed(() => slug.value.startsWith("game_"));
+  const channels = computed(() => notificationsStore.channels);
+  const name = ref<string>("");
+  const slug = ref<string>("");
 
-/*** END */
+  // Get existing channels
 
-const channels = ref([]);
-const name = ref("");
-const slug = ref("");
+  onMounted(async () => {
+    await notificationsStore.fetchChannels();
+  });
 
-// Get existing channels
-async function loadChannels() {
-	channels.value = await $fetch("/api/channels/list");
-}
-
-onMounted(async () => {
-	await loadChannels();
-});
-
-// Create new channel
-async function createChannel() {
-	await $fetch("/api/channels/create", {
-		method: "POST",
-		body: {
-			name: name.value,
-			slug: slug.value,
-			team_id_1: isGameChannel.value ? team_id_1.value : null,
-			team_id_2: isGameChannel.value ? team_id_2.value : null,
-			track: isGameChannel.value ? track.value : null,
-		},
-	});
-	//Reload list
-	await loadChannels();
-	// Reset form
-	name.value = "";
-	slug.value = "";
-	team_id_1.value = null;
-	team_id_2.value = null;
-	track.value = null;
-}
+  // Create new channel
+  async function createChannel() {
+    await $fetch("/api/channels/create", {
+      method: "POST",
+      body: {
+        name: name.value,
+        slug: slug.value,
+        team_id_1: isGameChannel.value ? team_id_1.value : null,
+        team_id_2: isGameChannel.value ? team_id_2.value : null,
+        track: isGameChannel.value ? track.value : null,
+      },
+    });
+    //Reload list
+    notificationsStore.channelsLoaded = false;
+  	await notificationsStore.fetchChannels();
+    // Reset form
+    name.value = "";
+    slug.value = "";
+    team_id_1.value = null;
+    team_id_2.value = null;
+    track.value = null;
+  }
 </script>
