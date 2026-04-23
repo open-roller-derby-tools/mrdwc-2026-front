@@ -2,131 +2,136 @@
 	<div v-if="isDev" class="mt-32 bg-blue-text">
 		<SimulateGamesToggle />
 		<div class="padded">
-			<div class="overflow-x-auto max-w-[73rem] mx-auto my-6 p-4 bg-blue rounded-2xl">
-				<!-- Quarterfinals + Semifinals + Grand Final -->
-				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
+			<div class="overflow-auto max-w-[73rem] min-h-[70dvh] mx-auto my-6 p-4 bg-blue rounded-2xl">
+				<div class="relative *:absolute">
 					<!-- Quarterfinals -->
-					<div class="flex flex-col">
-						<BracketGame
-							v-if="gameQ4"
-							:game="gameQ4"
-							background-color="white"
-							class="mb-6"
-							:link-out-down="true"
-						/>
-						<BracketGame
-							v-if="gameQ1"
-							:game="gameQ1"
-							background-color="white"
-							class="mb-12"
-							:link-out-up="true"
-						/>
-						<BracketGame
-							v-if="gameQ2"
-							:game="gameQ2"
-							background-color="white"
-							class="mb-6"
-							:link-out-down="true"
-						/>
-						<BracketGame
-							v-if="gameQ3"
-							:game="gameQ3"
-							background-color="white"
-							class=""
-							:link-out-up="true"
-						/>
-					</div>
-					<div></div>
+					<BracketGame
+						v-if="gameQ4"
+						:game="gameQ4"
+						background-color="white"
+						:style="getGameStyle(0, 0)"
+						:link-out-win="'down'"
+						:link-out-lose="'down'"
+						:link-out-win-ratio="0.75"
+						:link-out-lose-ratio="0.5"
+					/>
+					<BracketGame
+						v-if="gameQ1"
+						:game="gameQ1"
+						background-color="white"
+						:style="getGameStyle(0, 1, 0, 1)"
+						:link-out-win="'up'"
+						:link-out-lose="'down'"
+						:link-out-win-ratio="0.75"
+						:link-out-lose-ratio="0.5"
+					/>
+					<BracketGame
+						v-if="gameQ2"
+						:game="gameQ2"
+						background-color="white"
+						:style="getGameStyle(0, 2, 0, 4)"
+						:link-out-win="'down'"
+						:link-out-lose="'down'"
+						:link-out-win-ratio="0.75"
+						:link-out-lose-ratio="0.25"
+					/>
+					<BracketGame
+						v-if="gameQ3"
+						:game="gameQ3"
+						background-color="white"
+						:style="getGameStyle(0, 3, 0, 5)"
+						:link-out-win="'up'"
+						:link-out-lose="'down'"
+						:link-out-win-ratio="0.75"
+						:link-out-lose-ratio="0.25"
+					/>
 					<!-- Semifinals -->
-					<div class="flex flex-col justify-center gap-18">
-						<BracketGame
-							v-if="gameS1"
-							:game="gameS1"
-							:level="1"
-							:link-in="true"
-							:link-out-down="true"
-							background-color="white"
-							class="-translate-y-1/2"
-						/>
-						<BracketGame
-							v-if="gameS2"
-							:game="gameS2"
-							:level="1"
-							:link-in="true"
-							:link-out-up="true"
-							background-color="white"
-							class="translate-y-1/2"
-						/>
-					</div>
-					<div></div>
+					<BracketGame
+						v-if="gameS1"
+						:game="gameS1"
+						:link-in-win="'both'"
+						:link-out-win="'down'"
+						:link-out-lose="'down'"
+						:link-in-ratio="0.25"
+						:link-out-win-ratio="0.666"
+						:link-out-lose-ratio="0.333"
+						background-color="white"
+						:style="getGameStyle(1, 0.5, 1, 0.5)"
+					/>
+					<BracketGame
+						v-if="gameS2"
+						:game="gameS2"
+						:link-in-win="'both'"
+						:link-out-win="'up'"
+						:link-out-lose="'down'"
+						:link-in-ratio="0.25"
+						:link-out-win-ratio="0.666"
+						:link-out-lose-ratio="0.333"
+						background-color="white"
+						:style="getGameStyle(1, 2.5, 1, 4.5)"
+					/>
+					<!-- Top Eight -->
+					<BracketGame
+						v-if="gameTE1"
+						:game="gameTE1"
+						background-color="white"
+						:link-in-lose="'up'"
+						:link-out-win="'down'"
+						:link-out-lose="'down'"
+						:link-in-ratio="0.5"
+						:link-out-win-ratio="0.666"
+						:link-out-lose-ratio="0.333"
+						:style="getGameStyle(1, 5, 1, 10)"
+					/>
+					<BracketGame
+						v-if="gameTE2"
+						:game="gameTE2"
+						background-color="white"
+						:link-in-lose="'up'"
+						:link-out-win="'up'"
+						:link-out-lose="'down'"
+						:link-in-ratio="0.75"
+						:link-out-win-ratio="0.666"
+						:link-out-lose-ratio="0.333"
+						:style="getGameStyle(1, 6, 1, 11)"
+					/>
 					<!-- Grand Final -->
-					<div class="flex flex-col justify-center">
-						<BracketGame
-							v-if="gameGF"
-							:game="gameGF"
-							:level="2"
-							:link-in="true"
-							background-color="white"
-							class=""
-						/>
-					</div>
-				</div>
-				<!-- Lower Final -->
-				<div
-					class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default -mt-32 mb-12"
-				>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div class="flex flex-col">
-						<BracketGame v-if="gameLF" :game="gameLF" background-color="white" />
-					</div>
-				</div>
-				<!-- Lower Quarterfinals + Top Eight -->
-				<div
-					class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default mb-12"
-				>
-					<div></div>
-					<div></div>
-					<div class="flex flex-col">
-						<BracketGame
-							v-if="gameTE1"
-							:game="gameTE1"
-							background-color="white"
-							:link-out-down="true"
-							:level="0"
-							class="mb-6"
-						/>
-						<BracketGame
-							v-if="gameTE2"
-							:game="gameTE2"
-							background-color="white"
-							:link-out-up="true"
-							:level="0"
-							class=""
-						/>
-					</div>
-					<div></div>
-					<div class="flex flex-col justify-center">
-						<BracketGame
-							v-if="gameUTE"
-							:game="gameUTE"
-							:link-in="true"
-							:level="1"
-							background-color="white"
-						/>
-					</div>
-				</div>
-				<!-- Lower Top Eight -->
-				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
-					<div></div>
-					<div></div>
-					<div></div>
-					<div></div>
-					<div class="flex flex-col">
-						<BracketGame v-if="gameLTE" :game="gameLTE" background-color="white" />
-					</div>
+					<BracketGame
+						v-if="gameGF"
+						:game="gameGF"
+						:link-in-win="'both'"
+						:link-in-ratio="0.333"
+						background-color="white"
+						:style="getGameStyle(2, 1.5, 2, 2.5)"
+					/>
+					<!-- Lower Final -->
+					<BracketGame
+						v-if="gameLF"
+						:game="gameLF"
+						background-color="white"
+						:link-in-lose="'up'"
+						:link-in-ratio="0.666"
+						:style="getGameStyle(2, 3.5, 2, 6.5)"
+					/>
+					<!-- Upper Top Eight -->
+					<BracketGame
+						v-if="gameUTE"
+						:game="gameUTE"
+						:link-in-win="'both'"
+						:link-in-ratio="0.333"
+						background-color="white"
+						:style="getGameStyle(2, 5.5, 2, 10.5)"
+					/>
+					<!-- Lower Top Eight -->
+					<BracketGame
+						v-if="gameLTE"
+						:game="gameLTE"
+						background-color="white"
+						:link-in-lose="'up'"
+						:link-in-ratio="0.666"
+						:style="getGameStyle(2, 7.5, 2, 14.5)"
+						class="pb-4"
+					/>
 				</div>
 			</div>
 		</div>
@@ -142,12 +147,26 @@ import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue
 
 import { useGamesStore } from "~/stores/games";
 import { useTeamsStore } from "~/stores/teams";
+import { GAME_WIDTH, GAME_HEIGHT, GAME_SPACING_X, GAME_SPACING_Y } from "~/utils/game";
 
 // const { t } = useI18n();
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
 
 const isDev = import.meta.dev;
+
+const getGameStyle = (
+	column: number = 0,
+	row: number = 0,
+	spacing_x: number = 0,
+	spacing_y: number = 0
+) => {
+	const style = [];
+	style.push(`width: ${GAME_WIDTH}rem;`);
+	style.push(`top: ${GAME_HEIGHT * row + GAME_SPACING_Y * spacing_y}rem;`);
+	style.push(`left: ${GAME_WIDTH * column + GAME_SPACING_X * spacing_x}rem;`);
+	return style.join(" ");
+};
 
 /* const gameRP1 = computed(() => gamesStore.getGameByNumber(50));
 const gameRP2 = computed(() => gamesStore.getGameByNumber(49));

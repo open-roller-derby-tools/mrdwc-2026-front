@@ -14,23 +14,38 @@
 				{{ game.home_score }}
 			</span>
 			<div
-				v-if="linkIn"
-				class="absolute bottom-0 left-0 -translate-x-full translate-y-px w-[5rem] border-b-2 border-yellow"
+				v-if="linkInWin !== 'none'"
+				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-yellow"
+				:style="linkInStyle"
 			></div>
 			<div
-				v-if="linkIn"
-				class="absolute bottom-0 left-0 -translate-x-full translate-y-1/2 h-[150%] border-l-2 border-yellow"
-				style="width: calc(5rem + 2px)"
+				v-if="linkInLose !== 'none'"
+				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-red-text"
+				:style="linkInStyle"
 			></div>
 			<div
-				v-if="linkOutDown"
+				v-if="linkOutWin === 'down'"
 				:class="linkOutClasses"
-				class="absolute right-0 translate-x-full translate-y-full w-[5rem] rounded-tr-xl border-t-2 border-r-2 border-yellow"
+				:style="getLinkOutStyle('win')"
+				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-yellow"
 			></div>
 			<div
-				v-if="linkOutUp"
+				v-if="linkOutWin === 'up'"
 				:class="linkOutClasses"
-				class="absolute right-0 translate-x-full w-[5rem] rounded-br-xl border-b-2 border-r-2 border-yellow"
+				:style="getLinkOutStyle('win')"
+				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-yellow"
+			></div>
+			<div
+				v-if="linkOutLose === 'down'"
+				:class="linkOutClasses"
+				:style="getLinkOutStyle('lose')"
+				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-red-text"
+			></div>
+			<div
+				v-if="linkOutLose === 'up'"
+				:class="linkOutClasses"
+				:style="getLinkOutStyle('lose')"
+				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-red-text"
 			></div>
 		</div>
 		<div class="relative flex items-center justify-between px-3 py-1.5" :class="teamClasses">
@@ -62,7 +77,7 @@ import type { IGame } from "~~/types/games";
 import TeamLettersBadge from "../TeamLettersBadge.vue";
 import GameStateLabel from "./GameStateLabel.vue";
 import { useTeamsStore } from "~/stores/teams";
-import { isGameFinished } from "~/utils/game";
+import { isGameFinished, GAME_SPACING_X } from "~/utils/game";
 
 const { t } = useI18n();
 const teamsStore = useTeamsStore();
@@ -78,17 +93,25 @@ const props = withDefaults(
 		showLink?: boolean;
 		backgroundColor?: "blue" | "yellow" | "white";
 		level?: number;
-		linkIn?: boolean;
-		linkOutDown?: boolean;
-		linkOutUp?: boolean;
+		linkInWin?: "none" | "both" | "up";
+		linkInLose?: "none" | "both" | "up";
+		linkOutWin?: "none" | "down" | "up";
+		linkOutLose?: "none" | "down" | "up";
+		linkInRatio?: number;
+		linkOutWinRatio?: number;
+		linkOutLoseRatio?: number;
 	}>(),
 	{
 		showLink: false,
 		backgroundColor: "blue",
 		level: 0,
-		linkIn: false,
-		linkOutDown: false,
-		linkOutUp: false,
+		linkInWin: "none",
+		linkInLose: "none",
+		linkOutWin: "none",
+		linkOutLose: "none",
+		linkInRatio: 0.5,
+		linkOutWinRatio: 0.5,
+		linkOutLoseRatio: 0.5,
 	}
 );
 
@@ -104,11 +127,24 @@ const teamClasses = computed(() => ({
 	"bg-white text-blue-text border-blue-text/20": props.backgroundColor === "white",
 }));
 
+const linkInStyle = computed(() => {
+	const style = [];
+	style.push(`width: ${GAME_SPACING_X * props.linkInRatio}rem;`);
+	return style.join(" ");
+});
+
+const getLinkOutStyle = (type: "win" | "lose") => {
+	const style = [];
+	if (type === "win") style.push(`width: ${GAME_SPACING_X * props.linkOutWinRatio}rem;`);
+	else style.push(`width: ${GAME_SPACING_X * props.linkOutLoseRatio}rem;`);
+	return style.join(" ");
+};
+
 const linkOutClasses = computed(() => {
 	const classes = [];
 
-	if (props.level === 0) classes.push("h-[200%]");
-	else if (props.level === 1) classes.push("h-[420%]");
+	if (props.level === 0) classes.push("h-[100%]");
+	else if (props.level === 1) classes.push("h-[100%]");
 
 	if (!isGameFinished(props.game) || (!isHomeTeamWinning.value && !isAwayTeamWinning.value))
 		classes.push("bottom-0");
