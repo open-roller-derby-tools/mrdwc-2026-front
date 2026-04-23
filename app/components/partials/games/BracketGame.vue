@@ -34,12 +34,12 @@
 				<span>{{ game.description }}</span>
 				<!-- Link in arrows -->
 				<div
-					v-if="linkInWin !== 'none' || linkInLose !== 'none'"
+					v-if="linkInArrows && (linkInWin !== 'none' || linkInLose !== 'none')"
 					:class="linkInArrowClasses"
 					class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full w-0 h-0 border-x-6 border-t-12 border-b-0 border-x-transparent border-b-transparent"
 				></div>
 				<div
-					v-if="linkInWin === 'both' || linkInLose === 'both'"
+					v-if="linkInArrows && (linkInWin === 'both' || linkInLose === 'both')"
 					:class="linkInArrowClasses"
 					class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-x-6 border-b-12 border-t-0 border-x-transparent border-t-transparent"
 				></div>
@@ -113,6 +113,7 @@ const props = withDefaults(
 		backgroundColor?: "blue" | "yellow" | "white";
 		linkInWin?: "none" | "both" | "up"; // Is there a win (yellow) link coming in (shown on the left) and is it coming from the top only, or top + bottom?
 		linkInLose?: "none" | "both" | "up"; // Is there a lose (blue) link coming in (shown on the left) and is it coming from the top only, or top + bottom?
+		linkInArrows?: boolean; // Do we show arrows on the in-link?
 		linkOutWin?: "none" | "down" | "up"; // Is there a win (yellow) link coming out (shown on the right) and is it going down or up?
 		linkOutLose?: "none" | "down" | "up"; // Is there a lose (blue) link coming out (shown on the right) and is it going down or up?
 		linkInRatio?: number; // Length of the in-link in proportion to the space between columns (GAME_SPACING_X)
@@ -126,6 +127,7 @@ const props = withDefaults(
 		backgroundColor: "blue",
 		linkInWin: "none",
 		linkInLose: "none",
+		linkInArrows: true,
 		linkOutWin: "none",
 		linkOutLose: "none",
 		linkInRatio: 0.5,
@@ -156,9 +158,11 @@ const topTeam = computed(() => {
 	}
 });
 const topTeamSource = computed(() => {
+	if (topTeam.value == null) return props.game.home_source;
 	return topTeam.value === homeTeam.value ? props.game.home_source : props.game.away_source;
 });
 const topTeamScore = computed(() => {
+	if (topTeam.value == null) return 0;
 	return topTeam.value === homeTeam.value ? props.game.home_score : props.game.away_score;
 });
 
@@ -175,9 +179,11 @@ const bottomTeam = computed(() => {
 	}
 });
 const bottomTeamSource = computed(() => {
+	if (bottomTeam.value == null) return props.game.away_source;
 	return bottomTeam.value === homeTeam.value ? props.game.home_source : props.game.away_source;
 });
 const bottomTeamScore = computed(() => {
+	if (bottomTeam.value == null) return 0;
 	return bottomTeam.value === homeTeam.value ? props.game.home_score : props.game.away_score;
 });
 

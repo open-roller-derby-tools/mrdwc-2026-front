@@ -3,15 +3,18 @@
 		<SimulateGamesToggle />
 		<div class="padded">
 			<div
-				class="overflow-auto w-full sm:max-w-[73rem] max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
+				class="overflow-auto w-full sm:max-w-[76.5rem] max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
 			>
-				<div class="relative w-[71rem] h-[81rem] *:absolute">
+				<div class="relative w-[74.5rem] h-[81rem] *:absolute">
 					<!-- Quarterfinals -->
 					<BracketGame
 						v-if="gameQ4"
 						:game="gameQ4"
 						background-color="white"
-						:style="getGameStyle(0, 0)"
+						:style="getGameStyle(0.2, 0)"
+						:link-in-win="'up'"
+						:link-in-arrows="false"
+						:link-in-ratio="0.25"
 						:link-out-win="'down'"
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
@@ -22,7 +25,10 @@
 						v-if="gameQ1"
 						:game="gameQ1"
 						background-color="white"
-						:style="getGameStyle(0, 1, 0, 1)"
+						:style="getGameStyle(0.2, 1, 0, 1)"
+						:link-in-win="'up'"
+						:link-in-arrows="false"
+						:link-in-ratio="0.25"
 						:link-out-win="'up'"
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
@@ -33,7 +39,10 @@
 						v-if="gameQ2"
 						:game="gameQ2"
 						background-color="white"
-						:style="getGameStyle(0, 2, 0, 4)"
+						:style="getGameStyle(0.2, 2, 0, 4)"
+						:link-in-win="'up'"
+						:link-in-arrows="false"
+						:link-in-ratio="0.25"
 						:link-out-win="'down'"
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
@@ -44,7 +53,10 @@
 						v-if="gameQ3"
 						:game="gameQ3"
 						background-color="white"
-						:style="getGameStyle(0, 3, 0, 5)"
+						:style="getGameStyle(0.2, 3, 0, 5)"
+						:link-in-win="'up'"
+						:link-in-arrows="false"
+						:link-in-ratio="0.25"
 						:link-out-win="'up'"
 						:link-out-lose="'down'"
 						:link-out-win-ratio="0.75"
@@ -64,7 +76,7 @@
 						:link-out-win-height="GAME_HEIGHT * 1.5"
 						:link-out-lose-height="GAME_HEIGHT * 3.1"
 						background-color="white"
-						:style="getGameStyle(1, 0.5, 1, 0.5)"
+						:style="getGameStyle(1.2, 0.5, 1, 0.5)"
 					/>
 					<BracketGame
 						v-if="gameS2"
@@ -78,7 +90,7 @@
 						:link-out-win-height="GAME_HEIGHT * 1.5"
 						:link-out-lose-height="GAME_HEIGHT * 1.35"
 						background-color="white"
-						:style="getGameStyle(1, 2.5, 1, 4.5)"
+						:style="getGameStyle(1.2, 2.5, 1, 4.5)"
 					/>
 					<!-- Top Eight -->
 					<BracketGame
@@ -92,7 +104,7 @@
 						:link-out-win-ratio="0.666"
 						:link-out-lose-ratio="0.333"
 						:link-out-lose-height="GAME_HEIGHT * 1.5"
-						:style="getGameStyle(1, 5, 1, 10)"
+						:style="getGameStyle(1.2, 5, 1, 10)"
 					/>
 					<BracketGame
 						v-if="gameTE2"
@@ -105,7 +117,7 @@
 						:link-out-win-ratio="0.666"
 						:link-out-lose-ratio="0.333"
 						:link-out-lose-height="GAME_HEIGHT * 2.2"
-						:style="getGameStyle(1, 6, 1, 11)"
+						:style="getGameStyle(1.2, 6, 1, 11)"
 					/>
 					<!-- Grand Final -->
 					<BracketGame
@@ -115,7 +127,7 @@
 						:link-in-win="'both'"
 						:link-in-ratio="0.333"
 						background-color="white"
-						:style="getGameStyle(2, 1.5, 2, 2.5)"
+						:style="getGameStyle(2.2, 1.5, 2, 2.5)"
 					/>
 					<!-- Lower Final -->
 					<BracketGame
@@ -125,7 +137,7 @@
 						background-color="white"
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"
-						:style="getGameStyle(2, 3.5, 2, 6.5)"
+						:style="getGameStyle(2.2, 3.5, 2, 6.5)"
 					/>
 					<!-- Upper Top Eight -->
 					<BracketGame
@@ -135,7 +147,7 @@
 						:link-in-win="'both'"
 						:link-in-ratio="0.333"
 						background-color="white"
-						:style="getGameStyle(2, 5.5, 2, 10.5)"
+						:style="getGameStyle(2.2, 5.5, 2, 10.5)"
 					/>
 					<!-- Lower Top Eight -->
 					<BracketGame
@@ -145,7 +157,7 @@
 						background-color="white"
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"
-						:style="getGameStyle(2, 7.5, 2, 14.5)"
+						:style="getGameStyle(2.2, 7.5, 2, 14.5)"
 						class=""
 					/>
 				</div>
