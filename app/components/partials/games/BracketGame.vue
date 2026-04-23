@@ -20,9 +20,16 @@
 			></div>
 			<div
 				v-if="linkInLose !== 'none'"
-				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-red-text"
+				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-blue-light"
 				:style="linkInStyle"
 			></div>
+			<div
+				v-if="linkInWin !== 'none' || linkInLose !== 'none'"
+				class="absolute bottom-0 -translate-x-1/2 translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm px-2 py-1 min-w-7 rounded-full"
+				:style="linkInLabelStyle"
+			>
+				{{ game.description }}
+			</div>
 			<div
 				v-if="linkOutWin === 'down'"
 				:class="linkOutClasses"
@@ -39,13 +46,13 @@
 				v-if="linkOutLose === 'down'"
 				:class="linkOutClasses"
 				:style="getLinkOutStyle('lose')"
-				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-red-text"
+				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-blue-light"
 			></div>
 			<div
 				v-if="linkOutLose === 'up'"
 				:class="linkOutClasses"
 				:style="getLinkOutStyle('lose')"
-				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-red-text"
+				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-blue-light"
 			></div>
 		</div>
 		<div class="relative flex items-center justify-between px-3 py-1.5" :class="teamClasses">
@@ -130,6 +137,12 @@ const teamClasses = computed(() => ({
 const linkInStyle = computed(() => {
 	const style = [];
 	style.push(`width: ${GAME_SPACING_X * props.linkInRatio}rem;`);
+	return style.join(" ");
+});
+
+const linkInLabelStyle = computed(() => {
+	const style = [];
+	style.push(`left: -${GAME_SPACING_X * props.linkInRatio}rem;`);
 	return style.join(" ");
 });
 
