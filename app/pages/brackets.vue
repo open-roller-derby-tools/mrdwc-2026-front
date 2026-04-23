@@ -1,31 +1,59 @@
 <template>
 	<div v-if="isDev" class="mt-32 bg-blue-text">
 		<SimulateGamesToggle />
-		<div class="w-full maxed padded">
-			<div class="w-full overflow-x-auto">
+		<div class="padded">
+			<div class="overflow-x-auto max-w-[73rem] mx-auto my-6 p-4 bg-blue rounded-2xl">
 				<!-- Quarterfinals + Semifinals + Grand Final -->
 				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
 					<!-- Quarterfinals -->
 					<div class="flex flex-col">
-						<BracketGame v-if="gameQ4" :game="gameQ4" background-color="white" class="mb-6" />
-						<BracketGame v-if="gameQ1" :game="gameQ1" background-color="white" class="mb-18" />
-						<BracketGame v-if="gameQ2" :game="gameQ2" background-color="white" class="mb-6" />
-						<BracketGame v-if="gameQ3" :game="gameQ3" background-color="white" class="" />
+						<BracketGame
+							v-if="gameQ4"
+							:game="gameQ4"
+							background-color="white"
+							class="mb-6"
+							:link-out-down="true"
+						/>
+						<BracketGame
+							v-if="gameQ1"
+							:game="gameQ1"
+							background-color="white"
+							class="mb-12"
+							:link-out-up="true"
+						/>
+						<BracketGame
+							v-if="gameQ2"
+							:game="gameQ2"
+							background-color="white"
+							class="mb-6"
+							:link-out-down="true"
+						/>
+						<BracketGame
+							v-if="gameQ3"
+							:game="gameQ3"
+							background-color="white"
+							class=""
+							:link-out-up="true"
+						/>
 					</div>
 					<div></div>
 					<!-- Semifinals -->
-					<div class="flex flex-col justify-center gap-24">
+					<div class="flex flex-col justify-center gap-18">
 						<BracketGame
 							v-if="gameS1"
 							:game="gameS1"
-							:show-link="true"
+							:level="1"
+							:link-in="true"
+							:link-out-down="true"
 							background-color="white"
 							class="-translate-y-1/2"
 						/>
 						<BracketGame
 							v-if="gameS2"
 							:game="gameS2"
-							:show-link="true"
+							:level="1"
+							:link-in="true"
+							:link-out-up="true"
 							background-color="white"
 							class="translate-y-1/2"
 						/>
@@ -36,8 +64,8 @@
 						<BracketGame
 							v-if="gameGF"
 							:game="gameGF"
-							:show-link="true"
 							:level="2"
+							:link-in="true"
 							background-color="white"
 							class=""
 						/>
@@ -45,7 +73,7 @@
 				</div>
 				<!-- Lower Final -->
 				<div
-					class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default mb-24"
+					class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default -mt-32 mb-12"
 				>
 					<div></div>
 					<div></div>
@@ -56,19 +84,35 @@
 					</div>
 				</div>
 				<!-- Lower Quarterfinals + Top Eight -->
-				<div class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default">
+				<div
+					class="inline-grid grid-flow-col auto-cols-[17rem_10rem] select-none cursor-default mb-12"
+				>
 					<div></div>
 					<div></div>
 					<div class="flex flex-col">
-						<BracketGame v-if="gameTE1" :game="gameTE1" background-color="white" class="mb-6" />
-						<BracketGame v-if="gameTE2" :game="gameTE2" background-color="white" class="" />
+						<BracketGame
+							v-if="gameTE1"
+							:game="gameTE1"
+							background-color="white"
+							:link-out-down="true"
+							:level="0"
+							class="mb-6"
+						/>
+						<BracketGame
+							v-if="gameTE2"
+							:game="gameTE2"
+							background-color="white"
+							:link-out-up="true"
+							:level="0"
+							class=""
+						/>
 					</div>
 					<div></div>
 					<div class="flex flex-col justify-center">
 						<BracketGame
 							v-if="gameUTE"
 							:game="gameUTE"
-							:show-link="true"
+							:link-in="true"
 							:level="1"
 							background-color="white"
 						/>
@@ -98,6 +142,8 @@ import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue
 
 import { useGamesStore } from "~/stores/games";
 import { useTeamsStore } from "~/stores/teams";
+
+// const { t } = useI18n();
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
 
