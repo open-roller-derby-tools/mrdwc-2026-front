@@ -132,7 +132,10 @@
 		"bracket_play": "Bracket Play (1–8)",
 		"rankings_play": "Rankings Play (9–20)",
 		"eliminated": "Eliminated (21–24)",
-		"legend": "Legend:"
+		"legend": "Legend:",
+		"1st": "World Champions!",
+		"place": "{ordinal} place",
+		"others": "{ordinal}"
 	},
 	"game_page": "Game page",
 	"watch_live": "Watch live",
@@ -148,5 +151,14 @@
 	"anthem_audio": "Anthem Audio",
 	"parade_audio": "Parade Audio",
 	"countries_represented": "Countries Represented",
-	"play_audio": "Play audio"
+	"play_audio": "Play audio",
+	"ordinals": {
+		"one": "st",
+		"two": "nd",
+		"few": "rd",
+		"other": "th"
+	},
+	"format": {
+		"ordinal": "{n}{suffix}"
+	}
 }

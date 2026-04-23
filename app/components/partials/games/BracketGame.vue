@@ -17,12 +17,12 @@
 			<!-- Link in elements -->
 			<div
 				v-if="linkInWin !== 'none'"
-				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-yellow"
+				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-white"
 				:style="linkInStyle"
 			></div>
 			<div
 				v-if="linkInLose !== 'none'"
-				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-blue-light"
+				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-white"
 				:style="linkInStyle"
 			></div>
 			<!-- Link in label -->
@@ -65,6 +65,56 @@
 				:style="getLinkOutStyle('lose')"
 				class="absolute right-0 translate-x-full rounded-br-2xl border-b-2 border-r-2 border-blue-light"
 			></div>
+			<!-- Link out win label -->
+			<div
+				v-if="linkOutWinLabel"
+				class="absolute bottom-1/2 right-0 translate-x-full border-b-2 border-white w-8"
+			>
+				<div
+					class="absolute bottom-0 right-1 translate-x-full translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm p-1.5 pb-2 min-w-7 rounded-lg"
+				>
+					<i18n-t
+						:keypath="linkOutWinLabel"
+						tag="span"
+						class="block text-center leading-none whitespace-nowrap"
+					>
+						<template #ordinal>
+							<!-- Ordinal layout also comes from locale JSON -->
+							<i18n-t keypath="format.ordinal" tag="span">
+								<template #n>{{ linkOutWinRanking }}</template>
+								<template #suffix
+									><sup>{{ getOrdinalSuffix(linkOutWinRanking) }}</sup></template
+								>
+							</i18n-t>
+						</template>
+					</i18n-t>
+				</div>
+			</div>
+			<!-- Link out lose label -->
+			<div
+				v-if="linkOutLoseLabel"
+				class="absolute -bottom-1/2 right-0 translate-x-full border-b-2 border-white w-8"
+			>
+				<div
+					class="absolute bottom-0 right-1 translate-x-full translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm p-1.5 pb-2 min-w-7 rounded-lg"
+				>
+					<i18n-t
+						:keypath="linkOutLoseLabel"
+						tag="span"
+						class="block text-center leading-none whitespace-nowrap"
+					>
+						<template #ordinal>
+							<!-- Ordinal layout also comes from locale JSON -->
+							<i18n-t keypath="format.ordinal" tag="span">
+								<template #n>{{ linkOutLoseRanking }}</template>
+								<template #suffix
+									><sup>{{ getOrdinalSuffix(linkOutLoseRanking) }}</sup></template
+								>
+							</i18n-t>
+						</template>
+					</i18n-t>
+				</div>
+			</div>
 		</div>
 		<!-- Away/Bottom team -->
 		<div class="relative flex items-center justify-between px-3 py-1.5" :class="teamClasses">
@@ -99,7 +149,7 @@ import GameStateLabel from "./GameStateLabel.vue";
 import { useTeamsStore } from "~/stores/teams";
 import { hasGameStarted, isGameFinished, GAME_SPACING_X, GAME_HEIGHT } from "~/utils/game";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const teamsStore = useTeamsStore();
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
 const { getTeam } = useGameFormatting();
@@ -282,6 +332,58 @@ const gameDescription = computed(() => {
 		return t(`game_type.${props.game.type}`);
 	return props.game.description;
 });
+
+const linkOutWinLabel = computed(() => {
+	if (!isGameFinished(props.game)) return null;
+	if (props.game.type == GameType.GrandFinal) return "rankings.1st";
+	if (
+		props.game.type == GameType.LowerFinal ||
+		props.game.type == GameType.UpperTopEight ||
+		props.game.type == GameType.LowerTopEight
+	)
+		return "rankings.others";
+	return null;
+});
+
+const linkOutWinRanking = computed(() => {
+	if (!isGameFinished(props.game)) return null;
+	if (props.game.type == GameType.GrandFinal) return 1;
+	if (props.game.type == GameType.LowerFinal) return 3;
+	if (props.game.type == GameType.UpperTopEight) return 5;
+	if (props.game.type == GameType.LowerTopEight) return 7;
+	return null;
+});
+
+const linkOutLoseLabel = computed(() => {
+	if (!isGameFinished(props.game)) return null;
+	if (props.game.type == GameType.GrandFinal) return "rankings.place";
+	if (
+		props.game.type == GameType.LowerFinal ||
+		props.game.type == GameType.UpperTopEight ||
+		props.game.type == GameType.LowerTopEight
+	)
+		return "rankings.others";
+	return null;
+});
+
+const linkOutLoseRanking = computed(() => {
+	if (!isGameFinished(props.game)) return null;
+	if (props.game.type == GameType.GrandFinal) return 2;
+	if (props.game.type == GameType.LowerFinal) return 4;
+	if (props.game.type == GameType.UpperTopEight) return 6;
+	if (props.game.type == GameType.LowerTopEight) return 8;
+	return null;
+});
+
+const ordinalRules = computed(() => new Intl.PluralRules(locale.value, { type: "ordinal" }));
+
+const getOrdinalSuffix = (value: number | null) => {
+	if (value == null) return "";
+	const category = ordinalRules.value.select(value);
+	const key = `ordinals.${category}`;
+	const resolved = t(key);
+	return resolved === key ? t("ordinals.other") : resolved;
+};
 
 onMounted(async () => {
 	teamsStore.fetch();

@@ -3,9 +3,13 @@
 		<SimulateGamesToggle />
 		<div class="padded">
 			<div
-				class="overflow-auto w-full sm:max-w-[76.5rem] max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
+				class="overflow-auto w-full max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
+				:class="isTournamentFinished ? 'sm:max-w-[85rem]' : 'sm:max-w-[76.5rem]'"
 			>
-				<div class="relative w-[74.5rem] h-[81rem] *:absolute">
+				<div
+					class="relative h-[81rem] *:absolute"
+					:class="isTournamentFinished ? 'w-[83rem]' : 'w-[74.5rem]'"
+				>
 					<!-- Quarterfinals -->
 					<BracketGame
 						v-if="gameQ4"
@@ -126,6 +130,7 @@
 						:winner-on-top="true"
 						:link-in-win="'both'"
 						:link-in-ratio="0.333"
+						:link-out-win-ratio="0.25"
 						background-color="white"
 						:style="getGameStyle(2.2, 1.5, 2, 2.5)"
 					/>
@@ -218,6 +223,10 @@ const gameTE1 = computed(() => gamesStore.getGameByNumber(44));
 const gameTE2 = computed(() => gamesStore.getGameByNumber(45));
 const gameUTE = computed(() => gamesStore.getGameByNumber(52));
 const gameLTE = computed(() => gamesStore.getGameByNumber(51));
+
+const isTournamentFinished = computed(() => {
+	return gameGF.value && isGameFinished(gameGF.value);
+});
 
 useGamesAutoRefresh({ intervalMs: 30000 });
 
