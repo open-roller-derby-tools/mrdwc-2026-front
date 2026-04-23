@@ -4,11 +4,11 @@
 		<div class="padded">
 			<div
 				class="overflow-auto w-full max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
-				:class="isTournamentFinished ? 'sm:max-w-[85rem]' : 'sm:max-w-[76.5rem]'"
+				:class="isTournamentFinished ? 'sm:max-w-[87.5rem]' : 'sm:max-w-[76.5rem]'"
 			>
 				<div
 					class="relative h-[81rem] *:absolute"
-					:class="isTournamentFinished ? 'w-[83rem]' : 'w-[74.5rem]'"
+					:class="isTournamentFinished ? 'w-[85.5rem]' : 'w-[74.5rem]'"
 				>
 					<!-- Quarterfinals -->
 					<BracketGame
