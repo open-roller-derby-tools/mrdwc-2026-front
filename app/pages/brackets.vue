@@ -3,9 +3,13 @@
 		<SimulateGamesToggle />
 		<div class="padded">
 			<div
-				class="overflow-auto w-full max-h-[70dvh] sm:max-w-[87.5rem] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
+				class="overflow-auto w-full max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
+				:class="isOneOfTheLastFourGamesFinished ? 'sm:max-w-[87.5rem]' : 'sm:max-w-[76.5rem]'"
 			>
-				<div class="relative w-[85.5rem] h-[81rem] *:absolute">
+				<div
+					class="relative h-[81rem] *:absolute"
+					:class="isOneOfTheLastFourGamesFinished ? 'w-[85.5rem]' : 'w-[74.5rem]'"
+				>
 					<!-- Quarterfinals -->
 					<BracketGame
 						v-if="gameQ4"
@@ -219,6 +223,15 @@ const gameTE1 = computed(() => gamesStore.getGameByNumber(44));
 const gameTE2 = computed(() => gamesStore.getGameByNumber(45));
 const gameUTE = computed(() => gamesStore.getGameByNumber(52));
 const gameLTE = computed(() => gamesStore.getGameByNumber(51));
+
+const isOneOfTheLastFourGamesFinished = computed(() => {
+	return (
+		(gameGF.value && isGameFinished(gameGF.value)) ||
+		(gameLF.value && isGameFinished(gameLF.value)) ||
+		(gameUTE.value && isGameFinished(gameUTE.value)) ||
+		(gameLTE.value && isGameFinished(gameLTE.value))
+	);
+});
 
 useGamesAutoRefresh({ intervalMs: 30000 });
 
