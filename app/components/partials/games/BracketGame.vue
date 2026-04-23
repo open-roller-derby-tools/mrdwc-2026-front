@@ -10,7 +10,7 @@
 					{{ homeTeam?.country ?? homeTeam?.name ?? game.home_source ?? "---" }}
 				</span>
 			</div>
-			<span v-if="!isNoSpoilerModeActive" class="font-bold text-lg">
+			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-lg">
 				{{ game.home_score }}
 			</span>
 			<div
@@ -33,22 +33,22 @@
 			<div
 				v-if="linkOutWin === 'down'"
 				:style="getLinkOutStyle('win')"
-				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-yellow"
+				class="absolute right-0 translate-x-full translate-y-full rounded-tr-2xl border-t-2 border-r-2 border-yellow"
 			></div>
 			<div
 				v-if="linkOutWin === 'up'"
 				:style="getLinkOutStyle('win')"
-				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-yellow"
+				class="absolute right-0 translate-x-full rounded-br-2xl border-b-2 border-r-2 border-yellow"
 			></div>
 			<div
 				v-if="linkOutLose === 'down'"
 				:style="getLinkOutStyle('lose')"
-				class="absolute right-0 translate-x-full translate-y-full rounded-tr-xl border-t-2 border-r-2 border-blue-light"
+				class="absolute right-0 translate-x-full translate-y-full rounded-tr-2xl border-t-2 border-r-2 border-blue-light"
 			></div>
 			<div
 				v-if="linkOutLose === 'up'"
 				:style="getLinkOutStyle('lose')"
-				class="absolute right-0 translate-x-full rounded-br-xl border-b-2 border-r-2 border-blue-light"
+				class="absolute right-0 translate-x-full rounded-br-2xl border-b-2 border-r-2 border-blue-light"
 			></div>
 		</div>
 		<div class="relative flex items-center justify-between px-3 py-1.5" :class="teamClasses">
@@ -58,7 +58,7 @@
 					{{ awayTeam?.country ?? awayTeam?.name ?? game.away_source ?? "---" }}
 				</span>
 			</div>
-			<span v-if="!isNoSpoilerModeActive" class="font-bold text-lg">
+			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-lg">
 				{{ game.away_score }}
 			</span>
 		</div>
@@ -80,22 +80,19 @@ import type { IGame } from "~~/types/games";
 import TeamLettersBadge from "../TeamLettersBadge.vue";
 import GameStateLabel from "./GameStateLabel.vue";
 import { useTeamsStore } from "~/stores/teams";
-import { isGameFinished, GAME_SPACING_X, GAME_HEIGHT } from "~/utils/game";
+import { hasGameStarted, isGameFinished, GAME_SPACING_X, GAME_HEIGHT } from "~/utils/game";
 
 const { t } = useI18n();
 const teamsStore = useTeamsStore();
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
-// const { isGameSpoiler } = useGameFormatting();
-const { getTeamById } = teamsStore;
+const { getTeam } = useGameFormatting();
 
 useGamesAutoRefresh({ intervalMs: 30000 });
 
 const props = withDefaults(
 	defineProps<{
 		game: IGame;
-		showLink?: boolean;
 		backgroundColor?: "blue" | "yellow" | "white";
-		level?: number;
 		linkInWin?: "none" | "both" | "up";
 		linkInLose?: "none" | "both" | "up";
 		linkOutWin?: "none" | "down" | "up";
@@ -107,9 +104,7 @@ const props = withDefaults(
 		linkOutLoseHeight?: number;
 	}>(),
 	{
-		showLink: false,
 		backgroundColor: "blue",
-		level: 0,
 		linkInWin: "none",
 		linkInLose: "none",
 		linkOutWin: "none",
@@ -122,9 +117,9 @@ const props = withDefaults(
 	}
 );
 
-const homeTeam = computed(() => getTeamById(props.game.home_team ?? -1));
-const awayTeam = computed(() => getTeamById(props.game.away_team ?? -1));
-
+const homeTeam = computed(() => getTeam(props.game, "home"));
+const awayTeam = computed(() => getTeam(props.game, "away"));
+const gameHasStarted = computed(() => hasGameStarted(props.game));
 const isHomeTeamWinning = computed(() => props.game.home_score > props.game.away_score);
 const isAwayTeamWinning = computed(() => props.game.away_score > props.game.home_score);
 
@@ -165,7 +160,7 @@ const getLinkOutStyle = (type: "win" | "lose") => {
 			style.push(`transform: translateY(-2px);`);
 		}
 
-		if (isHomeTeamWinning.value) {
+		if (isGameFinished(props.game) && isHomeTeamWinning.value) {
 			style.push("bottom: 50%;");
 
 			if (props.linkOutWin === "down") {
@@ -173,7 +168,7 @@ const getLinkOutStyle = (type: "win" | "lose") => {
 			} else {
 				style.push(`height: ${props.linkOutWinHeight - GAME_HEIGHT * 0.1}rem;`);
 			}
-		} else if (isAwayTeamWinning.value) {
+		} else if (isGameFinished(props.game) && isAwayTeamWinning.value) {
 			style.push("bottom: -50%;");
 
 			if (props.linkOutWin === "up") {
@@ -185,7 +180,7 @@ const getLinkOutStyle = (type: "win" | "lose") => {
 	} else {
 		style.push(`width: ${GAME_SPACING_X * props.linkOutLoseRatio}rem;`);
 
-		if (isHomeTeamWinning.value) {
+		if (isGameFinished(props.game) && isHomeTeamWinning.value) {
 			style.push("bottom: -50%;");
 
 			if (props.linkOutLose === "down") {
@@ -193,7 +188,7 @@ const getLinkOutStyle = (type: "win" | "lose") => {
 			} else {
 				style.push(`height: ${props.linkOutLoseHeight + GAME_HEIGHT * 0.3}rem;`);
 			}
-		} else if (isAwayTeamWinning.value) {
+		} else if (isGameFinished(props.game) && isAwayTeamWinning.value) {
 			style.push("bottom: 50%;");
 
 			if (props.linkOutLose === "down") {
