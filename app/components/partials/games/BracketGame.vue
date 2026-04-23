@@ -109,17 +109,17 @@ useGamesAutoRefresh({ intervalMs: 30000 });
 const props = withDefaults(
 	defineProps<{
 		game: IGame;
-		winnerOnTop?: boolean;
+		winnerOnTop?: boolean; // Will show the winning team on the top row at the end of the game
 		backgroundColor?: "blue" | "yellow" | "white";
-		linkInWin?: "none" | "both" | "up";
-		linkInLose?: "none" | "both" | "up";
-		linkOutWin?: "none" | "down" | "up";
-		linkOutLose?: "none" | "down" | "up";
-		linkInRatio?: number;
-		linkOutWinRatio?: number;
-		linkOutLoseRatio?: number;
-		linkOutWinHeight?: number;
-		linkOutLoseHeight?: number;
+		linkInWin?: "none" | "both" | "up"; // Is there a win (yellow) link coming in (shown on the left) and is it coming from the top only, or top + bottom?
+		linkInLose?: "none" | "both" | "up"; // Is there a lose (blue) link coming in (shown on the left) and is it coming from the top only, or top + bottom?
+		linkOutWin?: "none" | "down" | "up"; // Is there a win (yellow) link coming out (shown on the right) and is it going down or up?
+		linkOutLose?: "none" | "down" | "up"; // Is there a lose (blue) link coming out (shown on the right) and is it going down or up?
+		linkInRatio?: number; // Length of the in-link in proportion to the space between columns (GAME_SPACING_X)
+		linkOutWinRatio?: number; // Length of the win out-link in proportion to the space between columns (GAME_SPACING_X)
+		linkOutLoseRatio?: number; // Length of the lose out-link in proportion to the space between columns (GAME_SPACING_X)
+		linkOutWinHeight?: number; // Height of the win out-link in rems
+		linkOutLoseHeight?: number; // Height of the lose out-link in rems
 	}>(),
 	{
 		winnerOnTop: false,
