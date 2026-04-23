@@ -1,8 +1,7 @@
-import { urlBase64ToUint8Array } from "~/utils/urlBase64ToUint8Array";
+import { urlBase64ToUint8Array } from "~/utils/notification";
 
 export function usePushNotifications() {
 	const config = useRuntimeConfig();
-	const notificationsEnabled = useState("notifications_enabled", () => false);
 	// Get public VAPID key
 	const vapidPublicKey = config.public.vapidPublicKey as string;
 	const { ensureUserExists } = useUser();
@@ -48,7 +47,6 @@ export function usePushNotifications() {
 				auth: json.keys?.auth,
 			},
 		});
-		notificationsEnabled.value = true;
 		return subscription;
 	}
 
@@ -73,6 +71,5 @@ export function usePushNotifications() {
 
 		await subscription.unsubscribe();
 	}
-	notificationsEnabled.value = false;
 	return { isSupported, unsubscribe, subscribe };
 }

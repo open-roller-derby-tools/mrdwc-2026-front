@@ -1,68 +1,46 @@
 <template>
-  <div class="maxed padded my-32">
-    <h1>Your notifications</h1>
+	<div class="maxed padded my-32">
+		<h1>Your notifications</h1>
 
-    <ClientOnly>
-      <EnableNotificationsToggle />
-    </ClientOnly>
+		<ClientOnly>
+			<EnableNotificationsToggle />
+		</ClientOnly>
 
-    <div class="space-y-4">
-      <h2>Channels available</h2>
+		<div class="space-y-4 mt-4">
+			<h2>Channels available</h2>
 
-      <ChannelToggle
-        v-for="c in channels"
-        :key="c.id"
-        :channel="c"
-        :disabled="!notificationsEnabled"
-        @toggle="toggleChannel"
-      />
-    </div>
-  </div>
+			<div
+				v-for="c in notificationStore.channels"
+				:key="c.id"
+				class="flex items-center justify-between p-4 bg-blue-text rounded-lg shadow"
+			>
+				<span class="text-gray-200">{{ c.name }}</span>
+				<SubscriptionToggle
+					:model-value="notificationStore.isSubscribed(c.slug)"
+					:disabled="!notificationStore.notificationsEnabled"
+					@update:model-value="notificationStore.toggleChannel(c.slug, userId!)"
+				/>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import type {
-  IChannel,
-  IUserSubscription
-} from "~~/types/custom";
+import { useNotificationsStore } from "~/stores/notifications";
 
 definePageMeta({
-  layout: 'default'
-})
+	layout: "default",
+});
 
-const channels = ref<IChannel[]>([])
-const { ensureUserExists, userId } = useUser()
-const notificationsEnabled = useState('notifications_enabled')
+const { ensureUserExists, userId } = useUser();
+const notificationStore = useNotificationsStore();
 
 // Load channels from backend
 onMounted(async () => {
-  await ensureUserExists()
-  const [allChannels, userSubs] = await Promise.all([
-    $fetch('/api/channels/list'),
-    $fetch(`/api/subscriptions/${userId.value}`)
-  ])
-
-  const subscribedSlugs = new Set(userSubs.map(s => s.slug))
-
-  channels.value = allChannels.map(c => ({
-    ...c,
-    subscribed: subscribedSlugs.has(c.slug)
-  }))
-})
-
-async function toggleChannel(channel) {
-  channel.subscribed = !channel.subscribed
-
-  const endpoint = channel.subscribed
-    ? '/api/subscriptions/subscribe'
-    : '/api/subscriptions/unsubscribe'
-
-  await $fetch(endpoint, {
-    method: 'POST',
-    body: {
-      user_id: userId.value,
-      channel_slug: channel.slug
-    }
-  })
-}
+	await ensureUserExists();
+	if (!userId.value) {
+		throw new Error("User ID should never be null after ensureUserExists()");
+	}
+	await notificationStore.fetchAll(userId.value);
+});
 </script>
