@@ -5,12 +5,12 @@
 			:class="teamClasses"
 		>
 			<div class="flex items-center gap-2">
-				<TeamLettersBadge v-if="homeTeam" :team="homeTeam" :fallback="game.home_source" />
+				<TeamLettersBadge :team="homeTeam" :fallback="game.home_source" />
 				<span class="font-medium text-sm">
 					{{ homeTeam?.country ?? homeTeam?.name ?? game.home_source ?? "---" }}
 				</span>
 			</div>
-			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-lg">
+			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-base">
 				{{ game.home_score }}
 			</span>
 			<div
@@ -63,12 +63,12 @@
 		</div>
 		<div class="relative flex items-center justify-between px-3 py-1.5" :class="teamClasses">
 			<div class="flex items-center gap-2">
-				<TeamLettersBadge v-if="awayTeam" :team="awayTeam" :fallback="game.away_source" />
+				<TeamLettersBadge :team="awayTeam" :fallback="game.away_source" />
 				<span class="font-medium text-sm">
 					{{ awayTeam?.country ?? awayTeam?.name ?? game.away_source ?? "---" }}
 				</span>
 			</div>
-			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-lg">
+			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-base">
 				{{ game.away_score }}
 			</span>
 		</div>

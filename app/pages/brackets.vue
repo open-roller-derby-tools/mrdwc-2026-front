@@ -2,8 +2,10 @@
 	<div v-if="isDev" class="mt-32 bg-blue-text">
 		<SimulateGamesToggle />
 		<div class="padded">
-			<div class="overflow-auto max-w-[73rem] min-h-[70dvh] mx-auto my-6 p-4 bg-blue rounded-2xl">
-				<div class="relative *:absolute">
+			<div
+				class="overflow-auto w-full sm:max-w-[73rem] max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
+			>
+				<div class="relative w-[71rem] h-[81rem] *:absolute">
 					<!-- Quarterfinals -->
 					<BracketGame
 						v-if="gameQ4"
@@ -140,7 +142,7 @@
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"
 						:style="getGameStyle(2, 7.5, 2, 14.5)"
-						class="pb-4"
+						class=""
 					/>
 				</div>
 			</div>
