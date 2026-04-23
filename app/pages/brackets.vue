@@ -111,6 +111,7 @@
 					<BracketGame
 						v-if="gameGF"
 						:game="gameGF"
+						:winner-on-top="true"
 						:link-in-win="'both'"
 						:link-in-ratio="0.333"
 						background-color="white"
@@ -120,6 +121,7 @@
 					<BracketGame
 						v-if="gameLF"
 						:game="gameLF"
+						:winner-on-top="true"
 						background-color="white"
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"
@@ -129,6 +131,7 @@
 					<BracketGame
 						v-if="gameUTE"
 						:game="gameUTE"
+						:winner-on-top="true"
 						:link-in-win="'both'"
 						:link-in-ratio="0.333"
 						background-color="white"
@@ -138,6 +141,7 @@
 					<BracketGame
 						v-if="gameLTE"
 						:game="gameLTE"
+						:winner-on-top="true"
 						background-color="white"
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"

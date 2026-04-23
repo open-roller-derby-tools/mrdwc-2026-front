@@ -4,15 +4,17 @@
 			class="relative flex items-center justify-between px-3 py-1.5 border-b rounded-t-lg"
 			:class="teamClasses"
 		>
+			<!-- Home/Top team -->
 			<div class="flex items-center gap-2">
-				<TeamLettersBadge :team="homeTeam" :fallback="game.home_source" />
+				<TeamLettersBadge :team="topTeam" :fallback="topTeamSource" />
 				<span class="font-medium text-sm">
-					{{ homeTeam?.country ?? homeTeam?.name ?? game.home_source ?? "---" }}
+					{{ topTeam?.country ?? topTeam?.name ?? topTeamSource ?? "---" }}
 				</span>
 			</div>
 			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-base">
-				{{ game.home_score }}
+				{{ topTeamScore }}
 			</span>
+			<!-- Link in elements -->
 			<div
 				v-if="linkInWin !== 'none'"
 				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-yellow"
@@ -23,12 +25,14 @@
 				class="absolute bottom-0 left-0 -translate-x-full translate-y-px border-b-2 border-blue-light"
 				:style="linkInStyle"
 			></div>
+			<!-- Link in label -->
 			<div
 				v-if="linkInWin !== 'none' || linkInLose !== 'none'"
 				class="absolute bottom-0 -translate-x-1/2 translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm px-2 py-1 min-w-7 rounded-full"
 				:style="linkInLabelStyle"
 			>
 				<span>{{ game.description }}</span>
+				<!-- Link in arrows -->
 				<div
 					v-if="linkInWin !== 'none' || linkInLose !== 'none'"
 					:class="linkInArrowClasses"
@@ -40,6 +44,7 @@
 					class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-x-6 border-b-12 border-t-0 border-x-transparent border-t-transparent"
 				></div>
 			</div>
+			<!-- Link out elements -->
 			<div
 				v-if="linkOutWin === 'down'"
 				:style="getLinkOutStyle('win')"
@@ -61,17 +66,19 @@
 				class="absolute right-0 translate-x-full rounded-br-2xl border-b-2 border-r-2 border-blue-light"
 			></div>
 		</div>
+		<!-- Away/Bottom team -->
 		<div class="relative flex items-center justify-between px-3 py-1.5" :class="teamClasses">
 			<div class="flex items-center gap-2">
-				<TeamLettersBadge :team="awayTeam" :fallback="game.away_source" />
+				<TeamLettersBadge :team="bottomTeam" :fallback="bottomTeamSource" />
 				<span class="font-medium text-sm">
-					{{ awayTeam?.country ?? awayTeam?.name ?? game.away_source ?? "---" }}
+					{{ bottomTeam?.country ?? bottomTeam?.name ?? bottomTeamSource ?? "---" }}
 				</span>
 			</div>
 			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-base">
-				{{ game.away_score }}
+				{{ bottomTeamScore }}
 			</span>
 		</div>
+		<!-- Game state & game page link -->
 		<div
 			class="flex items-center justify-between px-3 py-1.5 bg-yellow text-blue-text rounded-b-lg"
 		>
@@ -102,6 +109,7 @@ useGamesAutoRefresh({ intervalMs: 30000 });
 const props = withDefaults(
 	defineProps<{
 		game: IGame;
+		winnerOnTop?: boolean;
 		backgroundColor?: "blue" | "yellow" | "white";
 		linkInWin?: "none" | "both" | "up";
 		linkInLose?: "none" | "both" | "up";
@@ -114,6 +122,7 @@ const props = withDefaults(
 		linkOutLoseHeight?: number;
 	}>(),
 	{
+		winnerOnTop: false,
 		backgroundColor: "blue",
 		linkInWin: "none",
 		linkInLose: "none",
@@ -130,8 +139,47 @@ const props = withDefaults(
 const homeTeam = computed(() => getTeam(props.game, "home"));
 const awayTeam = computed(() => getTeam(props.game, "away"));
 const gameHasStarted = computed(() => hasGameStarted(props.game));
+const isSomeoneWinning = computed(() => props.game.home_score !== props.game.away_score);
 const isHomeTeamWinning = computed(() => props.game.home_score > props.game.away_score);
 const isAwayTeamWinning = computed(() => props.game.away_score > props.game.home_score);
+
+const topTeam = computed(() => {
+	if (
+		!isNoSpoilerModeActive.value &&
+		props.winnerOnTop &&
+		isGameFinished(props.game) &&
+		isSomeoneWinning.value
+	) {
+		return isHomeTeamWinning.value ? homeTeam.value : awayTeam.value;
+	} else {
+		return homeTeam.value;
+	}
+});
+const topTeamSource = computed(() => {
+	return topTeam.value === homeTeam.value ? props.game.home_source : props.game.away_source;
+});
+const topTeamScore = computed(() => {
+	return topTeam.value === homeTeam.value ? props.game.home_score : props.game.away_score;
+});
+
+const bottomTeam = computed(() => {
+	if (
+		!isNoSpoilerModeActive.value &&
+		props.winnerOnTop &&
+		isGameFinished(props.game) &&
+		isSomeoneWinning.value
+	) {
+		return isHomeTeamWinning.value ? awayTeam.value : homeTeam.value;
+	} else {
+		return awayTeam.value;
+	}
+});
+const bottomTeamSource = computed(() => {
+	return bottomTeam.value === homeTeam.value ? props.game.home_source : props.game.away_source;
+});
+const bottomTeamScore = computed(() => {
+	return bottomTeam.value === homeTeam.value ? props.game.home_score : props.game.away_score;
+});
 
 const teamClasses = computed(() => ({
 	"bg-blue-text text-white border-white/20": props.backgroundColor === "blue",
