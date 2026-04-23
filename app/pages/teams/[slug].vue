@@ -138,7 +138,11 @@
 				<BlockTabsSlot v-if="team" :data="tabsConfig" class="mt-10">
 					<!-- TAB 1 : MEMBERS -->
 					<template #charter>
-						<div class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4">
+						<div
+							id="charter-toggle"
+							class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4"
+							style="scroll-margin-top: 100px"
+						>
 							<button
 								class="px-4 pt-3.5 pb-2 w-1/2 rounded-s-xl text-sm font-semibold transition"
 								:class="
@@ -179,7 +183,9 @@
 									:space-between="16"
 									:grab-cursor="true"
 									:centered-slides="true"
+									:initial-slide="charterIndex"
 									class="!items-stretch"
+									@swiper="onSwiperCharter"
 									@slide-change="onSlideChangeCharter"
 								>
 									<SwiperSlide v-for="m in charterSorted" :key="m.id" class="flex pt-8">
@@ -198,16 +204,26 @@
 							<template v-if="charterViewMode === 'grid'">
 								<div class="padded">
 									<div class="grid grid-cols-2 rounded-xl">
-										<TeamMemberCard
+										<div
 											v-for="(m, i) in charterSorted"
 											:key="m.id"
-											:member="m"
-											:team-logo="team.logo"
-											:index="i"
-											:total="charterSorted.length"
-											:items-per-row="2"
-											:is-grid="true"
-										/>
+											class="cursor-pointer active:scale-95 transition-transform duration-150"
+											:class="
+												i === charterSorted.length - 1 && charterSorted.length % 2 === 1
+													? 'col-span-2'
+													: ''
+											"
+											@click="showCharterMember(i)"
+										>
+											<TeamMemberCard
+												:member="m"
+												:team-logo="team.logo"
+												:index="i"
+												:total="charterSorted.length"
+												:items-per-row="2"
+												:is-grid="true"
+											/>
+										</div>
 									</div>
 								</div>
 							</template>
@@ -229,7 +245,11 @@
 					<template #staffMembers>
 						<!-- MOBILE -->
 						<div class="sm:hidden bg-blue-text pb-10">
-							<div class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4">
+							<div
+								id="staff-toggle"
+								class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4"
+								style="scroll-margin-top: 100px"
+							>
 								<button
 									class="px-4 pt-3.5 pb-2 w-1/2 rounded-s-xl text-sm font-semibold transition"
 									:class="
@@ -266,7 +286,9 @@
 									:space-between="16"
 									:grab-cursor="true"
 									:centered-slides="true"
+									:initial-slide="staffIndex"
 									class="!items-stretch"
+									@swiper="onSwiperStaff"
 									@slide-change="onSlideChangeStaff"
 								>
 									<SwiperSlide v-for="m in staffMembers" :key="m.id" class="flex pt-8">
@@ -285,16 +307,26 @@
 							<template v-if="staffViewMode === 'grid'">
 								<div class="padded">
 									<div class="grid grid-cols-2 rounded-xl">
-										<TeamMemberCard
+										<div
 											v-for="(m, i) in staffMembers"
 											:key="m.id"
-											:member="m"
-											:team-logo="team.logo"
-											:index="i"
-											:total="staffMembers.length"
-											:items-per-row="2"
-											:is-grid="true"
-										/>
+											class="cursor-pointer active:scale-95 transition-transform duration-150"
+											:class="
+												i === staffMembers.length - 1 && staffMembers.length % 2 === 1
+													? 'col-span-2'
+													: ''
+											"
+											@click="showStaffMember(i)"
+										>
+											<TeamMemberCard
+												:member="m"
+												:team-logo="team.logo"
+												:index="i"
+												:total="staffMembers.length"
+												:items-per-row="2"
+												:is-grid="true"
+											/>
+										</div>
 									</div>
 								</div>
 							</template>
@@ -409,12 +441,47 @@ const staffIndex = ref(0);
 const charterViewMode = ref<"swiper" | "grid">("grid");
 const staffViewMode = ref<"swiper" | "grid">("grid");
 
+const charterSwiperRef = ref<SwiperInstance | null>(null);
+const staffSwiperRef = ref<SwiperInstance | null>(null);
+
+const onSwiperCharter = (swiper: SwiperInstance) => {
+	charterSwiperRef.value = swiper;
+};
+
+const onSwiperStaff = (swiper: SwiperInstance) => {
+	staffSwiperRef.value = swiper;
+};
+
 const onSlideChangeCharter = (swiper: SwiperInstance) => {
 	charterIndex.value = swiper.activeIndex;
 };
 
 const onSlideChangeStaff = (swiper: SwiperInstance) => {
 	staffIndex.value = swiper.activeIndex;
+};
+
+const showCharterMember = (index: number) => {
+	charterIndex.value = index;
+	charterViewMode.value = "swiper";
+	nextTick(() => {
+		charterSwiperRef.value?.slideTo(index);
+		const el = document.getElementById("charter-toggle");
+		if (el) {
+			el.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	});
+};
+
+const showStaffMember = (index: number) => {
+	staffIndex.value = index;
+	staffViewMode.value = "swiper";
+	nextTick(() => {
+		staffSwiperRef.value?.slideTo(index);
+		const el = document.getElementById("staff-toggle");
+		if (el) {
+			el.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	});
 };
 
 watchEffect(() => {
