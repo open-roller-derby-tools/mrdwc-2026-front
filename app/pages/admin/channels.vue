@@ -72,7 +72,6 @@
 <script lang="ts" setup>
   import { useVenuesStore } from "~/stores/venues";
   import { useTeamsStore } from "~/stores/teams";
-  import type { IChannel } from "~~/types/custom";
 
   definePageMeta({
     layout: "admin",
