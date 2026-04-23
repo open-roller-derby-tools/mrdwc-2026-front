@@ -80,10 +80,10 @@
 	"game_type": {
 		"groups_stage": "Group Stage",
 		"rankings_play": "Rankings Play",
-		"top_eight": "Top Eight",
+		"top_eight": "Top 8",
 		"quarterfinals": "Quarterfinal",
-		"lower_top_eight": "Lower Top Eight",
-		"upper_top_eight": "Upper Top Eight",
+		"lower_top_eight": "Lower Top 8",
+		"upper_top_eight": "Upper Top 8",
 		"semifinals": "Semifinal",
 		"lower_final": "Lower Final",
 		"grand_final": "Grand Final"

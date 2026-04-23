@@ -28,10 +28,10 @@
 			<!-- Link in label -->
 			<div
 				v-if="linkInWin !== 'none' || linkInLose !== 'none'"
-				class="absolute bottom-0 -translate-x-1/2 translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm px-2 py-1 min-w-7 rounded-full"
+				class="absolute bottom-0 -translate-x-1/2 translate-y-1/2 bg-red-text text-white font-shoulders font-bold text-sm p-1.5 pb-2 min-w-7 rounded-lg"
 				:style="linkInLabelStyle"
 			>
-				<span>{{ game.description }}</span>
+				<span class="block max-w-10 text-center leading-none">{{ gameDescription }}</span>
 				<!-- Link in arrows -->
 				<div
 					v-if="linkInArrows && (linkInWin !== 'none' || linkInLose !== 'none')"
@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { IGame } from "~~/types/games";
+import { GameType, type IGame } from "~~/types/games";
 
 import TeamLettersBadge from "../TeamLettersBadge.vue";
 import GameStateLabel from "./GameStateLabel.vue";
@@ -271,6 +271,17 @@ const getLinkOutStyle = (type: "win" | "lose") => {
 	}
 	return style.join(" ");
 };
+
+const gameDescription = computed(() => {
+	if (
+		props.game.type == GameType.LowerTopEight ||
+		props.game.type == GameType.UpperTopEight ||
+		props.game.type == GameType.LowerFinal ||
+		props.game.type == GameType.GrandFinal
+	)
+		return t(`game_type.${props.game.type}`);
+	return props.game.description;
+});
 
 onMounted(async () => {
 	teamsStore.fetch();
