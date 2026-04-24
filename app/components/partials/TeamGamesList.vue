@@ -1,7 +1,7 @@
 <template>
 	<div class="">
-		<h2 class="text-2xl font-shoulders text-white">{{ t("team_games") }}</h2>
-		<div class="grid grid-cols-2 gap-4">
+		<h2 class="text-2xl font-shoulders text-white text-balance">{{ t("team_games") }}</h2>
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<BracketGame
 				v-for="game in getGamesByTeam(team.id)"
 				:key="game.id"
