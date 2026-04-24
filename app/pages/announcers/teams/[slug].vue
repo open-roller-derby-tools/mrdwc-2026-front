@@ -487,6 +487,8 @@ definePageMeta({
 	layout: "announcers",
 });
 
+useSeoMeta({ robots: "noindex, nofollow" });
+
 const team = computed(() => teamsStore.getTeamBySlug(String(route.params.slug)) ?? null);
 
 const sortedParticipations = computed(() => {

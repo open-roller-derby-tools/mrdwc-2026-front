@@ -85,6 +85,9 @@ export default defineNuxtConfig({
 		],
 		defaultLocale: "fr-FR",
 		baseUrl: "https://worldcup.mrda.org/",
+		experimental: {
+			strictSeo: true,
+		},
 	},
 	umami: {
 		id: "b356f90c-600c-48e2-b697-952a2bc900c3",
