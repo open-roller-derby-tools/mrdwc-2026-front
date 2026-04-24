@@ -64,7 +64,7 @@
 								:href="photographer.portfolio ?? undefined"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="hidden sm:inline-flex mt-auto items-center justify-center gap-2 px-4 py-2 text-xs font-semibold text-black bg-yellow border border-yellow rounded-md hover:bg-red-200 hover:border-red-light hover:text-red-light transition"
+								class="hidden sm:inline-flex mt-auto items-center w-full justify-center gap-2 pl-2 pr-3 py-2 text-xs font-semibold text-black bg-yellow border border-yellow rounded-md hover:bg-red-200 hover:border-red-light hover:text-red-light transition"
 							>
 								<Icon name="lucide:eye" class="w-4 h-4 group-hover:scale-125" />
 								{{ t("photographers.discoverWork") }}
