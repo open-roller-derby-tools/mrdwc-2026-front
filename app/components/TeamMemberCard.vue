@@ -47,6 +47,10 @@
 				{{ displayName }}
 			</div>
 
+			<div v-if="isAnnouncer && member.derbynamePronunciation" class="text-base text-black italic">
+				<span class="font-medium">[{{ member.derbynamePronunciation }}]</span>
+			</div>
+
 			<!-- BENCH STAFF -->
 			<div
 				v-if="isBenchStaff"
@@ -60,14 +64,20 @@
 				<div v-if="member.leaguesRepresented" class="mt-3 text-base text-gray-600 italic w-full">
 					{{ member.leaguesRepresented }}
 				</div>
-				<div v-if="member.derbynamePronunciation" class="mt-2 text-base text-gray-500 italic">
-					<span class="font-medium text-gray-400">[{{ member.derbynamePronunciation }}]</span>
-				</div>
 				<div
 					v-if="member.memberInformation"
 					class="mt-2 text-base text-left text-gray-700 whitespace-pre-line w-full"
 				>
 					{{ member.memberInformation }}
+				</div>
+				<div
+					v-if="member.announcerNotes"
+					class="mt-2 text-base text-left text-gray-700 whitespace-pre-line w-full"
+				>
+					<span class="font-semibold text-gray-500 text-sm uppercase tracking-wide">{{
+						t("announcer_notes")
+					}}</span>
+					<p class="whitespace-pre-line">{{ member.announcerNotes }}</p>
 				</div>
 			</template>
 		</div>
@@ -88,6 +98,7 @@ const props = defineProps<{
 }>();
 
 const config = useRuntimeConfig();
+const { t } = useI18n();
 
 const isLoaded = ref(false);
 

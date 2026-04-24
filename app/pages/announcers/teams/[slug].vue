@@ -212,6 +212,18 @@
 					</h3>
 					<p class="whitespace-pre-line">{{ team.anecdotes }}</p>
 				</div>
+
+				<!-- Announcer Notes (full width) -->
+				<div
+					v-if="team.announcerNotes"
+					class="bg-blue-text border border-white/20 rounded-xl p-6 mt-6"
+				>
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-notebook-pen" class="size-5" />
+						{{ t("announcer_notes") }}
+					</h3>
+					<p class="whitespace-pre-line">{{ team.announcerNotes }}</p>
+				</div>
 			</div>
 
 			<div v-if="team">
@@ -352,7 +364,8 @@ const hasAnnouncerInfo = computed(() => {
 		team.value.anthemAudio ||
 		team.value.paradeAudio ||
 		team.value.history ||
-		team.value.anecdotes
+		team.value.anecdotes ||
+		team.value.announcerNotes
 	);
 });
 
