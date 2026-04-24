@@ -148,5 +148,8 @@
 	"anthem_audio": "Audio de l'hymne",
 	"parade_audio": "Audio de parade",
 	"countries_represented": "Pays représentés",
-	"play_audio": "Écouter l'audio"
+	"play_audio": "Écouter l'audio",
+	"photographers": {
+		"discoverWork": "Découvrir son travail"
+	}
 }
