@@ -244,13 +244,15 @@ export const useGamesStore = defineStore("games", () => {
 		if (useSimulatedGames.value) {
 			const baseGames = games.value ?? [];
 			simulatedGames.value = baseGames.map((game) => {
-				if (game.type !== GameType.GroupsStage && game.type !== GameType.RankingsPlay) {
+				/* if (game.type !== GameType.GroupsStage && game.type !== GameType.RankingsPlay) {
 					return { ...game };
-				}
+				} */
 				const modifiedGame = { ...game };
 				// Assign random teams for rankings play games
-				if (modifiedGame.type === GameType.RankingsPlay) {
+				if (modifiedGame.home_team == null) {
 					modifiedGame.home_team = teamsStore.getRandomTeam()?.id ?? null;
+				}
+				if (modifiedGame.away_team == null) {
 					modifiedGame.away_team = teamsStore.getRandomTeam()?.id ?? null;
 				}
 				if (allFinished) {

@@ -44,7 +44,7 @@
 	}
 
 	body {
-		@apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
+		@apply bg-blue text-white font-cabin text-xl sm:text-base min-h-dvh;
 	}
 
 	h1 {

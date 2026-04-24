@@ -1,8 +1,5 @@
 <template>
 	<div class="w-full bg-blue-text py-6">
-		<div v-if="isDev" class="maxed padded mb-8">
-			<SimulateGamesToggle />
-		</div>
 		<div class="w-full maxed padded">
 			<div class="w-full grid grid-cols-1 gap-4">
 				<div
@@ -129,62 +126,11 @@
 							v-if="getGamesByGroup(group.number).length > 0"
 							class="grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 pt-4 pb-4"
 						>
-							<div
+							<BracketGame
 								v-for="game in getGamesByGroup(group.number)"
 								:key="game.id"
-								class="border border-blue-text/20 rounded-lg overflow-hidden"
-							>
-								<div
-									class="flex items-center justify-between px-3 py-1.5 bg-blue-text text-white border-b border-white/20"
-								>
-									<div class="flex items-center gap-2">
-										<TeamLettersBadge
-											:team="getTeamById(game.home_team ?? -1)"
-											:fallback="game.home_source"
-										/>
-										<span class="font-medium text-sm">
-											{{
-												getTeamById(game.home_team ?? -1)?.country ??
-												getTeamById(game.home_team ?? -1)?.name ??
-												game.home_source ??
-												"---"
-											}}
-										</span>
-									</div>
-									<span v-if="!isNoSpoilerModeActive" class="font-bold text-lg">
-										{{ game.home_score }}
-									</span>
-								</div>
-								<div class="flex items-center justify-between px-3 py-1.5 bg-blue-text text-white">
-									<div class="flex items-center gap-2">
-										<TeamLettersBadge
-											:team="getTeamById(game.away_team ?? -1)"
-											:fallback="game.away_source"
-										/>
-										<span class="font-medium text-sm">
-											{{
-												getTeamById(game.away_team ?? -1)?.country ??
-												getTeamById(game.away_team ?? -1)?.name ??
-												game.away_source ??
-												"---"
-											}}
-										</span>
-									</div>
-									<span v-if="!isNoSpoilerModeActive" class="font-bold text-lg">
-										{{ game.away_score }}
-									</span>
-								</div>
-								<div class="flex items-center justify-between px-3 py-1.5 bg-yellow text-blue-text">
-									<GameStateLabel :game="game" :with-background="false" :show-day="true" />
-									<NuxtLinkLocale
-										:to="`/games/${game.number}`"
-										class="flex items-center gap-1 text-black"
-									>
-										<span class="text-sm">{{ t("game_page") }}</span>
-										<UIcon name="lucide:arrow-right" class="size-4" />
-									</NuxtLinkLocale>
-								</div>
-							</div>
+								:game="game"
+							/>
 						</div>
 					</template>
 					<!-- Toggle group games -->
@@ -211,9 +157,8 @@
 
 <script lang="ts" setup>
 import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
-import GameStateLabel from "../partials/games/GameStateLabel.vue";
-import SimulateGamesToggle from "../navigation/SimulateGamesToggle.vue";
 import RankingsHelp from "../partials/RankingsHelp.vue";
+import BracketGame from "../partials/games/BracketGame.vue";
 
 const { t } = useI18n();
 const groupsStore = useGroupsStore();
@@ -223,9 +168,6 @@ const gamesStore = useGamesStore();
 const { getTeamById } = teamsStore;
 const { getGamesByGroup } = gamesStore;
 const { getGroupStandings, getOverallRankings } = useGroupStandings();
-const { isNoSpoilerModeActive } = useNoSpoilerMode();
-
-const isDev = import.meta.dev;
 
 const groups = computed(() => groupsStore.groups ?? []);
 

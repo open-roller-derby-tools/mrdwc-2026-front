@@ -1,8 +1,5 @@
 <template>
 	<div class="bg-blue-text">
-		<div v-if="isDev" class="maxed padded mb-8">
-			<SimulateGamesToggle />
-		</div>
 		<div :class="wrapperClass" class="padded sm:mx-auto pb-8">
 			<FullCalendar ref="calendarRef" :options="calendarOptions">
 				<template #eventContent="arg">
@@ -42,7 +39,6 @@ import { GameDuration } from "~~/types/games";
 
 import CalendarGame from "~/components/partials/games/CalendarGame.vue";
 import CalendarEvent from "~/components/partials/games/CalendarEvent.vue";
-import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue";
 
 const { locale, t } = useI18n();
 const gamesStore = useGamesStore();
@@ -50,8 +46,6 @@ const venuesStore = useVenuesStore();
 const eventsStore = useEventsStore();
 const { smOrSmaller } = useResponsive();
 const { active_timezone } = useTimezone();
-
-const isDev = import.meta.dev;
 
 useGamesAutoRefresh({ intervalMs: 60000 });
 

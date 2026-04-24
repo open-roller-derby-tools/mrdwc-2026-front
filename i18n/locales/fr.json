@@ -132,13 +132,17 @@
 		"bracket_play": "Phase finale (1–8)",
 		"rankings_play": "Phase de classement (9–20)",
 		"eliminated": "Eliminés (21–24)",
-		"legend": "Légende :"
+		"legend": "Légende :",
+		"1st": "Champion·nes du Monde !",
+		"place": "{ordinal} place",
+		"others": "{ordinal}"
 	},
-	"game_page": "Page du match",
+	"game_page": "Plus d'infos",
 	"watch_live": "Regarder en direct",
 	"watch_replay": "Revoir le match",
 	"next_game": "Prochain match",
 	"next_games": "Prochains matchs",
+	"team_games": "Matchs dans cette compétition :",
 	"all_games": "Tous les matchs",
 	"announcers_info": "Informations Annonceurs",
 	"team_history": "Histoire de l'équipe",
@@ -151,5 +155,12 @@
 	"play_audio": "Écouter l'audio",
 	"photographers": {
 		"discoverWork": "Découvrir son travail"
+	},
+	"ordinals": {
+		"one": "er",
+		"other": "e"
+	},
+	"format": {
+		"ordinal": "{n}{suffix}"
 	}
 }

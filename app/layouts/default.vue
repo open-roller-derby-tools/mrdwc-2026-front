@@ -1,6 +1,6 @@
 <template>
 	<UApp>
-		<div class="min-h-screen flex flex-col">
+		<div class="min-h-dvh flex flex-col pb-12 sm:pb-0">
 			<HeaderNav />
 			<slot />
 			<Footer />
