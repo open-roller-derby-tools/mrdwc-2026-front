@@ -7,7 +7,8 @@ export const useNotificationsStore = defineStore("notifications", {
 		channelsLoaded: false,
 		channels: [] as IChannel[],
 		subscribedSlugs: new Set<string>(),
-		//teamSubscriptions: new Set<number>(),
+		// Teams
+		teamSubscriptions: new Set<number>(),
 		// Global notifications
 		notificationsEnabled: false,
 		notificationsLoaded: false,
@@ -16,7 +17,7 @@ export const useNotificationsStore = defineStore("notifications", {
 	getters: {
 		isSubscribed: (state) => (slug: string) => state.subscribedSlugs.has(slug),
 
-		//isTeamSubscribed: (state) => (teamId: number) => state.teamSubscriptions.has(teamId),
+		isTeamSubscribed: (state) => (teamId: number) => state.teamSubscriptions.has(teamId),
 	},
 
 	actions: {
@@ -67,7 +68,7 @@ export const useNotificationsStore = defineStore("notifications", {
 			}
 		},
 
-		/*		async toggleTeam(teamId: number, userId: string) {
+		async toggleTeam(teamId: number, userId: string) {
 			const wasSubscribed = this.teamSubscriptions.has(teamId);
 
 			// Optimistic update
@@ -91,7 +92,7 @@ export const useNotificationsStore = defineStore("notifications", {
 
 				throw err;
 			}
-		},*/
+		},
 
 		async loadNotificationsEnabled() {
 			if (this.notificationsLoaded) return;
