@@ -1,21 +1,23 @@
 <template>
-	<div class="text-base sm:text-lg">
-		<ul class="list-none">
-			<li v-for="(venue, index) in venuesStore.venues" :key="venue.id" class="leading-tight">
-				<span class="font-shoulders font-bold text-lg mr-1">
-					{{
-						t("calendar_track_short", {
-							index: index + 1,
-							count: 2,
-						})
-					}}</span
-				>
-				<a :href="venue.map_url" target="_blank" class="">
-					<span class="font-bold text-yellow">{{ venue.name }}</span>
-					<span class="hidden italic ml-2">{{ venue.address }}</span></a
-				>
-			</li>
-		</ul>
+	<div class="w-full maxed padded">
+		<div class="text-base sm:text-lg">
+			<ul class="list-none">
+				<li v-for="(venue, index) in venuesStore.venues" :key="venue.id" class="leading-tight">
+					<span class="font-shoulders font-bold text-lg mr-1">
+						{{
+							t("calendar_track_short", {
+								index: index + 1,
+								count: 2,
+							})
+						}}</span
+					>
+					<a :href="venue.map_url" target="_blank" class="">
+						<span class="font-bold text-yellow">{{ venue.name }}</span>
+						<span class="hidden italic ml-2">{{ venue.address }}</span></a
+					>
+				</li>
+			</ul>
+		</div>
 	</div>
 </template>
 
