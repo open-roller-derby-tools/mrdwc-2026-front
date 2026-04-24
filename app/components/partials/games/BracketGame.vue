@@ -177,7 +177,7 @@ const props = withDefaults(
 		backgroundColor: "blue",
 		linkInWin: "none",
 		linkInLose: "none",
-		linkInArrows: true,
+		linkInArrows: false,
 		linkOutWin: "none",
 		linkOutLose: "none",
 		linkInRatio: 0.5,
