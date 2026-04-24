@@ -326,17 +326,16 @@
 									</div>
 								</template>
 							</div>
-							<!-- DESKTOP GRID -->
-							<div
-								class="hidden sm:grid padded pt-10 pb-30 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 bg-blue-text gap-10"
-							>
-								<TeamMemberCard
-									v-for="m in charterSorted"
-									:key="m.id"
-									:member="m"
-									:team-logo="team.logo"
-									:is-announcer="true"
-								/>
+							<!-- DESKTOP LIST -->
+							<div class="hidden sm:block maxed padded pt-10 pb-30">
+								<div class="flex flex-col gap-4">
+									<TeamMemberRow
+										v-for="m in charterSorted"
+										:key="m.id"
+										:member="m"
+										:team-logo="team.logo"
+									/>
+								</div>
 							</div>
 						</template>
 
@@ -437,16 +436,15 @@
 								</template>
 							</div>
 
-							<div
-								class="hidden sm:grid padded pt-10 pb-30 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 bg-blue-text gap-10"
-							>
-								<TeamMemberCard
-									v-for="m in staffMembers"
-									:key="m.id"
-									:member="m"
-									:team-logo="team.logo"
-									:is-announcer="true"
-								/>
+							<div class="hidden sm:block maxed padded pt-10 pb-30">
+								<div class="flex flex-col gap-4">
+									<TeamMemberRow
+										v-for="m in staffMembers"
+										:key="m.id"
+										:member="m"
+										:team-logo="team.logo"
+									/>
+								</div>
 							</div>
 						</template>
 					</BlockTabsSlot>
@@ -471,6 +469,7 @@ import IconFacebook from "~/components/icons/IconFacebook.vue";
 import IconInstagram from "~/components/icons/IconInstagram.vue";
 import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 import TeamMemberCard from "~/components/TeamMemberCard.vue";
+import TeamMemberRow from "~/components/TeamMemberRow.vue";
 import TeamLettersBadge from "~/components/partials/TeamLettersBadge.vue";
 
 const { t } = useI18n();

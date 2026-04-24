@@ -106,20 +106,10 @@ const { t } = useI18n();
 
 const isLoaded = ref(false);
 
-/**
- * Nom affiché :
- * derbyname
- */
-// const displayName = computed(() => {
-//   return props.member.derbyname?.trim() || props.member.firstname || "Unknown";
-// });
 const displayName = computed(() => {
 	return props.member.derbyname?.trim() || "Unknown";
 });
 
-/**
- * Détection bench staff
- */
 const isBenchStaff = computed(() => {
 	return props.member.roles?.some((role) => role.toLowerCase().includes("bench"));
 });
@@ -142,7 +132,6 @@ const gridMeta = computed(() => {
 	const totalRows = Math.ceil(total / perRow);
 	const lastRow = totalRows - 1;
 
-	// ⚠️ nombre réel d’items sur la dernière ligne
 	const itemsInLastRow = total % perRow || perRow;
 	const lastCol = row === lastRow ? itemsInLastRow - 1 : perRow - 1;
 
@@ -190,31 +179,26 @@ const borderClass = computed(() => {
 
 	let classes = "";
 
-	// 🎯 TOP
 	if (row === 0) {
 		classes += " border-t-2";
 	} else {
 		classes += " border-t";
 	}
 
-	// 🎯 BOTTOM
 	if (row === lastRow) {
 		classes += " border-b-2";
 	}
 
-	// 🎯 LEFT
 	if (col === 0) {
 		classes += " border-l-2 border-r border-b-1";
 	} else {
 		classes += " border-l border-r-2 border-b-1";
 	}
 
-	// 🎯 RIGHT
 	if (col === lastCol) {
 		classes += " border-r-2 border-b-1";
 	}
 
-	// 🎨 couleur
 	classes += " border-transparent";
 
 	return classes;
@@ -237,12 +221,10 @@ const imageRoundedClass = computed(() => {
 
 	let classes = "border-white rounded-none";
 
-	// 👉 première card de la grille
 	if (row === 0 && col === 0) {
 		classes += " rounded-tl-xl";
 	}
 
-	// 👉 dernière card de la row
 	if (row === 0 && col === lastCol) {
 		classes += " rounded-tr-xl";
 	}
