@@ -23,6 +23,11 @@
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.5"
 						:link-out-lose-height="GAME_HEIGHT * 1.5"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameQ4;
+							showGameCard = true;
+						"
 					/>
 					<BracketGame
 						v-if="gameQ1"
@@ -37,6 +42,11 @@
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.5"
 						:link-out-lose-height="GAME_HEIGHT * 5.9"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameQ1;
+							showGameCard = true;
+						"
 					/>
 					<BracketGame
 						v-if="gameQ2"
@@ -51,6 +61,11 @@
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.25"
 						:link-out-lose-height="GAME_HEIGHT * 1.5"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameQ2;
+							showGameCard = true;
+						"
 					/>
 					<BracketGame
 						v-if="gameQ3"
@@ -65,6 +80,11 @@
 						:link-out-win-ratio="0.75"
 						:link-out-lose-ratio="0.25"
 						:link-out-lose-height="GAME_HEIGHT * 4.2"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameQ3;
+							showGameCard = true;
+						"
 					/>
 					<!-- Semifinals -->
 					<BracketGame
@@ -81,6 +101,11 @@
 						:link-out-lose-height="GAME_HEIGHT * 3.1"
 						background-color="white"
 						:style="getGameStyle(1.2, 0.5, 1, 0.5)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameS1;
+							showGameCard = true;
+						"
 					/>
 					<BracketGame
 						v-if="gameS2"
@@ -96,6 +121,11 @@
 						:link-out-lose-height="GAME_HEIGHT * 1.35"
 						background-color="white"
 						:style="getGameStyle(1.2, 2.5, 1, 4.5)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameS2;
+							showGameCard = true;
+						"
 					/>
 					<!-- Top Eight -->
 					<BracketGame
@@ -111,6 +141,11 @@
 						:link-out-lose-ratio="0.333"
 						:link-out-lose-height="GAME_HEIGHT * 1.5"
 						:style="getGameStyle(1.2, 5, 1, 10)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameTE1;
+							showGameCard = true;
+						"
 					/>
 					<BracketGame
 						v-if="gameTE2"
@@ -125,6 +160,11 @@
 						:link-out-lose-ratio="0.333"
 						:link-out-lose-height="GAME_HEIGHT * 2.2"
 						:style="getGameStyle(1.2, 6, 1, 11)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameTE2;
+							showGameCard = true;
+						"
 					/>
 					<!-- Grand Final -->
 					<BracketGame
@@ -137,6 +177,11 @@
 						:link-out-win-ratio="0.25"
 						background-color="white"
 						:style="getGameStyle(2.2, 1.5, 2, 2.5)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameGF;
+							showGameCard = true;
+						"
 					/>
 					<!-- Lower Final -->
 					<BracketGame
@@ -148,6 +193,11 @@
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"
 						:style="getGameStyle(2.2, 3.5, 2, 6.5)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameLF;
+							showGameCard = true;
+						"
 					/>
 					<!-- Upper Top Eight -->
 					<BracketGame
@@ -159,6 +209,11 @@
 						:link-in-ratio="0.333"
 						background-color="white"
 						:style="getGameStyle(2.2, 5.5, 2, 10.5)"
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameUTE;
+							showGameCard = true;
+						"
 					/>
 					<!-- Lower Top Eight -->
 					<BracketGame
@@ -170,20 +225,34 @@
 						:link-in-lose="'up'"
 						:link-in-ratio="0.666"
 						:style="getGameStyle(2.2, 7.5, 2, 14.5)"
-						class=""
+						class="cursor-pointer"
+						@click="
+							selectedGame = gameLTE;
+							showGameCard = true;
+						"
 					/>
 				</div>
 			</div>
 		</div>
+		<ModalContainer :show="selectedGame !== null && showGameCard" @close="showGameCard = false">
+			<GameCard v-if="selectedGame" :game="selectedGame" mode="card" />
+		</ModalContainer>
 	</div>
 </template>
 
 <script lang="ts" setup>
+import type { IGame } from "~~/types/games";
+
 import BracketGame from "~/components/partials/games/BracketGame.vue";
+import ModalContainer from "~/components/partials/ModalContainer.vue";
+import GameCard from "~/components/partials/games/GameCard.vue";
 
 import { useGamesStore } from "~/stores/games";
 import { useTeamsStore } from "~/stores/teams";
 import { GAME_WIDTH, GAME_HEIGHT, GAME_SPACING_X, GAME_SPACING_Y } from "~/utils/game";
+
+const showGameCard = ref(false);
+const selectedGame = ref<IGame | null>(null);
 
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
