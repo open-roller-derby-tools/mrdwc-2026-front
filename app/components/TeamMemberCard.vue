@@ -61,23 +61,27 @@
 
 			<!-- ANNOUNCER EXTRA INFO -->
 			<template v-if="isAnnouncer">
-				<div v-if="member.leaguesRepresented" class="mt-3 text-base text-gray-600 italic w-full">
+				<div
+					v-if="member.leaguesRepresented"
+					class="mt-3 text-base text-gray-600 italic w-full"
+					:class="isGrid ? 'line-clamp-1' : ''"
+				>
 					{{ member.leaguesRepresented }}
 				</div>
 				<div
 					v-if="member.memberInformation"
-					class="mt-2 text-base text-left text-gray-700 whitespace-pre-line w-full"
+					class="mt-2 text-base text-left text-gray-700 w-full"
+					:class="isGrid ? 'line-clamp-1' : 'whitespace-pre-line'"
 				>
 					{{ member.memberInformation }}
 				</div>
-				<div
-					v-if="member.announcerNotes"
-					class="mt-2 text-base text-left text-gray-700 whitespace-pre-line w-full"
-				>
+				<div v-if="member.announcerNotes" class="mt-2 text-base text-left text-gray-700 w-full">
 					<span class="font-semibold text-gray-500 text-sm uppercase tracking-wide">{{
 						t("announcer_notes")
 					}}</span>
-					<p class="whitespace-pre-line">{{ member.announcerNotes }}</p>
+					<p :class="isGrid ? 'line-clamp-1' : 'whitespace-pre-line'">
+						{{ member.announcerNotes }}
+					</p>
 				</div>
 			</template>
 		</div>
