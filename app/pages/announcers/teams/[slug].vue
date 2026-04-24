@@ -226,6 +226,11 @@
 				</div>
 			</div>
 
+			<!-- TEAM GAMES -->
+			<div v-if="team" class="maxed padded pt-10">
+				<TeamGamesList :team="team" :disable-spoiler-mode="true" />
+			</div>
+
 			<div v-if="team">
 				<div class="relative pb-16 sm:py-0">
 					<!-- 🆕 TABS SLOT -->
@@ -471,6 +476,7 @@ import BlockTabsSlot from "~/components/blocks/BlockTabsSlot.vue";
 import TeamMemberCard from "~/components/TeamMemberCard.vue";
 import TeamMemberRow from "~/components/TeamMemberRow.vue";
 import TeamLettersBadge from "~/components/partials/TeamLettersBadge.vue";
+import TeamGamesList from "~/components/partials/TeamGamesList.vue";
 
 const { t } = useI18n();
 const route = useRoute();

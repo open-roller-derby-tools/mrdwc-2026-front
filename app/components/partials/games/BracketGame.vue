@@ -11,7 +11,7 @@
 					{{ topTeam?.country ?? topTeam?.name ?? topTeamSource ?? "---" }}
 				</span>
 			</div>
-			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-base">
+			<span v-if="gameHasStarted && !effectiveNoSpoilerMode" class="font-bold text-base">
 				{{ topTeamScore }}
 			</span>
 			<!-- Link in elements -->
@@ -124,7 +124,7 @@
 					{{ bottomTeam?.country ?? bottomTeam?.name ?? bottomTeamSource ?? "---" }}
 				</span>
 			</div>
-			<span v-if="gameHasStarted && !isNoSpoilerModeActive" class="font-bold text-base">
+			<span v-if="gameHasStarted && !effectiveNoSpoilerMode" class="font-bold text-base">
 				{{ bottomTeamScore }}
 			</span>
 		</div>
@@ -152,6 +152,9 @@ import { hasGameStarted, isGameFinished, GAME_SPACING_X, GAME_HEIGHT } from "~/u
 const { t, locale } = useI18n();
 const teamsStore = useTeamsStore();
 const { isNoSpoilerModeActive } = useNoSpoilerMode();
+const effectiveNoSpoilerMode = computed(() =>
+	props.spoilerModeDisabled ? false : isNoSpoilerModeActive.value
+);
 const { getTeam } = useGameFormatting();
 
 useGamesAutoRefresh({ intervalMs: 30000 });
@@ -159,8 +162,9 @@ useGamesAutoRefresh({ intervalMs: 30000 });
 const props = withDefaults(
 	defineProps<{
 		game: IGame;
-		winnerOnTop?: boolean; // Will show the winning team on the top row at the end of the game
+		winnerOnTop?: boolean;
 		backgroundColor?: "blue" | "yellow" | "white";
+		spoilerModeDisabled?: boolean;
 		linkInWin?: "none" | "both" | "up"; // Is there a win (yellow) link coming in (shown on the left) and is it coming from the top only, or top + bottom?
 		linkInLose?: "none" | "both" | "up"; // Is there a lose (blue) link coming in (shown on the left) and is it coming from the top only, or top + bottom?
 		linkInArrows?: boolean; // Do we show arrows on the in-link?
@@ -175,6 +179,7 @@ const props = withDefaults(
 	{
 		winnerOnTop: false,
 		backgroundColor: "blue",
+		spoilerModeDisabled: false,
 		linkInWin: "none",
 		linkInLose: "none",
 		linkInArrows: false,
@@ -197,7 +202,7 @@ const isAwayTeamWinning = computed(() => props.game.away_score > props.game.home
 
 const topTeam = computed(() => {
 	if (
-		!isNoSpoilerModeActive.value &&
+		!effectiveNoSpoilerMode.value &&
 		props.winnerOnTop &&
 		isGameFinished(props.game) &&
 		isSomeoneWinning.value
@@ -218,7 +223,7 @@ const topTeamScore = computed(() => {
 
 const bottomTeam = computed(() => {
 	if (
-		!isNoSpoilerModeActive.value &&
+		!effectiveNoSpoilerMode.value &&
 		props.winnerOnTop &&
 		isGameFinished(props.game) &&
 		isSomeoneWinning.value

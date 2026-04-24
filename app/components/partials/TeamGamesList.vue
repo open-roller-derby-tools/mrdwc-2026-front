@@ -7,6 +7,7 @@
 				:key="game.id"
 				:game="game"
 				background-color="blue"
+				:spoiler-mode-disabled="disableSpoilerMode"
 				class="cursor-pointer"
 				@click="
 					selectedGame = game;
@@ -36,6 +37,7 @@ const { getGamesByTeam } = gamesStore;
 
 defineProps<{
 	team: ILocalizedTeam;
+	disableSpoilerMode?: boolean;
 }>();
 
 useGamesAutoRefresh({ intervalMs: 60000 });
