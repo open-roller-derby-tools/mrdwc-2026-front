@@ -30,6 +30,13 @@
 								<div v-else class="text-blue-text text-sm text-center px-2">No photo</div>
 							</div>
 
+							<div
+								v-if="announcer.photo_credits"
+								class="absolute bottom-0 left-0 right-0 px-2 py-1 text-[10px] text-white/70 bg-gradient-to-t from-black/70 to-transparent"
+							>
+								© {{ announcer.photo_credits }}
+							</div>
+
 							<!-- 🏳️ FLAGS (DESKTOP OVERLAY) -->
 							<div
 								v-if="announcer.nationalities"

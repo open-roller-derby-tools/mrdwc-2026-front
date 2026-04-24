@@ -34,9 +34,8 @@
 									<Icon name="lucide:camera" class="w-12 h-12" />
 								</div>
 
-								<!-- 📸 Crédit overlay -->
 								<div
-									v-if="photographer.photo_credits"
+									v-if="photographer.photo_credits && !photographer.logo"
 									class="absolute bottom-0 left-0 right-0 px-2 py-1 text-[10px] text-white/70 bg-gradient-to-t from-black/70 to-transparent"
 								>
 									© {{ photographer.photo_credits }}
