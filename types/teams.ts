@@ -20,6 +20,7 @@ export interface ITeam {
 	national_anthem: string | null;
 	anthem_audio: string | null;
 	parade_audio: string | null;
+	announcer_notes: string | null;
 	previous_participations: string[];
 	members?: ITeamMember[];
 	charter?: ITeamMember[];
@@ -48,6 +49,7 @@ export interface ILocalizedTeam {
 	nationalAnthem: string | null;
 	anthemAudio: string | null;
 	paradeAudio: string | null;
+	announcerNotes: string | null;
 	previousParticipations: string[];
 	name_letters?: string;
 	members?: ILocalizedTeamMember[];
@@ -74,6 +76,7 @@ export interface ITeamMember {
 	pronouns: string;
 	member_information: string;
 	leagues_represented: string;
+	announcer_notes: string;
 	translations: ITeamMemberTranslation[];
 	charter_skater_id: number;
 }
@@ -89,6 +92,7 @@ export interface ILocalizedTeamMember {
 	pronouns: string;
 	memberInformation: string;
 	leaguesRepresented: string;
+	announcerNotes: string;
 	translations: ITeamMemberTranslation[];
 	charterSkaterId: number;
 }

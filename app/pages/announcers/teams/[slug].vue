@@ -212,40 +212,119 @@
 					</h3>
 					<p class="whitespace-pre-line">{{ team.anecdotes }}</p>
 				</div>
+
+				<!-- Announcer Notes (full width) -->
+				<div
+					v-if="team.announcerNotes"
+					class="bg-blue-text border border-white/20 rounded-xl p-6 mt-6"
+				>
+					<h3 class="text-lg font-semibold text-yellow mb-3 flex items-center gap-2">
+						<UIcon name="i-lucide-notebook-pen" class="size-5" />
+						{{ t("announcer_notes") }}
+					</h3>
+					<p class="whitespace-pre-line">{{ team.announcerNotes }}</p>
+				</div>
 			</div>
 
 			<div v-if="team">
 				<div class="relative pb-16 sm:py-0">
 					<!-- 🆕 TABS SLOT -->
 					<BlockTabsSlot v-if="team" :data="tabsConfig" class="mt-10">
-						<!-- TAB 1 : MEMBERS -->
+						<!-- TAB 1 : CHARTER -->
 						<template #charter>
-							<!-- MOBILE SWIPER -->
-							<div class="sm:hidden bg-blue-text py-10">
-								<Swiper
-									:slides-per-view="1.2"
-									:space-between="16"
-									:grab-cursor="true"
-									:centered-slides="true"
-									class="!items-stretch"
-									@slide-change="onSlideChangeCharter"
+							<div
+								id="charter-toggle"
+								class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4"
+								style="scroll-margin-top: 100px"
+							>
+								<button
+									class="px-4 pt-3.5 pb-2 w-1/2 rounded-s-xl text-sm font-semibold transition"
+									:class="
+										charterViewMode === 'grid'
+											? 'bg-yellow text-blue-text border-yellow'
+											: 'bg-blue-inactive text-blue-text '
+									"
+									@click="charterViewMode = 'grid'"
 								>
-									<SwiperSlide v-for="m in charterSorted" :key="m.id" class="flex h-auto">
-										<div class="px-6">
-											<TeamMemberCard
-												:member="m"
-												:team-logo="team.logo"
-												:is-announcer="true"
-												class="flex-1"
-											/>
-										</div>
-									</SwiperSlide>
-								</Swiper>
+									<UIcon
+										name="i-lucide-grid-3x2"
+										class="size-8 transition-transform duration-200 ease-out"
+									/>
+								</button>
+								<button
+									class="px-4 pt-3.5 pb-2 w-1/2 rounded-e-xl text-sm font-semibold transition"
+									:class="
+										charterViewMode === 'swiper'
+											? 'bg-yellow text-blue-text border-yellow'
+											: 'bg-blue-inactive text-blue-text'
+									"
+									@click="charterViewMode = 'swiper'"
+								>
+									<UIcon
+										name="i-lucide-square-user-round"
+										class="size-8 transition-transform duration-200 ease-out"
+									/>
+								</button>
+							</div>
+							<!-- MOBILE -->
+							<div class="sm:hidden bg-blue-text pb-10">
+								<!-- SWIPER -->
+								<template v-if="charterViewMode === 'swiper'">
+									<Swiper
+										:slides-per-view="1.2"
+										:space-between="16"
+										:grab-cursor="true"
+										:centered-slides="true"
+										:initial-slide="charterIndex"
+										class="!items-stretch"
+										@swiper="onSwiperCharter"
+										@slide-change="onSlideChangeCharter"
+									>
+										<SwiperSlide v-for="m in charterSorted" :key="m.id" class="flex pt-8">
+											<div class="px-6 flex w-full">
+												<TeamMemberCard
+													:member="m"
+													:team-logo="team.logo"
+													:is-announcer="true"
+													class="flex-1"
+												/>
+											</div>
+										</SwiperSlide>
+									</Swiper>
 
-								<!-- PAGINATION -->
-								<div class="text-center text-sm text-white/60 mt-4">
-									{{ charterIndex + 1 }} / {{ charterSorted.length }}
-								</div>
+									<div class="text-center text-sm text-white/60 mt-4">
+										{{ charterIndex + 1 }} / {{ charterSorted.length }}
+									</div>
+								</template>
+
+								<!-- GRID -->
+								<template v-if="charterViewMode === 'grid'">
+									<div class="padded">
+										<div class="grid grid-cols-2 rounded-xl">
+											<div
+												v-for="(m, i) in charterSorted"
+												:key="m.id"
+												class="cursor-pointer active:scale-95 transition-transform duration-150"
+												:class="
+													i === charterSorted.length - 1 && charterSorted.length % 2 === 1
+														? 'col-span-2'
+														: ''
+												"
+												@click="showCharterMember(i)"
+											>
+												<TeamMemberCard
+													:member="m"
+													:team-logo="team.logo"
+													:is-announcer="true"
+													:index="i"
+													:total="charterSorted.length"
+													:items-per-row="2"
+													:is-grid="true"
+												/>
+											</div>
+										</div>
+									</div>
+								</template>
 							</div>
 							<!-- DESKTOP GRID -->
 							<div
@@ -261,34 +340,103 @@
 							</div>
 						</template>
 
-						<!-- TAB 2 : CHARTER -->
+						<!-- TAB 2 : STAFF -->
 						<template #staffMembers>
-							<!-- MOBILE -->
-							<div class="sm:hidden bg-blue-text py-10">
-								<Swiper
-									:slides-per-view="1.2"
-									:space-between="16"
-									:grab-cursor="true"
-									:centered-slides="true"
-									class="!items-stretch min-h-[320px]"
-									@slide-change="onSlideChangeStaff"
+							<div
+								id="staff-toggle"
+								class="sm:hidden flex padded justify-center w-full bg-blue-text gap-[2px] py-4"
+								style="scroll-margin-top: 100px"
+							>
+								<button
+									class="px-4 pt-3.5 pb-2 w-1/2 rounded-s-xl text-sm font-semibold transition"
+									:class="
+										staffViewMode === 'grid'
+											? 'bg-yellow text-blue-text border-yellow'
+											: 'bg-blue-inactive text-blue-text '
+									"
+									@click="staffViewMode = 'grid'"
 								>
-									<SwiperSlide v-for="m in staffMembers" :key="m.id" class="flex h-auto">
-										<div class="px-6 h-full flex">
-											<TeamMemberCard
-												:member="m"
-												:team-logo="team.logo"
-												:is-announcer="true"
-												class="flex-1"
-											/>
-										</div>
-									</SwiperSlide>
-								</Swiper>
-
-								<div class="text-center text-sm text-white/60 mt-4">
-									{{ staffIndex + 1 }} / {{ staffMembers.length }}
-								</div>
+									<UIcon
+										name="i-lucide-grid-3x2"
+										class="size-8 transition-transform duration-200 ease-out"
+									/>
+								</button>
+								<button
+									class="px-4 pt-3.5 pb-2 w-1/2 rounded-e-xl text-sm font-semibold transition"
+									:class="
+										staffViewMode === 'swiper'
+											? 'bg-yellow text-blue-text border-yellow'
+											: 'bg-blue-inactive text-blue-text'
+									"
+									@click="staffViewMode = 'swiper'"
+								>
+									<UIcon
+										name="i-lucide-square-user-round"
+										class="size-8 transition-transform duration-200 ease-out"
+									/>
+								</button>
 							</div>
+							<!-- MOBILE -->
+							<div class="sm:hidden bg-blue-text pb-10">
+								<!-- SWIPER -->
+								<template v-if="staffViewMode === 'swiper'">
+									<Swiper
+										:slides-per-view="1.2"
+										:space-between="16"
+										:grab-cursor="true"
+										:centered-slides="true"
+										:initial-slide="staffIndex"
+										class="!items-stretch"
+										@swiper="onSwiperStaff"
+										@slide-change="onSlideChangeStaff"
+									>
+										<SwiperSlide v-for="m in staffMembers" :key="m.id" class="flex pt-8">
+											<div class="px-6 flex w-full">
+												<TeamMemberCard
+													:member="m"
+													:team-logo="team.logo"
+													:is-announcer="true"
+													class="flex-1"
+												/>
+											</div>
+										</SwiperSlide>
+									</Swiper>
+
+									<div class="text-center text-sm text-white/60 mt-4">
+										{{ staffIndex + 1 }} / {{ staffMembers.length }}
+									</div>
+								</template>
+
+								<!-- GRID -->
+								<template v-if="staffViewMode === 'grid'">
+									<div class="padded">
+										<div class="grid grid-cols-2 rounded-xl">
+											<div
+												v-for="(m, i) in staffMembers"
+												:key="m.id"
+												class="cursor-pointer active:scale-95 transition-transform duration-150"
+												:class="
+													i === staffMembers.length - 1 && staffMembers.length % 2 === 1
+														? 'col-span-2'
+														: ''
+												"
+												@click="showStaffMember(i)"
+											>
+												<TeamMemberCard
+													:member="m"
+													:team-logo="team.logo"
+													:is-announcer="true"
+													:index="i"
+													:total="staffMembers.length"
+													:items-per-row="2"
+													:is-grid="true"
+												/>
+											</div>
+										</div>
+									</div>
+								</template>
+							</div>
+
 							<div
 								class="hidden sm:grid padded pt-10 pb-30 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 bg-blue-text gap-10"
 							>
@@ -313,6 +461,7 @@
 
 <script setup lang="ts">
 import type { ILocalizedTeamMember } from "~~/types/teams";
+import type { Swiper as SwiperInstance } from "swiper/types";
 
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
@@ -352,7 +501,8 @@ const hasAnnouncerInfo = computed(() => {
 		team.value.anthemAudio ||
 		team.value.paradeAudio ||
 		team.value.history ||
-		team.value.anecdotes
+		team.value.anecdotes ||
+		team.value.announcerNotes
 	);
 });
 
@@ -407,11 +557,49 @@ const charterSorted = computed(() => {
 const charterIndex = ref(0);
 const staffIndex = ref(0);
 
-const onSlideChangeCharter = (swiper: { activeIndex: number }) => {
+const charterViewMode = ref<"swiper" | "grid">("grid");
+const staffViewMode = ref<"swiper" | "grid">("grid");
+
+const charterSwiperRef = ref<SwiperInstance | null>(null);
+const staffSwiperRef = ref<SwiperInstance | null>(null);
+
+const onSwiperCharter = (swiper: SwiperInstance) => {
+	charterSwiperRef.value = swiper;
+};
+
+const onSwiperStaff = (swiper: SwiperInstance) => {
+	staffSwiperRef.value = swiper;
+};
+
+const onSlideChangeCharter = (swiper: SwiperInstance) => {
 	charterIndex.value = swiper.activeIndex;
 };
 
-const onSlideChangeStaff = (swiper: { activeIndex: number }) => {
+const onSlideChangeStaff = (swiper: SwiperInstance) => {
 	staffIndex.value = swiper.activeIndex;
+};
+
+const showCharterMember = (index: number) => {
+	charterIndex.value = index;
+	charterViewMode.value = "swiper";
+	nextTick(() => {
+		charterSwiperRef.value?.slideTo(index);
+		const el = document.getElementById("charter-toggle");
+		if (el) {
+			el.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	});
+};
+
+const showStaffMember = (index: number) => {
+	staffIndex.value = index;
+	staffViewMode.value = "swiper";
+	nextTick(() => {
+		staffSwiperRef.value?.slideTo(index);
+		const el = document.getElementById("staff-toggle");
+		if (el) {
+			el.scrollIntoView({ behavior: "smooth", block: "start" });
+		}
+	});
 };
 </script>

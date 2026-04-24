@@ -68,6 +68,7 @@ export const useTeamsStore = defineStore("teams", () => {
 				national_anthem: true,
 				anthem_audio: true,
 				parade_audio: true,
+				announcer_notes: true,
 				group_id: true,
 				schedule_color: true,
 				translations: {
@@ -87,6 +88,7 @@ export const useTeamsStore = defineStore("teams", () => {
 				pronouns: true,
 				member_information: true,
 				leagues_represented: true,
+				announcer_notes: true,
 				charter_skater_id: true,
 				translations: {
 					languages_code: true,
@@ -167,6 +169,7 @@ export const useTeamsStore = defineStore("teams", () => {
 			pronouns: translation?.pronouns ?? member.pronouns ?? "",
 			memberInformation: member.member_information,
 			leaguesRepresented: member.leagues_represented,
+			announcerNotes: member.announcer_notes ?? "",
 			charterSkaterId: member.charter_skater_id,
 			translations,
 		};
@@ -206,6 +209,7 @@ export const useTeamsStore = defineStore("teams", () => {
 				nationalAnthem: team.national_anthem,
 				anthemAudio: team.anthem_audio,
 				paradeAudio: team.parade_audio,
+				announcerNotes: team.announcer_notes,
 				previousParticipations: team.previous_participations,
 				members: localizedMembers,
 				charter: localizedCharterMembers,
