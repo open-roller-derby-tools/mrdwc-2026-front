@@ -42,7 +42,7 @@
 			<Transition name="drawer-open">
 				<div
 					v-if="isOpen"
-					class="w-full sm:rounded-tr-2xl sm:min-w-md overflow-hidden bg-white text-black pointer-events-auto"
+					class="w-full sm:rounded-tr-2xl sm:w-md overflow-hidden bg-white text-black pointer-events-auto"
 				>
 					<div class="flex flex-col px-4">
 						<div
