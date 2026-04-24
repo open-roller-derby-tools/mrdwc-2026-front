@@ -23,6 +23,8 @@
 	--color-red-base: #ff0000;
 	--color-green-base: #00ff00;
 	--color-blue-base: #0000ff;
+
+	--shadow-omni: 0 0 8px 3px rgba(0, 0, 0, 0.35);
 }
 
 :root,
@@ -42,7 +44,7 @@
 	}
 
 	body {
-		@apply bg-blue text-white font-cabin text-xl sm:text-base min-h-screen;
+		@apply bg-blue text-white font-cabin text-xl sm:text-base min-h-dvh;
 	}
 
 	h1 {

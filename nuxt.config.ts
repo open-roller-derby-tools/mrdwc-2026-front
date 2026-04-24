@@ -10,7 +10,7 @@ export default defineNuxtConfig({
 		"nuxt-umami",
 		"@nuxt/eslint",
 	],
-	css: ["~~/app/assets/css/main.css", "swiper/css"],
+	css: ["~~/app/assets/css/main.css", "swiper/css", "flag-icons/css/flag-icons.min.css"],
 	ui: {
 		colorMode: false,
 	},

@@ -17,6 +17,9 @@ import BlockTrackLocations from "~/components/blocks_custom/BlockTrackLocations.
 import BlockGroups from "~/components/blocks_custom/BlockGroups.vue";
 import BlockGroupsRankings from "~/components/blocks_custom/BlockGroupsRankings.vue";
 import BlockTimezoneSwitcher from "~/components/blocks_custom/BlockTimezoneSwitcher.vue";
+import BlockBrackets from "~/components/blocks_custom/BlockBrackets.vue";
+import BlockAnnouncers from "~/components/blocks_custom/BlockAnnouncers.vue";
+import BlockPhotographers from "~/components/blocks_custom/BlockPhotographers.vue";
 
 const components = new Map<string, Component>([
 	// Blocks
@@ -38,6 +41,9 @@ const components = new Map<string, Component>([
 	["BlockGroups", BlockGroups],
 	["BlockGroupsRankings", BlockGroupsRankings],
 	["BlockTimezoneSwitcher", BlockTimezoneSwitcher],
+	["BlockBrackets", BlockBrackets],
+	["BlockAnnouncers", BlockAnnouncers],
+	["BlockPhotographers", BlockPhotographers],
 ]);
 
 export default (collection: string) => components.get(collection);

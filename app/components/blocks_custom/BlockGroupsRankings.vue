@@ -1,13 +1,12 @@
 <template>
 	<div class="w-full bg-blue-text py-6">
-		<div v-if="isDev" class="maxed padded mb-8">
-			<SimulateGamesToggle />
-		</div>
 		<div class="w-full maxed padded">
 			<table class="w-full text-sm table-fixed rounded-2xl overflow-hidden">
 				<thead class="bg-blue text-white">
 					<tr class="">
-						<th class="w-8 md:w-10 lg:w-12"></th>
+						<th class="w-8 md:w-10 lg:w-12">
+							<RankingsHelp />
+						</th>
 						<th class="!text-left !pl-2">{{ t("teams") }}</th>
 						<th class="w-10 md:w-14 lg:w-20">
 							<span class="hidden md:inline">{{ t("rankings.played") }}</span
@@ -96,46 +95,19 @@
 					</tr>
 				</tbody>
 			</table>
-			<div
-				class="flex flex-col items-start sm:flex-row sm:items-center gap-0 sm:gap-4 py-3 text-sm font-medium text-white/70"
-			>
-				<span class="flex items-center gap-1.5">
-					<span
-						class="inline-flex items-center justify-center w-3 h-3 rounded-sm bg-green-50 border border-green-700 text-green-700"
-						>×</span
-					>
-					{{ t("rankings.bracket_play") }}
-				</span>
-				<span class="flex items-center gap-1.5">
-					<span
-						class="inline-flex items-center justify-center w-3 h-3 rounded-sm bg-blue-100 border border-blue-700 text-blue-700"
-						>×</span
-					>
-					{{ t("rankings.rankings_play") }}
-				</span>
-				<span class="flex items-center gap-1.5">
-					<span
-						class="inline-flex items-center justify-center w-3 h-3 rounded-sm bg-red-50 border border-red-700 text-red-700"
-						>×</span
-					>
-					{{ t("rankings.eliminated") }}
-				</span>
-			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import TeamLettersBadge from "../partials/TeamLettersBadge.vue";
-import SimulateGamesToggle from "../navigation/SimulateGamesToggle.vue";
+import RankingsHelp from "../partials/RankingsHelp.vue";
 
 const { t } = useI18n();
 const groupsStore = useGroupsStore();
 const teamsStore = useTeamsStore();
 const { getTeamById } = teamsStore;
 const { getOverallRankings } = useGroupStandings();
-
-const isDev = import.meta.dev;
 
 const groups = computed(() => groupsStore.groups ?? []);
 

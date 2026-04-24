@@ -6,13 +6,13 @@
 		<!-- Teams/scores -->
 		<GameCardVersus :game="game" />
 		<!-- Other infos -->
-		<div>
+		<div class="space-y-2">
 			<!-- Date/time + state -->
 			<div class="flex items-center justify-between gap-2 text-lg">
-				<p class="first-letter:uppercase">
+				<p class="first-letter:uppercase leading-none">
 					{{ formatDateTime(game.start_time) }}
 				</p>
-				<p>
+				<p class="leading-none">
 					<GameStateLabel
 						:game="game"
 						:with-background="false"
@@ -23,12 +23,12 @@
 			</div>
 			<!-- Duration + type -->
 			<div class="flex items-center justify-between gap-2 text-lg">
-				<p class="">
+				<p class="leading-none">
 					{{ t(`game_duration.${game.duration}`) }}
 				</p>
-				<p class="italic">{{ t(`game_type.${game.type}`) }}</p>
+				<p class="italic leading-none">{{ t(`game_type.${game.type}`) }}</p>
 			</div>
-			<a v-if="venue" :href="venue.map_url" target="_blank" class="text-lg font-bold">
+			<a v-if="venue" :href="venue.map_url" target="_blank" class="text-lg font-bold leading-none">
 				<span class="font-shoulders">
 					{{ t("calendar_track_short", { index: venue.sort, count: 2 }) }}
 				</span>

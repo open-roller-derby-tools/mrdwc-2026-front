@@ -62,7 +62,8 @@
 		"list": "Liste",
 		"current_timezone": "Les heures/dates affichées utilisent le fuseau horaire {timezone}.",
 		"use_tournament_timezone": "Utiliser le fuseau horaire du tournoi",
-		"use_user_timezone": "Utiliser votre fuseau horaire"
+		"use_user_timezone": "Utiliser votre fuseau horaire",
+		"tournament_timezone": "d'Orléans, France"
 	},
 	"game_state": {
 		"scheduled": "Programmé",
@@ -91,6 +92,8 @@
 		"title": "Mode sans spoilers",
 		"show_spoilers": "Afficher les spoilers",
 		"hide_spoilers": "Masquer les spoilers",
+		"show_results": "Afficher les résultats",
+		"hide_results": "Masquer les résultats",
 		"enabled": "Activé",
 		"disabled": "Désactivé",
 		"enabled_description": "Les scores, classements et rencontres (hors phase de groupes) sont masqués.",
@@ -128,13 +131,18 @@
 		"hide_games": "Masquer les matchs",
 		"bracket_play": "Phase finale (1–8)",
 		"rankings_play": "Phase de classement (9–20)",
-		"eliminated": "Eliminés (21–24)"
+		"eliminated": "Eliminés (21–24)",
+		"legend": "Légende :",
+		"1st": "Champion·nes du Monde !",
+		"place": "{ordinal} place",
+		"others": "{ordinal}"
 	},
-	"game_page": "Page du match",
+	"game_page": "Plus d'infos",
 	"watch_live": "Regarder en direct",
 	"watch_replay": "Revoir le match",
 	"next_game": "Prochain match",
 	"next_games": "Prochains matchs",
+	"team_games": "Matchs dans cette compétition :",
 	"all_games": "Tous les matchs",
 	"announcers_info": "Informations Annonceurs",
 	"team_history": "Histoire de l'équipe",
@@ -144,5 +152,15 @@
 	"anthem_audio": "Audio de l'hymne",
 	"parade_audio": "Audio de parade",
 	"countries_represented": "Pays représentés",
-	"play_audio": "Écouter l'audio"
+	"play_audio": "Écouter l'audio",
+	"photographers": {
+		"discoverWork": "Découvrir son travail"
+	},
+	"ordinals": {
+		"one": "er",
+		"other": "e"
+	},
+	"format": {
+		"ordinal": "{n}{suffix}"
+	}
 }

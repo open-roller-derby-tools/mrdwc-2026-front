@@ -1,9 +1,18 @@
 <template>
 	<div class="grid grid-cols-2 gap-x-6 gap-y-2 items-center">
+		<NuxtLinkLocale
+			v-for="team in ['home', 'away'] as Side[]"
+			:key="`${team}-name`"
+			:to="`/teams/${getTeam(game, team)?.slug}`"
+			class="leading-none text-balance font-shoulders text-xl sm:text-2xl font-bold relative"
+			:class="getTeamNameClass(team)"
+		>
+			{{ getTeamName(props.game, team, false, game[`${team}_source`]) }}
+		</NuxtLinkLocale>
 		<p
 			v-for="team in ['home', 'away'] as Side[]"
 			:key="`${team}-name`"
-			class="leading-none text-balance font-shoulders text-xl sm:text-2xl font-bold relative"
+			class="hidden leading-none text-balance font-shoulders text-xl sm:text-2xl font-bold relative"
 			:class="getTeamNameClass(team)"
 		>
 			{{ getTeamName(props.game, team, false, game[`${team}_source`]) }}

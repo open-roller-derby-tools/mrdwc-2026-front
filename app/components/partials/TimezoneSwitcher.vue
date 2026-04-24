@@ -1,26 +1,55 @@
 <template>
-    <div class="p-4 bg-white text-black rounded-2xl">
-        <p class="font-shoulders font-bold sm:text-lg text-balance flex items-center gap-2 leading-tight">
-            <span>{{ t('calendar.current_timezone', { timezone: active_timezone }) }}</span>
-        </p>
-        <p
-v-if="user_timezone !== tournament_timezone"
-            class="mt-2 flex flex-col gap-0 sm:gap-1 sm:flex-row sm:items-center cursor-pointer font-bold text-lg sm:text-base leading-tight"
-            @click="toggleTimezone">
-            <UIcon name="i-ic-round-swap-horiz" class="size-6 hidden sm:block text-red-text" />
-            <span class="underline underline-offset-2 text-red-text">{{ active_timezone === tournament_timezone
-                ?
-                t('calendar.use_user_timezone', {
-                    timezone: user_timezone
-                }) : t('calendar.use_tournament_timezone')
-            }}</span>
-            <span class="font-normal italic">({{ active_timezone === tournament_timezone ? user_timezone :
-                tournament_timezone }})</span>
-        </p>
-    </div>
+	<div class="@container w-full">
+		<div
+			class="text-black text-base rounded-2xl flex gap-1 flex-col @3xl:flex-row @3xl:items-center @3xl:justify-center @3xl:gap-2"
+			:class="{ 'px-4 py-2 bg-white': withBackground }"
+		>
+			<div class="font-medium flex items-center gap-2 leading-tight">
+				<span>{{ timezoneLabel }}</span>
+			</div>
+			<div
+				v-if="user_timezone !== tournament_timezone"
+				class="flex gap-1 items-center cursor-pointer font-bold"
+				@click="toggleTimezone"
+			>
+				<UIcon name="ic:round-language" class="size-6 text-red-text" />
+				<p class="underline underline-offset-2 text-red-text leading-none">
+					{{
+						active_timezone === tournament_timezone
+							? t("calendar.use_user_timezone", {
+									timezone: user_timezone,
+								})
+							: t("calendar.use_tournament_timezone")
+					}}
+					<span
+						v-if="active_timezone === tournament_timezone"
+						class="font-normal text-sm italic whitespace-nowrap"
+						>({{ user_timezone }})</span
+					>
+				</p>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts" setup>
 const { active_timezone, tournament_timezone, user_timezone, toggleTimezone } = useTimezone();
 const { t } = useI18n();
+
+withDefaults(
+	defineProps<{
+		withBackground?: boolean;
+	}>(),
+	{
+		withBackground: true,
+	}
+);
+
+const timezoneLabel = computed(() => {
+	const timezoneName =
+		active_timezone.value === tournament_timezone
+			? t("calendar.tournament_timezone")
+			: user_timezone;
+	return t("calendar.current_timezone", { timezone: timezoneName });
+});
 </script>
