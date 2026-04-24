@@ -1,7 +1,6 @@
 <template>
-	<div v-if="isDev" class="mt-32 bg-blue-text">
-		<SimulateGamesToggle />
-		<div class="padded">
+	<div class="w-full bg-blue-text py-6">
+		<div class="w-full padded">
 			<div
 				class="overflow-auto w-full max-h-[70dvh] sm:max-h-none mx-auto my-6 p-4 bg-blue rounded-2xl"
 				:class="isOneOfTheLastFourGamesFinished ? 'sm:max-w-[87.5rem]' : 'sm:max-w-[76.5rem]'"
@@ -169,24 +168,17 @@
 			</div>
 		</div>
 	</div>
-	<div v-else>
-		<p>Nothing to see here...</p>
-	</div>
 </template>
 
 <script lang="ts" setup>
 import BracketGame from "~/components/partials/games/BracketGame.vue";
-import SimulateGamesToggle from "~/components/navigation/SimulateGamesToggle.vue";
 
 import { useGamesStore } from "~/stores/games";
 import { useTeamsStore } from "~/stores/teams";
 import { GAME_WIDTH, GAME_HEIGHT, GAME_SPACING_X, GAME_SPACING_Y } from "~/utils/game";
 
-// const { t } = useI18n();
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
-
-const isDev = import.meta.dev;
 
 const getGameStyle = (
 	column: number = 0,
@@ -200,13 +192,6 @@ const getGameStyle = (
 	style.push(`left: ${GAME_WIDTH * column + GAME_SPACING_X * spacing_x}rem;`);
 	return style.join(" ");
 };
-
-/* const gameRP1 = computed(() => gamesStore.getGameByNumber(50));
-const gameRP2 = computed(() => gamesStore.getGameByNumber(49));
-const gameRP3 = computed(() => gamesStore.getGameByNumber(43));
-const gameRP4 = computed(() => gamesStore.getGameByNumber(46));
-const gameRP5 = computed(() => gamesStore.getGameByNumber(41));
-const gameRP6 = computed(() => gamesStore.getGameByNumber(42)); */
 
 const gameQ1 = computed(() => gamesStore.getGameByNumber(40));
 const gameQ2 = computed(() => gamesStore.getGameByNumber(38));
