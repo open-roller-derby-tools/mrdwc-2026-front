@@ -1,5 +1,5 @@
 import { getDb } from "../../utils/dbClient";
-import { defaultScheduledNotifications } from "~~/server/utils/helpers";
+import { defaultScheduledNotifications } from "~~/server/utils/notifications-helpers";
 import type { IGame } from "~~/types/games";
 import type { ILocalizedTeam } from "~~/types/teams";
 import type { ILocalizedVenue } from "~~/types/custom";

@@ -4,8 +4,8 @@ import { notificationQueue } from "../utils/queue";
 import { ILocalizedTeam } from "~~/types/teams";
 import { $fetch } from "ofetch";
 import { IGame } from "~~/types/games";
-import { type ILocalizedVenue, IVenue } from "~~/types/custom";
-import { defaultScheduledNotifications } from "~~/server/utils/helpers";
+import { IVenue } from "~~/types/custom";
+import { defaultScheduledNotifications } from "~~/server/utils/notifications-helpers";
 
 const scheduledTemplates = Object.fromEntries(
 	defaultScheduledNotifications.map((n) => [n.title, n.body])
