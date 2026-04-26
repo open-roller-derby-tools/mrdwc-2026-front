@@ -10,6 +10,24 @@ export function startBullBoard() {
 
 	serverAdapter.setBasePath("/admin/queues");
 
+	// --- BASIC AUTH ---
+	app.use("/admin/queues", (req, res, next) => {
+		const auth = req.headers.authorization;
+
+		if (!auth || !auth.startsWith("Basic ")) {
+			res.setHeader("WWW-Authenticate", 'Basic realm="Bull Board"');
+			return res.status(401).send("Authentication required");
+		}
+
+		const [user, pass] = Buffer.from(auth.split(" ")[1], "base64").toString().split(":");
+
+		if (user !== "bullAdmin" || pass !== process.env.BULLBOARD_PASSWORD) {
+			return res.status(403).send("Forbidden");
+		}
+
+		next();
+	});
+
 	createBullBoard({
 		queues: [new BullMQAdapter(notificationQueue)],
 		serverAdapter,
