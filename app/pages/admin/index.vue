@@ -15,14 +15,33 @@
 				<p class="text-gray-400">Users subscribed</p>
 				<p class="text-3xl font-semibold mt-2">{{ stats.subscriptions }}</p>
 			</div>
+
+			<div class="pt-6">
+				<button
+					class="px-4 py-2 bg-yellow text-blue-text border-blue-text font-semibold rounded-xl"
+					:disabled="loading"
+					@click="initDb"
+				>
+					{{ loading ? "Initialisation..." : "Initialise database" }}
+				</button>
+
+				<p v-if="success" class="text-green-400 mt-2">Database initialised !</p>
+
+				<p v-if="error" class="text-red-400 mt-2">Error : {{ error }}</p>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
+import { useNotificationsStore } from "~/stores/notifications";
+
 definePageMeta({
 	layout: "admin",
 });
+
+const gamesStore = useGamesStore();
+const notificationsStore = useNotificationsStore();
 
 const stats = ref({
 	notifications: 0,
@@ -32,5 +51,36 @@ const stats = ref({
 
 onMounted(async () => {
 	stats.value = await $fetch("/api/admin/stats");
+	await gamesStore.fetch();
 });
+
+const loading = ref(false);
+const success = ref(false);
+const error = ref<string | null>(null);
+
+async function initDb() {
+	loading.value = true;
+	success.value = false;
+	error.value = null;
+
+	try {
+		await $fetch("/api/admin/init-db", {
+			method: "POST",
+			body: {
+				games: gamesStore.games,
+			},
+		});
+
+		success.value = true;
+
+		// Refresh stats after successful init
+		stats.value = await $fetch("/api/admin/stats");
+		// Reload channels
+		await notificationsStore.fetchChannels();
+	} catch (err: any) {
+		error.value = err?.data?.statusMessage ?? "Unknown error";
+	} finally {
+		loading.value = false;
+	}
+}
 </script>
