@@ -1,4 +1,5 @@
 import { getDb } from "../../utils/dbClient";
+import type { IGame, IGamesRequestData } from "~~/types/games";
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event);
@@ -22,16 +23,28 @@ export default defineEventHandler(async (event) => {
 	);
 
 	// Also subscribe the user to all channels related to the team
-	await db.query(
-		`
-    INSERT INTO subscriptions (user_id, channel_id)
-    SELECT $1, id
-    FROM channels
-    WHERE team_id_1 = $2 OR team_id_2 = $2
-    ON CONFLICT DO NOTHING
-    `,
-		[user_id, team_id]
-	);
-
+	// Fetch all games where this team plays
+	const games: IGamesRequestData = await $fetch(`${process.env.NUXT_PUBLIC_API_BASE}/items/games`, {
+		query: {
+			filter: JSON.stringify({
+				_or: [{ home_team: { _eq: team_id } }, { away_team: { _eq: team_id } }],
+			}),
+			fields: "id",
+		},
+	});
+	for (const game of games.data) {
+		const slug = `game_${game.id}`;
+		// Get the channel id of the game
+		const channelRes = await db.query(`SELECT id FROM channels WHERE slug = $1`, [slug]);
+		// Add subscription for this channel
+		if (channelRes.rows.length > 0) {
+			await db.query(
+				`INSERT INTO subscriptions (user_id, channel_id)
+         VALUES ($1, $2)
+         ON CONFLICT DO NOTHING`,
+				[user_id, channelRes.rows[0].id]
+			);
+		}
+	}
 	return { success: true };
 });

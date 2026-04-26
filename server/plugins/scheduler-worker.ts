@@ -141,7 +141,7 @@ export default defineNitroPlugin(() => {
 									// Add channel to teams subscribers
 									await db.query(
 										`
-								INSERT INTO user_subscriptions (user_id, channel_id)
+								INSERT INTO subscriptions (user_id, channel_id)
 								SELECT DISTINCT ts.user_id, $1
 								FROM team_subscriptions ts
 								WHERE ts.team_id = $2 OR ts.team_id = $3

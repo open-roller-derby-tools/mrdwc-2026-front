@@ -39,13 +39,12 @@ export const useNotificationsStore = defineStore("notifications", {
 		},
 
 		async fetchSubscriptions(userId: string) {
-			//const [userSubs, teamSubs] = await Promise.all([
-			const [userSubs] = await Promise.all([
+			const [userSubs, teamSubs] = await Promise.all([
 				$fetch<IUserSubscription[]>(`/api/channel-subscriptions/${userId}`),
 				$fetch<{ team_id: number }[]>(`/api/team-subscriptions/${userId}`),
 			]);
 			this.subscribedSlugs = new Set(userSubs.map((s) => s.slug));
-			//this.teamSubscriptions = new Set(teamSubs.map((t) => t.team_id));
+			this.teamSubscriptions = new Set(teamSubs.map((t) => t.team_id));
 		},
 
 		async fetchAll(userId: string) {
