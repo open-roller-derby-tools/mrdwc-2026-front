@@ -39,6 +39,7 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 					logo: true,
 				},
 				url: true,
+				display_location: true,
 			} satisfies IRequestField;
 			const { data } = await $fetch<ISponsorsRequestData>(
 				buildRESTURL(apiBase, "sponsors", fields).href
@@ -78,11 +79,20 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 					name: sponsorTranslation.name,
 					logo: sponsorTranslation.logo,
 					url: sponsor.url,
+					display_location: sponsor.display_location,
 				} as ILocalizedSponsor);
 			}
 			return result;
 		}, []);
 	});
+
+	const bannerSponsors = computed((): ILocalizedSponsor[] =>
+		localizedSponsors.value.filter((s) => s.display_location.includes("banner"))
+	);
+
+	const pageSponsors = computed((): ILocalizedSponsor[] =>
+		localizedSponsors.value.filter((s) => s.display_location.includes("page"))
+	);
 
 	// Expose the required properties, getters and actions
 	return {
@@ -90,5 +100,7 @@ export const useSponsorsStore = defineStore("sponsors", () => {
 		isReady,
 		sponsors, // Make sure to expose this even if we are not using it directly in the components (to prevent hydration mismatches)
 		localizedSponsors,
+		bannerSponsors,
+		pageSponsors,
 	};
 });

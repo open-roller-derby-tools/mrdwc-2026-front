@@ -234,6 +234,7 @@ export interface IPagesRequestData {
 export interface ISponsor {
 	translations: ISponsorTranslation[];
 	url: string;
+	display_location: ("banner" | "page")[];
 }
 
 export interface ISponsorTranslation extends ITranslation {
@@ -245,6 +246,7 @@ export interface ILocalizedSponsor {
 	name: string;
 	logo: string;
 	url: string;
+	display_location: ("banner" | "page")[];
 }
 
 export interface ISponsorsRequestData {
