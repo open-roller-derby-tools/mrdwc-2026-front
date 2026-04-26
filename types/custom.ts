@@ -370,6 +370,30 @@ export interface ITournamentGroupRequestData {
 	data: ITournamentGroup[];
 }
 
+export interface IFaq {
+	id: number;
+	slug: string;
+	category: string;
+	translations?: IFaqTranslation[];
+}
+
+export interface IFaqTranslation extends ITranslation {
+	question: string;
+	answer: string;
+}
+
+export interface ILocalizedFaq {
+	id: number;
+	slug: string;
+	category: string;
+	question: string;
+	answer: string;
+}
+
+export interface IFaqsRequestData {
+	data: IFaq[];
+}
+
 export interface IRequestField {
 	[key: string]: boolean | IRequestField;
 }

@@ -163,6 +163,17 @@
 		"few": "rd",
 		"other": "th"
 	},
+	"faq_category": {
+		"payment": "💳 Payment",
+		"travel": "📍 Getting There & Finding Your Way",
+		"tickets": "🎟️ Tickets",
+		"accessibility": "♿ Accessibility",
+		"onsite": "🍔 On-Site",
+		"photo-video": "📸 Photos & Videos",
+		"safety": "🛡️ Safety & Rules",
+		"team-accreditation": "🏅 Teams & Accreditation",
+		"contact": "❓ Contact"
+	},
 	"format": {
 		"ordinal": "{n}{suffix}"
 	}

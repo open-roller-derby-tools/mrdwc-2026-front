@@ -161,6 +161,17 @@
 		"one": "er",
 		"other": "e"
 	},
+	"faq_category": {
+		"payment": "💳 Paiement",
+		"travel": "📍 Accès & Orientation",
+		"tickets": "🎟️ Billetterie",
+		"accessibility": "♿ Accessibilité",
+		"onsite": "🍔 Sur place",
+		"photo-video": "📸 Photos & Vidéos",
+		"safety": "🛡️ Sécurité & Règlement",
+		"team-accreditation": "🏅 Équipes & Accréditations",
+		"contact": "❓ Contact"
+	},
 	"format": {
 		"ordinal": "{n}{suffix}"
 	}

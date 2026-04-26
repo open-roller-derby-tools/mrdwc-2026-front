@@ -21,6 +21,7 @@ import { useApplicationsStore } from "~/stores/applications";
 import { useOptionsStore } from "~/stores/options";
 import { useTeamsStore } from "~/stores/teams";
 import { useOfficialsStore } from "~/stores/officials";
+import { useFaqsStore } from "~/stores/faqs";
 
 const menusStore = useMenusStore();
 const pagesStore = usePagesStore();
@@ -30,6 +31,7 @@ const applicationsStore = useApplicationsStore();
 const optionsStore = useOptionsStore();
 const teamsStore = useTeamsStore();
 const officialsStore = useOfficialsStore();
+const faqsStore = useFaqsStore();
 
 // Only fetch from API on the server (SSR or when running `nuxt generate`).
 // On the client, data comes from the static payload (when serving the static output).
@@ -42,6 +44,7 @@ if (!import.meta.client) {
 	await callOnce(optionsStore.fetch);
 	await callOnce(teamsStore.fetch);
 	await callOnce(officialsStore.fetch);
+	await callOnce(faqsStore.fetch);
 
 	// Prerender every [slug] page (default locale + en-US) IF the page is set to static.
 	// Without this, only crawler-discovered routes are generated.
