@@ -176,5 +176,6 @@
 	},
 	"format": {
 		"ordinal": "{n}{suffix}"
-	}
+	},
+	"other_sponsors": "And also..."
 }
