@@ -1,3 +1,4 @@
+<script setup lang="ts"></script>
 <template>
 	<aside class="w-64 bg-blue-dark text-white h-[100vh] sticky p-6 flex flex-col gap-6">
 		<h2 class="text-xl font-semibold">Notifications Dashboard</h2>
@@ -25,6 +26,14 @@
 				class="hover:text-yellow transition"
 			>
 				Channels
+			</NuxtLink>
+
+			<NuxtLink
+				to="/admin/scheduled-notifications"
+				active-class="text-yellow font-bold"
+				class="hover:text-yellow transition"
+			>
+				Scheduled notifications
 			</NuxtLink>
 
 			<NuxtLink

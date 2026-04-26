@@ -137,26 +137,22 @@
 </template>
 
 <script lang="ts" setup>
-import type { 
-  IChannel,
-  INotificationType,
-  NotificationCategory
- } from "~~/types/custom";
+import type { IChannel, INotificationType, NotificationCategory } from "~~/types/custom";
 
 definePageMeta({
 	layout: "admin",
 });
 
-
 const { toUtc } = useUtcDate();
 const venuesStore = useVenuesStore();
 const teamsStore = useTeamsStore();
 const notificationsStore = useNotificationsStore();
+const gameStore = useGamesStore();
 
 const notificationTypes = {
 	// Channel starts with "game_":
 	game: [
-		{
+		/*		{
 			label: "Start soon",
 			index: 1,
 			title: "Game is starting soon",
@@ -169,7 +165,7 @@ const notificationTypes = {
 			title: "Game has started",
 			template: "The game  {{team1}} vs. {{team2}} has started on venue {{track}}",
 			isScheduled: true,
-		}, // scheduled, link to the game
+		},*/
 		{
 			label: "intermission",
 			index: 3,
@@ -192,13 +188,13 @@ const notificationTypes = {
 			isScheduled: false,
 		}, // manual, link to the game - number of minutes late --> propagate to all channel scheduled notifications
 	],
-	// Channel is on_site_notices
-	on_site_notices: [
-		{ label: "on_site_info", index: 6, title: "", template: "{{message}}", isScheduled: false, }, // manual, link to the app - free text
+	// Channel for on site notices
+	local: [
+		{ label: "On site info", index: 6, title: "", template: "{{message}}", isScheduled: false }, // manual, link to the app - free text
 	],
-	// Channel is global_notices
-	global_notices: [
-		{ label: "global_info", index: 7, title: "", template: "{{message}}", isScheduled: false, }, // manual, link to the app - free text
+	// // Channel for global notices
+	global: [
+		{ label: "Global info", index: 7, title: "", template: "{{message}}", isScheduled: false }, // manual, link to the app - free text
 	],
 };
 
@@ -216,13 +212,7 @@ const gameDelay = ref<number | null>(null);
 const channels = computed(() => notificationsStore.channels);
 
 const channelType = computed<NotificationCategory | null>(() => {
-	if (!channel.value) return null;
-
-	if (channel.value.slug.startsWith("game_")) return "game";
-	if (channel.value.slug === "on_site_notices") return "on_site_notices";
-	if (channel.value.slug === "global_notices") return "global_notices";
-
-	return null;
+	return channel.value ? channel.value.type : null;
 });
 
 const availableNotificationTypes = computed<INotificationType[]>(() => {
@@ -232,7 +222,7 @@ const availableNotificationTypes = computed<INotificationType[]>(() => {
 const isFreeText = computed<boolean>(() => {
 	if (!channel.value || !notificationType.value) return false;
 
-	return ["on_site_notices", "global_notices"].includes(channelType.value!);
+	return ["local", "global"].includes(channelType.value!);
 });
 
 const autoTitle = computed<string>(() => {
@@ -243,23 +233,46 @@ const autoMode = computed<"live" | "scheduled">(() => {
 	return notificationType.value?.isScheduled ? "scheduled" : "live";
 });
 
-const location = computed<string>(() =>
-  channel.value?.track != null ? 
-    venuesStore.getVenueById(channel.value.track)?.name ?? "no location found for track ID " + channel.value?.track
-    : "no track ID found"
-);
+const currentGame = computed(() => {
+	if (!channel.value) return null;
+	const id = extractGameId(channel.value.slug);
+	return id ? gameStore.getGameById(id) : null;
+});
 
-const team1Name = computed<string>(() =>
-  channel.value?.team_id_1 != null ? 
-    teamsStore.getTeamById(channel.value.team_id_1)?.name ?? "no team found for ID " + channel.value.team_id_1
-    : "no team ID found"
-);
+const team1Name = computed(() => {
+	const game = currentGame.value;
+	if (!game) {
+		return "no game found for this channel";
+	}
 
-const team2Name = computed<string>(() =>
-  channel.value?.team_id_2 != null
-    ? teamsStore.getTeamById(channel.value.team_id_2)?.name ?? "no team found for ID " + channel.value.team_id_2
-    : "no team ID found"
-);
+	if (game.home_team == null) {
+		return "no home team ID found";
+	}
+
+	const team = teamsStore.getTeamById(game.home_team);
+	return team?.name ?? `no team found for ID ${game.home_team}`;
+});
+
+const team2Name = computed(() => {
+	const game = currentGame.value;
+	if (!game) {
+		return "no game found for this channel";
+	}
+	if (game.away_team == null) {
+		return "no away team ID found";
+	}
+
+	const team = teamsStore.getTeamById(game.away_team);
+	return team?.name ?? `no team found for ID ${game.away_team}`;
+});
+
+const location = computed(() => {
+	const game = currentGame.value;
+	if (!game) return "no game found";
+
+	const venue = venuesStore.getVenueById(game.venue);
+	return venue?.name ?? `no venue found for ID ${game.venue}`;
+});
 
 const autoMessage = computed<string>(() => {
 	if (!notificationType.value || !channel.value) return "";
@@ -277,6 +290,13 @@ const autoMessage = computed<string>(() => {
 	return applyTemplate(notificationType.value.template, vars);
 });
 
+function extractGameId(slug: string): number | null {
+	if (!slug.startsWith("game_")) return null;
+
+	const id = Number(slug.slice(5));
+	return Number.isFinite(id) ? id : null;
+}
+
 function applyTemplate(template: string, vars: Record<string, any>): string {
 	return template.replace(/{{(.*?)}}/g, (_, key) => {
 		const k = key.trim();
@@ -286,18 +306,18 @@ function applyTemplate(template: string, vars: Record<string, any>): string {
 
 function handleSubmit(e: Event) {
 	e.preventDefault();
-  const form = e.target as HTMLFormElement;
+	const form = e.target as HTMLFormElement;
 	if (!form.checkValidity()) return;
 	submit();
 }
 
 function resetForm() {
-  notificationType.value = null;
-  message.value = "";
-  score1.value = null;
-  score2.value = null;
-  gameDelay.value = null;
-  scheduledAt.value = null;
+	notificationType.value = null;
+	message.value = "";
+	score1.value = null;
+	score2.value = null;
+	gameDelay.value = null;
+	scheduledAt.value = null;
 }
 
 watch(channel, resetForm);
@@ -309,7 +329,8 @@ async function submit() {
 			channel_slug: channel.value!.slug,
 			title: autoTitle.value,
 			body: isFreeText.value ? message.value : autoMessage.value,
-			scheduled_at: mode.value === "scheduled" && scheduledAt.value? toUtc(scheduledAt.value) : null,
+			scheduled_at:
+				mode.value === "scheduled" && scheduledAt.value ? toUtc(scheduledAt.value) : null,
 		},
 	});
 
@@ -321,9 +342,9 @@ async function submit() {
 }
 
 onMounted(async () => {
-  await notificationsStore.fetchChannels();
-  if (!channel.value && channels.value.length > 0) {
-    channel.value = channels.value[0]!;
-  }
+	await notificationsStore.fetchChannels();
+	if (!channel.value && channels.value.length > 0) {
+		channel.value = channels.value[0]!;
+	}
 });
 </script>

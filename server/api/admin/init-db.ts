@@ -1,27 +1,38 @@
 import { getDb } from "../../utils/dbClient";
-
-// Notification types
-const defaultScheduledNotifications = [
-	{
-		title: "Game is starting soon",
-		body: "The game {{team1}} vs. {{team2}} will start soon on venue {{track}}",
-		offsetMinutes: -10,
-	},
-	{
-		title: "Game has started",
-		body: "The game {{team1}} vs. {{team2}} has started on venue {{track}}",
-		offsetMinutes: 0,
-	},
-];
+import { defaultScheduledNotifications } from "~~/server/utils/helpers";
+import type { IGame } from "~~/types/games";
+import type { ILocalizedTeam } from "~~/types/teams";
+import type { ILocalizedVenue } from "~~/types/custom";
 
 // UTC time + offsetMinutes
 function addOffsetUtc(dateString: string, offSetMinutes: number) {
-	const ts = Date.parse(dateString); // parse ISO → UTC
-	return new Date(ts + offSetMinutes * 60000); // Stay in UTC
+	const d = new Date(dateString); // ex: "2026-04-26T18:00:00+02:00"
+	const utcTs = d.getTime();
+	return new Date(utcTs + offSetMinutes * 60000); // Stay in UTC
+}
+
+// Render template or return null if missing data
+function renderGameTemplate(
+	template: string,
+	game: IGame,
+	teamsById: Record<string, ILocalizedTeam>,
+	venuesById: Record<string, ILocalizedVenue>
+) {
+	const team1 = game.home_team ? teamsById[game.home_team]?.country : null;
+	const team2 = game.away_team ? teamsById[game.away_team]?.country : null;
+	const track = game.venue ? venuesById[game.venue]?.name : null;
+
+	// return body = null if any field is missing
+	if (!team1 || !team2 || !track) return null;
+
+	return template
+		.replace("{{team1}}", team1)
+		.replace("{{team2}}", team2)
+		.replace("{{track}}", track);
 }
 
 export default defineEventHandler(async (event) => {
-	const { games } = await readBody(event);
+	const { games, teams, venues } = await readBody(event);
 
 	if (!games?.length) {
 		throw createError({
@@ -30,6 +41,10 @@ export default defineEventHandler(async (event) => {
 		});
 	}
 
+	// Build dictionaries for quick lookup
+	const teamsById = Object.fromEntries(teams.map((t: any) => [t.id, t]));
+	const venuesById = Object.fromEntries(venues.map((v: any) => [v.id, v]));
+
 	const db = getDb();
 	await db.connect();
 
@@ -37,35 +52,35 @@ export default defineEventHandler(async (event) => {
 		await db.query("BEGIN");
 
 		// Create "Global" channel
-		/*		await db.query(
+		await db.query(
 			`
-        INSERT INTO channels (slug, name, type, team_id_1, team_id_2)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO channels (name, slug, type)
+        VALUES ($1, $2, $3)
         ON CONFLICT (slug) DO NOTHING
         `,
-			["Global", "Official news", game.venue, game.home_team, game.away_team]
+			["Official news", "global", "global"]
 		);
 		// Create "Local" channel
 		await db.query(
 			`
-        INSERT INTO channels (slug, name, track, team_id_1, team_id_2)
-        VALUES ($1, $2, $3, $4, $5)
-        ON CONFLICT (slug) DO NOTHING
-        `,
-			[slug, channelName, game.venue, game.home_team, game.away_team]
-		);*/
+				INSERT INTO channels (name, slug, type)
+				VALUES ($1, $2, $3)
+					ON CONFLICT (slug) DO NOTHING
+			`,
+			["At the venue", "local", "local"]
+		);
 		// Create channel game_*
 		for (const game of games) {
-			const slug = `game_${game.id}`; // TODO check if should be game.number
-			const channelName = game.description ?? `Game #${game.number}`; // TODO check if should be 'game team 1 vs team 2'
+			const slug = `game_${game.id}`;
+			const channelName = `Game #${game.number}`;
 
 			await db.query(
 				`
-        INSERT INTO channels (slug, name, track, team_id_1, team_id_2)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO channels (name, slug, type)
+        VALUES ($1, $2, $3)
         ON CONFLICT (slug) DO NOTHING
         `,
-				[slug, channelName, game.venue, game.home_team, game.away_team]
+				[channelName, slug, "game"]
 			);
 		}
 
@@ -81,7 +96,6 @@ export default defineEventHandler(async (event) => {
 
 			for (const nt of defaultScheduledNotifications) {
 				const scheduledAt = addOffsetUtc(game.start_time, nt.offsetMinutes);
-
 				// Check if notification already exists
 				const exists = await db.query(
 					`
@@ -94,14 +108,15 @@ export default defineEventHandler(async (event) => {
 				);
 
 				if (exists.rows.length > 0) continue;
-
+				// Render template (or null)
+				const renderedBody = renderGameTemplate(nt.body, game, teamsById, venuesById);
 				// Insert notification
 				await db.query(
 					`
           INSERT INTO notifications (channel_id, title, body, data, scheduled_at)
           VALUES ($1, $2, $3, $4, $5)
           `,
-					[channelId, nt.title, nt.body, {}, scheduledAt]
+					[channelId, nt.title, renderedBody, {}, scheduledAt]
 				);
 			}
 		}

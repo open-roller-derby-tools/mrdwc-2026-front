@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { IChannel, IUserSubscription } from "~~/types/custom";
+import type { IChannel, INotification, IUserSubscription } from "~~/types/custom";
 
 export const useNotificationsStore = defineStore("notifications", {
 	state: () => ({
@@ -7,9 +7,12 @@ export const useNotificationsStore = defineStore("notifications", {
 		channelsLoaded: false,
 		channels: [] as IChannel[],
 		subscribedSlugs: new Set<string>(),
+		// Scheduled notifications
+		scheduledNotifications: [] as INotification[],
+		scheduledNotificationsLoaded: false,
 		// Teams
 		teamSubscriptions: new Set<number>(),
-		// Global notifications
+		// Notifications registration
 		notificationsEnabled: false,
 		notificationsLoaded: false,
 	}),
@@ -27,11 +30,19 @@ export const useNotificationsStore = defineStore("notifications", {
 			this.channelsLoaded = true;
 		},
 
+		async fetchScheduledNotifications() {
+			if (this.scheduledNotificationsLoaded) return;
+			this.scheduledNotifications = await $fetch<INotification[]>(
+				"/api/notifications/scheduled-list"
+			);
+			this.scheduledNotificationsLoaded = true;
+		},
+
 		async fetchSubscriptions(userId: string) {
 			//const [userSubs, teamSubs] = await Promise.all([
 			const [userSubs] = await Promise.all([
 				$fetch<IUserSubscription[]>(`/api/channel-subscriptions/${userId}`),
-				//$fetch<{ team_id: number }[]>(`/api/team-subscriptions/${userId}`),
+				$fetch<{ team_id: number }[]>(`/api/team-subscriptions/${userId}`),
 			]);
 			this.subscribedSlugs = new Set(userSubs.map((s) => s.slug));
 			//this.teamSubscriptions = new Set(teamSubs.map((t) => t.team_id));

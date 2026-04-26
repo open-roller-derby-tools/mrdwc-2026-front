@@ -7,6 +7,16 @@
 			</div>
 
 			<div class="bg-gray-900 p-6 rounded-xl shadow">
+				<p class="text-gray-400">Total scheduled notifications</p>
+				<p class="text-3xl font-semibold mt-2">{{ stats.scheduled_notifications }}</p>
+			</div>
+
+			<div class="bg-gray-900 p-6 rounded-xl shadow">
+				<p class="text-gray-400">Total sent notifications</p>
+				<p class="text-3xl font-semibold mt-2">{{ stats.sent_notifications }}</p>
+			</div>
+
+			<div class="bg-gray-900 p-6 rounded-xl shadow">
 				<p class="text-gray-400">Active channels</p>
 				<p class="text-3xl font-semibold mt-2">{{ stats.channels }}</p>
 			</div>
@@ -15,20 +25,19 @@
 				<p class="text-gray-400">Users subscribed</p>
 				<p class="text-3xl font-semibold mt-2">{{ stats.subscriptions }}</p>
 			</div>
+		</div>
+		<div class="pt-6">
+			<button
+				class="px-4 py-2 bg-yellow text-blue-text border-blue-text font-semibold rounded-xl"
+				:disabled="loading"
+				@click="initDb"
+			>
+				{{ loading ? "Initialisation..." : "Initialise database" }}
+			</button>
 
-			<div class="pt-6">
-				<button
-					class="px-4 py-2 bg-yellow text-blue-text border-blue-text font-semibold rounded-xl"
-					:disabled="loading"
-					@click="initDb"
-				>
-					{{ loading ? "Initialisation..." : "Initialise database" }}
-				</button>
+			<p v-if="success" class="text-green-400 mt-2">Database initialised !</p>
 
-				<p v-if="success" class="text-green-400 mt-2">Database initialised !</p>
-
-				<p v-if="error" class="text-red-400 mt-2">Error : {{ error }}</p>
-			</div>
+			<p v-if="error" class="text-red-400 mt-2">Error : {{ error }}</p>
 		</div>
 	</div>
 </template>
@@ -41,12 +50,16 @@ definePageMeta({
 });
 
 const gamesStore = useGamesStore();
+const teamsStore = useTeamsStore();
+const venuesStore = useVenuesStore();
 const notificationsStore = useNotificationsStore();
 
 const stats = ref({
 	notifications: 0,
 	channels: 0,
 	subscriptions: 0,
+	scheduled_notifications: 0,
+	sent_notifications: 0,
 });
 
 onMounted(async () => {
@@ -68,6 +81,8 @@ async function initDb() {
 			method: "POST",
 			body: {
 				games: gamesStore.games,
+				teams: teamsStore.localizedTeams,
+				venues: venuesStore.localizedVenues,
 			},
 		});
 
@@ -75,8 +90,10 @@ async function initDb() {
 
 		// Refresh stats after successful init
 		stats.value = await $fetch("/api/admin/stats");
-		// Reload channels
+		// Reload channels and notifications
+		notificationsStore.channelsLoaded = false;
 		await notificationsStore.fetchChannels();
+		notificationsStore.scheduledNotificationsLoaded = false;
 	} catch (err: any) {
 		error.value = err?.data?.statusMessage ?? "Unknown error";
 	} finally {

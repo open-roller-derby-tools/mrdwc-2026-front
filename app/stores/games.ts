@@ -194,6 +194,10 @@ export const useGamesStore = defineStore("games", () => {
 		return gamesData.value?.find((game) => game.number === n);
 	}
 
+	function getGameById(id: number): IGame | undefined {
+		return gamesData.value?.find((game) => game.id === id);
+	}
+
 	// Games grouped by team
 
 	function getGamesByTeam(teamId: number): IGame[] {
@@ -321,6 +325,7 @@ export const useGamesStore = defineStore("games", () => {
 		typeLowerFinalGames,
 		typeGrandFinalGames,
 		getGameByNumber,
+		getGameById,
 		getGamesByTeam,
 		gamesGroupedByDate,
 		gamesGroupedByGroup,

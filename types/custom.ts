@@ -377,28 +377,35 @@ export interface IRequestField {
 // NOTIFICATIONS
 
 export interface IChannel {
-  id: string
-  slug: string
-  name: string
-  track: number | null
-  team_id_1: number | null
-  team_id_2: number | null
-  created_at: string
+	id: string;
+	slug: string;
+	name: string;
+	type: "global" | "local" | "game";
+	created_at: string;
+}
+
+export interface INotification {
+	id: string;
+	channel_id: string;
+	title: string;
+	body?: string;
+	scheduled_at?: string;
+	created_at: string;
 }
 
 export interface IUserSubscription {
-  id: string
-  slug: string
-  name: string
-  created_at: string
+	id: string;
+	slug: string;
+	name: string;
+	created_at: string;
 }
 
-export type NotificationCategory = "game" | "on_site_notices" | "global_notices";
+export type NotificationCategory = "game" | "local" | "global";
 
 export interface INotificationType {
-  label: string;
-  index: number;
-  title: string;
-  template: string;
-  isScheduled: boolean;
+	label: string;
+	index: number;
+	title: string;
+	template: string;
+	isScheduled: boolean;
 }

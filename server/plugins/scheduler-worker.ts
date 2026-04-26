@@ -1,6 +1,53 @@
 import { Worker, Queue } from "bullmq";
 import { getDb } from "../utils/dbClient";
 import { notificationQueue } from "../utils/queue";
+import { ILocalizedTeam } from "~~/types/teams";
+import { $fetch } from "ofetch";
+import { IGame } from "~~/types/games";
+import { type ILocalizedVenue, IVenue } from "~~/types/custom";
+import { defaultScheduledNotifications } from "~~/server/utils/helpers";
+
+const scheduledTemplates = Object.fromEntries(
+	defaultScheduledNotifications.map((n) => [n.title, n.body])
+);
+
+function renderGameTemplate(template: string, team1: string, team2: string, track: string) {
+	return template
+		.replace("{{team1}}", team1)
+		.replace("{{team2}}", team2)
+		.replace("{{track}}", track);
+}
+
+function extractGameId(slug: string): number | null {
+	if (!slug.startsWith("game_")) return null;
+
+	const id = Number(slug.slice(5));
+	return Number.isFinite(id) ? id : null;
+}
+
+async function fetchGame(id: number) {
+	return await $fetch<IGame>(`${process.env.NUXT_PUBLIC_API_BASE}/items/games/${id}`, {
+		query: {
+			fields: ["id", "number", "venue", "home_team", "away_team"].join(","),
+		},
+	});
+}
+
+async function fetchTeam(id: number) {
+	return await $fetch<ILocalizedTeam>(`${process.env.NUXT_PUBLIC_API_BASE}/items/teams/${id}`, {
+		query: {
+			fields: ["id", "name", "country"].join(","),
+		},
+	});
+}
+
+async function fetchVenue(id: number) {
+	return await $fetch<IVenue>(`${process.env.NUXT_PUBLIC_API_BASE}/items/venues/${id}`, {
+		query: {
+			fields: ["id", "name"].join(","),
+		},
+	});
+}
 
 export default defineNitroPlugin(() => {
 	// Scheduler queue
@@ -42,31 +89,87 @@ export default defineNitroPlugin(() => {
 
 			for (const row of res.rows) {
 				// Find channel (for log info)
-				let channel = await db.query(`SELECT id, slug, name FROM channels WHERE id = $1`, [
-					row.channel_id,
-				]);
-				// TODO get data from Directus to build notification title and body
-				// If channel_slug starts with "game_"
-				// If title == "starting_soon"
-				// fetch game data directly from Directus --> Get teams id + venues id
-				// fetch home team data directly from Directus --> get team id + team country
-				// fetch away team data directly from Directus --> get team id + team country
-				// fetch venues data directly from Directus --> get venue name
-				//build the notification title and body from the fetched data
+				const channelRes = await db.query(
+					`SELECT id, slug, name, type FROM channels WHERE id = $1`,
+					[row.channel_id]
+				);
+				const notification = row;
+				let body: string | null = notification.body;
+				const channel = channelRes.rows[0];
 
-				// TODO ADD CHANNEL TO USER IF SUBSCRIBED TO A TEAM
+				// Generate notification body if null
+				if ((!notification.body || notification.body.trim() === "") && channel.type === "game") {
+					const gameId = extractGameId(channel.slug);
+					if (gameId != null) {
+						try {
+							const game = await fetchGame(gameId);
+							if (game.home_team != null && game.away_team != null && game.venue != null) {
+								const [homeTeam, awayTeam, venue] = await Promise.all([
+									fetchTeam(game.home_team),
+									fetchTeam(game.away_team),
+									fetchVenue(game.venue),
+								]);
+								// Extract data from directus
+								const vars = {
+									team1: homeTeam.country ?? homeTeam.name,
+									team2: awayTeam.country ?? awayTeam.name,
+									track: venue.name,
+								};
+								// Format notification body
+								const template = scheduledTemplates[notification.title];
+								const renderedBody = renderGameTemplate(
+									template,
+									vars.team1,
+									vars.team2,
+									vars.track
+								);
+
+								if (renderedBody && renderedBody.trim() !== "") {
+									body = renderedBody;
+									// Insert notification body
+									await db.query(`UPDATE notifications SET body = $1 WHERE id = $2`, [
+										renderedBody,
+										notification.id,
+									]);
+									// Skipping sent because body is empty (will be reevaluated on next scan)
+									if (!body || body.trim() === "") {
+										console.warn(
+											`[Scheduler] Skipping notification ${notification.id} because body is empty`
+										);
+										continue;
+									}
+									// Add channel to teams subscribers
+									await db.query(
+										`
+								INSERT INTO user_subscriptions (user_id, channel_id)
+								SELECT DISTINCT ts.user_id, $1
+								FROM team_subscriptions ts
+								WHERE ts.team_id = $2 OR ts.team_id = $3
+								ON CONFLICT DO NOTHING
+								`,
+										[channel.id, game.home_team, game.away_team]
+									);
+								}
+							}
+						} catch (err) {
+							console.error("[Scheduler] Failed to complete body from Directus:", err);
+							// Keep body empty if fetch fails
+						}
+					}
+				}
 
 				await notificationQueue.add("send-notification", {
 					notification_id: row.id,
-					title: row.title, // TODO computed title
-					body: row.body, // TODO computed title
-					channel_id: channel.rows[0].id,
-					channel_name: channel.rows[0].name,
-					channel_slug: channel.rows[0].slug,
+					title: row.title,
+					body: body,
+					channel_id: channel.id,
+					channel_name: channel.name,
+					channel_slug: channel.slug,
 					scheduled_at: row.scheduled_at,
 					created_at: row.created_at,
 				});
 			}
+
 			await job.log(`Scheduler sent ${res.rows.length} notifications`);
 			// Populate scheduler data in bull dashboard
 			return { sent: res.rows.length };
