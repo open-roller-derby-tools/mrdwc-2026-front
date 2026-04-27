@@ -14,7 +14,7 @@ export default defineNitroPlugin(() => {
 	const worker = new Worker(
 		"notifications",
 		async (job) => {
-			const { notification_id } = job.data;
+			const { notification_id, url } = job.data;
 
 			const db = getDb();
 			await db.connect();
@@ -63,7 +63,10 @@ export default defineNitroPlugin(() => {
 							JSON.stringify({
 								title: notif.title,
 								body: notif.body,
-								data: notif.data,
+								data: {
+									...notif.data,
+									url: url,
+								},
 							})
 						);
 

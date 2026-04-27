@@ -5,7 +5,11 @@ import { ILocalizedTeam } from "~~/types/teams";
 import { $fetch } from "ofetch";
 import { IGame } from "~~/types/games";
 import { IVenue } from "~~/types/custom";
-import { defaultScheduledNotifications } from "~~/server/utils/notifications-helpers";
+import {
+	defaultScheduledNotifications,
+	extractGameId,
+	redirectedUrl,
+} from "~~/server/utils/notifications-helpers";
 
 const scheduledTemplates = Object.fromEntries(
 	defaultScheduledNotifications.map((n) => [n.title, n.body])
@@ -16,13 +20,6 @@ function renderGameTemplate(template: string, team1: string, team2: string, trac
 		.replace("{{team1}}", team1)
 		.replace("{{team2}}", team2)
 		.replace("{{track}}", track);
-}
-
-function extractGameId(slug: string): number | null {
-	if (!slug.startsWith("game_")) return null;
-
-	const id = Number(slug.slice(5));
-	return Number.isFinite(id) ? id : null;
 }
 
 async function fetchGame(id: number) {
@@ -157,11 +154,13 @@ export default defineNitroPlugin(() => {
 						}
 					}
 				}
-
+				// Calculate redirection URL
+				const url = redirectedUrl(channel.type, channel.slug);
 				await notificationQueue.add("send-notification", {
 					notification_id: row.id,
 					title: row.title,
 					body: body,
+					url: url,
 					channel_id: channel.id,
 					channel_name: channel.name,
 					channel_slug: channel.slug,
