@@ -22,6 +22,7 @@ import BlockAnnouncers from "~/components/blocks_custom/BlockAnnouncers.vue";
 import BlockPhotographers from "~/components/blocks_custom/BlockPhotographers.vue";
 import BlockFaq from "~/components/blocks_custom/BlockFaq.vue";
 import BlockOtherSponsors from "~/components/blocks_custom/BlockOtherSponsors.vue";
+import BlockFinalRankings from "~/components/blocks_custom/BlockFinalRankings.vue";
 
 const components = new Map<string, Component>([
 	// Blocks
@@ -48,6 +49,7 @@ const components = new Map<string, Component>([
 	["BlockPhotographers", BlockPhotographers],
 	["BlockFaq", BlockFaq],
 	["BlockOtherSponsors", BlockOtherSponsors],
+	["BlockFinalRankings", BlockFinalRankings],
 ]);
 
 export default (collection: string) => components.get(collection);
