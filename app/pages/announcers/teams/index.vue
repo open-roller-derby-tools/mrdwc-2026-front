@@ -64,6 +64,8 @@ definePageMeta({
 	layout: "announcers",
 });
 
+useSeoMeta({ robots: "noindex, nofollow" });
+
 const teamsStore = useTeamsStore();
 const config = useRuntimeConfig();
 
