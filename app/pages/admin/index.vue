@@ -49,6 +49,7 @@ definePageMeta({
 	layout: "admin",
 });
 
+const { setLocale } = useI18n();
 const gamesStore = useGamesStore();
 const teamsStore = useTeamsStore();
 const venuesStore = useVenuesStore();
@@ -77,6 +78,12 @@ async function initDb() {
 	error.value = null;
 
 	try {
+		// Force local to english before fetching data
+		await setLocale("en-US");
+		// Fetch store with localized data
+		await gamesStore.fetch();
+		await teamsStore.fetch();
+		await venuesStore.fetch();
 		await $fetch("/api/admin/init-db", {
 			method: "POST",
 			body: {
@@ -87,7 +94,6 @@ async function initDb() {
 		});
 
 		success.value = true;
-
 		// Refresh stats after successful init
 		stats.value = await $fetch("/api/admin/stats");
 		// Reload channels and notifications
