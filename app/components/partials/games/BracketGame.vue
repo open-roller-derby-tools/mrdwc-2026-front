@@ -344,7 +344,8 @@ const linkOutWinLabel = computed(() => {
 	if (
 		props.game.type == GameType.LowerFinal ||
 		props.game.type == GameType.UpperTopEight ||
-		props.game.type == GameType.LowerTopEight
+		props.game.type == GameType.LowerTopEight ||
+		props.game.type == GameType.RankingsPlay
 	)
 		return "rankings.others";
 	return null;
@@ -356,6 +357,24 @@ const linkOutWinRanking = computed(() => {
 	if (props.game.type == GameType.LowerFinal) return 3;
 	if (props.game.type == GameType.UpperTopEight) return 5;
 	if (props.game.type == GameType.LowerTopEight) return 7;
+	if (props.game.type == GameType.RankingsPlay) {
+		switch (props.game.number) {
+			case 50:
+				return 9;
+			case 49:
+				return 11;
+			case 43:
+				return 13;
+			case 46:
+				return 15;
+			case 41:
+				return 17;
+			case 42:
+				return 19;
+			default:
+				return null;
+		}
+	}
 	return null;
 });
 
@@ -365,7 +384,8 @@ const linkOutLoseLabel = computed(() => {
 	if (
 		props.game.type == GameType.LowerFinal ||
 		props.game.type == GameType.UpperTopEight ||
-		props.game.type == GameType.LowerTopEight
+		props.game.type == GameType.LowerTopEight ||
+		props.game.type == GameType.RankingsPlay
 	)
 		return "rankings.others";
 	return null;
@@ -377,6 +397,24 @@ const linkOutLoseRanking = computed(() => {
 	if (props.game.type == GameType.LowerFinal) return 4;
 	if (props.game.type == GameType.UpperTopEight) return 6;
 	if (props.game.type == GameType.LowerTopEight) return 8;
+	if (props.game.type == GameType.RankingsPlay) {
+		switch (props.game.number) {
+			case 50:
+				return 10;
+			case 49:
+				return 12;
+			case 43:
+				return 14;
+			case 46:
+				return 16;
+			case 41:
+				return 18;
+			case 42:
+				return 20;
+			default:
+				return null;
+		}
+	}
 	return null;
 });
 
